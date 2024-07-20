@@ -8,17 +8,18 @@ import Navbar from "./Navbar.jsx";
 import {Outlet} from "react-router-dom";
 
 const headerStyle = {
-    textAlign: 'center',
-    color: '#fff',
-    height: 64,
-    paddingInline: 48,
-    lineHeight: '64px',
-    backgroundColor: '#4096ff',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '0 12%',
+    height: 50,
+    color: '#4E4E4E',
+    backgroundColor: '#FFFFFF',
 };
 
 const contentStyle = {
     textAlign: 'center',
-    minHeight: 120,
+    minHeight: 100,
     lineHeight: '120px',
     color: '#fff',
     backgroundColor: '#0958d9',
