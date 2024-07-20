@@ -1,16 +1,23 @@
 import { Button, ConfigProvider } from 'antd'
-import { TinyColor } from '@ctrl/tinycolor'
 
-function ColorButton({ bgColor, children, ...props }) {
+function ColorButton({linkHover, fontWeight, borderHoverColor, defaultHover, borderColor, defaultText, lineWidth, children, ...props }) {
   return (
     <ConfigProvider
       theme={{
         components: {
           Button: {
-            colorPrimary: bgColor,
-            colorPrimaryHover: new TinyColor(bgColor).lighten(5).toString(),
-            colorPrimaryActive: new TinyColor(bgColor).darken(5).toString(),
-            lineWidth: 0
+              //Default
+              fontWeight : fontWeight || undefined,
+              colorDefaultText: defaultText ||'black',
+              defaultBorderColor: borderColor ||'black',
+              defaultHoverColor: defaultHover||'black',
+              defaultHoverBorderColor: borderHoverColor || 'black',
+              //Text
+              colorLink : 'black',
+              colorLinkHover : linkHover || 'black',
+              colorLinkActive : '#0499A8',
+              linkFocusDecoration : 1,
+              lineWidth: lineWidth || 2
           }
         }
       }}
@@ -19,5 +26,6 @@ function ColorButton({ bgColor, children, ...props }) {
     </ConfigProvider>
   )
 }
+
 
 export default ColorButton

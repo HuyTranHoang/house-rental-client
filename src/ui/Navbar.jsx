@@ -1,8 +1,6 @@
-import { Button, Typography, Flex } from 'antd'
-import '../assets/css/navbar.css'
+import { Flex } from 'antd'
+import './navbar.css'
 import ColorButton from '../components/ColorButton.jsx'
-
-const { Text } = Typography
 
 const Navbar = () => (
   <>
@@ -11,21 +9,20 @@ const Navbar = () => (
       alt="Logo"
       className={'logo'}
     />
+
     <Flex gap="small" wrap>
-      <Button type={'text'} href={'#tim-thue'}>Tìm Thuê</Button>
-      <Button type={'text'} href={'#phi-thanh-vien'}>Phí Thành Viên</Button>
-      <Button type={'text'} href={'#du-an'}>Dự Án</Button>
-      <Button type={'text'} href={'#dang-nhap'}>Đăng Nhập</Button>
+      <ColorButton linkHover={"#0499A8"} type={'link'} href={'#tim-thue'}>Tìm Thuê</ColorButton>
 
-      <ColorButton bgColor="green" type="primary">
-        Demo button
-      </ColorButton>
+      <ColorButton linkHover={"#0499A8"} type={'link'} href={'#phi-thanh-vien'}>Phí Thành Viên</ColorButton>
 
-      <Button type="default" className={'buttonStyle'} href={'#dang-tin'}>
-        <Text strong className={'textStyle'}>
+      <ColorButton linkHover={"#0499A8"} type={'link'} href={'#du-an'}>Dự Án</ColorButton>
+
+      <ColorButton linkHover={"#0499A8"} type={'link'} href={'#dang-nhap'}>Đăng Nhập</ColorButton>
+
+      <ColorButton defaultHover={"#0499A8"} borderColor={"#0499A8"} borderHoverColor={"#0499A8"}
+                   lineWidth={1} fontWeight={500} type="default" >
           Đăng Tin
-        </Text>
-      </Button>
+      </ColorButton>
     </Flex>
   </>
 )
