@@ -11,10 +11,11 @@ const headerStyle = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '0 12%',
+    padding: '0 20%',
     height: 50,
     color: '#4E4E4E',
     backgroundColor: '#FFFFFF',
+    fontsize: '16px',
 };
 
 const contentStyle = {
