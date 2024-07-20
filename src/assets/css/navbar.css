@@ -1,0 +1,15 @@
+.logo {
+    width: 100px;
+    height: 31px;
+}
+
+.buttonStyle{
+    border-color: #0499A8;
+}
+
+.buttonStyle:hover{
+    .textStyle{
+        color: #0499A8 !important;
+    }
+    border-color: #0499A8 !important;
+}
