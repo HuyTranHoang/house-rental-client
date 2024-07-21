@@ -33,8 +33,6 @@ const siderStyle = {
 }
 
 const footerStyle = {
-  textAlign: 'start',
-  color: '#222222',
   backgroundColor: '#E9E9E9'
 }
 
