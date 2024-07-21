@@ -11,7 +11,7 @@ const headerStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0 20%',
+  padding: '0 18%',
   height: 50,
   color: '#4E4E4E',
   backgroundColor: '#FFFFFF'
@@ -33,9 +33,9 @@ const siderStyle = {
 }
 
 const footerStyle = {
-  textAlign: 'center',
-  color: '#fff',
-  backgroundColor: '#4096ff'
+  textAlign: 'start',
+  color: '#222222',
+  backgroundColor: '#E9E9E9'
 }
 
 function AppLayout() {
@@ -46,8 +46,8 @@ function AppLayout() {
       </Header>
       <Layout>
         <Row>
-          <Col xs={1} sm={2} md={3}></Col>
-          <Col xs={22} sm={20} md={18}>
+          <Col xs={1} sm={2} md={5}></Col>
+          <Col xs={22} sm={20} md={14}>
             <Layout>
               <Content style={contentStyle}>
                 <Outlet />
@@ -57,7 +57,7 @@ function AppLayout() {
               </Sider>
             </Layout>
           </Col>
-          <Col xs={1} sm={2} md={3}></Col>
+          <Col xs={1} sm={2} md={5}></Col>
         </Row>
       </Layout>
       <Footer style={footerStyle}>
