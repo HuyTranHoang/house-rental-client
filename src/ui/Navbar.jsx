@@ -1,6 +1,7 @@
 import { Button, Flex, Typography } from 'antd'
 import ColorButton from '../components/ColorButton.jsx'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 const CustomImg = styled.img`
     width: 100px;
@@ -18,11 +19,12 @@ const CustomTypography = styled(Typography.Text)`
 
 const Navbar = () => (
   <>
-    <CustomImg
-      src="https://mogi.vn/content/Images/logo.svg"
-      alt="Logo"
-    />
-
+    <Link to={'/'} style={{display: 'flex'}}>
+      <CustomImg
+        src={'/logo.png'}
+        alt="Logo"
+      />
+    </Link>
     <Flex gap="small" wrap>
       <Button type="link" href="#tim-thue">
         <CustomTypography>
