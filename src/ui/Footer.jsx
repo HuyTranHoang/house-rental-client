@@ -36,7 +36,7 @@ function Footer() {
           <Col md={6}>
             <ul style={{ listStyleType: 'none', padding: 0 }}>
               <li>
-                <CustomImg src="https://mogi.vn/content/Images/logo.svg" alt="Logo" />
+                <CustomImg src="/logo.png" alt="Logo" />
               </li>
               <li>
                 <span><PhoneOutlined style={{fontSize: '16px'}} /> (028) 73001234</span>
@@ -47,7 +47,7 @@ function Footer() {
             </ul>
 
             <div>
-              <Typography.Title level={5} strong>CÔNG TY CỔ APTECH</Typography.Title>
+              <Typography.Title level={5} strong>CÔNG TY CỔ MOGU</Typography.Title>
 
               <p style={{ color: '#745E5E' }}>
                 Trụ sở chính: Quận Bình Thạnh, TP. Hồ Chí Minh<br />
@@ -102,7 +102,7 @@ function Footer() {
               ]} />
             </Row>
             <Row>
-              <FooterItem title="Về Mogi" items={[
+              <FooterItem title="Về MogU" items={[
                 'Về chúng tôi',
                 'Điều khoản sử dụng',
                 'Quy chế hoạt động',

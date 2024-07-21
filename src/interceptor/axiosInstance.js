@@ -1,5 +1,5 @@
 import axios from 'axios'
-// import { toast } from 'react-toastify'
+import { toast } from 'sonner'
 
 const axiosInstance = axios.create({})
 
@@ -12,21 +12,27 @@ axiosInstance.interceptors.response.use(response => response,
         if (error.response?.data.message) {
           throw error.response?.data.message.split('; ').filter((message) => message !== '')
         }
-        alert(error.response?.data.message)
-        // toast.error(error.response?.data.message)
+        toast.error(error.response?.data.message)
         break
       case 401:
         window.location.href = '/login'
         break
       case 500:
+        if (error.response.data.message === 'Bad credentials') {
+          toast.error('Sai tài khoản hoặc mật khẩu', {
+            style: {
+              color: '#F56C6C'
+            }
+          })
+          break;
+        }
         window.location.href = '/server-error'
         break
       default:
         if (error.code === 'ERR_NETWORK') {
           window.location.href = '/not-found'
         } else {
-          alert(error.message)
-          // toast.error(error.message)
+          toast.error(error.message)
         }
         break
     }
