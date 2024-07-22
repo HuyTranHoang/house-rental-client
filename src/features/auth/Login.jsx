@@ -1,10 +1,10 @@
 import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
-import { FacebookFilled, GoogleCircleFilled, LoginOutlined } from '@ant-design/icons'
+import { FacebookFilled, GoogleCircleFilled, LoginOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
 import axiosInstance from '../../interceptor/axiosInstance.js'
 import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.js'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
 
@@ -50,14 +50,14 @@ function Login() {
         <Typography.Text style={{ display: 'block' }}>Nền tảng tìm kiếm và cho thuê nhà trọ</Typography.Text>
         <Divider />
         <Form
-          name="basic"
+          name="login"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           initialValues={{ remember: true }}
           autoComplete="off"
+          labelCol={{ span: 8 }}
         >
           <Form.Item
-            label="Tài khoản"
             name="username"
             rules={[
               {
@@ -66,11 +66,10 @@ function Login() {
               }
             ]}
           >
-            <Input />
+            <Input placeholder="Tài khoản" prefix={<UserOutlined />} />
           </Form.Item>
 
           <Form.Item
-            label="Mật khẩu"
             name="password"
             rules={[
               {
@@ -79,7 +78,7 @@ function Login() {
               }
             ]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Mật khẩu" prefix={<UnlockOutlined />} />
           </Form.Item>
 
           <Flex justify="space-between" align="center">
@@ -96,7 +95,7 @@ function Login() {
             </Form.Item>
           </Flex>
 
-          <Form.Item style={{ marginBottom: '0.2rem' }}>
+          <Form.Item style={{ marginBottom: '0.6rem' }}>
             <Button type="primary" htmlType="submit" icon={<LoginOutlined />} iconPosition={'end'} loading={isLoading}
                     block>
               Đăng nhập
@@ -107,9 +106,11 @@ function Login() {
             <Typography.Text>
               Bạn chưa có tài khoản?
             </Typography.Text>
-            <Button type="link" href="#">
-              Đăng ký
-            </Button>
+            <Link to={'/register'}>
+              <Button type="link">
+                Đăng ký
+              </Button>
+            </Link>
           </Form.Item>
 
           <Divider>Hoặc đăng nhập với</Divider>
