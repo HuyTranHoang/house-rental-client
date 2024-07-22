@@ -7,6 +7,7 @@ import Register from './features/auth/Register.jsx'
 import { Toaster } from 'sonner'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
+import NotFound from './error/NotFound.jsx'
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="contact" element={<Contact />} />
             <Route path="about" element={<div>About</div>} />
-            <Route path="*" element={<div>404</div>} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>

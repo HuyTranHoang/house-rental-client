@@ -1,5 +1,5 @@
-import { Button, Col, Divider, Form, Input, Row, Typography } from 'antd'
-import { LoginOutlined } from '@ant-design/icons'
+import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
+import { FacebookFilled, GoogleCircleFilled, LoginOutlined } from '@ant-design/icons'
 import axiosInstance from '../../interceptor/axiosInstance.js'
 import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
@@ -45,7 +45,7 @@ function Login() {
 
   return (
     <Row style={{ textAlign: 'center', margin: '3rem 0' }}>
-      <Col offset={6} md={10} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
+      <Col offset={8} md={8} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
         <img src="/logo.png" alt="logo image" />
         <Typography.Text style={{ display: 'block' }}>Nền tảng tìm kiếm và cho thuê nhà trọ</Typography.Text>
         <Divider />
@@ -53,6 +53,7 @@ function Login() {
           name="basic"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          initialValues={{ remember: true }}
           autoComplete="off"
         >
           <Form.Item
@@ -81,8 +82,23 @@ function Login() {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" icon={<LoginOutlined />} iconPosition={'end'} loading={isLoading} block>
+          <Flex justify="space-between" align="center">
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+            >
+              <Checkbox>Nhớ đăng nhập</Checkbox>
+            </Form.Item>
+            <Form.Item>
+              <Button type="link" href="#">
+                Quên mật khẩu?
+              </Button>
+            </Form.Item>
+          </Flex>
+
+          <Form.Item style={{ marginBottom: '0.2rem' }}>
+            <Button type="primary" htmlType="submit" icon={<LoginOutlined />} iconPosition={'end'} loading={isLoading}
+                    block>
               Đăng nhập
             </Button>
           </Form.Item>
@@ -95,11 +111,16 @@ function Login() {
               Đăng ký
             </Button>
           </Form.Item>
-          <Form.Item style={{ display: 'inline' }}>
-            <Button type="link" href="#">
-              Quên mật khẩu?
-            </Button>
+
+          <Divider>Hoặc đăng nhập với</Divider>
+
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Flex gap="large" justify="center">
+              <FacebookFilled style={{ fontSize: '1.8rem', color: '#2667F9' }} />
+              <GoogleCircleFilled style={{ fontSize: '1.8rem', color: '#DB4437' }} />
+            </Flex>
           </Form.Item>
+
         </Form>
       </Col>
     </Row>
