@@ -45,7 +45,7 @@ function Login() {
 
   return (
     <Row style={{ textAlign: 'center', margin: '3rem 0' }}>
-      <Col offset={8} md={8} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
+      <Col offset={6} md={10} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
         <img src="/logo.png" alt="logo image" />
         <Typography.Text style={{ display: 'block' }}>Nền tảng tìm kiếm và cho thuê nhà trọ</Typography.Text>
         <Divider />
