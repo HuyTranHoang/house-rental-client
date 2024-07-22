@@ -1,5 +1,5 @@
 ﻿import { Row, Col, Typography } from 'antd'
-import { MailOutlined, PhoneOutlined } from '@ant-design/icons'
+import { FacebookFilled, MailOutlined, PhoneOutlined, YoutubeFilled } from '@ant-design/icons'
 import styled from 'styled-components'
 
 const { Text, Link } = Typography
@@ -39,15 +39,20 @@ function Footer() {
                 <CustomImg src="/logo.png" alt="Logo" />
               </li>
               <li>
-                <span><PhoneOutlined style={{fontSize: '16px'}} /> (028) 73001234</span>
+                <span><PhoneOutlined style={{fontSize: '16px'}} /> (012) 123456789</span>
               </li>
               <li>
-                <span><MailOutlined style={{fontSize: '16px'}} /> trogiup@houserental.vn</span>
+                <span><MailOutlined style={{fontSize: '16px'}} /> trogiup@mogu.vn</span>
               </li>
             </ul>
 
             <div>
-              <Typography.Title level={5} strong>CÔNG TY CỔ MOGU</Typography.Title>
+              <FacebookFilled style={{color: '#2667F9', fontSize: '1.6rem', marginRight: '0.8rem'}} />
+              <YoutubeFilled style={{color: 'red', fontSize: '1.6rem'}}/>
+            </div>
+
+            <div>
+              <Typography.Title level={5} strong>CÔNG TY CỔ PHẦN MOGU</Typography.Title>
 
               <p style={{ color: '#745E5E' }}>
                 Trụ sở chính: Quận Bình Thạnh, TP. Hồ Chí Minh<br />
