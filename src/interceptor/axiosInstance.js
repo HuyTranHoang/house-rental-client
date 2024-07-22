@@ -19,11 +19,7 @@ axiosInstance.interceptors.response.use(response => response,
         break
       case 500:
         if (error.response.data.message === 'Bad credentials') {
-          toast.error('Sai tài khoản hoặc mật khẩu', {
-            style: {
-              color: '#F56C6C'
-            }
-          })
+          toast.error('Sai tài khoản hoặc mật khẩu')
           break;
         }
         window.location.href = '/server-error'

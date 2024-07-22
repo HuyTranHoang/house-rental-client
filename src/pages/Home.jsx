@@ -3,23 +3,19 @@ import { Button } from 'antd'
 
 function Home() {
   return (
-    <div>
-      HomePage
-      <br />
-      <Link style={{ color: 'white' }} to={'/contact'}>
-        <Button> Contact </Button>
+    <div style={{width: 600}}>
+      <h1>Home page</h1>
+      <Link style={{ color: 'white'}} to={'/contact'}>
+        <Button style={{marginBottom: 16}} size='large'  block> Contact </Button>
       </Link>
-      <br />
       <Link style={{ color: 'white' }} to={'/about'}>
-        <Button> About </Button>
+        <Button style={{marginBottom: 16}} size='large' block> About </Button>
       </Link>
-      <br />
       <Link style={{ color: 'white' }} to={'/login'}>
-        <Button> Login </Button>
+        <Button style={{marginBottom: 16}} size='large' block> Login </Button>
       </Link>
-      <br />
       <Link style={{ color: 'white' }} to={'/register'}>
-        <Button> Register </Button>
+        <Button style={{marginBottom: 16}} size='large' block> Register </Button>
       </Link>
     </div>
   )

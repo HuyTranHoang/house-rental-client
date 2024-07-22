@@ -17,14 +17,6 @@ const headerStyle = {
   backgroundColor: '#FFFFFF'
 }
 
-const contentStyle = {
-  textAlign: 'center',
-  minHeight: 100,
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#0958d9'
-}
-
 const siderStyle = {
   textAlign: 'center',
   lineHeight: '120px',
@@ -36,7 +28,7 @@ const footerStyle = {
   backgroundColor: '#E9E9E9'
 }
 
-function AppLayout() {
+function AppLayout({ withSidebar }) {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={headerStyle}>
@@ -47,12 +39,14 @@ function AppLayout() {
           <Col xs={1} sm={2} md={5}></Col>
           <Col xs={22} sm={20} md={14}>
             <Layout>
-              <Content style={contentStyle}>
+              <Content>
                 <Outlet />
               </Content>
-              <Sider width="25%" style={siderStyle}>
-                Sider
-              </Sider>
+              {withSidebar && (
+                <Sider width="25%" style={siderStyle}>
+                  Sider
+                </Sider>
+              )}
             </Layout>
           </Col>
           <Col xs={1} sm={2} md={5}></Col>
