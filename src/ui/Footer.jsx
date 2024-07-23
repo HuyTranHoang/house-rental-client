@@ -107,7 +107,7 @@ function Footer() {
               ]} />
             </Row>
             <Row>
-              <FooterItem title="Về MogU" items={[
+              <FooterItem title="Về Mogu" items={[
                 'Về chúng tôi',
                 'Điều khoản sử dụng',
                 'Quy chế hoạt động',

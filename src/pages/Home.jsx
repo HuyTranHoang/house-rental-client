@@ -17,6 +17,9 @@ function Home() {
       <Link style={{ color: 'white' }} to={'/register'}>
         <Button style={{marginBottom: 16}} size='large' block> Register </Button>
       </Link>
+      <Link style={{ color: 'white' }} to={'/profile'}>
+        <Button style={{marginBottom: 16}} size='large' block> Profile - Protected Route </Button>
+      </Link>
     </div>
   )
 }

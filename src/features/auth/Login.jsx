@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, ConfigProvider, Divider, Flex, Form, Input, Row, Typography } from 'antd'
+import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
 import {
   AntDesignOutlined,
   FacebookFilled,
@@ -10,9 +10,9 @@ import axiosInstance from '../../interceptor/axiosInstance.js'
 import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.js'
-import { Link, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import GradientButton from '../../components/GradientButton.jsx'
+import { useEffect } from 'react'
 
 
 const onFinishFailed = (errorInfo) => {
@@ -23,7 +23,14 @@ function Login() {
   const { isAuthenticated, isLoading } = useSelector(selectAuth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation();
+  const redirectTo = location.state?.from || '/'
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirectTo)
+    }
+  }, [isAuthenticated, navigate, redirectTo])
 
   const onFinish = async (values) => {
     console.log('Success submit:', values)
@@ -37,19 +44,14 @@ function Login() {
         user: response.data,
         token: response.headers['jwt-token']
       }
+
       dispatch(loginSuccess(payload))
+      navigate(redirectTo)
     } catch (error) {
       console.log('>>>LOGIN.JSX', error)
       dispatch(loginFailure(error))
     }
   }
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/', { replace: true })
-    }
-
-  }, [navigate, isAuthenticated])
 
   return (
     <Row style={{ textAlign: 'center', margin: '3rem 0' }}>
@@ -104,7 +106,8 @@ function Login() {
           </Flex>
 
           <Form.Item style={{ marginBottom: '0.6rem' }}>
-            <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />} loading={isLoading} block>
+            <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />}
+                            loading={isLoading} block>
               Đăng nhập
             </GradientButton>
           </Form.Item>

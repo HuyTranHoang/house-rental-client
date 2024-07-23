@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import store from './store/store.js'
 import NotFound from './error/NotFound.jsx'
 import Profile from './features/profile/Profile.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route element={<AppLayout withSidebar={false} />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<ProtectedRoute location="/profile"><Profile /></ProtectedRoute>} />
           </Route>
 
           <Route element={<AppLayout withSidebar={true} />}>

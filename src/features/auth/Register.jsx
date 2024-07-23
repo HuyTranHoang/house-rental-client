@@ -1,17 +1,49 @@
-import { Button, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
-import { Link } from 'react-router-dom'
+import { Alert, Button, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
 import GradientButton from '../../components/GradientButton.jsx'
+import { useEffect, useState } from 'react'
+import axiosInstance from '../../interceptor/axiosInstance.js'
+import { toast } from 'sonner'
+import { useSelector } from 'react-redux'
+import { selectAuth } from './authSlice.js'
 
-const onFinish = (values) => {
-  console.log('Success submit:', values)
-}
 
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }
 
 function Register() {
+  const { isAuthenticated } = useSelector(selectAuth)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const redirectTo = location.state?.from || '/'
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirectTo)
+    }
+  }, [isAuthenticated, navigate, redirectTo])
+
+  const onFinish = async (values) => {
+    console.log('Success submit:', values)
+    setIsLoading(true)
+    setError(null)
+    try {
+      await axiosInstance.post('/api/auth/register', values)
+      toast.success('Đăng ký thành công')
+      navigate('/login')
+    } catch (error) {
+      console.log('>>>REGISTER.JSX ERROR', error)
+      setError(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+
   return (
     <Row style={{ textAlign: 'center', margin: '3rem 0' }}>
       <Col offset={8} md={8} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
@@ -26,6 +58,11 @@ function Register() {
           autoComplete="off"
           labelCol={{ span: 8 }}
         >
+
+          {error && <Form.Item>
+            <Alert message={error} type="error" showIcon />
+          </Form.Item>}
+
           <Flex gap="small" justify="space-between">
             <Form.Item
               name="lastName"
@@ -56,6 +93,14 @@ function Register() {
               {
                 required: true,
                 message: 'Vui lòng nhập tài khoản!'
+              },
+              {
+                min: 4,
+                message: 'Tài khoản phải có ít nhất 4 ký tự!'
+              },
+              {
+                max: 50,
+                message: 'Tài khoản không được quá 50 ký tự!'
               }
             ]}
           >
@@ -68,6 +113,10 @@ function Register() {
               {
                 required: true,
                 message: 'Vui lòng nhập mật khẩu!'
+              },
+              {
+                min: 6,
+                message: 'Mật khẩu phải có ít nhất 6 ký tự!'
               }
             ]}
           >
@@ -97,14 +146,18 @@ function Register() {
                 required: true,
                 message: 'Vui lòng nhập số điện thoại!'
               },
-
+              {
+                pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/),
+                message: 'Số điện thoại không hợp lệ!'
+              }
             ]}
           >
             <Input placeholder="Số điện thoại" prefix={<PhoneOutlined />} />
           </Form.Item>
 
           <Form.Item style={{ marginBottom: '0.6rem' }}>
-            <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />}  block>
+            <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />}
+                            loading={isLoading} block>
               Đăng ký
             </GradientButton>
           </Form.Item>
@@ -119,8 +172,6 @@ function Register() {
               </Button>
             </Link>
           </Form.Item>
-
-
         </Form>
       </Col>
     </Row>
