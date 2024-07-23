@@ -73,7 +73,7 @@ function ProfileLayout() {
 
   return (
     <Row>
-      <Col span={8}>
+      <Col span={6}>
         <Card style={{ width: 256, marginTop: '2rem', borderRadius: 0, borderLeft: 'none' }}>
           <Space wrap size={16}>
             <Avatar size={64} icon={<UserOutlined />} />
@@ -87,7 +87,7 @@ function ProfileLayout() {
           items={items}
         />
       </Col>
-      <Col span={16}>
+      <Col span={18}>
         <Outlet />
       </Col>
     </Row>
