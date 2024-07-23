@@ -1,6 +1,7 @@
 import { Button, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import { MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
+import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
+import GradientButton from '../../components/GradientButton.jsx'
 
 const onFinish = (values) => {
   console.log('Success submit:', values)
@@ -25,7 +26,7 @@ function Register() {
           autoComplete="off"
           labelCol={{ span: 8 }}
         >
-          <Flex gap="small">
+          <Flex gap="small" justify="space-between">
             <Form.Item
               name="lastName"
               rules={[
@@ -103,9 +104,9 @@ function Register() {
           </Form.Item>
 
           <Form.Item style={{ marginBottom: '0.6rem' }}>
-            <Button type="primary" htmlType="submit" block>
+            <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />}  block>
               Đăng ký
-            </Button>
+            </GradientButton>
           </Form.Item>
 
           <Form.Item style={{ display: 'inline' }}>

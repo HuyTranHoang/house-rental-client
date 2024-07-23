@@ -1,9 +1,9 @@
-import { Avatar, Button, Divider, Flex, Typography } from 'antd'
+import { Avatar, Button, Divider, Dropdown, Flex, message, Space, Typography } from 'antd'
 import ColorButton from '../components/ColorButton.jsx'
 import styled from 'styled-components'
-import { Link, NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectAuth } from '../features/auth/authSlice.js'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, selectAuth } from '../features/auth/authSlice.js'
 import { UserOutlined } from '@ant-design/icons'
 
 import './Navbar.scss'
@@ -21,9 +21,45 @@ const CustomTypography = styled(Typography.Text)`
     }
 `
 
+const items = [
+  {
+    key: '1',
+    label: (
+      <Link to={'/profile'}>
+        Thông tin tài khoản
+      </Link>
+    )
+  },
+  {
+    key: '2',
+    label: (
+      <Link to={'/profile/transaction-history'}>
+        Lịch sử giao dịch
+      </Link>
+    )
+  },
+  {
+    key: '3',
+    label: (
+      <Link to={'/profile/favorite'}>
+        Tìm kiếm đã lưu
+      </Link>
+    )
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'logout',
+    danger: true,
+    label: 'Đăng xuất'
+  }
+]
+
+
 const NavItem = ({ title, link }) => (
   <Button type="link">
-    <NavLink to={link}>
+    <NavLink to={link} component={<Button />}>
       <CustomTypography>
         {title}
       </CustomTypography>
@@ -34,6 +70,17 @@ const NavItem = ({ title, link }) => (
 
 function Navbar() {
   const { user } = useSelector(selectAuth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const onClick = ({ key }) => {
+    if (key === 'logout') {
+      dispatch(logout())
+      navigate('/')
+      message.success('Đăng xuất thành công')
+    }
+  };
+
 
   return (
     <>
@@ -60,12 +107,17 @@ function Navbar() {
             <NavItem title="Tin nhắn" link="/message" />
 
             <Divider type="vertical" style={{ height: '2rem' }} />
+
             <Button type="link">
-              <NavLink to={'/profile'}>
-                <Typography.Text style={{ fontSize: 16, fontWeight: '600' }}>
-                  {user.username}
-                </Typography.Text>
-              </NavLink>
+              <Dropdown menu={{ items, onClick }}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    <Typography.Text style={{ fontSize: 16, fontWeight: '600' }}>
+                      {user.username}
+                    </Typography.Text>
+                  </Space>
+                </a>
+              </Dropdown>
               <Avatar size={'small'} icon={<UserOutlined />} />
             </Button>
           </>

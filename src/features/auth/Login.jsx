@@ -1,11 +1,18 @@
-import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
-import { FacebookFilled, GoogleCircleFilled, LoginOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Checkbox, Col, ConfigProvider, Divider, Flex, Form, Input, Row, Typography } from 'antd'
+import {
+  AntDesignOutlined,
+  FacebookFilled,
+  GoogleCircleFilled,
+  UnlockOutlined,
+  UserOutlined
+} from '@ant-design/icons'
 import axiosInstance from '../../interceptor/axiosInstance.js'
 import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.js'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import GradientButton from '../../components/GradientButton.jsx'
 
 
 const onFinishFailed = (errorInfo) => {
@@ -16,6 +23,7 @@ function Login() {
   const { isAuthenticated, isLoading } = useSelector(selectAuth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
 
   const onFinish = async (values) => {
     console.log('Success submit:', values)
@@ -96,10 +104,9 @@ function Login() {
           </Flex>
 
           <Form.Item style={{ marginBottom: '0.6rem' }}>
-            <Button type="primary" htmlType="submit" icon={<LoginOutlined />} iconPosition={'end'} loading={isLoading}
-                    block>
+            <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />} loading={isLoading} block>
               Đăng nhập
-            </Button>
+            </GradientButton>
           </Form.Item>
 
           <Form.Item style={{ display: 'inline' }}>
