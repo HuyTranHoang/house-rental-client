@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
+import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Spin, Typography } from 'antd'
 import {
   AntDesignOutlined,
   FacebookFilled,
@@ -12,7 +12,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.js'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import GradientButton from '../../components/GradientButton.jsx'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import Spinner from '../../components/Spinner.jsx'
 
 
 const onFinishFailed = (errorInfo) => {
@@ -23,12 +24,20 @@ function Login() {
   const { isAuthenticated, isLoading } = useSelector(selectAuth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const location = useLocation();
+  const location = useLocation()
   const redirectTo = location.state?.from || '/'
+
+  const [spinning, setSpinning] = useState(true)
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(redirectTo)
+      setTimeout(() => {
+        navigate(redirectTo)
+      }, 300)
+    } else {
+      setTimeout(() => {
+        setSpinning(false)
+      }, 300)
     }
   }, [isAuthenticated, navigate, redirectTo])
 
@@ -52,6 +61,10 @@ function Login() {
       console.log('>>>LOGIN.JSX', error)
       dispatch(loginFailure(error))
     }
+  }
+
+  if (isAuthenticated) {
+    return <Spinner spinning={spinning} />
   }
 
   return (

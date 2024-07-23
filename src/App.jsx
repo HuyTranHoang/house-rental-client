@@ -8,42 +8,55 @@ import { Toaster } from 'sonner'
 import NotFound from './error/NotFound.jsx'
 import Profile from './features/profile/Profile.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import axiosInstance from './interceptor/axiosInstance.js'
 import { loginFailure, loginSuccess } from './features/auth/authSlice.js'
 import ServerError from './error/ServerError.jsx'
+import { Spin } from 'antd'
+import Spinner from './components/Spinner.jsx'
+
+
 
 function App() {
   const dispatch = useDispatch()
+  const [spinning, setSpinning] = useState(true)
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken')
-
     if (token) {
       axiosInstance.get('/api/auth/refresh-token', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       }).then(response => {
-
         console.log('>>>APP.JSX', response)
-
         const payload = {
           user: response.data,
           token: response.headers['jwt-token']
         }
-
         dispatch(loginSuccess(payload))
       }).catch(error => {
         console.log('>>>APP.JSX', error)
         dispatch(loginFailure(error))
         localStorage.removeItem('jwtToken')
+      }).finally(() => {
+        setTimeout(() => {
+          setSpinning(false)
+        }, 500)
       })
+    } else {
+      setTimeout(() => {
+        setSpinning(false)
+      }, 500)
     }
 
     console.log('>>>APP.JSX', 'App is mounted')
   }, [dispatch])
+
+  if (spinning) {
+    return <Spinner spinning={spinning} />
+  }
 
   return (
     <BrowserRouter>

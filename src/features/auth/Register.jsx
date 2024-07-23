@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Divider, Flex, Form, Input, Row, Typography } from 'antd'
+import { Alert, Button, Col, Divider, Flex, Form, Input, Row, Spin, Typography } from 'antd'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
 import GradientButton from '../../components/GradientButton.jsx'
@@ -7,6 +7,7 @@ import axiosInstance from '../../interceptor/axiosInstance.js'
 import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
 import { selectAuth } from './authSlice.js'
+import Spinner from '../../components/Spinner.jsx'
 
 
 const onFinishFailed = (errorInfo) => {
@@ -21,9 +22,17 @@ function Register() {
   const location = useLocation()
   const redirectTo = location.state?.from || '/'
 
+  const [spinning, setSpinning] = useState(true)
+
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(redirectTo)
+      setTimeout(() => {
+        navigate(redirectTo)
+      }, 300)
+    } else {
+      setTimeout(() => {
+        setSpinning(false)
+      }, 300)
     }
   }, [isAuthenticated, navigate, redirectTo])
 
@@ -43,6 +52,9 @@ function Register() {
     }
   }
 
+  if (isAuthenticated) {
+    return <Spinner spinning={spinning} />
+  }
 
   return (
     <Row style={{ textAlign: 'center', margin: '3rem 0' }}>
