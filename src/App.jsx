@@ -15,7 +15,10 @@ import { loginFailure, loginSuccess } from './features/auth/authSlice.js'
 import ServerError from './error/ServerError.jsx'
 import { Spin } from 'antd'
 import Spinner from './components/Spinner.jsx'
-
+import ProfileLayout from './ui/ProfileLayout.jsx'
+import ChangePassword from './features/profile/ChangePassword.jsx'
+import TransactionHistory from './features/profile/TransactionHistory.jsx'
+import Favorite from './features/profile/Favorite.jsx'
 
 
 function App() {
@@ -65,7 +68,15 @@ function App() {
         <Route element={<AppLayout withSidebar={false} />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="profile" element={<ProtectedRoute location="/profile"><Profile /></ProtectedRoute>} />
+          <Route path="profile" element={<ProfileLayout />}>
+            <Route index element={<ProtectedRoute location="/profile"><Profile /></ProtectedRoute>} />
+            <Route path="change-password"
+                   element={<ProtectedRoute location="/profile/change-password"><ChangePassword /></ProtectedRoute>} />
+            <Route path="transaction-history"
+                   element={<ProtectedRoute location="/profile/transaction-history"><TransactionHistory /></ProtectedRoute>} />
+            <Route path="favorite"
+                   element={<ProtectedRoute location="/profile/favorite"><Favorite /></ProtectedRoute>} />
+          </Route>
         </Route>
 
         <Route element={<AppLayout withSidebar={true} />}>

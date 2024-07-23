@@ -1,10 +1,11 @@
-import { Avatar, Button, Divider, Dropdown, Flex, message, Space, Typography } from 'antd'
+import { Avatar, Button, Divider, Dropdown, Flex, Space, Typography } from 'antd'
 import ColorButton from '../components/ColorButton.jsx'
 import styled from 'styled-components'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, selectAuth } from '../features/auth/authSlice.js'
 import { UserOutlined } from '@ant-design/icons'
+import { toast } from 'sonner'
 
 import './Navbar.scss'
 
@@ -17,7 +18,7 @@ const CustomTypography = styled(Typography.Text)`
     font-size: 16px;
 
     &:hover {
-        color: #0499A8;
+        color: #4096ff;
     }
 `
 
@@ -26,7 +27,7 @@ const items = [
     key: '1',
     label: (
       <Link to={'/profile'}>
-        Thông tin tài khoản
+        Thông tin cá nhân
       </Link>
     )
   },
@@ -42,7 +43,7 @@ const items = [
     key: '3',
     label: (
       <Link to={'/profile/favorite'}>
-        Tìm kiếm đã lưu
+        Bất động sản yêu thích
       </Link>
     )
   },
@@ -78,7 +79,7 @@ function Navbar() {
       localStorage.removeItem('jwtToken')
       dispatch(logout())
       navigate('/')
-      message.success('Đăng xuất thành công')
+      toast.success('Đăng xuất thành công')
     }
   };
 
@@ -116,17 +117,17 @@ function Navbar() {
                     <Typography.Text style={{ fontSize: 16, fontWeight: '600' }}>
                       {user.username}
                     </Typography.Text>
+                    <Avatar size={'small'} icon={<UserOutlined />} />
                   </Space>
                 </a>
               </Dropdown>
-              <Avatar size={'small'} icon={<UserOutlined />} />
             </Button>
           </>
         )}
 
         {!user && <NavItem title="Đăng nhập" link="login" />}
 
-        <ColorButton defaultHover="#0499A8" borderColor="#0499A8" borderHoverColor="#0499A8"
+        <ColorButton defaultHover="#4096ff" borderColor="#4096ff" borderHoverColor="#4096ff"
                      lineWidth={1} fontWeight={500} type="default" style={{ marginLeft: 15 }}>
           Đăng Tin
         </ColorButton>
