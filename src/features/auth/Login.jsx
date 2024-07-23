@@ -45,6 +45,7 @@ function Login() {
         token: response.headers['jwt-token']
       }
 
+      localStorage.setItem('jwtToken', payload.token)
       dispatch(loginSuccess(payload))
       navigate(redirectTo)
     } catch (error) {

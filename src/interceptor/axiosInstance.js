@@ -22,6 +22,10 @@ axiosInstance.interceptors.response.use(response => response,
           toast.error('Sai tài khoản hoặc mật khẩu')
           break;
         }
+        if (error.response.data.message.contains('HmacSHA512')) {
+          break;
+        }
+
         window.location.href = '/server-error'
         break
       default:

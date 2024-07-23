@@ -75,6 +75,7 @@ function Navbar() {
 
   const onClick = ({ key }) => {
     if (key === 'logout') {
+      localStorage.removeItem('jwtToken')
       dispatch(logout())
       navigate('/')
       message.success('Đăng xuất thành công')
