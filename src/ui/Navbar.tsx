@@ -98,7 +98,7 @@ function Navbar() {
         />
       </Link>
       <Flex gap="small" wrap>
-        <NavItem title="Tìm thuê" link="/looking-to-rent" />
+        <NavItem title="Tìm thuê" link="/rent-house" />
 
         <NavItem title="Phí thành viên" link="/membership-fee" />
 

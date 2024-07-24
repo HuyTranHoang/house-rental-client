@@ -7,6 +7,7 @@ import { Row, Col } from 'antd'
 import Navbar from './Navbar.tsx'
 import { Outlet } from 'react-router-dom'
 import React from 'react'
+import RentHouseFilter from '../features/rent-house/RentHouseFilter.tsx'
 
 const headerStyle: React.CSSProperties = {
   display: 'flex',
@@ -31,9 +32,10 @@ const footerStyle: React.CSSProperties = {
 
 interface AppLayoutProps {
   withSidebar: boolean
+  withFilter: boolean
 }
 
-function AppLayout({ withSidebar }: AppLayoutProps) {
+function AppLayout({ withSidebar, withFilter }: AppLayoutProps) {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={headerStyle}>
@@ -45,13 +47,20 @@ function AppLayout({ withSidebar }: AppLayoutProps) {
           <Col xs={22} sm={20} md={14}>
             <Layout>
               <Content>
-                <Outlet />
+                {withFilter && <RentHouseFilter />}
+                <Row>
+                  <Layout>
+                    <Content>
+                      <Outlet />
+                    </Content>
+                    {withSidebar && (
+                      <Sider width="25%" style={siderStyle}>
+                        Sider
+                      </Sider>
+                    )}
+                  </Layout>
+                </Row>
               </Content>
-              {withSidebar && (
-                <Sider width="25%" style={siderStyle}>
-                  Sider
-                </Sider>
-              )}
             </Layout>
           </Col>
           <Col xs={1} sm={2} md={5}></Col>

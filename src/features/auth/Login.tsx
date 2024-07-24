@@ -23,7 +23,6 @@ type FieldType = {
   password: string
 }
 
-
 const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }

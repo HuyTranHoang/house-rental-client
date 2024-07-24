@@ -19,6 +19,7 @@ import Home from './pages/Home.tsx'
 import Contact from './pages/Contact.tsx'
 import ServerError from './error/ServerError.tsx'
 import NotFound from './error/NotFound.tsx'
+import RentHouse from './features/rent-house/RentHouse.tsx'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -64,7 +65,7 @@ function App() {
     <BrowserRouter>
       <Toaster richColors={true} />
       <Routes>
-        <Route element={<AppLayout withSidebar={false} />}>
+        <Route element={<AppLayout withSidebar={false}  withFilter={false}/>}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<ProfileLayout />}>
@@ -72,14 +73,22 @@ function App() {
             <Route path="change-password"
                    element={<ProtectedRoute location="/profile/change-password"><ChangePassword /></ProtectedRoute>} />
             <Route path="transaction-history"
-                   element={<ProtectedRoute location="/profile/transaction-history"><TransactionHistory /></ProtectedRoute>} />
+                   element={<ProtectedRoute
+                     location="/profile/transaction-history"><TransactionHistory /></ProtectedRoute>} />
             <Route path="favorite"
                    element={<ProtectedRoute location="/profile/favorite"><Favorite /></ProtectedRoute>} />
           </Route>
         </Route>
 
-        <Route element={<AppLayout withSidebar={true} />}>
+        <Route element={<AppLayout withSidebar withFilter/>}>
+          <Route path="rent-house" element={<RentHouse />} />
+
+        </Route>
+
+        <Route element={<AppLayout withSidebar withFilter={false}/>}>
           <Route index element={<Home />} />
+          <Route path="home" element={<Home />} />
+          <Route path="rent-house" element={<RentHouse />} />
           <Route path="contact" element={<Contact />} />
           <Route path="about" element={<div>About</div>} />
           <Route path="server-error" element={<ServerError />} />
