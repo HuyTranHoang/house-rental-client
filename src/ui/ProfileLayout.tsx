@@ -1,20 +1,22 @@
-import { Avatar, Card, Col, Menu, MenuProps, Row, Space } from 'antd'
+import { Avatar, Breadcrumb, Card, Col, Menu, MenuProps, Row, Space } from 'antd'
 import {
+  HomeOutlined,
   IdcardOutlined,
   LockOutlined,
   LogoutOutlined,
   ReadOutlined,
   StarOutlined, UserOutlined
 } from '@ant-design/icons'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, selectAuth } from '../features/auth/authSlice.js'
 import { toast } from 'sonner'
+import { selectMenu, selectProfile } from '../features/profile/profileSlice.ts'
 
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-const items:  MenuItem[] = [
+const items: MenuItem[] = [
   {
     key: 'favorite',
     label: 'Bất động sản yêu thích',
@@ -53,11 +55,7 @@ function ProfileLayout() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector(selectAuth)
-
-  const location = useLocation()
-  const currentPath = location.pathname
-  const selectedKeys = [currentPath.split('/').pop()][0] === 'profile' ? ['thongTinCaNhan'] : [currentPath.split('/').pop()]
-
+  const { currentSelectMenu } = useSelector(selectProfile)
 
   const onClick = ({ key }: { key: string }) => {
     switch (key) {
@@ -68,17 +66,34 @@ function ProfileLayout() {
         toast.success('Đăng xuất thành công')
         break
       case 'thongTinCaNhan':
+        dispatch(selectMenu(['thongTinCaNhan']))
         navigate('/profile')
         break
       default:
+        dispatch(selectMenu([key]))
         navigate(`/profile/${key}`)
     }
   }
 
   return (
     <Row>
+      <Col span={24}>
+        <Breadcrumb
+          style={{ marginTop: '2rem', marginBottom: '1rem' }}
+          separator=">"
+          items={[
+            {
+              title: <Link to="/"><HomeOutlined /> Mogu</Link>
+            },
+            {
+              title: <Link to="/profile" onClick={() => dispatch(selectMenu(['thongTinCaNhan']))}>
+                Thông tin cá nhân</Link>
+            }
+          ]}
+        />
+      </Col>
       <Col span={6}>
-        <Card style={{ width: 256, marginTop: '2rem', borderRadius: 0, borderLeft: 'none' }}>
+        <Card style={{ width: 256, borderRadius: 0, borderLeft: 'none' }}>
           <Space wrap size={16}>
             <Avatar size={64} icon={<UserOutlined />} />
             <Space direction="vertical">
@@ -92,7 +107,7 @@ function ProfileLayout() {
         <Menu
           onClick={onClick}
           style={{ width: 256, marginBottom: '3rem' }}
-          defaultSelectedKeys={selectedKeys as string[]}
+          selectedKeys={currentSelectMenu}
           mode="inline"
           items={items}
         />

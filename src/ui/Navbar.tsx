@@ -2,12 +2,14 @@ import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography }
 import ColorButton from '../components/ColorButton.jsx'
 import styled from 'styled-components'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { logout, selectAuth } from '../features/auth/authSlice.js'
 import { UserOutlined } from '@ant-design/icons'
 import { toast } from 'sonner'
 
 import './Navbar.scss'
+import { useAppDispatch } from '../store.ts'
+import { selectMenu } from '../features/profile/profileSlice.ts'
 
 const CustomImg = styled.img`
     width: 100px;
@@ -21,42 +23,6 @@ const CustomTypography = styled(Typography.Text)`
         color: #4096ff;
     }
 `
-
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: (
-      <Link to={'/profile'}>
-        Thông tin cá nhân
-      </Link>
-    )
-  },
-  {
-    key: '2',
-    label: (
-      <Link to={'/profile/transaction-history'}>
-        Lịch sử giao dịch
-      </Link>
-    )
-  },
-  {
-    key: '3',
-    label: (
-      <Link to={'/profile/favorite'}>
-        Bất động sản yêu thích
-      </Link>
-    )
-  },
-  {
-    type: 'divider'
-  },
-  {
-    key: 'logout',
-    danger: true,
-    label: 'Đăng xuất'
-  }
-]
-
 
 interface NavItemProps {
   title: string
@@ -76,8 +42,44 @@ const NavItem = ({ title, link }: NavItemProps) => (
 
 function Navbar() {
   const { user } = useSelector(selectAuth)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <Link to={'/profile'} onClick={() => dispatch(selectMenu(['thongTinCaNhan']))}>
+          Thông tin cá nhân
+        </Link>
+      )
+    },
+    {
+      key: '2',
+      label: (
+        <Link to={'/profile/transaction-history'} onClick={() => dispatch(selectMenu(['transaction-history']))}>
+          Lịch sử giao dịch
+        </Link>
+      )
+    },
+    {
+      key: '3',
+      label: (
+        <Link to={'/profile/favorite'} onClick={() => dispatch(selectMenu(['favorite']))}>
+          Bất động sản yêu thích
+        </Link>
+      )
+    },
+    {
+      type: 'divider'
+    },
+    {
+      key: 'logout',
+      danger: true,
+      label: 'Đăng xuất'
+    }
+  ]
 
   const onClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
