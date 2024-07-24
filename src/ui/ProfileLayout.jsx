@@ -7,8 +7,8 @@ import {
   StarOutlined, UserOutlined
 } from '@ant-design/icons'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { logout } from '../features/auth/authSlice.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, selectAuth } from '../features/auth/authSlice.js'
 import { toast } from 'sonner'
 
 
@@ -50,6 +50,7 @@ const items = [
 function ProfileLayout() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { user } = useSelector(selectAuth)
 
   const location = useLocation()
   const currentPath = location.pathname
@@ -77,6 +78,12 @@ function ProfileLayout() {
         <Card style={{ width: 256, marginTop: '2rem', borderRadius: 0, borderLeft: 'none' }}>
           <Space wrap size={16}>
             <Avatar size={64} icon={<UserOutlined />} />
+            <Space direction="vertical">
+              <div>{user.lastName} {user.firstName}</div>
+              <div>
+                <a href="/profile">Xem trang cá nhân</a>
+              </div>
+            </Space>
           </Space>
         </Card>
         <Menu

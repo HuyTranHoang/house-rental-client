@@ -15,14 +15,14 @@ function ChangePassword() {
   const [isLoading, setIsLoading] = useState(false)
 
   return (
-    <Card style={{ width: 512, marginTop: '2rem', marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
+    <Card style={{ width: 768, marginTop: '2rem', marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
       <Form
         name="changePassword"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         initialValues={{ remember: true }}
         autoComplete="off"
-        labelCol={{ span: 10 }}
+        labelCol={{ span: 6 }}
       >
 
         {error && <Form.Item>

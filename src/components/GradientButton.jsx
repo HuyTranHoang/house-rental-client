@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { Button, ConfigProvider } from 'antd'
 import { css } from '@emotion/css'
-import { AntDesignOutlined } from '@ant-design/icons'
 
 function GradientButton({ children, ...props }) {
   const { getPrefixCls } = useContext(ConfigProvider.ConfigContext)

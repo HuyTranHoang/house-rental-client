@@ -19,7 +19,7 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(false)
 
   return (
-    <Card style={{ width: 512, marginTop: '2rem', marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
+    <Card style={{ width: 768, marginTop: '2rem', marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
       <Space size={32}>
         <Avatar size={64} icon={<UserOutlined />} />
         <Button type="primary" icon={<UploadOutlined />}>Tải ảnh lên</Button>
