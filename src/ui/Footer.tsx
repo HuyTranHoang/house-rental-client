@@ -2,7 +2,7 @@
 import { FacebookFilled, MailOutlined, PhoneOutlined, YoutubeFilled } from '@ant-design/icons'
 import styled from 'styled-components'
 
-const { Text, Link } = Typography
+const { Link } = Typography
 
 const CustomText = styled(Typography.Text)`
     font-size: 12px;
@@ -14,18 +14,25 @@ const CustomImg = styled.img`
     height: 31px;
 `
 
-const FooterItem = ({ title, items }) => (
-  <Col md={6}>
-    <ul style={{ listStyleType: 'none' }}>
-      <li><Text level={5} strong>{title}</Text></li>
-      {items.map((item, index) => (
-        <li key={index}>
-          <CustomText>{item}</CustomText>
-        </li>
-      ))}
-    </ul>
-  </Col>
-)
+interface FooterItemProps {
+  title: string
+  items: string[]
+}
+
+function FooterItem({ title, items }: FooterItemProps) {
+  return (
+    <Col md={6}>
+      <Typography.Title level={5}>{title}</Typography.Title>
+      <ul style={{ listStyleType: 'none', padding: 0 }}>
+        {items.map((item, index) => (
+          <li key={index}>
+            <CustomText>{item}</CustomText>
+          </li>
+        ))}
+      </ul>
+    </Col>
+  )
+}
 
 function Footer() {
   return (
@@ -39,20 +46,20 @@ function Footer() {
                 <CustomImg src="/logo.png" alt="Logo" />
               </li>
               <li>
-                <span><PhoneOutlined style={{fontSize: '16px'}} /> (012) 123456789</span>
+                <span><PhoneOutlined style={{ fontSize: '16px' }} /> (012) 123456789</span>
               </li>
               <li>
-                <span><MailOutlined style={{fontSize: '16px'}} /> trogiup@mogu.vn</span>
+                <span><MailOutlined style={{ fontSize: '16px' }} /> trogiup@mogu.vn</span>
               </li>
             </ul>
 
             <div>
-              <FacebookFilled style={{color: '#2667F9', fontSize: '1.6rem', marginRight: '0.8rem'}} />
-              <YoutubeFilled style={{color: 'red', fontSize: '1.6rem'}}/>
+              <FacebookFilled style={{ color: '#2667F9', fontSize: '1.6rem', marginRight: '0.8rem' }} />
+              <YoutubeFilled style={{ color: 'red', fontSize: '1.6rem' }} />
             </div>
 
             <div>
-              <Typography.Title level={5} strong>CÔNG TY CỔ PHẦN MOGU</Typography.Title>
+              <Typography.Title level={5}>CÔNG TY CỔ PHẦN MOGU</Typography.Title>
 
               <p style={{ color: '#745E5E' }}>
                 Trụ sở chính: Quận Bình Thạnh, TP. Hồ Chí Minh<br />
@@ -66,7 +73,8 @@ function Footer() {
               </Link>
 
               <p style={{ color: '#745E5E' }}>
-                House-rental có trách nhiệm chuyển tải thông tin. Chúng tôi không chịu bất kỳ trách nhiệm nào từ các tin này.
+                House-rental có trách nhiệm chuyển tải thông tin. Chúng tôi không chịu bất kỳ trách nhiệm nào từ các tin
+                này.
               </p>
             </div>
           </Col>

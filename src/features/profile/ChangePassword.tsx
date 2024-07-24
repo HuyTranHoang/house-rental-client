@@ -1,18 +1,25 @@
-import { Alert, Card, Form, Input } from 'antd'
+import { Alert, Card, Form, FormProps, Input } from 'antd'
 import { AntDesignOutlined } from '@ant-design/icons'
 import GradientButton from '../../components/GradientButton.jsx'
 import { useState } from 'react'
 
-const onFinish = (values) => {
+
+type FieldType = {
+  password: string
+  newPassword: string
+  confirmPassword: string
+}
+const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
   console.log('Success:', values)
 }
-const onFinishFailed = (errorInfo) => {
+
+const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }
 
 function ChangePassword() {
-  const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [error] = useState<undefined | string>(undefined)
+  const [isLoading] = useState(false)
 
   return (
     <Card style={{ width: 768, marginTop: '2rem', marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
@@ -65,7 +72,7 @@ function ChangePassword() {
 
         <Form.Item
           label="Nhập lại mật khẩu mới"
-          name="newPassword"
+          name="confirmPassword"
           rules={[
             {
               required: true,

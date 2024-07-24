@@ -1,4 +1,4 @@
-import { Avatar, Card, Col, Menu, Row, Space } from 'antd'
+import { Avatar, Card, Col, Menu, MenuProps, Row, Space } from 'antd'
 import {
   IdcardOutlined,
   LockOutlined,
@@ -12,7 +12,9 @@ import { logout, selectAuth } from '../features/auth/authSlice.js'
 import { toast } from 'sonner'
 
 
-const items = [
+type MenuItem = Required<MenuProps>['items'][number];
+
+const items:  MenuItem[] = [
   {
     key: 'favorite',
     label: 'Bất động sản yêu thích',
@@ -54,9 +56,10 @@ function ProfileLayout() {
 
   const location = useLocation()
   const currentPath = location.pathname
-  const defaultSelectedKeys = [currentPath.split('/').pop()][0] === 'profile' ? ['thongTinCaNhan'] : [currentPath.split('/').pop()]
+  const selectedKeys = [currentPath.split('/').pop()][0] === 'profile' ? ['thongTinCaNhan'] : [currentPath.split('/').pop()]
 
-  const onClick = ({ key }) => {
+
+  const onClick = ({ key }: { key: string }) => {
     switch (key) {
       case 'dangXuat':
         localStorage.removeItem('jwtToken')
@@ -79,7 +82,7 @@ function ProfileLayout() {
           <Space wrap size={16}>
             <Avatar size={64} icon={<UserOutlined />} />
             <Space direction="vertical">
-              <div>{user.lastName} {user.firstName}</div>
+              <div>{user!.lastName} {user!.firstName}</div>
               <div>
                 <a href="/profile">Xem trang cá nhân</a>
               </div>
@@ -89,7 +92,7 @@ function ProfileLayout() {
         <Menu
           onClick={onClick}
           style={{ width: 256, marginBottom: '3rem' }}
-          defaultSelectedKeys={defaultSelectedKeys}
+          defaultSelectedKeys={selectedKeys as string[]}
           mode="inline"
           items={items}
         />

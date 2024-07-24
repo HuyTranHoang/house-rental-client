@@ -1,13 +1,14 @@
 import { Layout } from 'antd'
 
-import MyFooter from './Footer.jsx'
+import MyFooter from './Footer.tsx'
 
 const { Header, Footer, Sider, Content } = Layout
 import { Row, Col } from 'antd'
-import Navbar from './Navbar.jsx'
+import Navbar from './Navbar.tsx'
 import { Outlet } from 'react-router-dom'
+import React from 'react'
 
-const headerStyle = {
+const headerStyle: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -17,18 +18,22 @@ const headerStyle = {
   backgroundColor: '#FFFFFF'
 }
 
-const siderStyle = {
+const siderStyle: React.CSSProperties = {
   textAlign: 'center',
   lineHeight: '120px',
   color: '#fff',
   backgroundColor: '#1677ff'
 }
 
-const footerStyle = {
+const footerStyle: React.CSSProperties = {
   backgroundColor: '#E9E9E9'
 }
 
-function AppLayout({ withSidebar }) {
+interface AppLayoutProps {
+  withSidebar: boolean
+}
+
+function AppLayout({ withSidebar }: AppLayoutProps) {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={headerStyle}>

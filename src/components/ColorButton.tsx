@@ -1,4 +1,16 @@
-import { Button, ConfigProvider } from 'antd'
+import { Button, ConfigProvider, type GetProps } from 'antd'
+
+interface configButton {
+  linkHover?: string
+  fontWeight?: string
+  borderHoverColor?: string
+  defaultHover?: string
+  borderColor?: string
+  defaultText?: string
+  lineWidth?: number
+}
+
+type ColorButtonProps = GetProps<typeof Button> & configButton
 
 function ColorButton({
                        linkHover,
@@ -6,11 +18,10 @@ function ColorButton({
                        borderHoverColor,
                        defaultHover,
                        borderColor,
-                       defaultText,
                        lineWidth,
                        children,
                        ...props
-                     }) {
+                     }: ColorButtonProps) {
   return (
     <ConfigProvider
       theme={{
@@ -18,7 +29,6 @@ function ColorButton({
           Button: {
             //Default
             fontWeight: fontWeight || undefined,
-            colorDefaultText: defaultText || 'black',
             defaultBorderColor: borderColor || 'black',
             defaultHoverColor: defaultHover || 'black',
             defaultHoverBorderColor: borderHoverColor || 'black',

@@ -10,7 +10,7 @@ axiosInstance.interceptors.response.use(response => response,
     switch (error.response?.status) {
       case 400:
         if (error.response?.data.message) {
-          throw error.response?.data.message.split('; ').filter((message) => message !== '')
+          throw error.response?.data.message.split('; ').filter((message: string) => message !== '')
         }
         toast.error(error.response?.data.message)
         break
@@ -20,10 +20,10 @@ axiosInstance.interceptors.response.use(response => response,
       case 500:
         if (error.response.data.message === 'Bad credentials') {
           toast.error('Sai tài khoản hoặc mật khẩu')
-          break;
+          break
         }
         if (error.response.data.message.contains('HmacSHA512')) {
-          break;
+          break
         }
 
         window.location.href = '/server-error'

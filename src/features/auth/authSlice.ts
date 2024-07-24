@@ -1,11 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { IRootState } from '../../store.ts'
+import { User } from '../../models/user.type.ts'
 
-const initialState = {
+
+interface IAuthState {
+  user: User | null
+  token: string | null
+  isAuthenticated: boolean
+  isLoading: boolean
+}
+
+const initialState: IAuthState = {
   user: null,
   token: null,
   isAuthenticated: false,
-  isLoading: false,
-  error: null,
+  isLoading: false
 }
 
 const authSlice = createSlice({
@@ -21,9 +30,8 @@ const authSlice = createSlice({
       state.user = action.payload.user
       state.token = action.payload.token
     },
-    loginFailure: (state, action) => {
+    loginFailure: (state) => {
       state.isLoading = false
-      state.error = action.payload
     },
     logout: (state) => {
       state.isAuthenticated = false
@@ -36,4 +44,4 @@ const authSlice = createSlice({
 export const { loginRequest, loginSuccess, loginFailure, logout } = authSlice.actions
 export default authSlice.reducer
 
-export const selectAuth = (state) => state.auth
+export const selectAuth = (state: IRootState) => state.auth

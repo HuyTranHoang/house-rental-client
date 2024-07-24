@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Dropdown, Flex, Space, Typography } from 'antd'
+import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
 import ColorButton from '../components/ColorButton.jsx'
 import styled from 'styled-components'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
@@ -22,7 +22,7 @@ const CustomTypography = styled(Typography.Text)`
     }
 `
 
-const items = [
+const items: MenuProps['items'] = [
   {
     key: '1',
     label: (
@@ -48,7 +48,7 @@ const items = [
     )
   },
   {
-    type: 'divider',
+    type: 'divider'
   },
   {
     key: 'logout',
@@ -58,9 +58,14 @@ const items = [
 ]
 
 
-const NavItem = ({ title, link }) => (
+interface NavItemProps {
+  title: string
+  link: string
+}
+
+const NavItem = ({ title, link }: NavItemProps) => (
   <Button type="link">
-    <NavLink to={link} component={<Button />}>
+    <NavLink to={link}>
       <CustomTypography>
         {title}
       </CustomTypography>
@@ -74,14 +79,14 @@ function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const onClick = ({ key }) => {
+  const onClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
       localStorage.removeItem('jwtToken')
       dispatch(logout())
       navigate('/')
       toast.success('Đăng xuất thành công')
     }
-  };
+  }
 
 
   return (
@@ -128,7 +133,7 @@ function Navbar() {
         {!user && <NavItem title="Đăng nhập" link="login" />}
 
         <ColorButton defaultHover="#4096ff" borderColor="#4096ff" borderHoverColor="#4096ff"
-                     lineWidth={1} fontWeight={500} type="default" style={{ marginLeft: 15 }}>
+                     lineWidth={1} fontWeight={'500'} type="default" style={{ marginLeft: 15 }}>
           Đăng Tin
         </ColorButton>
       </Flex>

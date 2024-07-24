@@ -1,23 +1,31 @@
-import { Alert, Button, Col, Divider, Flex, Form, Input, Row, Spin, Typography } from 'antd'
+import { Alert, Button, Col, Divider, Flex, Form, FormProps, Input, Row, Typography } from 'antd'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
 import GradientButton from '../../components/GradientButton.jsx'
 import { useEffect, useState } from 'react'
-import axiosInstance from '../../interceptor/axiosInstance.js'
 import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
-import { selectAuth } from './authSlice.js'
+import { selectAuth } from './authSlice.ts'
 import Spinner from '../../components/Spinner.jsx'
+import axiosInstance from '../../inteceptor/axiosInstance.ts'
 
+type FieldType = {
+  lastName: string
+  firstName: string
+  username: string
+  password: string
+  email: string
+  phoneNumber: string
+}
 
-const onFinishFailed = (errorInfo) => {
+const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }
 
 function Register() {
   const { isAuthenticated } = useSelector(selectAuth)
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = location.state?.from || '/'
@@ -36,17 +44,17 @@ function Register() {
     }
   }, [isAuthenticated, navigate, redirectTo])
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: FieldType) => {
     console.log('Success submit:', values)
     setIsLoading(true)
-    setError(null)
+    setError(undefined)
     try {
       await axiosInstance.post('/api/auth/register', values)
       toast.success('Đăng ký thành công')
       navigate('/login')
     } catch (error) {
       console.log('>>>REGISTER.JSX ERROR', error)
-      setError(error)
+      setError(error as string)
     } finally {
       setIsLoading(false)
     }

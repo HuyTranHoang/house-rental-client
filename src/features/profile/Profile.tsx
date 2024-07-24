@@ -1,4 +1,4 @@
-import { Alert, Avatar, Button, Card, Divider, Form, Input, Space } from 'antd'
+import { Alert, Avatar, Button, Card, Divider, Form, FormProps, Input, Space } from 'antd'
 import {
   AntDesignOutlined,
   UploadOutlined,
@@ -7,16 +7,25 @@ import {
 import GradientButton from '../../components/GradientButton.jsx'
 import { useState } from 'react'
 
-const onFinish = (values) => {
-  console.log('Success:', values)
-}
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo)
+type FieldType = {
+  lastName: string
+  firstName: string
+  email: string
+  phoneNumber: string
 }
 
+const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+  console.log('Success:', values);
+};
+
+const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+
+
 function Profile() {
-  const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [error] = useState(null)
+  const [isLoading] = useState(false)
 
   return (
     <Card style={{ width: 768, marginTop: '2rem', marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>

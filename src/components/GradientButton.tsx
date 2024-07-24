@@ -1,8 +1,12 @@
 import { useContext } from 'react'
 import { Button, ConfigProvider } from 'antd'
 import { css } from '@emotion/css'
+import type { GetProps } from 'antd';
 
-function GradientButton({ children, ...props }) {
+
+type GradientButton = GetProps<typeof Button>
+
+function GradientButton({ children, ...props } : GradientButton) {
   const { getPrefixCls } = useContext(ConfigProvider.ConfigContext)
   const rootPrefixCls = getPrefixCls()
   const linearGradientButton = css`

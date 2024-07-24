@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Spin, Typography } from 'antd'
+import { Button, Checkbox, Col, Divider, Flex, Form, FormProps, Input, Row, Typography } from 'antd'
 import {
   AntDesignOutlined,
   FacebookFilled,
@@ -6,23 +6,31 @@ import {
   UnlockOutlined,
   UserOutlined
 } from '@ant-design/icons'
-import axiosInstance from '../../interceptor/axiosInstance.js'
 import { toast } from 'sonner'
-import { useDispatch, useSelector } from 'react-redux'
-import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.js'
+import { useSelector } from 'react-redux'
+import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.ts'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import GradientButton from '../../components/GradientButton.jsx'
 import { useEffect, useState } from 'react'
 import Spinner from '../../components/Spinner.jsx'
+import axiosInstance from '../../inteceptor/axiosInstance.ts'
+import { User } from '../../models/user.type.ts'
+import { useAppDispatch } from '../../store.ts'
 
 
-const onFinishFailed = (errorInfo) => {
+type FieldType = {
+  username: string
+  password: string
+}
+
+
+const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }
 
 function Login() {
   const { isAuthenticated, isLoading } = useSelector(selectAuth)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = location.state?.from || '/'
@@ -41,15 +49,15 @@ function Login() {
     }
   }, [isAuthenticated, navigate, redirectTo])
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: FieldType) => {
     console.log('Success submit:', values)
     try {
       dispatch(loginRequest())
-      const response = await axiosInstance.post('/api/auth/login', values)
+      const response = await axiosInstance.post<User>('/api/auth/login', values)
       console.log('>>>LOGIN.JSX', response)
       toast.success('Đăng nhập thành công')
 
-      const payload = {
+      const payload: {user: User, token: string} = {
         user: response.data,
         token: response.headers['jwt-token']
       }
@@ -59,7 +67,7 @@ function Login() {
       navigate(redirectTo)
     } catch (error) {
       console.log('>>>LOGIN.JSX', error)
-      dispatch(loginFailure(error))
+      dispatch(loginFailure())
     }
   }
 

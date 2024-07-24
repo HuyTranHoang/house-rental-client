@@ -1,28 +1,27 @@
-import AppLayout from './ui/AppLayout.jsx'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './pages/Home.jsx'
-import Contact from './pages/Contact.jsx'
-import Login from './features/auth/Login.jsx'
-import Register from './features/auth/Register.jsx'
-import { Toaster } from 'sonner'
-import NotFound from './error/NotFound.jsx'
-import Profile from './features/profile/Profile.jsx'
-import ProtectedRoute from './components/ProtectedRoute.jsx'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import axiosInstance from './interceptor/axiosInstance.js'
-import { loginFailure, loginSuccess } from './features/auth/authSlice.js'
-import ServerError from './error/ServerError.jsx'
-import { Spin } from 'antd'
-import Spinner from './components/Spinner.jsx'
-import ProfileLayout from './ui/ProfileLayout.jsx'
-import ChangePassword from './features/profile/ChangePassword.jsx'
-import TransactionHistory from './features/profile/TransactionHistory.jsx'
-import Favorite from './features/profile/Favorite.jsx'
-
+import './App.css'
+import { useAppDispatch } from './store.ts'
+import axiosInstance from './inteceptor/axiosInstance.ts'
+import { loginFailure, loginSuccess } from './features/auth/authSlice.ts'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Toaster } from 'sonner'
+import AppLayout from './ui/AppLayout.tsx'
+import Login from './features/auth/Login.tsx'
+import Spinner from './components/Spinner.tsx'
+import Register from './features/auth/Register.tsx'
+import ProfileLayout from './ui/ProfileLayout.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
+import Profile from './features/profile/Profile.tsx'
+import ChangePassword from './features/profile/ChangePassword.tsx'
+import TransactionHistory from './features/profile/TransactionHistory.tsx'
+import Favorite from './features/profile/Favorite.tsx'
+import Home from './pages/Home.tsx'
+import Contact from './pages/Contact.tsx'
+import ServerError from './error/ServerError.tsx'
+import NotFound from './error/NotFound.tsx'
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const [spinning, setSpinning] = useState(true)
 
   useEffect(() => {
@@ -92,3 +91,4 @@ function App() {
 }
 
 export default App
+

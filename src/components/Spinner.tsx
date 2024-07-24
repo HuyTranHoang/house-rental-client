@@ -25,7 +25,11 @@ const Loader = styled.span`
     }
 `
 
-function Spinner({spinning}) {
+interface SpinnerProps {
+  spinning: boolean
+}
+
+function Spinner({ spinning }: SpinnerProps) {
   return <Spin spinning={spinning} indicator={<Loader />} size="large" tip="Loading..." fullscreen />
 }
 
