@@ -135,8 +135,8 @@ function Register() {
                 message: 'Vui lòng nhập mật khẩu!'
               },
               {
-                min: 6,
-                message: 'Mật khẩu phải có ít nhất 6 ký tự!'
+                pattern: new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
+                message: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và số!'
               }
             ]}
           >

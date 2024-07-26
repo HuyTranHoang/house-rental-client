@@ -63,7 +63,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Toaster richColors={true} />
+      <Toaster richColors={true} position="bottom-center" />
       <Routes>
         <Route element={<AppLayout withSidebar={false}  withFilter={false}/>}>
           <Route path="login" element={<Login />} />
