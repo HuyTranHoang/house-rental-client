@@ -37,11 +37,21 @@ const authSlice = createSlice({
       state.isAuthenticated = false
       state.user = null
       state.token = null
+    },
+    updateProfile: (state, action) => {
+      state.user = action.payload
     }
   }
 })
 
-export const { loginRequest, loginSuccess, loginFailure, logout } = authSlice.actions
+export const {
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+  logout,
+  updateProfile
+} = authSlice.actions
+
 export default authSlice.reducer
 
 export const selectAuth = (state: IRootState) => state.auth

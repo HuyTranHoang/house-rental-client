@@ -97,10 +97,14 @@ function ProfileLayout() {
           <Space wrap size={16}>
             <Avatar size={64} icon={<UserOutlined />} />
             <Space direction="vertical">
-              {user && <div>{user.lastName} {user.firstName}</div>}
-              <div>
-                <a href="/profile">Xem trang cá nhân</a>
-              </div>
+              {user && (
+                <>
+                  <div>{user.lastName} {user.firstName}</div>
+                  <div>
+                    {user.phoneNumber}
+                  </div>
+                </>
+              )}
             </Space>
           </Space>
         </Card>

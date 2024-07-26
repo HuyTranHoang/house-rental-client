@@ -6,26 +6,37 @@ import {
 } from '@ant-design/icons'
 import GradientButton from '../../components/GradientButton.jsx'
 import { useState } from 'react'
+import { toast } from 'sonner'
+import { useAppDispatch } from '../../store.ts'
+import { updateProfile } from '../auth/authSlice.ts'
+import { updateUserProfileApi } from '../../fetchers/user.fetch.ts'
 
 type FieldType = {
   lastName: string
   firstName: string
-  email: string
+  // email: string
   phoneNumber: string
 }
 
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Success:', values);
-};
-
 const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+  console.log('Failed:', errorInfo)
+}
 
 
 function Profile() {
   const [error] = useState(null)
   const [isLoading] = useState(false)
+  const dispatch = useAppDispatch()
+
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+    console.log('Success:', values)
+    const response = await updateUserProfileApi(values)
+
+    if (response && response.status === 200) {
+      dispatch(updateProfile(response.data))
+      toast.success('Cập nhật thông tin cá nhân thành công!')
+    }
+  }
 
   return (
     <Card style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
@@ -75,22 +86,22 @@ function Profile() {
         </Form.Item>
 
 
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Vui lòng nhập email!'
-            },
-            {
-              type: 'email',
-              message: 'Email không hợp lệ!'
-            }
-          ]}
-        >
-          <Input placeholder="Email" />
-        </Form.Item>
+        {/*<Form.Item*/}
+        {/*  label="Email"*/}
+        {/*  name="email"*/}
+        {/*  rules={[*/}
+        {/*    {*/}
+        {/*      required: true,*/}
+        {/*      message: 'Vui lòng nhập email!'*/}
+        {/*    },*/}
+        {/*    {*/}
+        {/*      type: 'email',*/}
+        {/*      message: 'Email không hợp lệ!'*/}
+        {/*    }*/}
+        {/*  ]}*/}
+        {/*>*/}
+        {/*  <Input placeholder="Email" />*/}
+        {/*</Form.Item>*/}
 
         <Form.Item
           label="Số điện thoại"
