@@ -1,8 +1,6 @@
-import { Alert, Avatar, Button, Card, Divider, Form, FormProps, Input, Space } from 'antd'
+import { Alert, Card, Form, FormProps, Input } from 'antd'
 import {
-  AntDesignOutlined,
-  UploadOutlined,
-  UserOutlined
+  AntDesignOutlined
 } from '@ant-design/icons'
 import GradientButton from '../../components/GradientButton.jsx'
 import { useState } from 'react'
@@ -14,7 +12,6 @@ import { updateUserProfileApi } from '../../fetchers/user.fetch.ts'
 type FieldType = {
   lastName: string
   firstName: string
-  // email: string
   phoneNumber: string
 }
 
@@ -40,13 +37,6 @@ function Profile() {
 
   return (
     <Card style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
-      <Space size={32}>
-        <Avatar size={64} icon={<UserOutlined />} />
-        <Button type="primary" icon={<UploadOutlined />}>Tải ảnh lên</Button>
-      </Space>
-
-      <Divider />
-
       <Form
         name="profile"
         onFinish={onFinish}
@@ -84,24 +74,6 @@ function Profile() {
         >
           <Input placeholder="Tên" />
         </Form.Item>
-
-
-        {/*<Form.Item*/}
-        {/*  label="Email"*/}
-        {/*  name="email"*/}
-        {/*  rules={[*/}
-        {/*    {*/}
-        {/*      required: true,*/}
-        {/*      message: 'Vui lòng nhập email!'*/}
-        {/*    },*/}
-        {/*    {*/}
-        {/*      type: 'email',*/}
-        {/*      message: 'Email không hợp lệ!'*/}
-        {/*    }*/}
-        {/*  ]}*/}
-        {/*>*/}
-        {/*  <Input placeholder="Email" />*/}
-        {/*</Form.Item>*/}
 
         <Form.Item
           label="Số điện thoại"

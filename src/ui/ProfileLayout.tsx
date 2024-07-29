@@ -1,17 +1,27 @@
-import { Avatar, Breadcrumb, Card, Col, Menu, MenuProps, Row, Space } from 'antd'
+import { Avatar, Breadcrumb, Card, Col, GetProp, Menu, MenuProps, Row, Space, Tooltip, Upload, UploadProps } from 'antd'
 import {
   HomeOutlined,
-  IdcardOutlined,
+  IdcardOutlined, LoadingOutlined,
   LockOutlined,
-  LogoutOutlined,
+  LogoutOutlined, PlusOutlined,
   ReadOutlined,
-  StarOutlined, UserOutlined
+  StarOutlined
 } from '@ant-design/icons'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, selectAuth } from '../features/auth/authSlice.js'
+import { logout, selectAuth, updateProfile } from '../features/auth/authSlice.js'
 import { toast } from 'sonner'
 import { selectMenu, selectProfile } from '../features/profile/profileSlice.ts'
+import { useState } from 'react'
+import styled from 'styled-components'
+
+const CustomUpload = styled(Upload)`
+    cursor: pointer;
+    
+    &:hover {
+        opacity: 0.8;
+    }
+`
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -51,6 +61,28 @@ const items: MenuItem[] = [
   }
 ]
 
+// Avatar section
+
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+const getBase64 = (img: FileType, callback: (url: string) => void) => {
+  const reader = new FileReader()
+  reader.addEventListener('load', () => callback(reader.result as string))
+  reader.readAsDataURL(img)
+}
+
+const beforeUpload = (file: FileType) => {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+  if (!isJpgOrPng) {
+    toast.error('Chỉ có thể up hình ảnh với định dạng JPG/PNG!')
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2
+  if (!isLt2M) {
+    toast.error('Dung lượng ảnh tối đa là 2MB!')
+  }
+  return isJpgOrPng && isLt2M
+}
+
 function ProfileLayout() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -75,6 +107,34 @@ function ProfileLayout() {
     }
   }
 
+  const [loading, setLoading] = useState(false)
+
+  const handleChange: UploadProps['onChange'] = (info) => {
+    if (info.file.status === 'uploading') {
+      setLoading(true)
+      return
+    }
+    if (info.file.status === 'done') {
+      getBase64(info.file.originFileObj as FileType, () => {
+        dispatch(updateProfile(info.file.response))
+        setLoading(false)
+        toast.success('Cập nhật ảnh đại diện thành công!')
+      })
+    }
+    if (info.file.status === 'error') {
+      setLoading(false)
+      toast.error('Cập nhật ảnh đại diện thất bại!')
+    }
+  }
+
+  const uploadButton = (
+    <button style={{ border: 0, background: 'none' }} type="button">
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </button>
+  )
+
+
   return (
     <Row>
       <Col span={24}>
@@ -95,7 +155,22 @@ function ProfileLayout() {
       <Col span={6}>
         <Card style={{ width: 256, borderRadius: 0, borderLeft: 'none' }}>
           <Space wrap size={16}>
-            <Avatar size={64} icon={<UserOutlined />} />
+
+            <Tooltip title={loading ? 'Đang tải lên...' : 'Thay đổi ảnh đại diện'}>
+              <CustomUpload
+                name="avatar"
+                action="/api/user/update-avatar"
+                method="PUT"
+                headers={{ 'Authorization': `Bearer ${localStorage.getItem('jwtToken')}` }}
+                showUploadList={false}
+                beforeUpload={beforeUpload}
+                onChange={handleChange}
+              >
+                {!loading && user && user.avatarUrl ?
+                  <Avatar size={64} src={user.avatarUrl} style={{ cursor: 'pointer' }} /> : uploadButton}
+              </CustomUpload>
+            </Tooltip>
+
             <Space direction="vertical">
               {user && (
                 <>

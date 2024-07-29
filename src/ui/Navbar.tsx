@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { logout, selectAuth } from '../features/auth/authSlice.js'
-import { UserOutlined } from '@ant-design/icons'
 import { toast } from 'sonner'
 
 import './Navbar.scss'
@@ -124,7 +123,7 @@ function Navbar() {
                     <Typography.Text style={{ fontSize: 16, fontWeight: '600' }}>
                       {user.username}
                     </Typography.Text>
-                    <Avatar size={'small'} icon={<UserOutlined />} />
+                    <Avatar size={'small'} src={user.avatarUrl} />
                   </Space>
                 </a>
               </Dropdown>

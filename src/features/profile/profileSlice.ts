@@ -13,6 +13,7 @@ const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
+    // Dùng để chỉnh selected menu hiện tại trong pro5 ở ProfileLayout.tsx
     selectMenu: (state, action: PayloadAction<string[]>) => {
       state.currentSelectMenu = action.payload;
     }
