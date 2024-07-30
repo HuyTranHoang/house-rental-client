@@ -20,6 +20,15 @@ function Home() {
       <Link style={{ color: 'white' }} to={'/profile'}>
         <Button style={{marginBottom: 16}} size='large' block> Profile - Protected Route </Button>
       </Link>
+      <Link style={{ color: 'white' }} to={'/rent-house'}>
+        <Button style={{marginBottom: 16}} size='large' block> Tìm thuê </Button>
+      </Link>
+      <Link style={{ color: 'white' }} to={'/server-error'}>
+        <Button style={{marginBottom: 16}} size='large' block> Server Error </Button>
+      </Link>
+      <Link style={{ color: 'white' }} to={'/not-found'}>
+        <Button style={{marginBottom: 16}} size='large' block> Not Found </Button>
+      </Link>
     </div>
   )
 }

@@ -67,6 +67,17 @@ function App() {
     <BrowserRouter>
       <Toaster richColors={true} position="bottom-center" />
       <Routes>
+        <Route element={<AppLayout withSidebar withFilter/>}>
+          <Route path="rent-house" element={<RentHouse />} />
+        </Route>
+
+        <Route element={<AppLayout withSidebar withFilter={false}/>}>
+          <Route index element={<Home />} />
+          <Route path="home" element={<Home />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="about" element={<div>About</div>} />
+        </Route>
+
         <Route element={<AppLayout withSidebar={false}  withFilter={false}/>}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -83,21 +94,10 @@ function App() {
                    element={<ProtectedRoute location="/profile/favorite"><Favorite /></ProtectedRoute>} />
           </Route>
           <Route path="server-error" element={<ServerError />} />
-        </Route>
-
-        <Route element={<AppLayout withSidebar withFilter/>}>
-          <Route path="rent-house" element={<RentHouse />} />
-
-        </Route>
-
-        <Route element={<AppLayout withSidebar withFilter={false}/>}>
-          <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="rent-house" element={<RentHouse />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="about" element={<div>About</div>} />
           <Route path="*" element={<NotFound />} />
         </Route>
+
+
       </Routes>
     </BrowserRouter>
   )
