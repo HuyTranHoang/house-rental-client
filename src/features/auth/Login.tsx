@@ -120,9 +120,11 @@ function Login() {
               <Checkbox>Nhớ đăng nhập</Checkbox>
             </Form.Item>
             <Form.Item>
-              <Button type="link" href="#">
-                Quên mật khẩu?
-              </Button>
+              <Link to={'/request-reset-password'}>
+                <Button type="link">
+                  Quên mật khẩu?
+                </Button>
+              </Link>
             </Form.Item>
           </Flex>
 

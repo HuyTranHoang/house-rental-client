@@ -20,6 +20,8 @@ import Contact from './pages/Contact.tsx'
 import ServerError from './error/ServerError.tsx'
 import NotFound from './error/NotFound.tsx'
 import RentHouse from './features/rent-house/RentHouse.tsx'
+import RequestResetPassword from './features/auth/RequestResetPassword.tsx'
+import ResetPassword from './features/auth/ResetPassword.tsx'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -68,6 +70,8 @@ function App() {
         <Route element={<AppLayout withSidebar={false}  withFilter={false}/>}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="request-reset-password" element={<RequestResetPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="profile" element={<ProfileLayout />}>
             <Route index element={<ProtectedRoute location="/profile"><Profile /></ProtectedRoute>} />
             <Route path="change-password"

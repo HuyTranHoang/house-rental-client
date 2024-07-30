@@ -92,10 +92,6 @@ function ChangePassword() {
               required: true,
               message: 'Vui lòng nhập "Nhập lại mật khẩu mới"!'
             },
-            {
-              pattern: new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
-              message: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và số!'
-            },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('newPassword') === value) {
