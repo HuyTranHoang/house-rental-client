@@ -82,6 +82,7 @@ function App() {
             <Route path="favorite"
                    element={<ProtectedRoute location="/profile/favorite"><Favorite /></ProtectedRoute>} />
           </Route>
+          <Route path="server-error" element={<ServerError />} />
         </Route>
 
         <Route element={<AppLayout withSidebar withFilter/>}>
@@ -95,7 +96,6 @@ function App() {
           <Route path="rent-house" element={<RentHouse />} />
           <Route path="contact" element={<Contact />} />
           <Route path="about" element={<div>About</div>} />
-          <Route path="server-error" element={<ServerError />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
