@@ -74,7 +74,6 @@ function App() {
         <Route element={<AppLayout withSidebar withFilter={false}/>}>
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
-          <Route path="contact" element={<Contact />} />
           <Route path="about" element={<div>About</div>} />
         </Route>
 
@@ -93,6 +92,7 @@ function App() {
             <Route path="favorite"
                    element={<ProtectedRoute location="/profile/favorite"><Favorite /></ProtectedRoute>} />
           </Route>
+          <Route path="contact" element={<Contact />} />
           <Route path="server-error" element={<ServerError />} />
           <Route path="*" element={<NotFound />} />
         </Route>
