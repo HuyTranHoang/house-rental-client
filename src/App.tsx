@@ -23,6 +23,7 @@ import RentHouse from './features/rent-house/RentHouse.tsx'
 import RequestResetPassword from './features/auth/RequestResetPassword.tsx'
 import ResetPassword from './features/auth/ResetPassword.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
+import About from './pages/About.tsx'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -75,11 +76,11 @@ function App() {
         <Route element={<AppLayout withSidebar withFilter={false}/>}>
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
-          <Route path="about" element={<div>About</div>} />
         </Route>
 
         <Route element={<AppLayoutFluid/>}>
           <Route path="contact" element={<Contact />} />
+          <Route path="about" element={<About />} />
         </Route>
 
         <Route element={<AppLayout withSidebar={false}  withFilter={false}/>}>
