@@ -17,6 +17,10 @@ axiosInstance.interceptors.response.use(response => response,
       case 401:
         window.location.href = '/login'
         break
+
+      case 403:
+        // window.location.href = '/forbidden'
+        break
       case 500:
         if (error.response.data.message === 'Bad credentials') {
           toast.error('Sai tài khoản hoặc mật khẩu')
