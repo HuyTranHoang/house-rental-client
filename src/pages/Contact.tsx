@@ -40,42 +40,45 @@ function Contact() {
           </Typography.Paragraph>
           <Row gutter={128} style={{ marginTop: '64px', marginBottom: '64px' }}>
             <Col span={8}>
-              <Card actions={[<Button type="link" icon={<ArrowRightOutlined />} iconPosition="end">Địa chỉ văn phòng
-                Mogu</Button>]}>
+              <Card actions={[<Button type="link" icon={<ArrowRightOutlined />} iconPosition="end"
+                                      style={{ color: 'white' }}>
+                Địa chỉ văn phòng Mogu</Button>]}>
                 <CustomMetaStyle
                   style={{ marginTop: '-70px' }}
                   avatar={<CustomAvatarStyle size={84} src="/contact-icon-company.png" />}
                   title="Văn phòng"
                 />
-                <Typography.Paragraph style={{ paddingTop: '50px', fontSize: '16px', color: '#595959' }}>
+                <Typography.Paragraph style={{ paddingTop: '30px', fontSize: '16px', color: '#595959' }}>
                   Trực tiếp tại các văn phòng trên toàn quốc
                 </Typography.Paragraph>
               </Card>
             </Col>
             <Col span={8}>
               <Card
-                actions={[<Button type="link" icon={<ArrowRightOutlined />} iconPosition="end">Liên hệ qua
-                  Zalo</Button>]}>
+                actions={[<Button type="link" icon={<ArrowRightOutlined />} iconPosition="end"
+                                  style={{ color: 'white' }}>
+                  Liên hệ qua Zalo</Button>]}>
                 <CustomMetaStyle
                   style={{ marginTop: '-70px' }}
                   avatar={<CustomAvatarStyle size={84} src="/contact-icon-phone.png" />}
                   title="Tổng đài"
                 />
-                <Typography.Paragraph style={{ paddingTop: '50px', fontSize: '16px', color: '#595959' }}>
+                <Typography.Paragraph style={{ paddingTop: '30px', fontSize: '16px', color: '#595959' }}>
                   Chúng tôi luôn hỗ trợ 24/7, gọi ngay 1900 1000
                 </Typography.Paragraph>
               </Card>
             </Col>
             <Col span={8}>
               <Card
-                actions={[<Button type="link" icon={<ArrowRightOutlined />} iconPosition="end">Facebook Mogu
-                  VN</Button>]}>
+                actions={[<Button type="link" icon={<ArrowRightOutlined />} iconPosition="end"
+                                  style={{ color: 'white' }}>
+                  Facebook Mogu VN</Button>]}>
                 <CustomMetaStyle
                   style={{ marginTop: '-70px' }}
                   avatar={<CustomAvatarStyle size={84} src="/contact-icon-social.png" />}
                   title="Email và mạng xã hội"
                 />
-                <Typography.Paragraph style={{ paddingTop: '50px', fontSize: '16px', color: '#595959' }}>
+                <Typography.Paragraph style={{ paddingTop: '30px', fontSize: '16px', color: '#595959' }}>
                   Liên hệ qua email: <strong>hotro@mogu.vn</strong> hoặc page hỗ trợ
                 </Typography.Paragraph>
               </Card>
