@@ -22,6 +22,7 @@ import NotFound from './error/NotFound.tsx'
 import RentHouse from './features/rent-house/RentHouse.tsx'
 import RequestResetPassword from './features/auth/RequestResetPassword.tsx'
 import ResetPassword from './features/auth/ResetPassword.tsx'
+import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -77,6 +78,10 @@ function App() {
           <Route path="about" element={<div>About</div>} />
         </Route>
 
+        <Route element={<AppLayoutFluid/>}>
+          <Route path="contact" element={<Contact />} />
+        </Route>
+
         <Route element={<AppLayout withSidebar={false}  withFilter={false}/>}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -92,7 +97,6 @@ function App() {
             <Route path="favorite"
                    element={<ProtectedRoute location="/profile/favorite"><Favorite /></ProtectedRoute>} />
           </Route>
-          <Route path="contact" element={<Contact />} />
           <Route path="server-error" element={<ServerError />} />
           <Route path="*" element={<NotFound />} />
         </Route>

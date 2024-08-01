@@ -50,7 +50,9 @@ function ContactForm() {
             padding: '32px',
             borderRadius: '16px',
             marginTop: '16px',
-            marginBottom: '64px'
+            marginBottom: '64px',
+            border: '1px solid #f0f0f0',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.09)'
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
