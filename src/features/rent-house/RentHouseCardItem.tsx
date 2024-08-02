@@ -27,7 +27,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
                 {property.price.toLocaleString()} đ/tháng
               </Typography.Title>
               <Typography.Title level={5} style={{ margin: 0 }}>
-                {property.area} m<sup>2</sup> - {property.numRooms} phòng ngủ
+                {property.roomTypeName} - {property.area} m<sup>2</sup> - {property.numRooms} phòng ngủ
               </Typography.Title>
               <div style={{ marginTop: '8px' }}>
                 {property.amenities.map((amenity, index) => (

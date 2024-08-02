@@ -1,4 +1,4 @@
-import { Breadcrumb, Card, Divider, Pagination, PaginationProps, Typography } from 'antd'
+import { Breadcrumb, Button, Card, Divider, Empty, Pagination, PaginationProps, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { HomeOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
@@ -12,7 +12,16 @@ import { selectPropertyParams, setPageSize, setPageNumber } from './rentHouseSli
 
 function RentHouse() {
   const dispatch = useAppDispatch()
-  const { pageSize, pageNumber } = useSelector(selectPropertyParams)
+  const {
+    pageSize,
+    pageNumber,
+    cityId,
+    districtId,
+    roomTypeId,
+    minPrice,
+    maxPrice,
+    search
+  } = useSelector(selectPropertyParams)
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (_, pageSize) => {
     dispatch(setPageSize(pageSize))
@@ -24,8 +33,8 @@ function RentHouse() {
 
 
   const { data, isLoading, isError } = useQuery({
-      queryKey: ['rentHouse', pageSize, pageNumber],
-      queryFn: () => fetchAllProperties(pageSize, pageNumber)
+      queryKey: ['rentHouse', pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search],
+      queryFn: () => fetchAllProperties(pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search)
     }
   )
 
@@ -59,21 +68,36 @@ function RentHouse() {
         </>
       )}
 
-      {data && data.data.map((property: Property) => <RentHouseCardItem key={property.id} property={property} />)
+      {data && data.data.length === 0 && (
+        <Empty
+          style={{ marginTop: '32px', marginBottom: '64px' }}
+          description={
+            <Typography.Text>
+              Không tìm thấy bài đăng nào phù hợp
+            </Typography.Text>
+          }
+        >
+          <Button type="primary">
+            Tìm kiếm lại
+          </Button>
+        </Empty>)
       }
 
+      {data && data.data.map((property: Property) => <RentHouseCardItem key={property.id} property={property} />)}
+
       {
-        data && <Pagination
+        data && data.data.length > 0 &&<Pagination
           total={data.pageInfo.totalElements}
-          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+          showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} tin đăng`}
           pageSize={pageSize}
           current={pageNumber}
           align="center"
           showSizeChanger
           onShowSizeChange={onShowSizeChange}
           pageSizeOptions={['2', '4', '6']}
+          locale={{ items_per_page: "/ trang"}}
           onChange={onPageChange}
-          style={{ margin: '16px 0' }}
+          style={{ margin: '20px 0 32px' }}
         />
       }
     </>

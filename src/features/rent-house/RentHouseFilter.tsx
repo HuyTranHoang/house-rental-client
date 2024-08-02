@@ -1,4 +1,4 @@
-import { Button, Cascader, CascaderProps, Col, Form, FormProps, Row, Select } from 'antd'
+import { Button, Cascader, CascaderProps, Col, Form, Row, Select } from 'antd'
 import Search from 'antd/es/input/Search'
 import { DollarIcon, GeoIcon, HomeIcon } from './RentHouseFilterIcons.tsx'
 import { ProductOutlined } from '@ant-design/icons'
@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchAllCities } from '../../fetchers/city.fetch.ts'
 import { fetchAllDistricts } from '../../fetchers/district.fetch.ts'
 import { fetchAllRoomTypes } from '../../fetchers/roomType.fetch.ts'
+import { useAppDispatch } from '../../store.ts'
+import { setCityId, setDistrictId, setMaxPrice, setMinPrice, setRoomTypeId, setSearch } from './rentHouseSlice.ts'
 
 type FieldType = {
   search?: string;
@@ -20,27 +22,9 @@ interface Option {
   children?: Option[];
 }
 
-// TODO: Implement the following functions
-
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Success:', values)
-}
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo)
-}
-
-const onChange: CascaderProps<Option>['onChange'] = (value) => {
-  console.log(value)
-}
-
-const handleChange = (value: string) => {
-  console.log(`selected ${value}`)
-}
-
-//
-
 function RentHouseFilter() {
+  const dispatch = useAppDispatch()
+
   const { data: cityData, isLoading: cityIsLoading } = useQuery({
     queryKey: ['cities'],
     queryFn: fetchAllCities
@@ -58,55 +42,89 @@ function RentHouseFilter() {
 
   const cityDistrictOptions: Option[] = [
     {
-      value: 'Toàn Quốc',
+      value: '0',
       label: 'Toàn Quốc'
+    }
+  ]
+
+  const roomTypeOptions: Option[] = [
+    {
+      value: '0',
+      label: 'Tất cả'
     }
   ]
 
   if (cityData && districtData) {
     const cityMap = cityData.map(city => ({
-      value: city.name,
+      value: city.id.toString(),
       label: city.name,
-      children: districtData
-        .filter(district => district.cityId === city.id)
-        .map(district => ({
-          value: district.name,
-          label: district.name
-        }))
+      children: [
+        { value: '0', label: 'Tất cả' },
+        ...districtData
+          .filter(district => district.cityId === city.id)
+          .map(district => ({
+            value: district.id.toString(),
+            label: district.name
+          }))
+      ]
     }))
     cityDistrictOptions.push(...cityMap)
   }
 
-  const roomTypeOptions: Option[] = []
-
   if (roomTypeData) {
     roomTypeOptions.push(
       ...roomTypeData.map(roomType => ({
-        value: roomType.name,
+        value: roomType.id.toString(),
         label: roomType.name
       }))
     )
+  }
+
+  const onCityDistrictChange: CascaderProps<Option>['onChange'] = (value) => {
+    if (value && value.length === 2) {
+      // City = 0, District = 1
+      dispatch(setCityId(parseInt(value[0])))
+      dispatch(setDistrictId(parseInt(value[1])))
+    }
+
+    if (value && value.length === 1) {
+      dispatch(setCityId(0))
+      dispatch(setDistrictId(0))
+    }
+  }
+
+  const handleRoomTypeChance = (value: string) => {
+    dispatch(setRoomTypeId(parseInt(value)))
+  }
+
+  const handlePriceChance = (value: string) => {
+    const [min, max] = value.split(',')
+    dispatch(setMinPrice(parseInt(min) * 1000000))
+    dispatch(setMaxPrice(parseInt(max) * 1000000))
+  }
+
+  const handleSearch = (value: string) => {
+    dispatch(setSearch(value))
   }
 
   return (
     <>
       <Form
         name="search"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
-        initialValues={{district: 'Toàn Quốc'}}
         style={{ marginTop: '1rem' }}
       >
         <Row gutter={12}>
           <Col span={7}>
             <Form.Item<FieldType> name="search">
-              <Search size="large" placeholder="Từ khóa, đường, quận hoặc địa danh" />
+              <Search size="large" allowClear={true}
+                      placeholder="Từ khóa, đường, quận hoặc địa danh"
+                      onSearch={handleSearch}/>
             </Form.Item>
           </Col>
           <Col span={5}>
             <Form.Item<FieldType> name="district">
-              <Cascader options={cityDistrictOptions} onChange={onChange} size="large"
+              <Cascader options={cityDistrictOptions} onChange={onCityDistrictChange} size="large"
                         allowClear={false} loading={cityIsLoading || districtIsLoading} placeholder="Chọn quận huyện"
                         suffixIcon={<GeoIcon />} />
             </Form.Item>
@@ -115,7 +133,7 @@ function RentHouseFilter() {
             <Form.Item<FieldType> name="roomType">
               <Select
                 size="large"
-                onChange={handleChange}
+                onChange={handleRoomTypeChance}
                 placeholder={'Loại phòng'}
                 suffixIcon={<HomeIcon />}
                 options={roomTypeOptions}
@@ -126,16 +144,16 @@ function RentHouseFilter() {
             <Form.Item<FieldType> name="price">
               <Select
                 size="large"
-                onChange={handleChange}
+                onChange={handlePriceChance}
                 placeholder={'Giá thuê'}
                 suffixIcon={<DollarIcon />}
                 loading={roomTypeIsLoading}
                 options={[
-                  { value: 'Tất cả', label: 'Tất cả' },
-                  { value: 'Dưới 3 triệu', label: 'Dưới 3 triệu' },
-                  { value: '3 đến 7 triệu', label: '3 đến 7 triệu' },
-                  { value: '7 đến 10 triệu', label: '7 đến 10 triệu' },
-                  { value: 'Trên 10 triệu', label: 'Trên 10 triệu' }
+                  { value: '0,0', label: 'Tất cả' },
+                  { value: '0,3', label: 'Dưới 3 triệu' },
+                  { value: '3,7', label: '3 đến 7 triệu' },
+                  { value: '7,10', label: '7 đến 10 triệu' },
+                  { value: '10,0', label: 'Trên 10 triệu' }
                 ]}
               />
             </Form.Item>
