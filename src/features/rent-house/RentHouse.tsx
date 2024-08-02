@@ -1,8 +1,34 @@
-import { Breadcrumb, Card, Col, Divider, Flex, Row, Typography } from 'antd'
+import { Breadcrumb, Card, Divider, Pagination, PaginationProps, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import { HeartOutlined, HomeOutlined } from '@ant-design/icons'
+import { HomeOutlined } from '@ant-design/icons'
+import { useQuery } from '@tanstack/react-query'
+import { fetchAllProperties } from '../../fetchers/property.fetch.ts'
+import { Property } from '../../models/property.type.ts'
+import RentHouseCardItem from './RentHouseCardItem.tsx'
+import { useAppDispatch } from '../../store.ts'
+import { useSelector } from 'react-redux'
+import { selectPropertyParams, setPageSize, setPageNumber } from './rentHouseSlice.ts'
+
 
 function RentHouse() {
+  const dispatch = useAppDispatch()
+  const { pageSize, pageNumber } = useSelector(selectPropertyParams)
+
+  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (_, pageSize) => {
+    dispatch(setPageSize(pageSize))
+  }
+
+  const onPageChange: PaginationProps['onChange'] = (pageNumber) => {
+    dispatch(setPageNumber(pageNumber))
+  }
+
+
+  const { data, isLoading, isError } = useQuery({
+      queryKey: ['rentHouse', pageSize, pageNumber],
+      queryFn: () => fetchAllProperties(pageSize, pageNumber)
+    }
+  )
+
   return (
     <>
       <Breadcrumb
@@ -19,30 +45,37 @@ function RentHouse() {
 
       <Divider />
 
-      <Card>
-        <Row gutter={12}>
-          <Col span={8}>
-            <img src="https://placehold.co/600x400" alt="rent-house" style={{width: '100%'}} />
-          </Col>
-          <Col span={16}>
-            <Typography.Title level={4} style={{marginTop: 0}}>Cho thuê căn hộ cao cấp gần đại học Văn Hiến </Typography.Title>
-            <Typography.Paragraph style={{color: '#657786'}}>
-              Quận Tân Phú, TP.Hồ Chí Minh
-            </Typography.Paragraph>
-            <Typography.Title level={3} style={{color: '#096dd9', marginTop:'12px', marginBottom: '8px'}}>3 triệu 700 nghìn</Typography.Title>
-            <Typography.Title level={5} style={{margin: 0}}>
-              35 m<sup>2</sup>
-            </Typography.Title>
-            <Flex justify='space-between' align='center'>
-              <Typography.Paragraph style={{color: '#657786', margin: 0}}>
-                Hôm nay.
-              </Typography.Paragraph>
-              <HeartOutlined style={{fontSize: '24px'}} />
-            </Flex>
-          </Col>
-        </Row>
-      </Card>
+      {isError && (
+        <Typography.Title level={4} style={{ textAlign: 'center' }}>
+          Đã xảy ra lỗi khi tải dữ liệu
+        </Typography.Title>
+      )}
 
+      {isLoading && (
+        <>
+          {Array.from({ length: pageSize }).map((_, index) => (
+            <Card key={index} style={{ marginBottom: '8px' }} loading={true}></Card>
+          ))}
+        </>
+      )}
+
+      {data && data.data.map((property: Property) => <RentHouseCardItem key={property.id} property={property} />)
+      }
+
+      {
+        data && <Pagination
+          total={data.pageInfo.totalElements}
+          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+          pageSize={pageSize}
+          current={pageNumber}
+          align="center"
+          showSizeChanger
+          onShowSizeChange={onShowSizeChange}
+          pageSizeOptions={['2', '4', '6']}
+          onChange={onPageChange}
+          style={{ margin: '16px 0' }}
+        />
+      }
     </>
   )
 }

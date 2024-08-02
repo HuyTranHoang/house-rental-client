@@ -95,6 +95,7 @@ function RentHouseFilter() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        initialValues={{district: 'Toàn Quốc'}}
         style={{ marginTop: '1rem' }}
       >
         <Row gutter={12}>
@@ -105,7 +106,7 @@ function RentHouseFilter() {
           </Col>
           <Col span={5}>
             <Form.Item<FieldType> name="district">
-              <Cascader options={cityDistrictOptions} onChange={onChange} size="large" defaultValue={['Toàn Quốc']}
+              <Cascader options={cityDistrictOptions} onChange={onChange} size="large"
                         allowClear={false} loading={cityIsLoading || districtIsLoading} placeholder="Chọn quận huyện"
                         suffixIcon={<GeoIcon />} />
             </Form.Item>
