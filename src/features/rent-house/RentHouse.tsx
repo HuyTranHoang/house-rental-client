@@ -22,7 +22,8 @@ function RentHouse() {
     maxPrice,
     search,
     minArea,
-    maxArea
+    maxArea,
+    numOfDays
   } = useSelector(selectPropertyParams)
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (_, pageSize) => {
@@ -35,8 +36,8 @@ function RentHouse() {
 
 
   const { data, isLoading, isError } = useQuery({
-      queryKey: ['rentHouse', pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search, minArea, maxArea],
-      queryFn: () => fetchAllProperties(pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search, minArea, maxArea)
+      queryKey: ['rentHouse', pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search, minArea, maxArea, numOfDays],
+      queryFn: () => fetchAllProperties(pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search, minArea, maxArea, numOfDays)
     }
   )
 

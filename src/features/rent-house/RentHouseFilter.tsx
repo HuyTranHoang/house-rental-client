@@ -1,4 +1,4 @@
-import { Button, Cascader, CascaderProps, Col, Form, Modal, Row, Select, Typography } from 'antd'
+import { Badge, Button, Cascader, CascaderProps, Col, Form, Modal, Row, Select, Typography } from 'antd'
 import Search from 'antd/es/input/Search'
 import { DollarIcon, GeoIcon, HomeIcon } from './RentHouseFilterIcons.tsx'
 import { CalendarOutlined, ProductOutlined, SelectOutlined } from '@ant-design/icons'
@@ -12,7 +12,7 @@ import {
   setDistrictId, setMaxArea,
   setMaxPrice,
   setMinArea,
-  setMinPrice,
+  setMinPrice, setNumOfDays,
   setRoomTypeId,
   setSearch
 } from './rentHouseSlice.ts'
@@ -37,6 +37,7 @@ function RentHouseFilter() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [area, setArea] = useState<string>('0,0')
   const [time, setTime] = useState<string>('0')
+  const [count, setCount] = useState<number>(0)
 
   const { data: cityData, isLoading: cityIsLoading } = useQuery({
     queryKey: ['cities'],
@@ -130,6 +131,16 @@ function RentHouseFilter() {
     dispatch(setMinArea(parseInt(minArea) * 10))
     dispatch(setMaxArea(parseInt(maxArea) * 10))
 
+    dispatch(setNumOfDays(parseInt(time)))
+
+    if (area !== '0,0') {
+      setCount(count + 1)
+    }
+
+    if (time !== '0') {
+      setCount(count + 1)
+    }
+
     setIsModalOpen(false)
   }
 
@@ -144,6 +155,10 @@ function RentHouseFilter() {
 
     dispatch(setMinArea(0))
     dispatch(setMaxArea(0))
+
+    dispatch(setNumOfDays(0))
+
+    setCount(0)
   }
 
   return (
@@ -199,8 +214,11 @@ function RentHouseFilter() {
           </Col>
           <Col span={2}>
             <Form.Item>
-              <Button onClick={showModal} size="large" icon={<ProductOutlined style={{ color: '#91caff' }} />}>Lọc
-                thêm</Button>
+              <Badge count={count}>
+                <Button onClick={showModal} size="large" icon={<ProductOutlined style={{ color: '#91caff' }} />}>
+                  Lọc thêm
+                </Button>
+              </Badge>
             </Form.Item>
           </Col>
         </Row>

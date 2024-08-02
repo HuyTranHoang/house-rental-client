@@ -22,7 +22,8 @@ export const fetchAllProperties = async (pageSize: number,
                                          maxPrice: number,
                                          search: string,
                                          minArea: number,
-                                         maxArea: number
+                                         maxArea: number,
+                                         numOfDays: number
 ) => {
 
   pageNumber = pageNumber - 1
@@ -38,7 +39,8 @@ export const fetchAllProperties = async (pageSize: number,
       maxPrice,
       search,
       minArea,
-      maxArea
+      maxArea,
+      numOfDays
     }
 
     const response = await axiosInstance.get<PropertyResponse>('/api/properties', { params })
