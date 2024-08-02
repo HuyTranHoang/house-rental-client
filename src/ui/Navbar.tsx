@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import './Navbar.scss'
 import { useAppDispatch } from '../store.ts'
 import { selectMenu } from '../features/profile/profileSlice.ts'
+import { UserOutlined } from '@ant-design/icons'
 
 const CustomImg = styled.img`
     width: 100px;
@@ -123,7 +124,9 @@ function Navbar() {
                     <Typography.Text style={{ fontSize: 16, fontWeight: '600' }}>
                       {user.username}
                     </Typography.Text>
-                    <Avatar size={'small'} src={user.avatarUrl} />
+
+                    {user.avatarUrl && <Avatar size={'small'} src={user.avatarUrl} />}
+                    {!user.avatarUrl && <Avatar size={'small'} icon={<UserOutlined />} />}
                   </Space>
                 </a>
               </Dropdown>
