@@ -125,6 +125,10 @@ function RentHouseFilter() {
     setIsModalOpen(true)
   }
 
+  const handleAreaChange = (value: string) => {
+    setArea(value)
+  }
+
   const handleOk = () => {
     const [minArea, maxArea] = area.split(',')
 
@@ -133,13 +137,17 @@ function RentHouseFilter() {
 
     dispatch(setNumOfDays(parseInt(time)))
 
+    let activeFilters = 0
+
     if (area !== '0,0') {
-      setCount(count + 1)
+      activeFilters += 1
     }
 
     if (time !== '0') {
-      setCount(count + 1)
+      activeFilters += 1
     }
+
+    setCount(activeFilters)
 
     setIsModalOpen(false)
   }
@@ -242,7 +250,7 @@ function RentHouseFilter() {
         </Typography.Paragraph>
         <Select
           size="large"
-          onChange={(value) => setArea(value)}
+          onChange={handleAreaChange}
           placeholder={'Diện tích'}
           value={area}
           suffixIcon={<SelectOutlined style={{ fontSize: 16 }} />}
