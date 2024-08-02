@@ -1,13 +1,22 @@
-import { Button, Cascader, CascaderProps, Col, Form, Row, Select } from 'antd'
+import { Button, Cascader, CascaderProps, Col, Form, Modal, Row, Select, Typography } from 'antd'
 import Search from 'antd/es/input/Search'
 import { DollarIcon, GeoIcon, HomeIcon } from './RentHouseFilterIcons.tsx'
-import { ProductOutlined } from '@ant-design/icons'
+import { CalendarOutlined, ProductOutlined, SelectOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { fetchAllCities } from '../../fetchers/city.fetch.ts'
 import { fetchAllDistricts } from '../../fetchers/district.fetch.ts'
 import { fetchAllRoomTypes } from '../../fetchers/roomType.fetch.ts'
 import { useAppDispatch } from '../../store.ts'
-import { setCityId, setDistrictId, setMaxPrice, setMinPrice, setRoomTypeId, setSearch } from './rentHouseSlice.ts'
+import {
+  setCityId,
+  setDistrictId, setMaxArea,
+  setMaxPrice,
+  setMinArea,
+  setMinPrice,
+  setRoomTypeId,
+  setSearch
+} from './rentHouseSlice.ts'
+import { useState } from 'react'
 
 type FieldType = {
   search?: string;
@@ -24,6 +33,10 @@ interface Option {
 
 function RentHouseFilter() {
   const dispatch = useAppDispatch()
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [area, setArea] = useState<string>('0,0')
+  const [time, setTime] = useState<string>('0')
 
   const { data: cityData, isLoading: cityIsLoading } = useQuery({
     queryKey: ['cities'],
@@ -107,6 +120,32 @@ function RentHouseFilter() {
     dispatch(setSearch(value))
   }
 
+  const showModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleOk = () => {
+    const [minArea, maxArea] = area.split(',')
+
+    dispatch(setMinArea(parseInt(minArea) * 10))
+    dispatch(setMaxArea(parseInt(maxArea) * 10))
+
+    setIsModalOpen(false)
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleResetExtraFilter = () => {
+    setIsModalOpen(false)
+    setArea('0,0')
+    setTime('0')
+
+    dispatch(setMinArea(0))
+    dispatch(setMaxArea(0))
+  }
+
   return (
     <>
       <Form
@@ -119,7 +158,7 @@ function RentHouseFilter() {
             <Form.Item<FieldType> name="search">
               <Search size="large" allowClear={true}
                       placeholder="Từ khóa, đường, quận hoặc địa danh"
-                      onSearch={handleSearch}/>
+                      onSearch={handleSearch} />
             </Form.Item>
           </Col>
           <Col span={5}>
@@ -160,11 +199,68 @@ function RentHouseFilter() {
           </Col>
           <Col span={2}>
             <Form.Item>
-              <Button size="large" icon={<ProductOutlined style={{ color: '#91caff' }} />}>Lọc thêm</Button>
+              <Button onClick={showModal} size="large" icon={<ProductOutlined style={{ color: '#91caff' }} />}>Lọc
+                thêm</Button>
             </Form.Item>
           </Col>
         </Row>
       </Form>
+
+      <Modal title="Bộ lọc"
+             open={isModalOpen}
+             onCancel={handleCancel}
+             footer={[
+               <Button key="back" onClick={handleResetExtraFilter}>
+                 Xóa lọc
+               </Button>,
+               <Button key="submit" type="primary" onClick={handleOk}>
+                 Tìm kiếm
+               </Button>
+             ]}
+      >
+
+        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>
+          Diện tích
+        </Typography.Paragraph>
+        <Select
+          size="large"
+          onChange={(value) => setArea(value)}
+          placeholder={'Diện tích'}
+          value={area}
+          suffixIcon={<SelectOutlined style={{ fontSize: 16 }} />}
+          loading={roomTypeIsLoading}
+          options={[
+            { value: '0,0', label: 'Tất cả' },
+            { value: '0,3', label: '< 30 m2' },
+            { value: '3,5', label: '30 - 50 m2' },
+            { value: '5,7', label: '50 - 70 m2' },
+            { value: '7,10', label: '70 - 100 m2' },
+            { value: '10,0', label: '> 100 m2' }
+          ]}
+          style={{ width: '100%' }}
+        />
+
+        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>
+          Thời gian đăng
+        </Typography.Paragraph>
+        <Select
+          size="large"
+          onChange={(value) => setTime(value)}
+          placeholder={'Thời gian đăng'}
+          value={time}
+          suffixIcon={<CalendarOutlined style={{ fontSize: 16 }} />}
+          loading={roomTypeIsLoading}
+          options={[
+            { value: '0', label: 'Tất cả' },
+            { value: '1', label: 'Cách đây 1 ngày' },
+            { value: '3', label: 'Cách đây 3 ngày' },
+            { value: '7', label: 'Cách đây 7 ngày' },
+            { value: '15', label: 'Cách đây 15 ngày' },
+            { value: '30', label: 'Cách đây 30 ngày' }
+          ]}
+          style={{ width: '100%' }}
+        />
+      </Modal>
     </>
   )
 }
