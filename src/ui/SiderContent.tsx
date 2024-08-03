@@ -7,8 +7,9 @@ import { CSSProperties } from 'react'
 import { fetchAllCities } from '../fetchers/city.fetch.ts'
 import { City } from '../models/city.type.ts'
 import { useSelector } from 'react-redux'
-import { selectPropertyParams } from '../features/rent-house/rentHouseSlice.ts'
+import { selectPropertyParams, setCityId, setDistrictId, setRoomTypeId } from '../features/rent-house/rentHouseSlice.ts'
 import { fetchAllDistricts } from '../fetchers/district.fetch.ts'
+import { useAppDispatch } from '../store.ts'
 
 const listStyle: CSSProperties = {
   width: '100%',
@@ -36,6 +37,8 @@ function SiderContent() {
 
   const { cityId } = useSelector(selectPropertyParams)
 
+  const dispatch = useAppDispatch()
+
   return (
     <>
       <img src="https://cdn.mogi.vn/banner/2024/2_d87b2319-9b47-4dde-b479-89f4bd4bc581.jpg"
@@ -50,7 +53,10 @@ function SiderContent() {
         renderItem={(item: District) => (
           <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
             <Button block type="text" icon={<RightCircleOutlined />}
-                    style={{ justifyContent: 'start' }}>{item.name}</Button>
+                    onClick={() => dispatch(setRoomTypeId(item.id))}
+                    style={{ justifyContent: 'start' }}>
+              {item.name}
+            </Button>
           </List.Item>
         )}
       />
@@ -65,7 +71,10 @@ function SiderContent() {
         renderItem={(item: City) => (
           <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
             <Button block type="text" icon={<RightCircleOutlined />}
-                    style={{ justifyContent: 'start' }}>{item.name}</Button>
+                    onClick={() => dispatch(setCityId(item.id))}
+                    style={{ justifyContent: 'start' }}>
+              {item.name}
+            </Button>
           </List.Item>
         )}
       />}
@@ -83,7 +92,9 @@ function SiderContent() {
           style={listStyle}
           renderItem={(item: District) => (
             <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
-              <Button block type="text" icon={<RightCircleOutlined />} style={{ justifyContent: 'start' }}>
+              <Button block type="text" icon={<RightCircleOutlined />}
+                      onClick={() => dispatch(setDistrictId(item.id))}
+                      style={{ justifyContent: 'start' }}>
                 {item.name}
               </Button>
             </List.Item>

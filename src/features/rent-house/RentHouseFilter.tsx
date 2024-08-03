@@ -8,6 +8,7 @@ import { fetchAllDistricts } from '../../fetchers/district.fetch.ts'
 import { fetchAllRoomTypes } from '../../fetchers/roomType.fetch.ts'
 import { useAppDispatch } from '../../store.ts'
 import {
+  selectPropertyParams,
   setCityId,
   setDistrictId, setMaxArea,
   setMaxPrice,
@@ -16,7 +17,8 @@ import {
   setRoomTypeId,
   setSearch
 } from './rentHouseSlice.ts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 type FieldType = {
   search?: string;
@@ -38,6 +40,10 @@ function RentHouseFilter() {
   const [area, setArea] = useState<string>('0,0')
   const [time, setTime] = useState<string>('0')
   const [count, setCount] = useState<number>(0)
+
+  const [form] = Form.useForm()
+
+  const { roomTypeId, cityId, districtId } = useSelector(selectPropertyParams)
 
   const { data: cityData, isLoading: cityIsLoading } = useQuery({
     queryKey: ['cities'],
@@ -169,9 +175,32 @@ function RentHouseFilter() {
     setCount(0)
   }
 
+  useEffect(() => {
+    //Dùng để handle khi chọn roomType từ bên ngoài ( slider )
+    if (roomTypeId) {
+      form.setFieldsValue({ roomType: roomTypeId.toString() })
+    } else {
+      if (form.getFieldValue('roomType'))
+        form.setFieldsValue({ roomType: '0' })
+      else
+        form.setFieldsValue({ roomType: undefined })
+    }
+  }, [form, roomTypeId]);
+
+  useEffect(() => {
+    if (cityId && districtId) {
+      form.setFieldsValue({ district: [cityId.toString(), districtId.toString()] });
+    } else if (cityId) {
+      form.setFieldsValue({ district: [cityId.toString(), '0'] });
+    } else {
+      form.setFieldsValue({ district: undefined });
+    }
+  }, [form, cityId, districtId]);
+
   return (
     <>
       <Form
+        form={form}
         name="search"
         autoComplete="off"
         style={{ marginTop: '1rem' }}
