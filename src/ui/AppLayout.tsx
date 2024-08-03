@@ -8,6 +8,7 @@ import Navbar from './Navbar.tsx'
 import { Outlet } from 'react-router-dom'
 import React from 'react'
 import RentHouseFilter from '../features/rent-house/RentHouseFilter.tsx'
+import SiderContent from './SiderContent.tsx'
 
 const headerStyle: React.CSSProperties = {
   display: 'flex',
@@ -20,10 +21,7 @@ const headerStyle: React.CSSProperties = {
 }
 
 const siderStyle: React.CSSProperties = {
-  textAlign: 'center',
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#1677ff'
+  backgroundColor: '#F5F5F5'
 }
 
 const footerStyle: React.CSSProperties = {
@@ -54,8 +52,8 @@ function AppLayout({ withSidebar, withFilter }: AppLayoutProps) {
                       <Outlet />
                     </Content>
                     {withSidebar && (
-                      <Sider width="25%" style={siderStyle}>
-                        Sider
+                      <Sider width="30%" style={siderStyle}>
+                        <SiderContent />
                       </Sider>
                     )}
                   </Layout>

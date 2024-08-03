@@ -1,6 +1,6 @@
-import { Breadcrumb, Button, Card, Divider, Empty, Pagination, PaginationProps, Typography } from 'antd'
+import { Breadcrumb, Button, Card, Divider, Empty, Flex, Pagination, PaginationProps, Skeleton, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import { HomeOutlined } from '@ant-design/icons'
+import { BookOutlined, HomeOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { fetchAllProperties } from '../../fetchers/property.fetch.ts'
 import { Property } from '../../models/property.type.ts'
@@ -41,6 +41,12 @@ function RentHouse() {
     }
   )
 
+  const startIndex = (pageNumber - 1) * pageSize
+  const endIndex = data ? startIndex + data.data.length : 0
+
+  const range = data ? [startIndex + 1, endIndex] : [0, 0]
+  const total = data ? data.pageInfo.totalElements : 0
+
   return (
     <>
       <Breadcrumb
@@ -55,7 +61,26 @@ function RentHouse() {
         ]}
       />
 
-      <Divider />
+      <Typography.Title level={4} style={{ marginTop: 16 }}>
+        Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T8/2024
+      </Typography.Title>
+
+      <Flex align="center" justify="space-between"
+            style={{ backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8, marginRight: 16 }}>
+
+        {isLoading
+          ? <Skeleton.Button active={true} size="small" shape="round" style={{ marginRight: 8, width: 200 }} />
+          : <div>
+            Hiển thị <strong>{`${range[0]}-${range[1]}`}</strong> trong <strong>{`${total}`}</strong> tin đăng
+            </div>
+        }
+
+        <Button type="default" style={{ backgroundColor: '#f0f0f0' }} icon={<BookOutlined />}>
+          Lưu tìm kiếm
+        </Button>
+      </Flex>
+
+      <Divider style={{ marginTop: 12, marginBottom: 16 }} />
 
       {isError && (
         <Typography.Title level={4} style={{ textAlign: 'center' }}>
@@ -89,16 +114,16 @@ function RentHouse() {
       {data && data.data.map((property: Property) => <RentHouseCardItem key={property.id} property={property} />)}
 
       {
-        data && data.data.length > 0 &&<Pagination
+        data && data.data.length > 0 && <Pagination
           total={data.pageInfo.totalElements}
-          showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} tin đăng`}
+          // showTotal={(total, range) => `${range[0]}-${range[1]} trong ${total} tin đăng`}
           pageSize={pageSize}
           current={pageNumber}
           align="center"
           showSizeChanger
           onShowSizeChange={onShowSizeChange}
           pageSizeOptions={['2', '4', '6']}
-          locale={{ items_per_page: "/ trang"}}
+          locale={{ items_per_page: '/ trang' }}
           onChange={onPageChange}
           style={{ margin: '20px 0 32px' }}
         />

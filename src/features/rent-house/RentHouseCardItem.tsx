@@ -9,7 +9,7 @@ interface RentHouseCardItemProps {
 
 function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   return (
-    <Card style={{ marginRight: '64px', marginBottom: '8px' }}>
+    <Card style={{ marginRight: '16px', marginBottom: '8px' }}>
       <Row gutter={12}>
         <Col span={6}>
           <img src={property.propertyImages[0]} alt="rent-house" style={{ width: '100%' }} />
