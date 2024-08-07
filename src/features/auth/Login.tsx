@@ -16,6 +16,7 @@ import Spinner from '../../components/Spinner.jsx'
 import axiosInstance from '../../inteceptor/axiosInstance.ts'
 import { User } from '../../models/user.type.ts'
 import { useAppDispatch } from '../../store.ts'
+import { delay } from '../../utils/delay.ts'
 
 
 type FieldType = {
@@ -38,13 +39,9 @@ function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      setTimeout(() => {
-        navigate(redirectTo)
-      }, 300)
+      delay(300).then(() => navigate(redirectTo))
     } else {
-      setTimeout(() => {
-        setSpinning(false)
-      }, 300)
+      delay(300).then(() => setSpinning(false))
     }
   }, [isAuthenticated, navigate, redirectTo])
 

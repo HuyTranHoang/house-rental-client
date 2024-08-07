@@ -2,16 +2,13 @@ import axiosInstance from '../inteceptor/axiosInstance.ts'
 import { toast } from 'sonner'
 import { Property } from '../models/property.type.ts'
 import { PageInfo } from '../models/pageInfo.type.ts'
+import { delay } from '../utils/delay.ts'
 
 
 interface PropertyResponse {
   data: Property[],
   pageInfo: PageInfo
 }
-
-// Utility function to simulate delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
 
 export const fetchAllProperties = async (pageSize: number,
                                          pageNumber: number,
@@ -25,7 +22,6 @@ export const fetchAllProperties = async (pageSize: number,
                                          maxArea: number,
                                          numOfDays: number
 ) => {
-
   pageNumber = pageNumber - 1
 
   try {
