@@ -1,27 +1,15 @@
-import {
-  Breadcrumb,
-  Button,
-  Card, Col,
-  Divider,
-  Empty,
-  Flex,
-  Pagination,
-  PaginationProps,
-  Row,
-  Skeleton,
-  Typography
-} from 'antd'
-import { Link } from 'react-router-dom'
-import { BookOutlined, HomeOutlined } from '@ant-design/icons'
+import { Button, Card, Col, Divider, Empty, Flex, Pagination, PaginationProps, Row, Skeleton, Typography } from 'antd'
+import { BookOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { fetchAllProperties } from '@/api/property.api.ts'
 import { Property } from '@/models/property.type.ts'
 import RentHouseCardItem from './RentHouseCardItem.tsx'
 import { useAppDispatch } from '@/store.ts'
 import { useSelector } from 'react-redux'
-import { selectPropertyParams, setPageSize, setPageNumber } from './rentHouseSlice.ts'
+import { selectPropertyParams, setPageNumber, setPageSize } from './rentHouseSlice.ts'
 import RentHouseFilter from '@/features/rent-house/RentHouseFilter.tsx'
 import RightSideBar from '@/ui/RightSideBar.tsx'
+import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 
 function RentHouse() {
   const dispatch = useAppDispatch()
@@ -63,17 +51,7 @@ function RentHouse() {
     <>
       <RentHouseFilter />
 
-      <Breadcrumb
-        separator=">"
-        items={[
-          {
-            title: <Link to="/"><HomeOutlined /> Mogu</Link>
-          },
-          {
-            title: <Link to="/rent-house">Tìm thuê nhà đất</Link>
-          }
-        ]}
-      />
+      <CustomBreadcrumbs />
 
       <Row>
         <Col span={18}>

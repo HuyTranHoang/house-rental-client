@@ -1,0 +1,11 @@
+.ant-card-meta-avatar {
+    padding-inline-end: 0 !important;
+}
+
+.ant-card-meta-title {
+    margin-top: 16px;
+}
+
+.ant-card-actions {
+    background-color: #69b1ff !important;
+}

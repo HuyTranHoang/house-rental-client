@@ -1,19 +1,21 @@
-import { Avatar, Breadcrumb, Card, Col, GetProp, Menu, MenuProps, Row, Space, Tooltip, Upload, UploadProps } from 'antd'
+import { Avatar, Card, Col, GetProp, Menu, MenuProps, Row, Space, Tooltip, Upload, UploadProps } from 'antd'
 import {
-  HomeOutlined,
-  IdcardOutlined, LoadingOutlined,
+  IdcardOutlined,
+  LoadingOutlined,
   LockOutlined,
-  LogoutOutlined, PlusOutlined,
+  LogoutOutlined,
+  PlusOutlined,
   ReadOutlined,
   StarOutlined
 } from '@ant-design/icons'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, selectAuth, updateProfile } from '../features/auth/authSlice.js'
 import { toast } from 'sonner'
 import { selectMenu, selectProfile } from '../features/profile/profileSlice.ts'
 import { useState } from 'react'
 import styled from 'styled-components'
+import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 
 const CustomUpload = styled(Upload)`
     cursor: pointer;
@@ -138,18 +140,9 @@ function ProfileLayout() {
   return (
     <Row>
       <Col span={24}>
-        <Breadcrumb
-          style={{ marginTop: '2rem', marginBottom: '1rem' }}
-          separator=">"
-          items={[
-            {
-              title: <Link to="/"><HomeOutlined /> Mogu</Link>
-            },
-            {
-              title: <Link to="/profile">Thông tin cá nhân</Link>
-            }
-          ]}
-        />
+        <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
+          <CustomBreadcrumbs />
+        </div>
       </Col>
       <Col span={6}>
         <Card style={{ width: 256, borderRadius: 0, borderLeft: 'none' }}>

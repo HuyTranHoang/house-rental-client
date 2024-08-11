@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import AppLayout from './ui/AppLayout.tsx'
 import RentHouse from './features/rent-house/RentHouse.tsx'
 import Home from './pages/Home.tsx'
@@ -17,6 +17,8 @@ import TransactionHistory from './features/profile/TransactionHistory.tsx'
 import Favorite from './features/profile/Favorite.tsx'
 import ServerError from './error/ServerError.tsx'
 import NotFound from './error/NotFound.tsx'
+import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
+import { HomeOutlined } from '@ant-design/icons'
 
 const layoutFluid = [
   {
@@ -34,39 +36,45 @@ const layoutFluid = [
   }
 ]
 
-const router = createBrowserRouter([
+export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
   ...layoutFluid,
   {
     element: <AppLayout />,
     children: [
       {
-        path: '/',
         element: <Home />,
-        index: true
+        index: true,
+        breadcrumb: () => <span><HomeOutlined /> Mogu</span>
       },
       {
-        path: 'home',
-        element: <Home />
+        path: '/',
+        element: <Home />,
+        breadcrumb: 'Mogu'
       },
       {
         path: '/rent-house',
-        element: <RentHouse />
+        element: <RentHouse />,
+        breadcrumb: 'Tìm thuê'
       },
       {
         path: 'login',
-        element: <Login />
+        element: <Login />,
+        breadcrumb: 'Đăng nhập'
       },
       {
         path: 'register',
-        element: <Register />
+        element: <Register />,
+        breadcrumb: 'Đăng ký'
       },
       {
         path: 'request-reset-password',
-        element: <RequestResetPassword />
+        element: <RequestResetPassword />,
+        breadcrumb: 'Quên mật khẩu'
       },
       {
         path: 'reset-password',
-        element: <ResetPassword />
+        element: <ResetPassword />,
+        breadcrumb: 'Đặt lại mật khẩu'
       },
       {
         element: <ProtectedRoute />,
@@ -74,22 +82,27 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <ProfileLayout />,
+            breadcrumb: 'Hồ sơ',
             children: [
               {
                 element: <Profile />,
-                index: true
+                index: true,
+                breadcrumb: 'Hồ sơ'
               },
               {
                 path: 'change-password',
-                element: <ChangePassword />
+                element: <ChangePassword />,
+                breadcrumb: 'Đổi mật khẩu'
               },
               {
                 path: 'transaction-history',
-                element: <TransactionHistory />
+                element: <TransactionHistory />,
+                breadcrumb: 'Lịch sử giao dịch'
               },
               {
                 path: 'favorite',
-                element: <Favorite />
+                element: <Favorite />,
+                breadcrumb: 'Yêu thích'
               }
             ]
           }
@@ -97,14 +110,18 @@ const router = createBrowserRouter([
       },
       {
         path: 'server-error',
-        element: <ServerError />
+        element: <ServerError />,
+        breadcrumb: 'Lỗi server'
       },
       {
         path: '*',
-        element: <NotFound />
+        element: <NotFound />,
+        breadcrumb: 'Không tìm thấy'
       }
     ] // End of AppLayout withSidebar={false} withFilter={false} children
   }
-])
+]
+
+const router = createBrowserRouter(routerList)
 
 export default router
