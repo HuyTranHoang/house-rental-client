@@ -1,13 +1,13 @@
 import { Alert, Button, Col, Divider, Flex, Form, FormProps, Input, Row, Typography } from 'antd'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
-import GradientButton from '../../components/GradientButton.jsx'
+import GradientButton from '@/components/GradientButton.jsx'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
 import { selectAuth } from './authSlice.ts'
-import Spinner from '../../components/Spinner.jsx'
-import axiosInstance from '../../inteceptor/axiosInstance.ts'
+import Spinner from '@/components/Spinner.jsx'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 
 type FieldType = {
   lastName: string

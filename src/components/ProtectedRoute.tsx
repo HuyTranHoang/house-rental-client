@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
-import { selectAuth } from '../features/auth/authSlice.ts'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { selectAuth } from '@/features/auth/authSlice.ts'
 
 
 function ProtectedRoute() {

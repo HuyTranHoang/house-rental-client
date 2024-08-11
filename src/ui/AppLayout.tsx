@@ -1,14 +1,11 @@
-import { Layout } from 'antd'
+import { Col, Layout, Row } from 'antd'
 
 import MyFooter from './Footer.tsx'
-
-const { Header, Footer, Sider, Content } = Layout
-import { Row, Col } from 'antd'
 import Navbar from './Navbar.tsx'
 import { Outlet } from 'react-router-dom'
 import React from 'react'
-import RentHouseFilter from '../features/rent-house/RentHouseFilter.tsx'
-import SiderContent from './SiderContent.tsx'
+
+const { Header, Footer, Content } = Layout
 
 const headerStyle: React.CSSProperties = {
   display: 'flex',
@@ -20,20 +17,12 @@ const headerStyle: React.CSSProperties = {
   backgroundColor: '#FFFFFF'
 }
 
-const siderStyle: React.CSSProperties = {
-  backgroundColor: '#F5F5F5'
-}
-
 const footerStyle: React.CSSProperties = {
   backgroundColor: '#E9E9E9'
 }
 
-interface AppLayoutProps {
-  withSidebar: boolean
-  withFilter: boolean
-}
 
-function AppLayout({ withSidebar, withFilter }: AppLayoutProps) {
+function AppLayout() {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header style={headerStyle}>
@@ -43,23 +32,9 @@ function AppLayout({ withSidebar, withFilter }: AppLayoutProps) {
         <Row>
           <Col xs={1} sm={2} md={5}></Col>
           <Col xs={22} sm={20} md={14}>
-            <Layout>
-              <Content>
-                {withFilter && <RentHouseFilter />}
-                <Row>
-                  <Layout>
-                    <Content>
-                      <Outlet />
-                    </Content>
-                    {withSidebar && (
-                      <Sider width="30%" style={siderStyle}>
-                        <SiderContent />
-                      </Sider>
-                    )}
-                  </Layout>
-                </Row>
-              </Content>
-            </Layout>
+            <Content>
+              <Outlet />
+            </Content>
           </Col>
           <Col xs={1} sm={2} md={5}></Col>
         </Row>

@@ -1,9 +1,9 @@
 import { Alert, Card, Form, FormProps, Input } from 'antd'
 import { AntDesignOutlined } from '@ant-design/icons'
-import GradientButton from '../../components/GradientButton.jsx'
 import { useState } from 'react'
-import { changePasswordApi } from '../../fetchers/user.fetch.ts'
+import { changePasswordApi } from '@/api/user.api.ts'
 import { toast } from 'sonner'
+import GradientButton from '@/components/GradientButton.tsx'
 
 
 type FieldType = {
@@ -40,7 +40,7 @@ function ChangePassword() {
         name="changePassword"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        initialValues={{oldPassword: '', newPassword: '', confirmPassword: ''}}
+        initialValues={{ oldPassword: '', newPassword: '', confirmPassword: '' }}
         autoComplete="off"
         labelCol={{ span: 6 }}
       >

@@ -1,5 +1,5 @@
-import axiosInstance from '../inteceptor/axiosInstance.ts'
 import { toast } from 'sonner'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 
 type updateProfileType = {
   lastName: string

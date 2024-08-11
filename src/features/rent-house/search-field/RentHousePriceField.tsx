@@ -1,5 +1,5 @@
 import { Form, Select } from 'antd'
-import { useAppDispatch } from '../../../store.ts'
+import { useAppDispatch } from '@/store.ts'
 import { setMinPrice, setMaxPrice } from '../rentHouseSlice.ts'
 import { DollarIcon } from '../RentHouseFilterIcons.tsx'
 

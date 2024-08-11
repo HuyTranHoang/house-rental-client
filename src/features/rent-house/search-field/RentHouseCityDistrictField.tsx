@@ -1,5 +1,5 @@
 import { Form, Cascader, CascaderProps } from 'antd'
-import { useAppDispatch } from '../../../store.ts'
+import { useAppDispatch } from '@/store.ts'
 import { setCityId, setDistrictId } from '../rentHouseSlice.ts'
 import { GeoIcon } from '../RentHouseFilterIcons.tsx'
 

@@ -1,5 +1,5 @@
 import { Form, Input } from 'antd'
-import { useAppDispatch } from '../../../store.ts'
+import { useAppDispatch } from '@/store.ts'
 import { setSearch } from '../rentHouseSlice.ts'
 
 type FieldType = {

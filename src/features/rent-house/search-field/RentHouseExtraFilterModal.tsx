@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Modal, Button, Select, Typography, Badge } from 'antd'
-import { useAppDispatch } from '../../../store.ts'
+import { useAppDispatch } from '@/store.ts'
 import { setMinArea, setMaxArea, setNumOfDays } from '../rentHouseSlice.ts'
 import { ProductOutlined, SelectOutlined, CalendarOutlined } from '@ant-design/icons'
 

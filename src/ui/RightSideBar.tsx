@@ -1,14 +1,14 @@
 import { Button, List, Typography } from 'antd'
 import { useQuery } from '@tanstack/react-query'
-import { fetchAllRoomTypes } from '../fetchers/roomType.fetch.ts'
+import { fetchAllRoomTypes } from '../api/roomType.api.ts'
 import { District } from '../models/district.type.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { CSSProperties } from 'react'
-import { fetchAllCities } from '../fetchers/city.fetch.ts'
+import { fetchAllCities } from '../api/city.api.ts'
 import { City } from '../models/city.type.ts'
 import { useSelector } from 'react-redux'
 import { selectPropertyParams, setCityId, setDistrictId, setRoomTypeId } from '../features/rent-house/rentHouseSlice.ts'
-import { fetchAllDistricts } from '../fetchers/district.fetch.ts'
+import { fetchAllDistricts } from '../api/district.api.ts'
 import { useAppDispatch } from '../store.ts'
 
 const listStyle: CSSProperties = {
@@ -21,7 +21,7 @@ const listStyle: CSSProperties = {
   paddingBottom: '8px'
 }
 
-function SiderContent() {
+function RightSideBar() {
   const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
     queryKey: ['roomTypes'],
     queryFn: fetchAllRoomTypes
@@ -106,4 +106,4 @@ function SiderContent() {
   )
 }
 
-export default SiderContent
+export default RightSideBar

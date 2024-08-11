@@ -1,8 +1,8 @@
-import axiosInstance from '../inteceptor/axiosInstance.ts'
 import { toast } from 'sonner'
-import { Property } from '../models/property.type.ts'
-import { PageInfo } from '../models/pageInfo.type.ts'
-import { delay } from '../utils/delay.ts'
+import { Property } from '@/models/property.type.ts'
+import { PageInfo } from '@/models/pageInfo.type.ts'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import { delay } from '@/utils/delay.ts'
 
 
 interface PropertyResponse {

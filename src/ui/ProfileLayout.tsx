@@ -17,7 +17,7 @@ import styled from 'styled-components'
 
 const CustomUpload = styled(Upload)`
     cursor: pointer;
-    
+
     &:hover {
         opacity: 0.8;
     }
@@ -146,8 +146,7 @@ function ProfileLayout() {
               title: <Link to="/"><HomeOutlined /> Mogu</Link>
             },
             {
-              title: <Link to="/profile" onClick={() => dispatch(selectMenu(['thongTinCaNhan']))}>
-                Thông tin cá nhân</Link>
+              title: <Link to="/profile">Thông tin cá nhân</Link>
             }
           ]}
         />

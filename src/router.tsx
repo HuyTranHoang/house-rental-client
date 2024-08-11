@@ -18,36 +18,6 @@ import Favorite from './features/profile/Favorite.tsx'
 import ServerError from './error/ServerError.tsx'
 import NotFound from './error/NotFound.tsx'
 
-
-const layoutWithSidebarWithFilter = [
-  {
-    element: <AppLayout withSidebar withFilter />,
-    children: [
-      {
-        path: '/rent-house',
-        element: <RentHouse />
-      }
-    ] // End of AppLayout withSidebar withFilter children
-  }
-]
-
-const layoutWithSideBar = [
-  {
-    element: <AppLayout withSidebar withFilter={false} />,
-    children: [
-      {
-        path: '/',
-        element: <Home />,
-        index: true
-      },
-      {
-        path: 'home',
-        element: <Home />
-      }
-    ] // End of AppLayout withSidebar children
-  }
-]
-
 const layoutFluid = [
   {
     element: <AppLayoutFluid />,
@@ -65,12 +35,23 @@ const layoutFluid = [
 ]
 
 const router = createBrowserRouter([
-  ...layoutWithSidebarWithFilter,
-  ...layoutWithSideBar,
   ...layoutFluid,
   {
-    element: <AppLayout withSidebar={false} withFilter={false} />,
+    element: <AppLayout />,
     children: [
+      {
+        path: '/',
+        element: <Home />,
+        index: true
+      },
+      {
+        path: 'home',
+        element: <Home />
+      },
+      {
+        path: '/rent-house',
+        element: <RentHouse />
+      },
       {
         path: 'login',
         element: <Login />

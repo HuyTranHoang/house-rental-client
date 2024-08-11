@@ -1,7 +1,7 @@
 import { Card, Col, Flex, Row, Tag, Typography } from 'antd'
-import { formatDate } from '../../utils/formatDate.ts'
+import { formatDate } from '@/utils/formatDate.ts'
 import { HeartOutlined } from '@ant-design/icons'
-import { Property } from '../../models/property.type.ts'
+import { Property } from '@/models/property.type.ts'
 
 interface RentHouseCardItemProps {
   property: Property

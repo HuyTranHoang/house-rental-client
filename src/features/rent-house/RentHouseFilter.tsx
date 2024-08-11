@@ -1,8 +1,8 @@
 import { Row, Col, Form } from 'antd';
 import { useQuery } from '@tanstack/react-query';
-import { fetchAllCities } from '../../fetchers/city.fetch.ts';
-import { fetchAllDistricts } from '../../fetchers/district.fetch.ts';
-import { fetchAllRoomTypes } from '../../fetchers/roomType.fetch.ts';
+import { fetchAllCities } from '@/api/city.api.ts';
+import { fetchAllDistricts } from '@/api/district.api.ts';
+import { fetchAllRoomTypes } from '@/api/roomType.api.ts';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { selectPropertyParams } from './rentHouseSlice.ts';
@@ -52,6 +52,8 @@ function RentHouseFilter() {
     })));
   }
 
+
+  // Dùng useEffect để cập nhật giá trị của form khi có thay đổi từ các biến roomTypeId, cityId, districtId ở bên ngoài
   useEffect(() => {
     if (roomTypeId) {
       form.setFieldsValue({ roomType: roomTypeId.toString() });

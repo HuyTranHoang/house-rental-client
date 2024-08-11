@@ -10,13 +10,13 @@ import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
 import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.ts'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import GradientButton from '../../components/GradientButton.jsx'
+import GradientButton from '@/components/GradientButton.jsx'
 import { useEffect, useState } from 'react'
-import Spinner from '../../components/Spinner.jsx'
-import axiosInstance from '../../inteceptor/axiosInstance.ts'
-import { User } from '../../models/user.type.ts'
-import { useAppDispatch } from '../../store.ts'
-import { delay } from '../../utils/delay.ts'
+import Spinner from '@/components/Spinner.jsx'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import { User } from '@/models/user.type.ts'
+import { useAppDispatch } from '@/store.ts'
+import { delay } from '@/utils/delay.ts'
 
 
 type FieldType = {
@@ -53,7 +53,7 @@ function Login() {
       console.log('>>>LOGIN.JSX', response)
       toast.success('Đăng nhập thành công')
 
-      const payload: {user: User, token: string} = {
+      const payload: { user: User, token: string } = {
         user: response.data,
         token: response.headers['jwt-token']
       }

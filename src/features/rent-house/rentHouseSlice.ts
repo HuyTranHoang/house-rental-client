@@ -1,6 +1,6 @@
-import { PropertyParams } from '../../models/property.params.type.ts'
+import { PropertyParams } from '@/models/property.params.type.ts'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IRootState } from '../../store.ts'
+import { IRootState } from '@/store.ts'
 
 const initialState: PropertyParams = {
   search: '',
@@ -69,9 +69,6 @@ const rentHouseSlice = createSlice({
     setNumOfDays(state, action: PayloadAction<number>) {
       state.numOfDays = action.payload
       state.pageNumber = 1
-    },
-    resetAll(state) {
-      state = initialState
     }
   }
 })
@@ -89,7 +86,6 @@ export const {
   setPageSize,
   setSortBy,
   setNumOfDays,
-  resetAll
 } = rentHouseSlice.actions
 
 export default rentHouseSlice.reducer

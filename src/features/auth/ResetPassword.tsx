@@ -2,12 +2,12 @@ import { useSelector } from 'react-redux'
 import { selectAuth } from './authSlice.ts'
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import axiosInstance from '../../inteceptor/axiosInstance.ts'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { toast } from 'sonner'
-import Spinner from '../../components/Spinner.tsx'
+import Spinner from '@/components/Spinner.tsx'
 import { Alert, Button, Col, Divider, Form, FormProps, Input, Row, Typography } from 'antd'
 import { AntDesignOutlined, UnlockOutlined } from '@ant-design/icons'
-import GradientButton from '../../components/GradientButton.tsx'
+import GradientButton from '@/components/GradientButton.tsx'
 
 type FieldType = {
   email: string

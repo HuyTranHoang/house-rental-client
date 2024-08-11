@@ -1,5 +1,5 @@
 import { Form, Select } from 'antd'
-import { useAppDispatch } from '../../../store.ts'
+import { useAppDispatch } from '@/store.ts'
 import { setRoomTypeId } from '../rentHouseSlice.ts'
 import { HomeIcon } from '../RentHouseFilterIcons.tsx'
 

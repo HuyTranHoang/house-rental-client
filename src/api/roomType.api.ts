@@ -1,6 +1,6 @@
-import axiosInstance from '../inteceptor/axiosInstance.ts'
-import { District } from '../models/district.type.ts'
 import { toast } from 'sonner'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import { District } from '@/models/district.type.ts'
 
 export const fetchAllRoomTypes = async () => {
   try {
