@@ -1,4 +1,4 @@
-import { Alert, Card, Form, FormProps, Input } from 'antd'
+import { Alert, Card, Form, FormProps, Input, Typography } from 'antd'
 import {
   AntDesignOutlined
 } from '@ant-design/icons'
@@ -36,7 +36,8 @@ function Profile() {
   }, [dispatch])
 
   return (
-    <Card style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
+    <Card title={<Typography.Title level={4}>Thay đổi thông Tin Cá Nhân</Typography.Title>}
+      style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
       <Form
         name="profile"
         onFinish={onFinish}

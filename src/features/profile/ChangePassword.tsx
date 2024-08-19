@@ -1,4 +1,4 @@
-import { Alert, Card, Form, FormProps, Input } from 'antd'
+import { Alert, Card, Form, FormProps, Input, Typography } from 'antd'
 import { AntDesignOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { changePasswordApi } from '@/api/user.api.ts'
@@ -34,7 +34,8 @@ function ChangePassword() {
   }
 
   return (
-    <Card style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
+    <Card title={<Typography.Title level={4}>Thay đổi mật khẩu</Typography.Title>}
+      style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
       <Form
         form={form}
         name="changePassword"
