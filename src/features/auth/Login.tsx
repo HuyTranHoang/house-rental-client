@@ -1,22 +1,16 @@
-import { Button, Checkbox, Col, Divider, Flex, Form, FormProps, Input, Row, Typography } from 'antd'
-import {
-  AntDesignOutlined,
-  FacebookFilled,
-  GoogleCircleFilled,
-  UnlockOutlined,
-  UserOutlined
-} from '@ant-design/icons'
+import { Button, Checkbox, Col, Divider, Flex, Form, FormProps, Input, Row, Spin, Typography } from 'antd'
+import { AntDesignOutlined, FacebookFilled, GoogleCircleFilled, UnlockOutlined, UserOutlined } from '@ant-design/icons'
 import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
 import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice.ts'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import GradientButton from '@/components/GradientButton.jsx'
 import { useEffect, useState } from 'react'
-import Spinner from '@/components/Spinner.jsx'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { User } from '@/models/user.type.ts'
 import { useAppDispatch } from '@/store.ts'
 import { delay } from '@/utils/delay.ts'
+import CustomIndicator from '@/components/CustomIndicator.tsx'
 
 
 type FieldType = {
@@ -68,7 +62,10 @@ function Login() {
   }
 
   if (isAuthenticated) {
-    return <Spinner spinning={spinning} />
+    return <Spin indicator={<CustomIndicator />}
+                 spinning={spinning}
+                 tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
+                 fullscreen />
   }
 
   return (

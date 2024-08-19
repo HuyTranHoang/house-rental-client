@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Divider, Flex, Form, FormProps, Input, Row, Typography } from 'antd'
+import { Alert, Button, Col, Divider, Flex, Form, FormProps, Input, Row, Spin, Typography } from 'antd'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
 import GradientButton from '@/components/GradientButton.jsx'
@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useSelector } from 'react-redux'
 import { selectAuth } from './authSlice.ts'
-import Spinner from '@/components/Spinner.jsx'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import CustomIndicator from '@/components/CustomIndicator.tsx'
 
 type FieldType = {
   lastName: string
@@ -61,7 +61,10 @@ function Register() {
   }
 
   if (isAuthenticated) {
-    return <Spinner spinning={spinning} />
+    return <Spin indicator={<CustomIndicator />}
+                 spinning={spinning}
+                 tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
+                 fullscreen />
   }
 
   return (

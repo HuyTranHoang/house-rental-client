@@ -6,10 +6,10 @@ import { loginFailure, loginSuccess } from './features/auth/authSlice.ts'
 import { RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
 
-import Spinner from './components/Spinner.tsx'
-
 import { delay } from './utils/delay.ts'
 import router from './router.tsx'
+import { Spin } from 'antd'
+import CustomIndicator from '@/components/CustomIndicator.tsx'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -43,7 +43,10 @@ function App() {
   }, [dispatch])
 
   if (spinning) {
-    return <Spinner spinning={spinning} />
+    return <Spin indicator={<CustomIndicator />}
+                 spinning={spinning}
+                 tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
+                 fullscreen />
   }
 
   return (

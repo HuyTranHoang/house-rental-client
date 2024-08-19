@@ -2,8 +2,6 @@ import { toast } from 'sonner'
 import { Property } from '@/models/property.type.ts'
 import { PageInfo } from '@/models/pageInfo.type.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { delay } from '@/utils/delay.ts'
-
 
 interface PropertyResponse {
   data: Property[],
@@ -40,7 +38,6 @@ export const fetchAllProperties = async (pageSize: number,
     }
 
     const response = await axiosInstance.get<PropertyResponse>('/api/properties', { params })
-    await delay(500)
     return response.data
   } catch (error) {
     toast.error('Lỗi khi tải dữ liệu bài đăng')

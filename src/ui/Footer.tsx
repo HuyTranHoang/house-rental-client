@@ -58,7 +58,7 @@ function Footer() {
               <YoutubeFilled style={{ color: 'red', fontSize: '1.6rem' }} />
             </div>
 
-            <div>
+            <div style={{marginRight: 40}}>
               <Typography.Title level={5}>CÔNG TY CỔ PHẦN MOGU</Typography.Title>
 
               <p style={{ color: '#745E5E' }}>
@@ -73,7 +73,7 @@ function Footer() {
               </Link>
 
               <p style={{ color: '#745E5E' }}>
-                House-rental có trách nhiệm chuyển tải thông tin. Chúng tôi không chịu bất kỳ trách nhiệm nào từ các tin
+                Mogu có trách nhiệm chuyển tải thông tin. Chúng tôi không chịu bất kỳ trách nhiệm nào từ các tin
                 này.
               </p>
             </div>

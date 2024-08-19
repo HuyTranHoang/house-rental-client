@@ -85,7 +85,7 @@ function RentHouse() {
           {isLoading && (
             <>
               {Array.from({ length: pageSize }).map((_, index) => (
-                <Card key={index} style={{ marginBottom: '8px' }} loading={true}></Card>
+                <Card key={index} style={{ marginBottom: 8, marginRight: 16 }} loading={true}></Card>
               ))}
             </>
           )}

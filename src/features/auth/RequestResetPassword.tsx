@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { toast } from 'sonner'
-import Spinner from '@/components/Spinner.tsx'
-import { Alert, Button, Col, Divider, Form, FormProps, Input, Row, Typography } from 'antd'
+import { Alert, Button, Col, Divider, Form, FormProps, Input, Row, Spin, Typography } from 'antd'
 import { AntDesignOutlined, MailOutlined } from '@ant-design/icons'
 import GradientButton from '@/components/GradientButton.tsx'
+import CustomIndicator from '@/components/CustomIndicator.tsx'
 
 
 type FieldType = {
@@ -57,7 +57,10 @@ function RequestResetPassword() {
   }
 
   if (isAuthenticated) {
-    return <Spinner spinning={spinning} />
+    return <Spin indicator={<CustomIndicator />}
+                 spinning={spinning}
+                 tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
+                 fullscreen />
   }
 
   return (
