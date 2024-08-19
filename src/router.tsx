@@ -19,8 +19,9 @@ import ServerError from './error/ServerError.tsx'
 import NotFound from './error/NotFound.tsx'
 import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
 import { HomeOutlined } from '@ant-design/icons'
+import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
 
-const layoutFluid = [
+const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
     element: <AppLayoutFluid />,
     children: [
@@ -31,6 +32,11 @@ const layoutFluid = [
       {
         path: 'about',
         element: <About />
+      },
+      {
+        path: 'rent-house/:id',
+        element: <PropertyDetail />,
+        breadcrumb: 'Chi tiết bài đăng'
       }
     ] // End of AppLayoutFluid children
   }

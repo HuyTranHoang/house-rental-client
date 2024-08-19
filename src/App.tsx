@@ -44,7 +44,6 @@ function App() {
 
   if (spinning) {
     return <Spin indicator={<CustomIndicator />}
-                 spinning={spinning}
                  tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
                  fullscreen />
   }

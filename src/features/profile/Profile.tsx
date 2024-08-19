@@ -84,7 +84,7 @@ function Profile() {
               message: 'Vui lòng nhập số điện thoại!'
             },
             {
-              pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/),
+              pattern: new RegExp(/(84|0[35789])+([0-9]{8})\b/),
               message: 'Số điện thoại không hợp lệ!'
             }
           ]}

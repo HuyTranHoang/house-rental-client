@@ -1,9 +1,10 @@
 import { Card, Col, Flex, Image, Row, Space, Tag, Typography } from 'antd'
 import { formatDate } from '@/utils/formatDate.ts'
-import { CalendarOutlined, EyeOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
+import { CalendarOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { Property } from '@/models/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 interface RentHouseCardItemProps {
@@ -12,13 +13,15 @@ interface RentHouseCardItemProps {
 
 function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const [isHover, setIsHover] = useState(false)
+  const navigate = useNavigate()
 
   return (
-    <Card style={{ marginRight: '16px', marginBottom: '8px' }}>
+    <Card style={{ marginRight: '16px', marginBottom: '8px', cursor: 'pointer' }}
+          onClick={() => navigate(`/rent-house/${property.id}`)}>
       <Row gutter={24}>
         <Col span={6}>
-          <Image preview={{ mask: <><EyeOutlined style={{ marginRight: 6 }} /> Chi tiết</> }}
-                 height={200} width={200} src={property.propertyImages[0]} style={{ objectFit: 'cover' }} />
+          <Image preview={false} height={200} width={200} src={property.propertyImages[0]}
+                 style={{ objectFit: 'cover' }} />
         </Col>
 
         <Col span={18}>

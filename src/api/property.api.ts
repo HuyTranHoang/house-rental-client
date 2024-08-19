@@ -18,8 +18,7 @@ export const fetchAllProperties = async (pageSize: number,
                                          search: string,
                                          minArea: number,
                                          maxArea: number,
-                                         numOfDays: number
-) => {
+                                         numOfDays: number) => {
   pageNumber = pageNumber - 1
 
   try {
@@ -38,6 +37,16 @@ export const fetchAllProperties = async (pageSize: number,
     }
 
     const response = await axiosInstance.get<PropertyResponse>('/api/properties', { params })
+    return response.data
+  } catch (error) {
+    toast.error('Lỗi khi tải dữ liệu bài đăng')
+    throw error
+  }
+}
+
+export const fetchPropertyById = async (id: number) => {
+  try {
+    const response = await axiosInstance.get<Property>(`/api/properties/${id}`)
     return response.data
   } catch (error) {
     toast.error('Lỗi khi tải dữ liệu bài đăng')
