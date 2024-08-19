@@ -9,3 +9,8 @@
 .ant-card-actions {
     background-color: #69b1ff !important;
 }
+
+
+.swiper-button-next::after, .swiper-button-prev::after {
+    content: "" !important;
+}
