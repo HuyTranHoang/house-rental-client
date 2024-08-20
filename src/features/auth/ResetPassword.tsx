@@ -8,6 +8,8 @@ import { Alert, Button, Col, Divider, Form, FormProps, Input, Row, Spin, Typogra
 import { AntDesignOutlined, UnlockOutlined } from '@ant-design/icons'
 import GradientButton from '@/components/GradientButton.tsx'
 import CustomIndicator from '@/components/CustomIndicator.tsx'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { delay } from '@/utils/delay.ts'
 
 type FieldType = {
   email: string
@@ -41,16 +43,27 @@ function ResetPassword() {
   }, [location.search])
 
   useEffect(() => {
+    let isMounted = true;
+
     if (isAuthenticated) {
-      setTimeout(() => {
-        navigate(redirectTo)
-      }, 300)
+      delay(300).then(() => {
+        if (isMounted) {
+          toast.info('Bạn đã đăng nhập rồi!!!');
+          navigate(redirectTo);
+        }
+      });
     } else {
-      setTimeout(() => {
-        setSpinning(false)
-      }, 300)
+      delay(300).then(() => {
+        if (isMounted) {
+          setSpinning(false);
+        }
+      });
     }
-  }, [isAuthenticated, navigate, redirectTo])
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated, navigate, redirectTo]);
 
   const onFinish = async (values: FieldType) => {
     console.log('Success submit:', values)
@@ -151,7 +164,7 @@ function ResetPassword() {
             <Typography.Text>
               Bạn đã có tài khoản?
             </Typography.Text>
-            <Link to={'/login'}>
+            <Link to={ROUTER_NAMES.LOGIN}>
               <Button type="link">
                 Đăng nhập
               </Button>

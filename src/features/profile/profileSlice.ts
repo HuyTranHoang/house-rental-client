@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IRootState } from '../../store.ts'
+import { IRootState } from '@/store.ts'
 
 interface IProfileState {
   currentSelectMenu: string[];

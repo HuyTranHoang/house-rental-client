@@ -16,6 +16,7 @@ import { selectMenu, selectProfile } from '../features/profile/profileSlice.ts'
 import { useState } from 'react'
 import styled from 'styled-components'
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 const CustomUpload = styled(Upload)`
     cursor: pointer;
@@ -25,17 +26,16 @@ const CustomUpload = styled(Upload)`
     }
 `
 
-
 type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
   {
-    key: 'favorite',
+    key: ROUTER_NAMES.FAVORITE,
     label: 'Bất động sản yêu thích',
     icon: <StarOutlined />
   },
   {
-    key: 'transaction-history',
+    key: ROUTER_NAMES.TRANSACTION_HISTORY,
     label: 'Lịch sử giao dịch',
     icon: <ReadOutlined />
   },
@@ -48,7 +48,7 @@ const items: MenuItem[] = [
     icon: <IdcardOutlined />
   },
   {
-    key: 'change-password',
+    key: ROUTER_NAMES.CHANGE_PASSWORD,
     label: 'Thay đổi mật khẩu',
     icon: <LockOutlined />
   },
@@ -96,16 +96,16 @@ function ProfileLayout() {
       case 'dangXuat':
         localStorage.removeItem('jwtToken')
         dispatch(logout())
-        navigate('/')
+        navigate(ROUTER_NAMES.HOME)
         toast.success('Đăng xuất thành công')
         break
       case 'thongTinCaNhan':
         dispatch(selectMenu(['thongTinCaNhan']))
-        navigate('/profile')
+        navigate(ROUTER_NAMES.PROFILE)
         break
       default:
         dispatch(selectMenu([key]))
-        navigate(`/profile/${key}`)
+        navigate(key)
     }
   }
 

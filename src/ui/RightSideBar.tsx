@@ -41,7 +41,7 @@ function RightSideBar() {
 
   return (
     <>
-      <img src="https://cdn.mogi.vn/banner/2024/2_d87b2319-9b47-4dde-b479-89f4bd4bc581.jpg"
+      <img src="/aptechonehome.jpg"
            style={{ width: '100%', marginTop: '16px' }} alt="banner" />
       <List
         size="small"

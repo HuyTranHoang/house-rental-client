@@ -5,6 +5,7 @@ import { Property } from '@/models/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 
 interface RentHouseCardItemProps {
@@ -17,7 +18,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
 
   return (
     <Card style={{ marginRight: '16px', marginBottom: '8px', cursor: 'pointer' }}
-          onClick={() => navigate(`/rent-house/${property.id}`)}>
+          onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}>
       <Row gutter={24}>
         <Col span={6}>
           <Image preview={false} height={200} width={200} src={property.propertyImages[0]}

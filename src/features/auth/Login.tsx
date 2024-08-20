@@ -11,6 +11,7 @@ import { User } from '@/models/user.type.ts'
 import { useAppDispatch } from '@/store.ts'
 import { delay } from '@/utils/delay.ts'
 import CustomIndicator from '@/components/CustomIndicator.tsx'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 
 type FieldType = {
@@ -32,12 +33,27 @@ function Login() {
   const [spinning, setSpinning] = useState(true)
 
   useEffect(() => {
+    let isMounted = true;
+
     if (isAuthenticated) {
-      delay(300).then(() => navigate(redirectTo))
+      delay(300).then(() => {
+        if (isMounted) {
+          toast.info('Bạn đã đăng nhập rồi!!!');
+          navigate(redirectTo);
+        }
+      });
     } else {
-      delay(300).then(() => setSpinning(false))
+      delay(300).then(() => {
+        if (isMounted) {
+          setSpinning(false);
+        }
+      });
     }
-  }, [isAuthenticated, navigate, redirectTo])
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated, navigate, redirectTo]);
 
   const onFinish = async (values: FieldType) => {
     console.log('Success submit:', values)
@@ -114,7 +130,7 @@ function Login() {
               <Checkbox>Nhớ đăng nhập</Checkbox>
             </Form.Item>
             <Form.Item>
-              <Link to={'/request-reset-password'}>
+              <Link to={ROUTER_NAMES.REQUEST_RESET_PASSWORD}>
                 <Button type="link">
                   Quên mật khẩu?
                 </Button>
@@ -133,7 +149,7 @@ function Login() {
             <Typography.Text>
               Bạn chưa có tài khoản?
             </Typography.Text>
-            <Link to={'/register'}>
+            <Link to={ROUTER_NAMES.REGISTER}>
               <Button type="link">
                 Đăng ký
               </Button>

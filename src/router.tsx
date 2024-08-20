@@ -20,21 +20,22 @@ import NotFound from './error/NotFound.tsx'
 import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
 import { HomeOutlined } from '@ant-design/icons'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
     element: <AppLayoutFluid />,
     children: [
       {
-        path: 'contact',
+        path: ROUTER_NAMES.CONTACT,
         element: <Contact />
       },
       {
-        path: 'about',
+        path: ROUTER_NAMES.ABOUT,
         element: <About />
       },
       {
-        path: 'rent-house/:id',
+        path: ROUTER_NAMES.PROPERTY_DETAIL,
         element: <PropertyDetail />,
         breadcrumb: 'Chi tiết bài đăng'
       }
@@ -53,32 +54,32 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
         breadcrumb: () => <span><HomeOutlined /> Mogu</span>
       },
       {
-        path: '/',
+        path: ROUTER_NAMES.HOME,
         element: <Home />,
         breadcrumb: 'Mogu'
       },
       {
-        path: '/rent-house',
+        path: ROUTER_NAMES.RENT_HOUSE,
         element: <RentHouse />,
         breadcrumb: 'Tìm thuê'
       },
       {
-        path: 'login',
+        path: ROUTER_NAMES.LOGIN,
         element: <Login />,
         breadcrumb: 'Đăng nhập'
       },
       {
-        path: 'register',
+        path: ROUTER_NAMES.REGISTER,
         element: <Register />,
         breadcrumb: 'Đăng ký'
       },
       {
-        path: 'request-reset-password',
+        path: ROUTER_NAMES.REQUEST_RESET_PASSWORD,
         element: <RequestResetPassword />,
         breadcrumb: 'Quên mật khẩu'
       },
       {
-        path: 'reset-password',
+        path: ROUTER_NAMES.RESET_PASSWORD,
         element: <ResetPassword />,
         breadcrumb: 'Đặt lại mật khẩu'
       },
@@ -86,7 +87,7 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
         element: <ProtectedRoute />,
         children: [
           {
-            path: 'profile',
+            path: ROUTER_NAMES.PROFILE,
             element: <ProfileLayout />,
             breadcrumb: 'Hồ sơ',
             children: [
@@ -96,17 +97,17 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
                 breadcrumb: 'Hồ sơ'
               },
               {
-                path: 'change-password',
+                path: ROUTER_NAMES.CHANGE_PASSWORD,
                 element: <ChangePassword />,
                 breadcrumb: 'Đổi mật khẩu'
               },
               {
-                path: 'transaction-history',
+                path: ROUTER_NAMES.TRANSACTION_HISTORY,
                 element: <TransactionHistory />,
                 breadcrumb: 'Lịch sử giao dịch'
               },
               {
-                path: 'favorite',
+                path: ROUTER_NAMES.FAVORITE,
                 element: <Favorite />,
                 breadcrumb: 'Yêu thích'
               }
@@ -115,7 +116,7 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
         ] // End of ProfileLayout children
       },
       {
-        path: 'server-error',
+        path: ROUTER_NAMES.SERVER_ERROR,
         element: <ServerError />,
         breadcrumb: 'Lỗi server'
       },

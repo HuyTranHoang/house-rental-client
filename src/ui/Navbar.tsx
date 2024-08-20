@@ -10,6 +10,7 @@ import './Navbar.scss'
 import { useAppDispatch } from '../store.ts'
 import { selectMenu } from '../features/profile/profileSlice.ts'
 import { UserOutlined } from '@ant-design/icons'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 const CustomImg = styled.img`
     width: 100px;
@@ -50,7 +51,7 @@ function Navbar() {
     {
       key: '1',
       label: (
-        <Link to={'/profile'} onClick={() => dispatch(selectMenu(['thongTinCaNhan']))}>
+        <Link to={ROUTER_NAMES.PROFILE} onClick={() => dispatch(selectMenu(['thongTinCaNhan']))}>
           Thông tin cá nhân
         </Link>
       )
@@ -58,7 +59,8 @@ function Navbar() {
     {
       key: '2',
       label: (
-        <Link to={'/profile/transaction-history'} onClick={() => dispatch(selectMenu(['transaction-history']))}>
+        <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}
+              onClick={() => dispatch(selectMenu([ROUTER_NAMES.TRANSACTION_HISTORY]))}>
           Lịch sử giao dịch
         </Link>
       )
@@ -66,7 +68,7 @@ function Navbar() {
     {
       key: '3',
       label: (
-        <Link to={'/profile/favorite'} onClick={() => dispatch(selectMenu(['favorite']))}>
+        <Link to={ROUTER_NAMES.FAVORITE} onClick={() => dispatch(selectMenu([ROUTER_NAMES.FAVORITE]))}>
           Bất động sản yêu thích
         </Link>
       )
@@ -85,7 +87,7 @@ function Navbar() {
     if (key === 'logout') {
       localStorage.removeItem('jwtToken')
       dispatch(logout())
-      navigate('/')
+      navigate(ROUTER_NAMES.HOME)
       toast.success('Đăng xuất thành công')
     }
   }
@@ -93,27 +95,24 @@ function Navbar() {
 
   return (
     <>
-      <Link to={'/'} style={{ display: 'flex' }}>
+      <Link to={ROUTER_NAMES.HOME} style={{ display: 'flex' }}>
         <CustomImg
           src={'/logo.png'}
           alt="Logo"
         />
       </Link>
       <Flex gap="small" wrap>
-        <NavItem title="Tìm thuê" link="/rent-house" />
+        <NavItem title="Tìm thuê" link={ROUTER_NAMES.RENT_HOUSE} />
 
-        <NavItem title="Phí thành viên" link="/membership-fee" />
-
-        <NavItem title="Dự án" link="/project" />
-
+        <NavItem title="Phí thành viên" link={ROUTER_NAMES.MEMBERSHIP_FEE} />
 
         {user && (
           <>
-            <NavItem title="Nạp tiền" link="/top-up" />
+            <NavItem title="Nạp tiền" link={ROUTER_NAMES.TOP_UP} />
 
-            <NavItem title="Mã thưởng" link="/promotional-code" />
+            <NavItem title="Mã thưởng" link={ROUTER_NAMES.PROMOTION} />
 
-            <NavItem title="Tin nhắn" link="/message" />
+            <NavItem title="Tin nhắn" link={ROUTER_NAMES.MESSAGE} />
 
             <Divider type="vertical" style={{ height: '2rem' }} />
 
@@ -134,7 +133,7 @@ function Navbar() {
           </>
         )}
 
-        {!user && <NavItem title="Đăng nhập" link="login" />}
+        {!user && <NavItem title="Đăng nhập" link={ROUTER_NAMES.LOGIN} />}
 
         <ColorButton defaultHover="#4096ff" borderColor="#4096ff" borderHoverColor="#4096ff"
                      lineWidth={1} fontWeight={'500'} type="default" style={{ marginLeft: 15 }}>

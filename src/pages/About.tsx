@@ -1,6 +1,7 @@
 import { Button, Col, Row, Typography } from 'antd'
 import Container from '../ui/Container.tsx'
 import { Link } from 'react-router-dom'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 function About() {
   return (
@@ -67,7 +68,7 @@ function About() {
             trợ</Typography.Title>
           <Typography.Paragraph>
             Địa chỉ: 180 Cao Lỗ, Phường 4, Quận 8, TP.HCM
-            <Link to={'/contact'}><Button type="link">Đi đến trang liên hệ</Button></Link>
+            <Link to={ROUTER_NAMES.CONTACT}><Button type="link">Đi đến trang liên hệ</Button></Link>
           </Typography.Paragraph>
 
         </Col>

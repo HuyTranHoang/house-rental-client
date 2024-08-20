@@ -1,5 +1,6 @@
 import { Button, Result } from 'antd'
 import { Link } from 'react-router-dom'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 function NotFound() {
   return (
@@ -7,7 +8,7 @@ function NotFound() {
       status="404"
       title="404"
       subTitle="Xin lỗi, trang bạn đang tìm kiếm không tồn tại."
-      extra={<Link to={'/'}><Button type="primary">Trở về trang chủ</Button></Link>}
+      extra={<Link to={ROUTER_NAMES.HOME}><Button type="primary">Trở về trang chủ</Button></Link>}
     />
   )
 }
