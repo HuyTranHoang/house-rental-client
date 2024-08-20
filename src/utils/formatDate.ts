@@ -1,7 +1,9 @@
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
-export function formatDate(createdAt: string): string {
+export function formatDate(createdAt: string | undefined): string {
+  if (!createdAt) return '';
+
   const date = parseISO(createdAt);
   const now = new Date();
   const oneDayInMs = 24 * 60 * 60 * 1000;

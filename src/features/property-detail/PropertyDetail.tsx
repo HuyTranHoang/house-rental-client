@@ -1,5 +1,5 @@
 import Container from '@/ui/Container.tsx'
-import { Button, Col, Row, Spin, Tag, Typography } from 'antd'
+import { Col, Descriptions, DescriptionsProps, Row, Spin, Tag, Typography } from 'antd'
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -11,10 +11,12 @@ import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { LeftCircleOutlined, RightCircleOutlined, WarningOutlined } from '@ant-design/icons'
+import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
 import { blue } from '@ant-design/colors'
 import { useState } from 'react'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { formatDate } from '@/utils/formatDate.ts'
+import ReportButton from '@/features/property-detail/ReportButton.tsx'
 
 function PropertyDetail() {
 
@@ -27,6 +29,31 @@ function PropertyDetail() {
     queryFn: async () => fetchPropertyById(Number(id)),
     enabled: id !== undefined
   })
+
+  const items: DescriptionsProps['items'] = [
+    {
+      key: 'area',
+      label: 'Diện tích',
+      children: <span>{data?.area} m&sup2;</span>
+    },
+    {
+      key: 'numRooms',
+      label: 'Số phòng ngủ',
+      children: data?.numRooms
+    },
+    {
+      key: 'createAt',
+      label: 'Ngày đăng',
+      children: formatDate(data?.createdAt)
+    },
+    {
+      key: 'amenities',
+      label: 'Tiện ích',
+      children: data?.amenities.join(', '),
+      span: 3
+    }
+  ]
+
 
   return (
     <Container>
@@ -77,9 +104,11 @@ function PropertyDetail() {
           <Typography.Title level={4}>
             {data.title}
           </Typography.Title>
+
           <Typography.Text>
             {data.location}
           </Typography.Text>
+
           <Typography.Title level={3} style={{ color: '#096dd9', marginTop: 12 }}>
             {formatCurrency(data.price)}
           </Typography.Title>
@@ -89,7 +118,7 @@ function PropertyDetail() {
           </Typography.Title>
 
           <Typography.Paragraph>
-            ---- Để tạm, bổ sung sau.
+            <Descriptions bordered items={items} style={{ marginRight: 12 }} />
           </Typography.Paragraph>
 
           <Typography.Title level={4}>
@@ -97,15 +126,11 @@ function PropertyDetail() {
           </Typography.Title>
           <Typography.Paragraph>
             ---- Để tạm, bổ sung sau. Sẽ cần convert sang HTML với WYSIWYG editor.
-            <br/>
+            <br />
             {data.description}
           </Typography.Paragraph>
 
-          <Button icon={<WarningOutlined />} iconPosition="end" size="small"
-                  onClick={() => alert('Report violation -- Chưa làm .w.')}
-                  style={{ marginTop: 24, fontWeight: 600, color: '#657786', borderColor: '#9fbdd4' }}>
-            Báo vi phạm
-          </Button>
+          <ReportButton propertyId={data.id} />
         </Col>
         }
 
