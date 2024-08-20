@@ -1,28 +1,21 @@
 import { Button, Flex, Form, FormProps, Input, Modal, Select } from 'antd'
-import { WarningOutlined } from '@ant-design/icons'
-import { useEffect, useState } from 'react'
-import { useForm } from 'antd/lib/form/Form'
+import { SendOutlined, WarningOutlined } from '@ant-design/icons'
+import { useState } from 'react'
 import TextArea from 'antd/es/input/TextArea'
+import { ReportFormData, submitReport } from '@/api/report.api.ts'
+import { toast } from 'sonner'
+import { useMutation } from '@tanstack/react-query'
 
 const { Option } = Select
 
-type ReportFieldType = {
-  propertyId: number;
-  reason: string;
-  category: string;
-};
-
 function ReportButton({ propertyId }: { propertyId: number }) {
 
-  const [form] = useForm<ReportFieldType>()
+  const [reportForm] = Form.useForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const showModal = () => {
+    reportForm.resetFields()
     setIsModalOpen(true)
-  }
-
-  const handleOk = () => {
-    setIsModalOpen(false)
   }
 
   const handleCancel = () => {
@@ -32,32 +25,41 @@ function ReportButton({ propertyId }: { propertyId: number }) {
   const onCategoryChange = (value: string) => {
     switch (value) {
       case 'SCAM':
-        form.setFieldsValue({ reason: 'Bài đăng này có dấu hiệu lừa đảo!'})
+        reportForm.setFieldsValue({ reason: 'Bài đăng này có dấu hiệu lừa đảo!' })
         break
       case 'INAPPROPRIATE_CONTENT':
-        form.setFieldsValue({ reason: 'Bài đăng này có nội dung không phù hợp!' })
+        reportForm.setFieldsValue({ reason: 'Bài đăng này có nội dung không phù hợp!' })
         break
       case 'DUPLICATE':
-        form.setFieldsValue({ reason: 'Bài đăng này bị trùng lặp!' })
+        reportForm.setFieldsValue({ reason: 'Bài đăng này bị trùng lặp!' })
         break
       case 'MISINFORMATION':
-        form.setFieldsValue({ reason: 'Bài đăng này có thông tin sai sự thật!' })
+        reportForm.setFieldsValue({ reason: 'Bài đăng này có thông tin sai sự thật!' })
         break
       case 'OTHER':
-        form.setFieldsValue({ reason: '' })
+        reportForm.setFieldsValue({ reason: '' })
         break
       default:
     }
   }
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: submitReport,
+    onSuccess: () => {
+      toast.success('Báo cáo vi phạm của bạn đã được gửi!');
+      setIsModalOpen(false);
+    },
+    onError: (error) => {
+      console.error('Error submitting report:', error);
+      toast.error('Gửi báo cáo thất bại!');
+    }
+  });
 
-  const onFinish: FormProps<ReportFieldType>['onFinish'] = (values) => {
-    console.log('Success:', values)
+  const onFinish: FormProps<ReportFormData>['onFinish'] = (values) => {
+    mutate(values)
   }
 
-  useEffect(() => {
-    form.setFieldsValue({ propertyId: propertyId })
-  }, [form, propertyId])
+  reportForm.setFieldsValue({ propertyId })
 
   return (
     <>
@@ -69,21 +71,21 @@ function ReportButton({ propertyId }: { propertyId: number }) {
 
       <Modal title="Báo cáo vi phạm"
              footer={null}
+             onCancel={handleCancel}
              open={isModalOpen}
-             onOk={handleOk}
-             onCancel={handleCancel}>
+      >
         <Form
-          form={form}
+          form={reportForm}
           name="report"
           layout="vertical"
           onFinish={onFinish}
           autoComplete="off"
         >
-          <Form.Item<ReportFieldType> name="propertyId" hidden>
+          <Form.Item<ReportFormData> name="propertyId" hidden>
             <Input />
           </Form.Item>
 
-          <Form.Item<ReportFieldType>
+          <Form.Item<ReportFormData>
             label="Loại vi phạm"
             name="category"
             rules={[{ required: true, message: 'Vui lòng chọn loại vi phạm!' }]}
@@ -101,7 +103,7 @@ function ReportButton({ propertyId }: { propertyId: number }) {
             </Select>
           </Form.Item>
 
-          <Form.Item<ReportFieldType>
+          <Form.Item<ReportFormData>
             label="Lý do"
             name="reason"
             rules={[{ required: true, message: 'Vui lòng nhập lý do!' }]}
@@ -110,12 +112,12 @@ function ReportButton({ propertyId }: { propertyId: number }) {
           </Form.Item>
 
           <Form.Item>
-            <Flex justify='end'>
-              <Button type="primary" htmlType="submit" style={{width: 100}}>
+            <Flex justify="end">
+              <Button loading={isPending} icon={<SendOutlined />} iconPosition="end" type="primary" htmlType="submit">
                 Gửi
               </Button>
 
-              <Button onClick={handleCancel} style={{ marginLeft: 8, width: 100 }}>
+              <Button onClick={handleCancel} style={{ marginLeft: 8 }}>
                 Hủy
               </Button>
             </Flex>
