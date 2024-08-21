@@ -30,11 +30,9 @@ function AppLayout() {
       <Header style={headerStyle}>
         <Navbar />
       </Header>
-      <Layout>
-        <Content>
-          <Outlet />
-        </Content>
-      </Layout>
+      <Content style={{flex: 0}}>
+        <Outlet />
+      </Content>
       <Footer style={footerStyle}>
         <MyFooter />
       </Footer>

@@ -38,7 +38,27 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
         path: ROUTER_NAMES.PROPERTY_DETAIL,
         element: <PropertyDetail />,
         breadcrumb: 'Chi tiết bài đăng'
-      }
+      },
+      {
+        path: ROUTER_NAMES.LOGIN,
+        element: <Login />,
+        breadcrumb: 'Đăng nhập'
+      },
+      {
+        path: ROUTER_NAMES.REGISTER,
+        element: <Register />,
+        breadcrumb: 'Đăng ký'
+      },
+      {
+        path: ROUTER_NAMES.REQUEST_RESET_PASSWORD,
+        element: <RequestResetPassword />,
+        breadcrumb: 'Quên mật khẩu'
+      },
+      {
+        path: ROUTER_NAMES.RESET_PASSWORD,
+        element: <ResetPassword />,
+        breadcrumb: 'Đặt lại mật khẩu'
+      },
     ] // End of AppLayoutFluid children
   }
 ]
@@ -62,26 +82,6 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
         path: ROUTER_NAMES.RENT_HOUSE,
         element: <RentHouse />,
         breadcrumb: 'Tìm thuê'
-      },
-      {
-        path: ROUTER_NAMES.LOGIN,
-        element: <Login />,
-        breadcrumb: 'Đăng nhập'
-      },
-      {
-        path: ROUTER_NAMES.REGISTER,
-        element: <Register />,
-        breadcrumb: 'Đăng ký'
-      },
-      {
-        path: ROUTER_NAMES.REQUEST_RESET_PASSWORD,
-        element: <RequestResetPassword />,
-        breadcrumb: 'Quên mật khẩu'
-      },
-      {
-        path: ROUTER_NAMES.RESET_PASSWORD,
-        element: <ResetPassword />,
-        breadcrumb: 'Đặt lại mật khẩu'
       },
       {
         element: <ProtectedRoute />,
