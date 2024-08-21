@@ -20,12 +20,12 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
     <Card style={{ marginRight: '16px', marginBottom: '8px', cursor: 'pointer' }}
           onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}>
       <Row gutter={24}>
-        <Col span={6}>
-          <Image preview={false} height={200} width={200} src={property.propertyImages[0]}
+        <Col md={8}>
+          <Image preview={false} src={property.propertyImages[0]}
                  style={{ objectFit: 'cover' }} />
         </Col>
 
-        <Col span={18}>
+        <Col md={16}>
           <Flex vertical justify="space-between" style={{ height: '100%' }}>
             <div style={{ marginBottom: '8px' }}>
               <Typography.Title level={4} style={{ marginTop: 0 }}>
