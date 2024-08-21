@@ -133,7 +133,7 @@ function Login() {
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Ghi nhớ thông tin</Checkbox>
                 </Form.Item>
-                <a href="">Quên mật khẩu?</a>
+                <Link to={ROUTER_NAMES.REQUEST_RESET_PASSWORD}>Quên mật khẩu?</Link>
               </Flex>
             </Form.Item>
 

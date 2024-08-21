@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { toast } from 'sonner'
-import { Alert, Button, Col, Divider, Form, FormProps, Input, Row, Spin, Typography } from 'antd'
+import { Alert, Button, Col, Flex, Form, Input, Row, Spin, Typography } from 'antd'
 import { AntDesignOutlined, UnlockOutlined } from '@ant-design/icons'
 import GradientButton from '@/components/GradientButton.tsx'
 import CustomIndicator from '@/components/CustomIndicator.tsx'
@@ -17,11 +17,6 @@ type FieldType = {
   newPassword: string
   confirmPassword: string
 }
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo)
-}
-
 
 function ResetPassword() {
   const { isAuthenticated } = useSelector(selectAuth)
@@ -43,27 +38,27 @@ function ResetPassword() {
   }, [location.search])
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
     if (isAuthenticated) {
       delay(300).then(() => {
         if (isMounted) {
-          toast.info('Bạn đã đăng nhập rồi!!!');
-          navigate(redirectTo);
+          toast.info('Bạn đã đăng nhập rồi!!!')
+          navigate(redirectTo)
         }
-      });
+      })
     } else {
       delay(300).then(() => {
         if (isMounted) {
-          setSpinning(false);
+          setSpinning(false)
         }
-      });
+      })
     }
 
     return () => {
-      isMounted = false;
-    };
-  }, [isAuthenticated, navigate, redirectTo]);
+      isMounted = false
+    }
+  }, [isAuthenticated, navigate, redirectTo])
 
   const onFinish = async (values: FieldType) => {
     console.log('Success submit:', values)
@@ -81,10 +76,10 @@ function ResetPassword() {
 
     try {
       await axiosInstance.post('/api/auth/reset-password', values)
-      toast.success('Vui lòng kiểm tra email để đặt lại mật khẩu')
-      navigate('/login')
+      toast.success('Đặt lại mật khẩu thành công')
+      navigate(ROUTER_NAMES.LOGIN)
     } catch (error) {
-      console.log('>>>REQUEST RESET PASSWORD.JSX ERROR', error)
+      console.log('>>>RESET PASSWORD.JSX ERROR', error)
       setError(error as string)
     } finally {
       setIsLoading(false)
@@ -100,77 +95,91 @@ function ResetPassword() {
 
   return (
     <Row style={{ textAlign: 'center', margin: '3rem 0' }}>
-      <Col offset={8} md={8} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
-        <img src="/logo.png" alt="logo image" />
-        <Typography.Text style={{ display: 'block' }}>Nền tảng tìm kiếm và cho thuê nhà trọ</Typography.Text>
-        <Divider />
-        <Form
-          name="requestResetPassword"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          labelCol={{ span: 8 }}
-        >
-
-          {error && <Form.Item>
-            <Alert message={error} type="error" showIcon />
-          </Form.Item>}
-
-          <Form.Item
-            name="newPassword"
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng nhập mật khẩu!'
-              },
-              {
-                pattern: new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
-                message: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và số!'
-              }
-            ]}
+      <Col span={24}>
+        <Flex justify="center" align="middle">
+          <Form
+            name="resetPassword"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            autoComplete="off"
+            style={{
+              width: '400px',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              padding: '32px',
+              margin: '64px 0',
+              boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px'
+            }}
           >
-            <Input.Password placeholder="Mật khẩu" prefix={<UnlockOutlined />} />
-          </Form.Item>
 
-          <Form.Item
-            name="confirmPassword"
-            dependencies={['newPassword']}
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng nhập "Xác nhận mật khẩu"!'
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('newPassword') === value) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(new Error('Mật khẩu không khớp!'))
+            <Flex vertical justify="center" align="center" style={{ marginBottom: '24px' }}>
+              <img src="/logo.png" alt="Mogu logo" style={{ width: 140 }} />
+              <Typography.Title level={3} style={{ textAlign: 'center' }}>Đặt lại mật khẩu</Typography.Title>
+              <Typography.Text type="secondary" className="centered-text" style={{ fontSize: 12 }}>
+                Nhập mật khẩu mới để đặt lại mật khẩu
+              </Typography.Text>
+            </Flex>
+
+            {error && <Form.Item>
+              <Alert message={error} type="error" showIcon />
+            </Form.Item>}
+
+            <Form.Item
+              name="newPassword"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập mật khẩu!'
+                },
+                {
+                  pattern: new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
+                  message: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và số!'
                 }
-              })
-            ]}
-          >
-            <Input.Password placeholder="Xác nhận mật khẩu" prefix={<UnlockOutlined />} />
-          </Form.Item>
+              ]}
+            >
+              <Input.Password placeholder="Mật khẩu" prefix={<UnlockOutlined />} />
+            </Form.Item>
 
-          <Form.Item style={{ marginBottom: '0.6rem' }}>
-            <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />}
-                            loading={isLoading} block>
-              Đặt lại mật khẩu
-            </GradientButton>
-          </Form.Item>
+            <Form.Item
+              name="confirmPassword"
+              dependencies={['newPassword']}
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập "Xác nhận mật khẩu"!'
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('newPassword') === value) {
+                      return Promise.resolve()
+                    }
+                    return Promise.reject(new Error('Mật khẩu không khớp!'))
+                  }
+                })
+              ]}
+            >
+              <Input.Password placeholder="Xác nhận mật khẩu" prefix={<UnlockOutlined />} />
+            </Form.Item>
 
-          <Form.Item style={{ display: 'inline' }}>
-            <Typography.Text>
-              Bạn đã có tài khoản?
-            </Typography.Text>
-            <Link to={ROUTER_NAMES.LOGIN}>
-              <Button type="link">
-                Đăng nhập
-              </Button>
-            </Link>
-          </Form.Item>
-        </Form>
+            <Form.Item style={{ marginBottom: '0.6rem' }}>
+              <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />}
+                              loading={isLoading} block>
+                Đặt lại mật khẩu
+              </GradientButton>
+            </Form.Item>
+
+            <Form.Item style={{ display: 'inline' }}>
+              <Typography.Text>
+                Bạn đã có tài khoản?
+              </Typography.Text>
+              <Link to={ROUTER_NAMES.LOGIN}>
+                <Button type="link">
+                  Đăng nhập
+                </Button>
+              </Link>
+            </Form.Item>
+          </Form>
+        </Flex>
       </Col>
     </Row>
   )
