@@ -33,20 +33,11 @@ import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
 import { useProperty } from '@/hooks/useProperty'
-import { useReview } from '@/hooks/useReview'
+import { useCreateReview, useReview } from '@/hooks/useReview'
+import { ReviewFieldType } from '@/models/review.type'
 const { TextArea } = Input
 
 const ratingDesc = ['Rất tệ 😭', 'Tệ 😢', 'Bình thường 😊', 'Tốt 😀', 'Tuyệt vời! 😆']
-
-interface ReviewFieldType {
-  propertyId?: number
-  rating: number
-  comment: string
-}
-
-const onFinish: FormProps<ReviewFieldType>['onFinish'] = (values) => {
-  console.log('Success:', values)
-}
 
 function PropertyDetail() {
   const { id } = useParams<{ id: string }>()
@@ -56,8 +47,11 @@ function PropertyDetail() {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(5)
 
+  const [form] = Form.useForm()
+
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
   const { reviewData, reviewIsLoading } = useReview(Number(id), pageNumber, pageSize)
+  const { createReview, createReviewIsPending } = useCreateReview()
 
   const items: DescriptionsProps['items'] = [
     {
@@ -106,6 +100,11 @@ function PropertyDetail() {
         }))
       ]
     : []
+
+  const onFinish: FormProps<ReviewFieldType>['onFinish'] = (values) => {
+    createReview({ ...values, propertyId: Number(id) })
+    form.resetFields()
+  }
 
   return (
     <Container>
@@ -202,7 +201,7 @@ function PropertyDetail() {
                     onChange: (page) => setPageNumber(page)
                   }}
                   dataSource={reviewListData}
-                  loading={reviewIsLoading}
+                  loading={reviewIsLoading || createReviewIsPending}
                   renderItem={(item) => (
                     <List.Item>
                       <List.Item.Meta
@@ -217,7 +216,7 @@ function PropertyDetail() {
                 <Typography.Title level={5}>
                   Để lại đánh giá <CommentOutlined />
                 </Typography.Title>
-                <Form name='feedbackForm' autoComplete='off' onFinish={onFinish}>
+                <Form form={form} name='feedbackForm' autoComplete='off' onFinish={onFinish}>
                   <Form.Item<ReviewFieldType>
                     name='comment'
                     rules={[
@@ -244,7 +243,7 @@ function PropertyDetail() {
                   </Form.Item>
 
                   <Form.Item>
-                    <Button type='primary' htmlType='submit'>
+                    <Button type='primary' htmlType='submit' loading={createReviewIsPending}>
                       Gửi đánh giá
                     </Button>
                   </Form.Item>

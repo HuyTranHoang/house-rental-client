@@ -9,3 +9,9 @@ export interface Review {
   userAvatar: string | undefined
   createdAt: string
 }
+
+export interface ReviewFieldType {
+  propertyId: number
+  rating: number
+  comment: string
+}
