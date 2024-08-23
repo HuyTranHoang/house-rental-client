@@ -6,131 +6,123 @@ import {
   Descriptions,
   DescriptionsProps,
   Divider,
+  Flex,
   Form,
   FormProps,
   Input,
   List,
   Rate,
   Row,
+  Skeleton,
   Space,
-  Spin,
   Tag,
   Typography
 } from 'antd'
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { fetchPropertyById } from '@/api/property.api.ts'
-import CustomIndicator from '@/components/CustomIndicator.tsx'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
+import { CalendarOutlined, CommentOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
 import { blue } from '@ant-design/colors'
 import { useState } from 'react'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
+import { useProperty } from '@/hooks/useProperty'
+import { useCreateReview, useReview } from '@/hooks/useReview'
+import { ReviewFieldType } from '@/models/review.type'
 const { TextArea } = Input
 
 const ratingDesc = ['Rất tệ 😭', 'Tệ 😢', 'Bình thường 😊', 'Tốt 😀', 'Tuyệt vời! 😆']
-
-interface ReviewFieldType {
-  propertyId?: number
-  rating: number
-  comment: string
-}
-
-const onFinish: FormProps<ReviewFieldType>['onFinish'] = (values) => {
-  console.log('Success:', values)
-}
 
 function PropertyDetail() {
   const { id } = useParams<{ id: string }>()
 
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['property', id],
-    queryFn: async () => fetchPropertyById(Number(id)),
-    enabled: id !== undefined
-  })
+  const [pageNumber, setPageNumber] = useState(0)
+  const [pageSize, setPageSize] = useState(5)
+
+  const [form] = Form.useForm()
+
+  const { propertyData, propertyIsLoading } = useProperty(Number(id))
+  const { reviewData, reviewIsLoading } = useReview(Number(id), pageNumber, pageSize)
+  const { createReview, createReviewIsPending } = useCreateReview()
 
   const items: DescriptionsProps['items'] = [
     {
       key: 'area',
       label: 'Diện tích',
-      children: <span>{data?.area} m&sup2;</span>
+      children: <span>{propertyData?.area} m&sup2;</span>
     },
     {
       key: 'numRooms',
       label: 'Số phòng ngủ',
-      children: data?.numRooms
+      children: propertyData?.numRooms
     },
     {
       key: 'createAt',
       label: 'Ngày đăng',
-      children: formatDate(data?.createdAt)
+      children: formatDate(propertyData?.createdAt)
     },
     {
       key: 'amenities',
       label: 'Tiện ích',
-      children: data?.amenities.join(', '),
+      children: propertyData?.amenities.join(', '),
       span: 3
     }
   ]
 
-  const feedbackData = [
-    {
-      title: (
-        <Space size='large'>
-          Nguyễn Văn A
-          <Rate disabled defaultValue={2} />
-        </Space>
-      )
-    },
-    {
-      title: (
-        <Space size='large'>
-          Nguyễn Văn B
-          <Rate disabled defaultValue={3} />
-        </Space>
-      )
-    },
-    {
-      title: (
-        <Space size='large'>
-          Nguyễn Văn C
-          <Rate disabled defaultValue={4} />
-        </Space>
-      )
-    },
-    {
-      title: (
-        <Space size='large'>
-          Nguyễn Văn D
-          <Rate disabled defaultValue={5} />
-        </Space>
-      )
-    }
-  ]
+  const reviewListData = reviewData
+    ? [
+        ...reviewData.data.map((review) => ({
+          avatar: review.userAvatar
+            ? review.userAvatar
+            : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.userId}`,
+          title: (
+            <Space size='large'>
+              <Typography.Text strong>{review.userName}</Typography.Text>
+              <Rate disabled defaultValue={review.rating} />
+            </Space>
+          ),
+          description: (
+            <Flex vertical>
+              <Typography.Text>{review.comment}</Typography.Text>
+              <Typography.Text type='secondary' style={{ fontSize: 12, marginTop: 8 }}>
+                <CalendarOutlined /> {formatDate(review.createdAt)}
+              </Typography.Text>
+            </Flex>
+          )
+        }))
+      ]
+    : []
+
+  const onFinish: FormProps<ReviewFieldType>['onFinish'] = (values) => {
+    createReview({ ...values, propertyId: Number(id) })
+    form.resetFields()
+  }
 
   return (
     <Container>
-      {isLoading && (
-        <Spin indicator={<CustomIndicator />} tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'} fullscreen />
-      )}
-
       <Row style={{ margin: '32px 0' }}>
         <Col span={24}>
           <CustomBreadcrumbs />
         </Col>
 
-        {data && (
-          <Col span={16}>
+        <Col span={16}>
+          {propertyIsLoading && (
+            <section style={{ marginRight: 24 }}>
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </section>
+          )}
+
+          {propertyData && (
             <section style={{ marginRight: 24 }}>
               <Swiper
                 modules={[Navigation, Pagination]}
@@ -145,7 +137,7 @@ function PropertyDetail() {
                 onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
                 style={{ margin: '24px 0', backgroundColor: '#fafafa', position: 'relative' }}
               >
-                {data.propertyImages.map((image, index) => (
+                {propertyData.propertyImages.map((image, index) => (
                   <SwiperSlide key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <img src={image} alt='image' />
                   </SwiperSlide>
@@ -166,16 +158,16 @@ function PropertyDetail() {
                     zIndex: 99
                   }}
                 >
-                  {`${currentSlide + 1}/${data.propertyImages.length}`}
+                  {`${currentSlide + 1}/${propertyData.propertyImages.length}`}
                 </Tag>
               </Swiper>
 
-              <Typography.Title level={4}>{data.title}</Typography.Title>
+              <Typography.Title level={4}>{propertyData.title}</Typography.Title>
 
-              <Typography.Text>{data.location}</Typography.Text>
+              <Typography.Text>{propertyData.location}</Typography.Text>
 
               <Typography.Title level={3} style={{ color: '#096dd9', marginTop: 12 }}>
-                {formatCurrency(data.price)}
+                {formatCurrency(propertyData.price)}
               </Typography.Title>
 
               <Typography.Title level={4}>Thông tin chính</Typography.Title>
@@ -188,10 +180,10 @@ function PropertyDetail() {
               <Typography.Paragraph>
                 ---- Để tạm, bổ sung sau. Sẽ cần convert sang HTML với WYSIWYG editor.
                 <br />
-                {data.description}
+                {propertyData.description}
               </Typography.Paragraph>
 
-              <ReportButton propertyId={data.id} />
+              <ReportButton propertyId={propertyData.id} />
 
               <Divider />
 
@@ -200,21 +192,31 @@ function PropertyDetail() {
                   Đánh giá
                 </Typography.Title>
                 <List
-                  pagination={{ align: 'center', pageSize: 3 }}
-                  dataSource={feedbackData}
-                  renderItem={(item, index) => (
+                  pagination={{
+                    total: reviewData?.pageInfo.totalElements,
+                    pageSize: pageSize,
+                    current: pageNumber,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} đánh giá`,
+                    onShowSizeChange: (_, size) => setPageSize(size),
+                    onChange: (page) => setPageNumber(page)
+                  }}
+                  dataSource={reviewListData}
+                  loading={reviewIsLoading || createReviewIsPending}
+                  renderItem={(item) => (
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
+                        avatar={<Avatar src={item.avatar} />}
                         title={item.title}
-                        description='Ant Design, a design language for background applications, is refined by Ant UED Team'
+                        description={item.description}
                       />
                     </List.Item>
                   )}
                 />
 
-                <Typography.Title level={5}>Để lại đánh giá</Typography.Title>
-                <Form name='feedbackForm' autoComplete='off' onFinish={onFinish}>
+                <Typography.Title level={5}>
+                  Để lại đánh giá <CommentOutlined />
+                </Typography.Title>
+                <Form form={form} name='feedbackForm' autoComplete='off' onFinish={onFinish}>
                   <Form.Item<ReviewFieldType>
                     name='comment'
                     rules={[
@@ -241,15 +243,15 @@ function PropertyDetail() {
                   </Form.Item>
 
                   <Form.Item>
-                    <Button type='primary' htmlType='submit'>
+                    <Button type='primary' htmlType='submit' loading={createReviewIsPending}>
                       Gửi đánh giá
                     </Button>
                   </Form.Item>
                 </Form>
               </div>
             </section>
-          </Col>
-        )}
+          )}
+        </Col>
 
         <Col span={8} style={{ backgroundColor: 'pink' }}>
           THÔNG TIN NGƯỜI ĐĂNG
