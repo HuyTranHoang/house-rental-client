@@ -1,57 +1,98 @@
+import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import Container from '@/ui/Container.tsx'
 import {
   Avatar,
   Button,
+  Card,
   Col,
   Descriptions,
   DescriptionsProps,
   Divider,
   Flex,
-  Form,
-  FormProps,
-  Input,
-  List,
-  Rate,
   Row,
   Skeleton,
   Space,
   Tag,
   Typography
 } from 'antd'
-import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import { useParams } from 'react-router-dom'
 
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination } from 'swiper/modules'
+import ReportButton from '@/features/property-detail/ReportButton.tsx'
+import { useProperty } from '@/hooks/useProperty'
+import { useUser } from '@/hooks/useUser'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { formatDate, formatJoinedDate } from '@/utils/formatDate.ts'
+import { formatPhoneNumber, hidePhoneNumber } from '@/utils/formatPhoneNumber'
+import { blue, red } from '@ant-design/colors'
+import {
+  CheckCircleFilled,
+  HeartOutlined,
+  LeftCircleOutlined,
+  MailOutlined,
+  PhoneFilled,
+  RightCircleOutlined
+} from '@ant-design/icons'
+import Meta from 'antd/es/card/Meta'
+import { useState } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { CalendarOutlined, CommentOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
-import { blue } from '@ant-design/colors'
-import { useState } from 'react'
-import { formatCurrency } from '@/utils/formatCurrentcy.ts'
-import { formatDate } from '@/utils/formatDate.ts'
-import ReportButton from '@/features/property-detail/ReportButton.tsx'
-import { useProperty } from '@/hooks/useProperty'
-import { useCreateReview, useReview } from '@/hooks/useReview'
-import { ReviewFieldType } from '@/models/review.type'
-const { TextArea } = Input
+import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import PropertyDetailReview from './PropertyDetailReview'
+import styled from 'styled-components'
 
-const ratingDesc = ['Rất tệ 😭', 'Tệ 😢', 'Bình thường 😊', 'Tốt 😀', 'Tuyệt vời! 😆']
+const PrevButton = styled(Button)`
+  border: 0;
+  background-color: #ffffff;
+  color: #657786;
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    border-style: solid;
+    top: 0;
+    width: 0;
+    height: 0;
+    left: -9px;
+    border-width: 11px 11px 12px 0;
+    border-color: transparent #ffffff transparent transparent;
+  }
+`
+
+const NextButton = styled(Button)`
+  border: 0;
+  background-color: #69b1ff;
+  color: #ffffff;
+
+  &:hover {
+    color: #ffffff !important;
+    background-color: #69b1ff !important;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    border-style: solid;
+    top: 0;
+    width: 0;
+    height: 0;
+    right: -9px;
+    border-width: 11px 0 12px 11px;
+    border-color: transparent transparent transparent #69b1ff;
+  }
+`
 
 function PropertyDetail() {
   const { id } = useParams<{ id: string }>()
 
   const [currentSlide, setCurrentSlide] = useState(0)
-
-  const [pageNumber, setPageNumber] = useState(0)
-  const [pageSize, setPageSize] = useState(5)
-
-  const [form] = Form.useForm()
+  const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false)
 
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
-  const { reviewData, reviewIsLoading } = useReview(Number(id), pageNumber, pageSize)
-  const { createReview, createReviewIsPending } = useCreateReview()
+  const { userData, userIsLoading } = useUser(propertyData?.userId)
 
   const items: DescriptionsProps['items'] = [
     {
@@ -77,45 +118,23 @@ function PropertyDetail() {
     }
   ]
 
-  const reviewListData = reviewData
-    ? [
-        ...reviewData.data.map((review) => ({
-          avatar: review.userAvatar
-            ? review.userAvatar
-            : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.userId}`,
-          title: (
-            <Space size='large'>
-              <Typography.Text strong>{review.userName}</Typography.Text>
-              <Rate disabled defaultValue={review.rating} />
-            </Space>
-          ),
-          description: (
-            <Flex vertical>
-              <Typography.Text>{review.comment}</Typography.Text>
-              <Typography.Text type='secondary' style={{ fontSize: 12, marginTop: 8 }}>
-                <CalendarOutlined /> {formatDate(review.createdAt)}
-              </Typography.Text>
-            </Flex>
-          )
-        }))
-      ]
-    : []
-
-  const onFinish: FormProps<ReviewFieldType>['onFinish'] = (values) => {
-    createReview({ ...values, propertyId: Number(id) })
-    form.resetFields()
-  }
-
   return (
     <Container>
-      <Row style={{ margin: '32px 0' }}>
-        <Col span={24}>
+      <Row gutter={24}>
+        <Col span={16} style={{ margin: '24px 0 16px' }}>
           <CustomBreadcrumbs />
         </Col>
 
-        <Col span={16}>
+        <Col span={8}>
+          <Space style={{ margin: '24px 0 16px' }}>
+            <PrevButton size='small'>Về danh sách</PrevButton>
+            <NextButton size='small'>Tin tiếp</NextButton>
+          </Space>
+        </Col>
+
+        <Col span={16} style={{ backgroundColor: '#FFFFFF', padding: 24, marginBottom: 32 }}>
           {propertyIsLoading && (
-            <section style={{ marginRight: 24 }}>
+            <section>
               <Skeleton />
               <Skeleton />
               <Skeleton />
@@ -123,7 +142,7 @@ function PropertyDetail() {
           )}
 
           {propertyData && (
-            <section style={{ marginRight: 24 }}>
+            <section>
               <Swiper
                 modules={[Navigation, Pagination]}
                 grabCursor
@@ -187,78 +206,59 @@ function PropertyDetail() {
 
               <Divider />
 
-              <div style={{ backgroundColor: '#FFFFFF', padding: '12px 24px' }}>
-                <Typography.Title level={4} style={{ marginTop: 8 }}>
-                  Đánh giá
-                </Typography.Title>
-                <List
-                  pagination={{
-                    total: reviewData?.pageInfo.totalElements,
-                    pageSize: pageSize,
-                    current: pageNumber,
-                    showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} đánh giá`,
-                    onShowSizeChange: (_, size) => setPageSize(size),
-                    onChange: (page) => setPageNumber(page)
-                  }}
-                  dataSource={reviewListData}
-                  loading={reviewIsLoading || createReviewIsPending}
-                  renderItem={(item) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.avatar} />}
-                        title={item.title}
-                        description={item.description}
-                      />
-                    </List.Item>
-                  )}
-                />
-
-                <Typography.Title level={5}>
-                  Để lại đánh giá <CommentOutlined />
-                </Typography.Title>
-                <Form form={form} name='feedbackForm' autoComplete='off' onFinish={onFinish}>
-                  <Form.Item<ReviewFieldType>
-                    name='comment'
-                    rules={[
-                      { required: true, message: 'Vui lòng nhập đánh giá của bạn' },
-                      {
-                        min: 10,
-                        message: 'Đánh giá phải có ít nhất 10 ký tự'
-                      },
-                      {
-                        max: 500,
-                        message: 'Đánh giá không được vượt quá 500 ký tự'
-                      }
-                    ]}
-                  >
-                    <TextArea rows={4} placeholder='Đánh giá của bạn về bất động sản này...' />
-                  </Form.Item>
-
-                  <Form.Item<ReviewFieldType>
-                    name='rating'
-                    label='Đánh giá'
-                    rules={[{ required: true, message: 'Vui lòng chọn số sao đánh giá!' }]}
-                  >
-                    <Rate allowClear={false} tooltips={ratingDesc} />
-                  </Form.Item>
-
-                  <Form.Item>
-                    <Button type='primary' htmlType='submit' loading={createReviewIsPending}>
-                      Gửi đánh giá
-                    </Button>
-                  </Form.Item>
-                </Form>
-              </div>
+              <PropertyDetailReview propertyId={id} />
             </section>
           )}
         </Col>
 
-        <Col span={8} style={{ backgroundColor: 'pink' }}>
-          THÔNG TIN NGƯỜI ĐĂNG
-          <br />
-          SỐ ĐIỆN THOẠI, ZALO
-          <br />
-          MẠNG XÃ HỘI CÁC THỨ
+        <Col span={8}>
+          <Card loading={userIsLoading}>
+            {userData && (
+              <>
+                <Meta
+                  avatar={
+                    <Flex align='center' justify='center' style={{ height: '100%', marginRight: 12 }}>
+                      <Avatar size='large' src={userData.avatarUrl} />
+                    </Flex>
+                  }
+                  title={
+                    <Space>
+                      <span>
+                        {userData.firstName} {userData.lastName}
+                      </span>
+                      <CheckCircleFilled style={{ color: blue[3] }} />
+                    </Space>
+                  }
+                  description={<span>Đã tham gia: {formatJoinedDate(userData.createdAt)}</span>}
+                />
+                <Divider style={{ margin: 16 }} />
+
+                <Button
+                  size='large'
+                  onClick={() => setIsPhoneNumberVisible(true)}
+                  style={{ width: '100%', marginBottom: 12, borderColor: blue.primary }}
+                >
+                  <Flex justify='space-between' style={{ width: '100%' }}>
+                    <span>
+                      <PhoneFilled />{' '}
+                      {isPhoneNumberVisible
+                        ? formatPhoneNumber(userData.phoneNumber)
+                        : hidePhoneNumber(userData.phoneNumber)}
+                    </span>
+                    <b style={{ color: blue.primary }}>Bấm để hiện số</b>
+                  </Flex>
+                </Button>
+
+                <Button icon={<MailOutlined />} size='large' style={{ width: '100%' }} type='primary'>
+                  Gửi tin nhắn
+                </Button>
+              </>
+            )}
+          </Card>
+
+          <Button icon={<HeartOutlined style={{ color: red.primary }} />} size='large' style={{ marginTop: 16 }}>
+            Lưu tin
+          </Button>
         </Col>
       </Row>
     </Container>

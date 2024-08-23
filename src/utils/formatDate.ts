@@ -1,16 +1,25 @@
-import { format, formatDistanceToNow, parseISO } from 'date-fns';
-import { vi } from 'date-fns/locale';
+import { format, formatDistance, formatDistanceToNow, parseISO } from 'date-fns'
+import { vi } from 'date-fns/locale'
 
 export function formatDate(createdAt: string | undefined): string {
-  if (!createdAt) return '';
+  if (!createdAt) return ''
 
-  const date = parseISO(createdAt);
-  const now = new Date();
-  const oneDayInMs = 24 * 60 * 60 * 1000;
+  const date = parseISO(createdAt)
+  const now = new Date()
+  const oneDayInMs = 24 * 60 * 60 * 1000
 
   if (now.getTime() - date.getTime() < oneDayInMs) {
-    return formatDistanceToNow(date, { addSuffix: true, locale: vi });
+    return formatDistanceToNow(date, { addSuffix: true, locale: vi })
   } else {
-    return format(date, 'dd-MM-yyyy');
+    return format(date, 'dd-MM-yyyy')
   }
+}
+
+export function formatJoinedDate(createdAt: string | undefined): string {
+  if (!createdAt) return ''
+
+  const date = parseISO(createdAt)
+  const now = new Date()
+
+  return formatDistance(date, now, { locale: vi })
 }
