@@ -17,6 +17,8 @@ import {
 } from 'antd'
 import { useParams } from 'react-router-dom'
 
+import DOMPurify from 'dompurify'
+
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
 import { useProperty } from '@/hooks/useProperty'
 import { useUser } from '@/hooks/useUser'
@@ -93,6 +95,8 @@ function PropertyDetail() {
 
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
   const { userData, userIsLoading } = useUser(propertyData?.userId)
+
+  const descriptionCleanHTML = propertyData ? DOMPurify.sanitize(propertyData.description) : ''
 
   const items: DescriptionsProps['items'] = [
     {
@@ -196,11 +200,7 @@ function PropertyDetail() {
               </Typography.Paragraph>
 
               <Typography.Title level={4}>Giới thiệu</Typography.Title>
-              <Typography.Paragraph>
-                ---- Để tạm, bổ sung sau. Sẽ cần convert sang HTML với WYSIWYG editor.
-                <br />
-                {propertyData.description}
-              </Typography.Paragraph>
+              <div dangerouslySetInnerHTML={{ __html: descriptionCleanHTML }} />
 
               <ReportButton propertyId={propertyData.id} />
 
