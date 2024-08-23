@@ -43,6 +43,7 @@ import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailReview from './PropertyDetailReview'
 import styled from 'styled-components'
+import { toast } from 'sonner'
 
 const PrevButton = styled(Button)`
   border: 0;
@@ -121,6 +122,15 @@ function PropertyDetail() {
       span: 3
     }
   ]
+
+  const handleShowPhoneNumber = () => {
+    if (!isPhoneNumberVisible) {
+      setIsPhoneNumberVisible(true)
+    } else {
+      toast.info('Số điện thoại đã được sao chép')
+      navigator.clipboard.writeText(userData!.phoneNumber)
+    }
+  }
 
   return (
     <Container>
@@ -235,7 +245,7 @@ function PropertyDetail() {
 
                 <Button
                   size='large'
-                  onClick={() => setIsPhoneNumberVisible(true)}
+                  onClick={handleShowPhoneNumber}
                   style={{ width: '100%', marginBottom: 12, borderColor: blue.primary }}
                 >
                   <Flex justify='space-between' style={{ width: '100%' }}>
@@ -245,7 +255,7 @@ function PropertyDetail() {
                         ? formatPhoneNumber(userData.phoneNumber)
                         : hidePhoneNumber(userData.phoneNumber)}
                     </span>
-                    <b style={{ color: blue.primary }}>Bấm để hiện số</b>
+                    <b style={{ color: blue.primary }}>{isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}</b>
                   </Flex>
                 </Button>
 
