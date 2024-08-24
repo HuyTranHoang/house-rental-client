@@ -1,11 +1,9 @@
 import { Button, List, Typography } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { fetchAllRoomTypes } from '../api/roomType.api.ts'
-import { District } from '../models/district.type.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { CSSProperties } from 'react'
 import { fetchAllCities } from '../api/city.api.ts'
-import { City } from '../models/city.type.ts'
 import { useSelector } from 'react-redux'
 import { selectPropertyParams, setCityId, setDistrictId, setRoomTypeId } from '../features/rent-house/rentHouseSlice.ts'
 import { fetchAllDistricts } from '../api/district.api.ts'
@@ -50,7 +48,7 @@ function RightSideBar() {
         dataSource={roomTypeData}
         loading={roomTypeIsLoading}
         style={listStyle}
-        renderItem={(item: District) => (
+        renderItem={(item) => (
           <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
             <Button block type="text" icon={<RightCircleOutlined />}
                     onClick={() => dispatch(setRoomTypeId(item.id))}
@@ -68,7 +66,7 @@ function RightSideBar() {
         dataSource={cityData}
         loading={cityIsLoading}
         style={listStyle}
-        renderItem={(item: City) => (
+        renderItem={(item) => (
           <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
             <Button block type="text" icon={<RightCircleOutlined />}
                     onClick={() => dispatch(setCityId(item.id))}
@@ -90,7 +88,7 @@ function RightSideBar() {
           dataSource={districtData.filter(district => district.cityId === cityId)}
           loading={districtIsLoading}
           style={listStyle}
-          renderItem={(item: District) => (
+          renderItem={(item) => (
             <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
               <Button block type="text" icon={<RightCircleOutlined />}
                       onClick={() => dispatch(setDistrictId(item.id))}
