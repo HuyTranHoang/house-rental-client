@@ -1,25 +1,16 @@
 import { Form, Input } from 'antd'
-import { useAppDispatch } from '@/store.ts'
-import { setSearch } from '../rentHouseSlice.ts'
-
-type FieldType = {
-  search?: string;
-};
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
 function RentHouseSearchField() {
-  const dispatch = useAppDispatch()
-
-  const handleSearch = (value: string) => {
-    dispatch(setSearch(value))
-  }
+  const { setFilters } = usePropertyFilters()
 
   return (
-    <Form.Item<FieldType> name="search">
+    <Form.Item name='search'>
       <Input.Search
-        size="large"
+        size='large'
         allowClear={true}
-        placeholder="Từ khóa, đường, quận hoặc địa danh"
-        onSearch={handleSearch}
+        placeholder='Từ khóa, đường, quận hoặc địa danh'
+        onSearch={(value) => setFilters({ search: value })}
       />
     </Form.Item>
   )

@@ -1,11 +1,6 @@
 import { Form, Cascader, CascaderProps } from 'antd'
-import { useAppDispatch } from '@/store.ts'
-import { setCityId, setDistrictId } from '../rentHouseSlice.ts'
 import { GeoIcon } from '../RentHouseFilterIcons.tsx'
-
-type FieldType = {
-  district?: string;
-};
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
 interface Option {
   value: string;
@@ -20,22 +15,19 @@ interface DistrictFieldProps {
 
 
 function RentHouseCityDistrictField({ options, loading }: DistrictFieldProps) {
-  const dispatch = useAppDispatch()
+  const {setFilters} = usePropertyFilters()
 
   const onCityDistrictChange: CascaderProps<Option>['onChange'] = (value) => {
     if (value && value.length === 2) {
-      dispatch(setCityId(parseInt(value[0])))
-      dispatch(setDistrictId(parseInt(value[1])))
-    }
-
-    if (value && value.length === 1) {
-      dispatch(setCityId(0))
-      dispatch(setDistrictId(0))
+      const [cityId, districtId] = value.map(Number)
+      setFilters({ cityId, districtId })
+    } else {
+      setFilters({ cityId: 0, districtId: 0 })
     }
   }
 
   return (
-    <Form.Item<FieldType> name="district">
+    <Form.Item name="cityDistrict">
       <Cascader
         options={options}
         onChange={onCityDistrictChange}

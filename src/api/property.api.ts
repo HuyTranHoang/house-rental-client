@@ -4,36 +4,30 @@ import { PageInfo } from '@/models/pageInfo.type.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 
 interface PropertyResponse {
-  data: Property[],
+  data: Property[]
   pageInfo: PageInfo
 }
 
-export const fetchAllProperties = async (pageSize: number,
-                                         pageNumber: number,
-                                         cityId: number,
-                                         districtId: number,
-                                         roomTypeId: number,
-                                         minPrice: number,
-                                         maxPrice: number,
-                                         search: string,
-                                         minArea: number,
-                                         maxArea: number,
-                                         numOfDays: number) => {
+export const fetchAllProperties = async (
+  search: string,
+  cityId: number,
+  districtId: number,
+  roomTypeId: number,
+  sortBy: string,
+  pageNumber: number,
+  pageSize: number
+) => {
   pageNumber = pageNumber - 1
 
   try {
     const params = {
-      pageSize,
-      pageNumber,
+      search,
       cityId,
       districtId,
       roomTypeId,
-      minPrice,
-      maxPrice,
-      search,
-      minArea,
-      maxArea,
-      numOfDays
+      sortBy,
+      pageNumber,
+      pageSize
     }
 
     const response = await axiosInstance.get<PropertyResponse>('/api/properties', { params })
@@ -44,12 +38,12 @@ export const fetchAllProperties = async (pageSize: number,
   }
 }
 
-export const fetchPropertyById = async (id: number) => {
+export const getPropertyById = async (id: number) => {
   try {
-    const response = await axiosInstance.get<Property>(`/api/properties/${id}`)
-    return response.data
+    const response = await axiosInstance.get<Property>(`/api/properties/${id}`);
+    return response.data;
   } catch (error) {
-    toast.error('Lỗi khi tải dữ liệu bài đăng')
-    throw error
+    toast.error('Lỗi khi tải dữ liệu bài đăng');
+    throw error;
   }
-}
+};

@@ -1,28 +1,19 @@
 import { Form, Select } from 'antd'
-import { useAppDispatch } from '@/store.ts'
-import { setRoomTypeId } from '../rentHouseSlice.ts'
 import { HomeIcon } from '../RentHouseFilterIcons.tsx'
-
-type FieldType = {
-  roomType?: string;
-};
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
 interface RoomTypeFieldProps {
   options: { value: string; label: string }[];
 }
 
 function RentHouseRoomTypeField({ options }: RoomTypeFieldProps) {
-  const dispatch = useAppDispatch()
-
-  const handleRoomTypeChange = (value: string) => {
-    dispatch(setRoomTypeId(parseInt(value)))
-  }
+  const {setFilters} = usePropertyFilters()
 
   return (
-    <Form.Item<FieldType> name="roomType">
+    <Form.Item name="roomType">
       <Select
         size="large"
-        onChange={handleRoomTypeChange}
+        onChange={(value) => {setFilters({ roomTypeId: Number(value) })}}
         placeholder={'Loại phòng'}
         suffixIcon={<HomeIcon />}
         options={options}

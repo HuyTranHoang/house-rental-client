@@ -1,80 +1,21 @@
-import { useSearchParams } from 'react-router-dom'
-import { useEffect } from 'react'
-import { Button, Card, Col, Divider, Empty, Flex, Pagination, PaginationProps, Row, Skeleton, Typography } from 'antd'
+import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
 import { BookOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { fetchAllProperties } from '@/api/property.api.ts'
 import { Property } from '@/models/property.type.ts'
 import RentHouseCardItem from './RentHouseCardItem.tsx'
-import { useAppDispatch } from '@/store.ts'
-import { useSelector } from 'react-redux'
-import { selectPropertyParams, setPageNumber, setPageSize } from './rentHouseSlice.ts'
 import RentHouseFilter from '@/features/rent-house/RentHouseFilter.tsx'
 import RightSideBar from '@/ui/RightSideBar.tsx'
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
 function RentHouse() {
-  const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const {
-        pageSize,
-        pageNumber,
-        cityId,
-        districtId,
-        roomTypeId,
-        minPrice,
-        maxPrice,
-        search,
-        minArea,
-        maxArea,
-        numOfDays
-      } = useSelector(selectPropertyParams)
-
-  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (_, pageSize) => {
-    dispatch(setPageSize(pageSize))
-  }
-
-  const onPageChange: PaginationProps['onChange'] = (pageNumber) => {
-    dispatch(setPageNumber(pageNumber))
-  }
-
-  //
-  useEffect(() => {
-                  const params = new URLSearchParams()
-                  params.set('pageSize', pageSize.toString())
-                  params.set('pageNumber', pageNumber.toString())
-                  if (cityId) params.set('cityId', cityId.toString())
-                  if (districtId) params.set('districtId', districtId.toString())
-                  if (roomTypeId) params.set('roomTypeId', roomTypeId.toString())
-                  if (minPrice) params.set('minPrice', minPrice.toString())
-                  if (maxPrice) params.set('maxPrice', maxPrice.toString())
-                  if (search) params.set('search', search)
-                  if (minArea) params.set('minArea', minArea.toString())
-                  if (maxArea) params.set('maxArea', maxArea.toString())
-                  if (numOfDays) params.set('numOfDays', numOfDays.toString())
-
-                  setSearchParams(params)
-                }, [
-                    pageSize,
-                    pageNumber,
-                    cityId,
-                    districtId,
-                    roomTypeId,
-                    minPrice,
-                    maxPrice,
-                    search,
-                    minArea,
-                    maxArea,
-                    numOfDays,
-                    setSearchParams
-                ])
+  const { search, cityId, districtId, roomTypeId, sortBy, pageNumber, pageSize, setFilters } = usePropertyFilters()
 
   const { data, isLoading, isError } = useQuery({
-      queryKey: ['rentHouse', pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search, minArea, maxArea, numOfDays],
-      queryFn: () => fetchAllProperties(pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search, minArea, maxArea, numOfDays)
-    }
-  )
+    queryKey: ['rentHouse', search, cityId, districtId, roomTypeId, sortBy, pageNumber, pageSize],
+    queryFn: () => fetchAllProperties(search, cityId, districtId, roomTypeId, sortBy, pageNumber, pageSize)
+  })
 
   const startIndex = (pageNumber - 1) * pageSize
   const endIndex = data ? startIndex + data.data.length : 0
@@ -146,10 +87,10 @@ function RentHouse() {
               current={pageNumber}
               align='center'
               showSizeChanger
-              onShowSizeChange={onShowSizeChange}
               pageSizeOptions={['2', '4', '6']}
               locale={{ items_per_page: '/ trang' }}
-              onChange={onPageChange}
+              onChange={(page, pageSize) => setFilters({ pageNumber: page, pageSize })}
+              onShowSizeChange={(current, size) => setFilters({ pageNumber: current, pageSize: size })}
               style={{ margin: '20px 0 32px' }}
             />
           )}

@@ -20,3 +20,13 @@ export interface Property {
   blocked: boolean
   createdAt: string
 }
+
+export type PropertyFilters = {
+  search?: string
+  cityId?: number
+  districtId?: number
+  roomTypeId?: number
+  sortBy?: string
+  pageNumber?: number
+  pageSize?: number
+}
