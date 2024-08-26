@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { toast } from 'sonner'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 const axiosInstance = axios.create({})
 
@@ -24,9 +25,8 @@ axiosInstance.interceptors.response.use(response => response,
         toast.error(error.response?.data.message)
         break
       case 401:
-        window.location.href = '/login'
+        window.location.href = ROUTER_NAMES.LOGIN
         break
-
       case 403:
         // window.location.href = '/forbidden'
         break
@@ -40,11 +40,11 @@ axiosInstance.interceptors.response.use(response => response,
         //   break
         // }
 
-        window.location.href = '/server-error'
+        window.location.href = ROUTER_NAMES.SERVER_ERROR
         break
       default:
         if (error.code === 'ERR_NETWORK') {
-          window.location.href = '/not-found'
+          window.location.href = '/khong-tim-thay'
         } else {
           toast.error(error.message)
         }

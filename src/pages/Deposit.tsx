@@ -1,64 +1,79 @@
-import  { useState } from 'react';
-import { Form, Input, Button, Radio, Card, Space } from 'antd';
-import { toast } from 'sonner';
+import { Form, Input, Button, Radio, Card, Space, Row, Col, Flex } from 'antd'
+import { toast } from 'sonner'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { RocketOutlined } from '@ant-design/icons'
+
+interface DepositForm {
+  amount: string;
+  customAmount?: number;
+}
 
 const Deposit = () => {
-  const [amount, setAmount] = useState('');
-  const [customAmount, setCustomAmount] = useState('');
+  const [form] = Form.useForm()
+  const amount = Form.useWatch('amount', form)
 
-  const handleAmountChange = (e) => {
-    const value = e.target.value;
-    if (value !== 'custom') {
-      setCustomAmount('');
+  const handleSubmit = (values: DepositForm) => {
+    if (values.amount === 'custom' && !values.customAmount) {
+      toast.error('Vui lòng nhập số tiền bạn muốn nạp.')
+      return
     }
-    setAmount(value);
-  };
 
-  const handleCustomAmountChange = (e) => {
-    setCustomAmount(e.target.value);
-    setAmount(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    if (!amount) {
-      toast.error('Vui lòng chọn hoặc nhập số tiền.')
-      return;
+    if (values.amount === 'custom' && values.customAmount && values.customAmount < 50000) {
+      toast.error('Số tiền nạp tối thiểu là 50.000đ.')
+      return
     }
-    // Gửi request đến backend để xử lý giao dịch nạp tiền.
-  };
+
+    if (values.amount === 'custom' && values.customAmount && values.customAmount > 1000000) {
+      toast.error('Số tiền nạp tối đa là 1.000.000đ.')
+      return
+    }
+
+    if (values.amount === 'custom' && values.customAmount) {
+      values.amount = values.customAmount.toString()
+    }
+
+    toast.info(`Nạp ${formatCurrency(Number(values.amount))} thành công. --- Chỉ có toast chưa có call api`)
+  }
 
   return (
-    <Card title="Nạp tiền" style={{ width: 500, margin: 'auto' }}>
-      <Form layout="vertical" onFinish={handleSubmit}>
-        <Form.Item label="Số tiền" required>
-          <Radio.Group onChange={handleAmountChange} value={amount}>
-            <Space direction="horizontal">
-              <Radio.Button value="50000" style={{ width: 90}}>50.000đ</Radio.Button>
-              <Radio.Button value="100000" style={{ width: 90}}>100.000đ</Radio.Button>
-              <Radio.Button value="200000" style={{ width: 90}}>200.000đ</Radio.Button>
-              <Radio.Button value="500000" style={{ width: 90}}>500.000đ</Radio.Button>
-              <Radio.Button value="custom">Khác</Radio.Button>
-            </Space>
-          </Radio.Group>
-          {amount === 'custom' && (
-            <Input
-              type="number"
-              value={customAmount}
-              onChange={handleCustomAmountChange}
-              placeholder="Nhập số tiền bạn muốn nạp"
-              style={{ marginTop: 16 }}
-            />
-          )}
-        </Form.Item>
+    <Row style={{ marginTop: 64 }}>
+      <Col offset={9} span={6}>
+        <Card title={<Flex>
+          <img src="https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg" alt="deposit" style={{ width: 32, height: 32, marginRight: 8 }} />
+          <span>Nạp tiền</span>
+        </Flex>
+        }>
+          <Form<DepositForm> form={form} layout="vertical" onFinish={handleSubmit}>
+            <Form.Item<DepositForm> name="amount" label="Số tiền" required>
+              <Radio.Group>
+                <Space wrap>
+                  <Radio.Button value="50000">{formatCurrency(50000)}</Radio.Button>
+                  <Radio.Button value="100000">{formatCurrency(100000)}</Radio.Button>
+                  <Radio.Button value="200000">{formatCurrency(200000)}</Radio.Button>
+                  <Radio.Button value="500000">{formatCurrency(500000)}</Radio.Button>
+                  <Radio.Button value="custom">Tùy chọn</Radio.Button>
+                </Space>
+              </Radio.Group>
+            </Form.Item>
 
-        <Form.Item style={{display: 'flex', justifyContent: 'center'}}>
-          <Button type="primary" htmlType="submit" style={{padding: 20}}>
-            Nạp tiền
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
-  );
-};
+            {
+              amount === 'custom' && (
+                <Form.Item name="customAmount" label="Số tiền tùy chọn (VND)" required>
+                  <Input type="number" placeholder="Nhập số tiền bạn muốn nạp" />
+                </Form.Item>
+              )
+            }
 
-export default Deposit;
+            <Form.Item>
+              <Button icon={<RocketOutlined />} type="primary" htmlType="submit">
+                Nạp tiền
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </Col>
+    </Row>
+  )
+}
+
+export default Deposit

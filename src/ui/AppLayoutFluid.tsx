@@ -30,7 +30,7 @@ function AppLayout() {
       <Header style={headerStyle}>
         <Navbar />
       </Header>
-      <Content style={{flex: 0}}>
+      <Content>
         <Outlet />
       </Content>
       <Footer style={footerStyle}>
