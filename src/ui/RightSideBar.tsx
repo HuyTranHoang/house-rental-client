@@ -4,10 +4,8 @@ import { fetchAllRoomTypes } from '../api/roomType.api.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { CSSProperties } from 'react'
 import { fetchAllCities } from '../api/city.api.ts'
-import { useSelector } from 'react-redux'
-import { selectPropertyParams, setCityId, setDistrictId, setRoomTypeId } from '../features/rent-house/rentHouseSlice.ts'
 import { fetchAllDistricts } from '../api/district.api.ts'
-import { useAppDispatch } from '../store.ts'
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
 const listStyle: CSSProperties = {
   width: '100%',
@@ -33,66 +31,85 @@ function RightSideBar() {
     queryFn: fetchAllDistricts
   })
 
-  const { cityId } = useSelector(selectPropertyParams)
-
-  const dispatch = useAppDispatch()
+  const { cityId, setFilters } = usePropertyFilters()
 
   return (
     <>
-      <img src="/aptechonehome.jpg"
-           style={{ width: '100%', marginTop: '16px' }} alt="banner" />
+      <img src='/aptechonehome.jpg' style={{ width: '100%', marginTop: '16px' }} alt='banner' />
       <List
-        size="small"
-        header={<Typography.Title level={5} style={{ margin: 0 }}>Loại bất động sản</Typography.Title>}
+        size='small'
+        header={
+          <Typography.Title level={5} style={{ margin: 0 }}>
+            Loại bất động sản
+          </Typography.Title>
+        }
         bordered
         dataSource={roomTypeData}
         loading={roomTypeIsLoading}
         style={listStyle}
         renderItem={(item) => (
           <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
-            <Button block type="text" icon={<RightCircleOutlined />}
-                    onClick={() => dispatch(setRoomTypeId(item.id))}
-                    style={{ justifyContent: 'start' }}>
+            <Button
+              block
+              type='text'
+              icon={<RightCircleOutlined />}
+              onClick={() => setFilters({ roomTypeId: item.id })}
+              style={{ justifyContent: 'start' }}
+            >
               {item.name}
             </Button>
           </List.Item>
         )}
       />
 
-      {!cityId && <List
-        size="small"
-        header={<Typography.Title level={5} style={{ margin: 0 }}>Nhà đất cho thuê tại các khu vực</Typography.Title>}
-        bordered
-        dataSource={cityData}
-        loading={cityIsLoading}
-        style={listStyle}
-        renderItem={(item) => (
-          <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
-            <Button block type="text" icon={<RightCircleOutlined />}
-                    onClick={() => dispatch(setCityId(item.id))}
-                    style={{ justifyContent: 'start' }}>
-              {item.name}
-            </Button>
-          </List.Item>
-        )}
-      />}
-      {cityId && cityData && districtData ? (
+      {!cityId && (
         <List
-          size="small"
+          size='small'
           header={
             <Typography.Title level={5} style={{ margin: 0 }}>
-              Nhà đất cho thuê tại {cityData.find(city => city.id === cityId)?.name}
+              Nhà đất cho thuê tại các khu vực
             </Typography.Title>
           }
           bordered
-          dataSource={districtData.filter(district => district.cityId === cityId)}
+          dataSource={cityData}
+          loading={cityIsLoading}
+          style={listStyle}
+          renderItem={(item) => (
+            <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
+              <Button
+                block
+                type='text'
+                icon={<RightCircleOutlined />}
+                onClick={() => setFilters({ cityId: item.id })}
+                style={{ justifyContent: 'start' }}
+              >
+                {item.name}
+              </Button>
+            </List.Item>
+          )}
+        />
+      )}
+      {cityId && cityData && districtData ? (
+        <List
+          size='small'
+          header={
+            <Typography.Title level={5} style={{ margin: 0 }}>
+              Nhà đất cho thuê tại {cityData.find((city) => city.id === cityId)?.name}
+            </Typography.Title>
+          }
+          bordered
+          dataSource={districtData.filter((district) => district.cityId === cityId)}
           loading={districtIsLoading}
           style={listStyle}
           renderItem={(item) => (
             <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
-              <Button block type="text" icon={<RightCircleOutlined />}
-                      onClick={() => dispatch(setDistrictId(item.id))}
-                      style={{ justifyContent: 'start' }}>
+              <Button
+                block
+                type='text'
+                icon={<RightCircleOutlined />}
+                onClick={() => setFilters({ districtId: item.id })}
+                style={{ justifyContent: 'start' }}
+              >
                 {item.name}
               </Button>
             </List.Item>
@@ -100,7 +117,6 @@ function RightSideBar() {
         />
       ) : null}
     </>
-
   )
 }
 

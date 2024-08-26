@@ -3,13 +3,11 @@ import { useDispatch } from 'react-redux'
 
 import authReducer from './features/auth/authSlice.ts'
 import profileReducer from './features/profile/profileSlice.ts'
-import propertyReducer from './features/rent-house/rentHouseSlice.ts'
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     profile: profileReducer,
-    property: propertyReducer
   }
 })
 

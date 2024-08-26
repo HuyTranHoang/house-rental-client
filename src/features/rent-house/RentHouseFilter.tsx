@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchAllCities } from '@/api/city.api.ts'
 import { fetchAllDistricts } from '@/api/district.api.ts'
 import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import RentHouseExtraFilterModal from './search-field/RentHouseExtraFilterModal.tsx'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { DollarIcon, GeoIcon, HomeIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
@@ -84,31 +84,47 @@ function RentHouseFilter() {
   }
 
   // Dùng useEffect để cập nhật giá trị của form khi có thay đổi từ các biến roomTypeId, cityId, districtId ở bên ngoài
-  // useEffect(() => {
-  //   if (roomTypeId) {
-  //     form.setFieldsValue({ roomType: roomTypeId.toString() })
-  //   } else {
-  //     if (form.getFieldValue('roomType')) form.setFieldsValue({ roomType: '0' })
-  //     else form.setFieldsValue({ roomType: undefined })
-  //   }
-  // }, [form, roomTypeId])
+  useEffect(() => {
+    if (search) {
+      form.setFieldsValue({ search })
+    } else {
+      form.setFieldsValue({ search: undefined })
+    }
+  }, [form, search])
 
-  // useEffect(() => {
-  //   if (cityId && districtId) {
-  //     form.setFieldsValue({ district: [cityId.toString(), districtId.toString()] })
-  //   } else if (cityId) {
-  //     form.setFieldsValue({ district: [cityId.toString(), '0'] })
-  //   } else {
-  //     form.setFieldsValue({ district: undefined })
-  //   }
-  // }, [form, cityId, districtId])
+  useEffect(() => {
+    if (roomTypeId) {
+      form.setFieldsValue({ roomType: roomTypeId.toString() })
+    } else {
+      form.setFieldsValue({ roomType: undefined })
+    }
+  }, [form, roomTypeId])
+
+  useEffect(() => {
+    if (cityId && districtId) {
+      form.setFieldsValue({ cityDistrict: [cityId.toString(), districtId.toString()] })
+    } else if (cityId) {
+      form.setFieldsValue({ cityDistrict: [cityId.toString(), '0'] })
+    } else {
+      form.setFieldsValue({ cityDistrict: [] })
+    }
+  }, [form, cityId, districtId])
+
+  useEffect(() => {
+    if (minPrice || maxPrice) {
+      const milion = 1000000
+      form.setFieldsValue({ price: `${minPrice / milion},${maxPrice / milion}` })
+    } else {
+      form.setFieldsValue({ price: undefined })
+    }
+  }, [form, maxPrice, minPrice])
 
   return (
     <>
       <Form
         form={form}
-        name="search"
-        autoComplete="off"
+        name='search'
+        autoComplete='off'
         initialValues={{
           search: search,
           cityDistrict:
@@ -120,33 +136,35 @@ function RentHouseFilter() {
       >
         <Row gutter={12}>
           <Col span={7}>
-            <Form.Item name="search">
+            <Form.Item name='search'>
               <Input.Search
-                size="large"
+                size='large'
                 allowClear={true}
-                placeholder="Từ khóa, đường, quận hoặc địa danh"
+                placeholder='Từ khóa, đường, quận hoặc địa danh'
                 onSearch={(value) => setFilters({ search: value })}
               />
             </Form.Item>
           </Col>
           <Col span={5}>
-            <Form.Item name="cityDistrict">
+            <Form.Item name='cityDistrict'>
               <Cascader
                 options={cityDistrictOptions}
                 onChange={onCityDistrictChange}
-                size="large"
+                size='large'
                 allowClear={false}
                 loading={cityIsLoading || districtIsLoading}
-                placeholder="Chọn quận huyện"
+                placeholder='Chọn quận huyện'
                 suffixIcon={<GeoIcon />}
               />
             </Form.Item>
           </Col>
           <Col span={5}>
-            <Form.Item name="roomType">
+            <Form.Item name='roomType'>
               <Select
-                size="large"
-                onChange={(value) => {setFilters({ roomTypeId: Number(value) })}}
+                size='large'
+                onChange={(value) => {
+                  setFilters({ roomTypeId: Number(value) })
+                }}
                 loading={roomTypeIsLoading}
                 placeholder={'Loại phòng'}
                 suffixIcon={<HomeIcon />}
@@ -155,9 +173,9 @@ function RentHouseFilter() {
             </Form.Item>
           </Col>
           <Col span={5}>
-            <Form.Item name="price">
+            <Form.Item name='price'>
               <Select
-                size="large"
+                size='large'
                 onChange={handlePriceChange}
                 placeholder={'Giá thuê'}
                 suffixIcon={<DollarIcon />}
