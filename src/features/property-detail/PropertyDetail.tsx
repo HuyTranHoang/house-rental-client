@@ -88,6 +88,12 @@ const NextButton = styled(Button)`
   }
 `
 
+const StickyDiv = styled('div')`
+  position: sticky;
+  top: 24px; 
+  z-index: 1000;
+`;
+
 function PropertyDetail() {
   const { id } = useParams<{ id: string }>()
 
@@ -222,53 +228,55 @@ function PropertyDetail() {
         </Col>
 
         <Col span={8}>
-          <Card loading={userIsLoading}>
-            {userData && (
-              <>
-                <Meta
-                  avatar={
-                    <Flex align='center' justify='center' style={{ height: '100%', marginRight: 12 }}>
-                      <Avatar size='large' src={userData.avatarUrl} />
-                    </Flex>
-                  }
-                  title={
-                    <Space>
+          <StickyDiv>
+            <Card loading={userIsLoading}>
+              {userData && (
+                <>
+                  <Meta
+                    avatar={
+                      <Flex align='center' justify='center' style={{ height: '100%', marginRight: 12 }}>
+                        <Avatar size='large' src={userData.avatarUrl} />
+                      </Flex>
+                    }
+                    title={
+                      <Space>
                       <span>
                         {userData.firstName} {userData.lastName}
                       </span>
-                      <CheckCircleFilled style={{ color: blue[3] }} />
-                    </Space>
-                  }
-                  description={<span>Đã tham gia: {formatJoinedDate(userData.createdAt)}</span>}
-                />
-                <Divider style={{ margin: 16 }} />
+                        <CheckCircleFilled style={{ color: blue[3] }} />
+                      </Space>
+                    }
+                    description={<span>Đã tham gia: {formatJoinedDate(userData.createdAt)}</span>}
+                  />
+                  <Divider style={{ margin: 16 }} />
 
-                <Button
-                  size='large'
-                  onClick={handleShowPhoneNumber}
-                  style={{ width: '100%', marginBottom: 12, borderColor: blue.primary }}
-                >
-                  <Flex justify='space-between' style={{ width: '100%' }}>
+                  <Button
+                    size='large'
+                    onClick={handleShowPhoneNumber}
+                    style={{ width: '100%', marginBottom: 12, borderColor: blue.primary }}
+                  >
+                    <Flex justify='space-between' style={{ width: '100%' }}>
                     <span>
                       <PhoneFilled />{' '}
                       {isPhoneNumberVisible
                         ? formatPhoneNumber(userData.phoneNumber)
                         : hidePhoneNumber(userData.phoneNumber)}
                     </span>
-                    <b style={{ color: blue.primary }}>{isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}</b>
-                  </Flex>
-                </Button>
+                      <b style={{ color: blue.primary }}>{isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}</b>
+                    </Flex>
+                  </Button>
 
-                <Button icon={<MailOutlined />} size='large' style={{ width: '100%' }} type='primary'>
-                  Gửi tin nhắn
-                </Button>
-              </>
-            )}
-          </Card>
+                  <Button icon={<MailOutlined />} size='large' style={{ width: '100%' }} type='primary'>
+                    Gửi tin nhắn
+                  </Button>
+                </>
+              )}
+            </Card>
 
-          <Button icon={<HeartOutlined style={{ color: red.primary }} />} size='large' style={{ marginTop: 16 }}>
-            Lưu tin
-          </Button>
+            <Button icon={<HeartOutlined style={{ color: red.primary }} />} size='large' style={{ marginTop: 16 }}>
+              Lưu tin
+            </Button>
+          </StickyDiv>
         </Col>
       </Row>
     </Container>

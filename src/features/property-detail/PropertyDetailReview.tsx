@@ -25,11 +25,11 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
   const reviewListData = reviewData
     ? [
         ...reviewData.data.map((review) => ({
-          avatar: review.userAvatar ? review.userAvatar : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.id}`,
+          avatar: review.userAvatar ? review.userAvatar : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.userId}`,
           title: (
             <Space size='large'>
               <Typography.Text strong>{review.userName}</Typography.Text>
-              <Rate disabled defaultValue={review.rating} />
+              <Rate disabled value={review.rating} />
             </Space>
           ),
           description: (
@@ -79,7 +79,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
       <Typography.Title level={5}>
         Để lại đánh giá <CommentOutlined />
       </Typography.Title>
-      <Form form={form} name='feedbackForm' autoComplete='off' onFinish={onFinish}>
+      <Form form={form} layout='vertical' name='feedbackForm' autoComplete='off' onFinish={onFinish}>
         <Form.Item<ReviewFieldType>
           name='comment'
           rules={[
@@ -99,7 +99,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
 
         <Form.Item<ReviewFieldType>
           name='rating'
-          label='Đánh giá'
+          label='Số sao đánh giá'
           rules={[{ required: true, message: 'Vui lòng chọn số sao đánh giá!' }]}
         >
           <Rate allowClear={false} tooltips={ratingDesc} />
