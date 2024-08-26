@@ -17,6 +17,9 @@ function RentHouse() {
     roomTypeId,
     minPrice,
     maxPrice,
+    minArea,
+    maxArea,
+    numOfDays,
     sortBy,
     pageNumber,
     pageSize,
@@ -24,8 +27,8 @@ function RentHouse() {
   } = usePropertyFilters()
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['rentHouse', search, cityId, districtId, roomTypeId, minPrice, maxPrice, sortBy, pageNumber, pageSize],
-    queryFn: () => fetchAllProperties(search, cityId, districtId, roomTypeId, minPrice, maxPrice, sortBy, pageNumber, pageSize)
+    queryKey: ['rentHouse', search, cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays, sortBy, pageNumber, pageSize],
+    queryFn: () => fetchAllProperties(search, cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays, sortBy, pageNumber, pageSize)
   })
 
   const startIndex = (pageNumber - 1) * pageSize
@@ -54,9 +57,15 @@ function RentHouse() {
             {isLoading ? (
               <Skeleton.Button active={true} size="small" shape="round" style={{ marginRight: 8, width: 200 }} />
             ) : (
-              <div>
-                Hiển thị <strong>{`${range[0]}-${range[1]}`}</strong> trong <strong>{`${total}`}</strong> tin đăng
-              </div>
+              <>
+                {total > 0 && (
+                  <div>
+                    Hiển thị <strong>{`${range[0]}-${range[1]}`}</strong> trong <strong>{`${total}`}</strong> tin đăng
+                  </div>
+                )}
+
+                {total === 0 && <div>Không có tin đăng nào phù hợp</div>}
+              </>
             )}
 
             <Button type="default" style={{ backgroundColor: '#f0f0f0' }} icon={<BookOutlined />}>

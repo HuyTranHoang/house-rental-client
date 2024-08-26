@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import { Modal, Button, Select, Typography, Badge } from 'antd'
-import { useAppDispatch } from '@/store.ts'
-import { setMinArea, setMaxArea, setNumOfDays } from '../rentHouseSlice.ts'
 import { ProductOutlined, SelectOutlined, CalendarOutlined } from '@ant-design/icons'
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
 interface ExtraFiltersModalProps {
-  count: number;
-  setCount: (count: number) => void;
+  count: number
+  setCount: (count: number) => void
 }
 
 function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) {
-  const dispatch = useAppDispatch()
+  const { setFilters } = usePropertyFilters()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [area, setArea] = useState<string>('0,0')
   const [time, setTime] = useState<string>('0')
@@ -26,9 +25,7 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
   const handleOk = () => {
     const [minArea, maxArea] = area.split(',')
 
-    dispatch(setMinArea(parseInt(minArea) * 10))
-    dispatch(setMaxArea(parseInt(maxArea) * 10))
-    dispatch(setNumOfDays(parseInt(time)))
+    setFilters({ minArea: parseInt(minArea) * 10, maxArea: parseInt(maxArea) * 10, numOfDays: parseInt(time) })
 
     let activeFilters = 0
 
@@ -52,39 +49,33 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
     setIsModalOpen(false)
     setArea('0,0')
     setTime('0')
-
-    dispatch(setMinArea(0))
-    dispatch(setMaxArea(0))
-    dispatch(setNumOfDays(0))
-
+    setFilters({ minArea: 0, maxArea: 0, numOfDays: 0 })
     setCount(0)
   }
 
   return (
     <>
       <Badge count={count}>
-        <Button onClick={showModal} size="large" icon={<ProductOutlined style={{ color: '#91caff' }} />}>
+        <Button onClick={showModal} size='large' icon={<ProductOutlined style={{ color: '#91caff' }} />}>
           Lọc thêm
         </Button>
       </Badge>
       <Modal
-        title="Bộ lọc"
+        title='Bộ lọc'
         open={isModalOpen}
         onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={handleResetExtraFilter}>
+          <Button key='back' onClick={handleResetExtraFilter}>
             Xóa lọc
           </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
+          <Button key='submit' type='primary' onClick={handleOk}>
             Tìm kiếm
           </Button>
         ]}
       >
-        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>
-          Diện tích
-        </Typography.Paragraph>
+        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>Diện tích</Typography.Paragraph>
         <Select
-          size="large"
+          size='large'
           onChange={handleAreaChange}
           placeholder={'Diện tích'}
           value={area}
@@ -99,11 +90,9 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
           ]}
           style={{ width: '100%' }}
         />
-        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>
-          Thời gian đăng
-        </Typography.Paragraph>
+        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>Thời gian đăng</Typography.Paragraph>
         <Select
-          size="large"
+          size='large'
           onChange={(value) => setTime(value)}
           placeholder={'Thời gian đăng'}
           value={time}

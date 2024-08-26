@@ -28,6 +28,9 @@ export type PropertyFilters = {
   roomTypeId?: number
   minPrice?: number
   maxPrice?: number
+  minArea?: number
+  maxArea?: number
+  numOfDays?: number
   sortBy?: string
   pageNumber?: number
   pageSize?: number
