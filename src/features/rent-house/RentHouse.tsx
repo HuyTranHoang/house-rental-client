@@ -1,3 +1,5 @@
+import { useSearchParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, PaginationProps, Row, Skeleton, Typography } from 'antd'
 import { BookOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
@@ -13,19 +15,21 @@ import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 
 function RentHouse() {
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+
   const {
-    pageSize,
-    pageNumber,
-    cityId,
-    districtId,
-    roomTypeId,
-    minPrice,
-    maxPrice,
-    search,
-    minArea,
-    maxArea,
-    numOfDays
-  } = useSelector(selectPropertyParams)
+        pageSize,
+        pageNumber,
+        cityId,
+        districtId,
+        roomTypeId,
+        minPrice,
+        maxPrice,
+        search,
+        minArea,
+        maxArea,
+        numOfDays
+      } = useSelector(selectPropertyParams)
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (_, pageSize) => {
     dispatch(setPageSize(pageSize))
@@ -34,6 +38,37 @@ function RentHouse() {
   const onPageChange: PaginationProps['onChange'] = (pageNumber) => {
     dispatch(setPageNumber(pageNumber))
   }
+
+  //
+  useEffect(() => {
+                  const params = new URLSearchParams()
+                  params.set('pageSize', pageSize.toString())
+                  params.set('pageNumber', pageNumber.toString())
+                  if (cityId) params.set('cityId', cityId.toString())
+                  if (districtId) params.set('districtId', districtId.toString())
+                  if (roomTypeId) params.set('roomTypeId', roomTypeId.toString())
+                  if (minPrice) params.set('minPrice', minPrice.toString())
+                  if (maxPrice) params.set('maxPrice', maxPrice.toString())
+                  if (search) params.set('search', search)
+                  if (minArea) params.set('minArea', minArea.toString())
+                  if (maxArea) params.set('maxArea', maxArea.toString())
+                  if (numOfDays) params.set('numOfDays', numOfDays.toString())
+
+                  setSearchParams(params)
+                }, [
+                    pageSize,
+                    pageNumber,
+                    cityId,
+                    districtId,
+                    roomTypeId,
+                    minPrice,
+                    maxPrice,
+                    search,
+                    minArea,
+                    maxArea,
+                    numOfDays,
+                    setSearchParams
+                ])
 
   const { data, isLoading, isError } = useQuery({
       queryKey: ['rentHouse', pageSize, pageNumber, cityId, districtId, roomTypeId, minPrice, maxPrice, search, minArea, maxArea, numOfDays],
@@ -59,17 +94,20 @@ function RentHouse() {
             Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T8/2024
           </Typography.Title>
 
-          <Flex align="center" justify="space-between"
-                style={{ backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8, marginRight: 16 }}>
-
-            {isLoading
-              ? <Skeleton.Button active={true} size="small" shape="round" style={{ marginRight: 8, width: 200 }} />
-              : <div>
+          <Flex
+            align='center'
+            justify='space-between'
+            style={{ backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8, marginRight: 16 }}
+          >
+            {isLoading ? (
+              <Skeleton.Button active={true} size='small' shape='round' style={{ marginRight: 8, width: 200 }} />
+            ) : (
+              <div>
                 Hiển thị <strong>{`${range[0]}-${range[1]}`}</strong> trong <strong>{`${total}`}</strong> tin đăng
               </div>
-            }
+            )}
 
-            <Button type="default" style={{ backgroundColor: '#f0f0f0' }} icon={<BookOutlined />}>
+            <Button type='default' style={{ backgroundColor: '#f0f0f0' }} icon={<BookOutlined />}>
               Lưu tìm kiếm
             </Button>
           </Flex>
@@ -93,26 +131,20 @@ function RentHouse() {
           {data && data.data.length === 0 && (
             <Empty
               style={{ marginTop: '32px', marginBottom: '64px' }}
-              description={
-                <Typography.Text>
-                  Không tìm thấy bài đăng nào phù hợp
-                </Typography.Text>
-              }
+              description={<Typography.Text>Không tìm thấy bài đăng nào phù hợp</Typography.Text>}
             >
-              <Button type="primary">
-                Tìm kiếm lại
-              </Button>
-            </Empty>)
-          }
+              <Button type='primary'>Tìm kiếm lại</Button>
+            </Empty>
+          )}
 
           {data && data.data.map((property: Property) => <RentHouseCardItem key={property.id} property={property} />)}
 
-          {
-            data && data.data.length > 0 && <Pagination
+          {data && data.data.length > 0 && (
+            <Pagination
               total={data.pageInfo.totalElements}
               pageSize={pageSize}
               current={pageNumber}
-              align="center"
+              align='center'
               showSizeChanger
               onShowSizeChange={onShowSizeChange}
               pageSizeOptions={['2', '4', '6']}
@@ -120,7 +152,7 @@ function RentHouse() {
               onChange={onPageChange}
               style={{ margin: '20px 0 32px' }}
             />
-          }
+          )}
         </Col>
 
         <Col span={6}>

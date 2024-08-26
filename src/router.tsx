@@ -21,11 +21,16 @@ import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
 import { HomeOutlined } from '@ant-design/icons'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import Deposit from './pages/Deposit.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
     element: <AppLayoutFluid />,
     children: [
+      {
+        path: ROUTER_NAMES.TOP_UP,
+        element: <Deposit />
+      },
       {
         path: ROUTER_NAMES.CONTACT,
         element: <Contact />
