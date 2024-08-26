@@ -20,6 +20,8 @@ export const usePropertyFilters = () => {
   const cityId = parseInt(searchParams.get('cityId') || '0')
   const districtId = parseInt(searchParams.get('districtId') || '0')
   const roomTypeId = parseInt(searchParams.get('roomTypeId') || '0')
+  const minPrice = parseInt(searchParams.get('minPrice') || '0')
+  const maxPrice = parseInt(searchParams.get('maxPrice') || '0')
   const sortBy = searchParams.get('sortBy') || ''
   const pageNumber = parseInt(searchParams.get('pageNumber') || '1')
   const pageSize = parseInt(searchParams.get('pageSize') || '5')
@@ -51,6 +53,16 @@ export const usePropertyFilters = () => {
             params.set('pageNumber', '1')
           }
 
+          if (filters.minPrice !== undefined) {
+            params.set('minPrice', String(filters.minPrice))
+            params.set('pageNumber', '1')
+          }
+
+          if (filters.maxPrice !== undefined) {
+            params.set('maxPrice', String(filters.maxPrice))
+            params.set('pageNumber', '1')
+          }
+
           if (filters.pageNumber !== undefined) {
             params.set('pageNumber', String(filters.pageNumber))
           }
@@ -75,5 +87,5 @@ export const usePropertyFilters = () => {
     [setSearchParams]
   )
 
-  return { search, cityId, districtId, roomTypeId, sortBy, pageNumber, pageSize, setFilters }
+  return { search, cityId, districtId, roomTypeId, minPrice, maxPrice, sortBy, pageNumber, pageSize, setFilters }
 }

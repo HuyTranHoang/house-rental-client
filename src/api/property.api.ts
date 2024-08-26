@@ -13,6 +13,8 @@ export const fetchAllProperties = async (
   cityId: number,
   districtId: number,
   roomTypeId: number,
+  minPrice: number,
+  maxPrice: number,
   sortBy: string,
   pageNumber: number,
   pageSize: number
@@ -25,6 +27,8 @@ export const fetchAllProperties = async (
       cityId,
       districtId,
       roomTypeId,
+      minPrice,
+      maxPrice,
       sortBy,
       pageNumber,
       pageSize

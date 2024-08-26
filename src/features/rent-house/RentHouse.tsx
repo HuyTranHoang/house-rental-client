@@ -10,11 +10,22 @@ import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
 function RentHouse() {
-  const { search, cityId, districtId, roomTypeId, sortBy, pageNumber, pageSize, setFilters } = usePropertyFilters()
+  const {
+    search,
+    cityId,
+    districtId,
+    roomTypeId,
+    minPrice,
+    maxPrice,
+    sortBy,
+    pageNumber,
+    pageSize,
+    setFilters
+  } = usePropertyFilters()
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['rentHouse', search, cityId, districtId, roomTypeId, sortBy, pageNumber, pageSize],
-    queryFn: () => fetchAllProperties(search, cityId, districtId, roomTypeId, sortBy, pageNumber, pageSize)
+    queryKey: ['rentHouse', search, cityId, districtId, roomTypeId, minPrice, maxPrice, sortBy, pageNumber, pageSize],
+    queryFn: () => fetchAllProperties(search, cityId, districtId, roomTypeId, minPrice, maxPrice, sortBy, pageNumber, pageSize)
   })
 
   const startIndex = (pageNumber - 1) * pageSize
@@ -36,19 +47,19 @@ function RentHouse() {
           </Typography.Title>
 
           <Flex
-            align='center'
-            justify='space-between'
+            align="center"
+            justify="space-between"
             style={{ backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8, marginRight: 16 }}
           >
             {isLoading ? (
-              <Skeleton.Button active={true} size='small' shape='round' style={{ marginRight: 8, width: 200 }} />
+              <Skeleton.Button active={true} size="small" shape="round" style={{ marginRight: 8, width: 200 }} />
             ) : (
               <div>
                 Hiển thị <strong>{`${range[0]}-${range[1]}`}</strong> trong <strong>{`${total}`}</strong> tin đăng
               </div>
             )}
 
-            <Button type='default' style={{ backgroundColor: '#f0f0f0' }} icon={<BookOutlined />}>
+            <Button type="default" style={{ backgroundColor: '#f0f0f0' }} icon={<BookOutlined />}>
               Lưu tìm kiếm
             </Button>
           </Flex>
@@ -74,7 +85,7 @@ function RentHouse() {
               style={{ marginTop: '32px', marginBottom: '64px' }}
               description={<Typography.Text>Không tìm thấy bài đăng nào phù hợp</Typography.Text>}
             >
-              <Button type='primary'>Tìm kiếm lại</Button>
+              <Button type="primary">Tìm kiếm lại</Button>
             </Empty>
           )}
 
@@ -85,7 +96,7 @@ function RentHouse() {
               total={data.pageInfo.totalElements}
               pageSize={pageSize}
               current={pageNumber}
-              align='center'
+              align="center"
               showSizeChanger
               pageSizeOptions={['2', '4', '6']}
               locale={{ items_per_page: '/ trang' }}
