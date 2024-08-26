@@ -6,6 +6,9 @@ function Home() {
   return (
     <div style={{width: 600}}>
       <h1>Home page</h1>
+      <Link style={{ color: 'white'}} to={ROUTER_NAMES.TOP_UP}>
+        <Button style={{marginBottom: 16}} size='large'  block> Nạp tiền </Button>
+      </Link>
       <Link style={{ color: 'white'}} to={ROUTER_NAMES.CONTACT}>
         <Button style={{marginBottom: 16}} size='large'  block> Contact </Button>
       </Link>
