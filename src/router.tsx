@@ -28,8 +28,13 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
     element: <AppLayoutFluid />,
     children: [
       {
-        path: ROUTER_NAMES.TOP_UP,
-        element: <Deposit />
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: ROUTER_NAMES.TOP_UP,
+            element: <Deposit />
+          }
+        ]
       },
       {
         path: ROUTER_NAMES.CONTACT,
@@ -63,7 +68,7 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
         path: ROUTER_NAMES.RESET_PASSWORD,
         element: <ResetPassword />,
         breadcrumb: 'Đặt lại mật khẩu'
-      },
+      }
     ] // End of AppLayoutFluid children
   }
 ]
