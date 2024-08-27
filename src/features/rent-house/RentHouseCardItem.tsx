@@ -19,8 +19,8 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const navigate = useNavigate()
 
   const { favorites } = useFavoriteByUserId(user?.id)
-  const { addFavoriteMutate, isPendingAddFavorite } = useAddFavorite()
-  const { removeFavoriteMutate, isPendingRemoveFavorite } = useRemoveFavorite()
+  const { addFavoriteMutate } = useAddFavorite()
+  const { removeFavoriteMutate } = useRemoveFavorite()
 
   return (
     <Card
@@ -69,7 +69,6 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
 
                 <FavoriteButton
                   isFavorite={favorites?.some((favorite) => favorite.propertyId === property.id)}
-                  isPending={isPendingAddFavorite || isPendingRemoveFavorite}
                   onClick={(e) => {
                     e.stopPropagation()
                     if (!user) {

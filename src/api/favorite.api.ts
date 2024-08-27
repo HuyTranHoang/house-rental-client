@@ -8,7 +8,7 @@ export const getFavoritesByUserId = async (userId: number) => {
     return response.data
   } catch (error) {
     console.error(error)
-    // toast.error('Lỗi khi lấy danh sách yêu thích')
+    toast.error('Lỗi khi lấy danh sách yêu thích')
   }
 }
 

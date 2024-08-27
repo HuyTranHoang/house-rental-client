@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   Col,
+  ConfigProvider,
   Descriptions,
   DescriptionsProps,
   Divider,
@@ -15,7 +16,7 @@ import {
   Tag,
   Typography
 } from 'antd'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import DOMPurify from 'dompurify'
 
@@ -28,6 +29,7 @@ import { formatPhoneNumber, hidePhoneNumber } from '@/utils/formatPhoneNumber'
 import { blue, red } from '@ant-design/colors'
 import {
   CheckCircleFilled,
+  HeartFilled,
   HeartOutlined,
   LeftCircleOutlined,
   MailOutlined,
@@ -44,6 +46,10 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailReview from './PropertyDetailReview'
 import styled from 'styled-components'
 import { toast } from 'sonner'
+import { useSelector } from 'react-redux'
+import { selectAuth } from '@/features/auth/authSlice.ts'
+import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 const PrevButton = styled(Button)`
   border: 0;
@@ -90,18 +96,26 @@ const NextButton = styled(Button)`
 
 const StickyDiv = styled('div')`
   position: sticky;
-  top: 24px; 
+  top: 24px;
   z-index: 1000;
-`;
+`
 
 function PropertyDetail() {
+  const navigate = useNavigate()
+
   const { id } = useParams<{ id: string }>()
+  const { user } = useSelector(selectAuth)
+  const { favorites } = useFavoriteByUserId(user?.id)
+  const isFavorite = favorites?.some((favorite) => favorite.propertyId === Number(id))
 
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false)
 
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
   const { userData, userIsLoading } = useUser(propertyData?.userId)
+
+  const { addFavoriteMutate } = useAddFavorite()
+  const { removeFavoriteMutate } = useRemoveFavorite()
 
   const descriptionCleanHTML = propertyData ? DOMPurify.sanitize(propertyData.description) : ''
 
@@ -240,9 +254,9 @@ function PropertyDetail() {
                     }
                     title={
                       <Space>
-                      <span>
-                        {userData.firstName} {userData.lastName}
-                      </span>
+                        <span>
+                          {userData.firstName} {userData.lastName}
+                        </span>
                         <CheckCircleFilled style={{ color: blue[3] }} />
                       </Space>
                     }
@@ -256,13 +270,15 @@ function PropertyDetail() {
                     style={{ width: '100%', marginBottom: 12, borderColor: blue.primary }}
                   >
                     <Flex justify='space-between' style={{ width: '100%' }}>
-                    <span>
-                      <PhoneFilled />{' '}
-                      {isPhoneNumberVisible
-                        ? formatPhoneNumber(userData.phoneNumber)
-                        : hidePhoneNumber(userData.phoneNumber)}
-                    </span>
-                      <b style={{ color: blue.primary }}>{isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}</b>
+                      <span>
+                        <PhoneFilled />{' '}
+                        {isPhoneNumberVisible
+                          ? formatPhoneNumber(userData.phoneNumber)
+                          : hidePhoneNumber(userData.phoneNumber)}
+                      </span>
+                      <b style={{ color: blue.primary }}>
+                        {isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}
+                      </b>
                     </Flex>
                   </Button>
 
@@ -273,9 +289,41 @@ function PropertyDetail() {
               )}
             </Card>
 
-            <Button icon={<HeartOutlined style={{ color: red.primary }} />} size='large' style={{ marginTop: 16 }}>
-              Lưu tin
-            </Button>
+            <ConfigProvider
+              theme={{
+                components: {
+                  Button: {
+                    defaultHoverBorderColor: red.primary,
+                    defaultHoverColor: red[3]
+                  }
+                }
+              }}
+            >
+              <Button
+                icon={
+                  isFavorite ? (
+                    <HeartFilled style={{ color: red.primary }} />
+                  ) : (
+                    <HeartOutlined style={{ color: red.primary }} />
+                  )
+                }
+                onClick={() => {
+                  if (!user) {
+                    navigate(ROUTER_NAMES.LOGIN)
+                    return
+                  }
+                  if (isFavorite) {
+                    removeFavoriteMutate({ propertyId: Number(id), userId: user.id })
+                  } else {
+                    addFavoriteMutate(Number(id))
+                  }
+                }}
+                size='large'
+                style={{ marginTop: 16 }}
+              >
+                Lưu tin
+              </Button>
+            </ConfigProvider>
           </StickyDiv>
         </Col>
       </Row>
