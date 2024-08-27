@@ -1,32 +1,39 @@
 import { Card, Col, Flex, Image, Row, Space, Tag, Typography } from 'antd'
 import { formatDate } from '@/utils/formatDate.ts'
-import { CalendarOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons'
+import { CalendarOutlined } from '@ant-design/icons'
 import { Property } from '@/models/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-
+import { useSelector } from 'react-redux'
+import { selectAuth } from '@/features/auth/authSlice.ts'
+import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
+import FavoriteButton from '@/components/FavoriteButton.tsx'
 
 interface RentHouseCardItemProps {
   property: Property
 }
 
 function RentHouseCardItem({ property }: RentHouseCardItemProps) {
-  const [isHover, setIsHover] = useState(false)
+  const { user } = useSelector(selectAuth)
   const navigate = useNavigate()
 
+  const { favorites } = useFavoriteByUserId(user?.id)
+  const { addFavoriteMutate, isPendingAddFavorite } = useAddFavorite()
+  const { removeFavoriteMutate, isPendingRemoveFavorite } = useRemoveFavorite()
+
   return (
-    <Card style={{ marginRight: '16px', marginBottom: '8px', cursor: 'pointer' }}
-          onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}>
+    <Card
+      style={{ marginRight: '16px', marginBottom: '8px', cursor: 'pointer' }}
+      onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}
+    >
       <Row gutter={24}>
         <Col md={8}>
-          <Image preview={false} src={property.propertyImages[0]}
-                 style={{ objectFit: 'cover' }} />
+          <Image preview={false} src={property.propertyImages[0]} style={{ objectFit: 'cover' }} />
         </Col>
 
         <Col md={16}>
-          <Flex vertical justify="space-between" style={{ height: '100%' }}>
+          <Flex vertical justify='space-between' style={{ height: '100%' }}>
             <div style={{ marginBottom: '8px' }}>
               <Typography.Title level={4} style={{ marginTop: 0 }}>
                 {property.title}
@@ -40,7 +47,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
                 {formatCurrency(property.price)}
               </Typography.Title>
 
-              <Space size="large">
+              <Space size='large'>
                 <Typography.Text strong>{property.roomTypeName}</Typography.Text>
                 <span>{property.area} m&sup2;</span>
                 <span>{property.numRooms} phòng ngủ</span>
@@ -49,21 +56,34 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
               <div style={{ marginTop: '8px' }}>
                 {property.amenities.map((amenity, index) => (
                   <Typography.Text key={index} style={{ color: '#657786' }}>
-                    <Tag color="geekblue">{amenity}</Tag>
+                    <Tag color='geekblue'>{amenity}</Tag>
                   </Typography.Text>
                 ))}
               </div>
             </div>
             <div>
-              <Flex justify="space-between" align="center">
+              <Flex justify='space-between' align='center'>
                 <Typography.Paragraph style={{ color: '#657786', margin: 0 }}>
                   <CalendarOutlined /> {formatDate(property.createdAt)}
                 </Typography.Paragraph>
-                <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
-                     style={{ fontSize: 24, position: 'relative', height: 24, width: 24, cursor: 'pointer' }}>
-                  <HeartOutlined style={{ position: 'absolute', opacity: isHover ? 0 : 1 }} />
-                  <HeartFilled style={{ color: '#ff4d4f', position: 'absolute', opacity: isHover ? 1 : 0 }} />
-                </div>
+
+                <FavoriteButton
+                  isFavorite={favorites?.some((favorite) => favorite.propertyId === property.id)}
+                  isPending={isPendingAddFavorite || isPendingRemoveFavorite}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (!user) {
+                      navigate(ROUTER_NAMES.LOGIN)
+                      return
+                    }
+                    const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)
+                    if (isFavorite) {
+                      removeFavoriteMutate({ propertyId: property.id, userId: user.id })
+                    } else {
+                      addFavoriteMutate(property.id)
+                    }
+                  }}
+                />
               </Flex>
             </div>
           </Flex>
