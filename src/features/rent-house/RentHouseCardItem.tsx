@@ -1,4 +1,4 @@
-import { Card, Col, Flex, Image, Row, Space, Tag, Typography } from 'antd'
+import { Card, Col, Flex, Row, Space, Tag, Typography } from 'antd'
 import { formatDate } from '@/utils/formatDate.ts'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Property } from '@/models/property.type.ts'
@@ -28,11 +28,20 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
       onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}
     >
       <Row gutter={24}>
-        <Col md={8}>
-          <Image preview={false} src={property.propertyImages[0]} style={{ objectFit: 'cover' }} />
+        <Col xs={24} md={8}>
+          <div
+            style={{
+              width: '100%',
+              height: '200px',
+              overflow: 'hidden',
+              borderRadius: '8px',
+              background: `url(${property.propertyImages[0]}) no-repeat center center`,
+              backgroundSize: 'cover',
+            }}
+          />
         </Col>
 
-        <Col md={16}>
+        <Col xs={24} md={16}>
           <Flex vertical justify='space-between' style={{ height: '100%' }}>
             <div style={{ marginBottom: '8px' }}>
               <Typography.Title level={4} style={{ marginTop: 0 }}>
