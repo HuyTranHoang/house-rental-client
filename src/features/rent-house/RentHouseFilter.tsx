@@ -1,12 +1,12 @@
-import { Row, Col, Form, Input, Select, Cascader, CascaderProps } from 'antd'
-import { useQuery } from '@tanstack/react-query'
 import { fetchAllCities } from '@/api/city.api.ts'
 import { fetchAllDistricts } from '@/api/district.api.ts'
 import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
+import { DollarIcon, GeoIcon, HomeIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
+import { useQuery } from '@tanstack/react-query'
+import { Cascader, CascaderProps, Col, Form, Input, Row, Select } from 'antd'
 import { useEffect, useState } from 'react'
 import RentHouseExtraFilterModal from './search-field/RentHouseExtraFilterModal.tsx'
-import { usePropertyFilters } from '@/hooks/useProperty.ts'
-import { DollarIcon, GeoIcon, HomeIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
 
 interface Option {
   value: string
@@ -132,7 +132,7 @@ function RentHouseFilter() {
           roomType: roomTypeId ? roomTypeId.toString() : undefined,
           price: minPrice || maxPrice ? `${minPrice},${maxPrice}` : '0,0'
         }}
-        style={{ marginTop: '1rem' }}
+        className='mt-4'
       >
         <Row gutter={12}>
           <Col span={7}>

@@ -1,13 +1,11 @@
-import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
-import { BookOutlined } from '@ant-design/icons'
-import { useQuery } from '@tanstack/react-query'
-import { fetchAllProperties } from '@/api/property.api.ts'
-import { Property } from '@/models/property.type.ts'
-import RentHouseCardItem from './RentHouseCardItem.tsx'
-import RentHouseFilter from '@/features/rent-house/RentHouseFilter.tsx'
-import RightSideBar from '@/ui/RightSideBar.tsx'
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
-import { usePropertyFilters } from '@/hooks/useProperty.ts'
+import RentHouseFilter from '@/features/rent-house/RentHouseFilter.tsx'
+import { useProperties, usePropertyFilters } from '@/hooks/useProperty.ts'
+import { Property } from '@/models/property.type.ts'
+import RightSideBar from '@/ui/RightSideBar.tsx'
+import { BookOutlined } from '@ant-design/icons'
+import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
+import RentHouseCardItem from './RentHouseCardItem.tsx'
 
 function RentHouse() {
   const {
@@ -26,10 +24,20 @@ function RentHouse() {
     setFilters
   } = usePropertyFilters()
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['rentHouse', search, cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays, sortBy, pageNumber, pageSize],
-    queryFn: () => fetchAllProperties(search, cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays, sortBy, pageNumber, pageSize)
-  })
+  const { data, isError, isLoading } = useProperties(
+    search,
+    cityId,
+    districtId,
+    roomTypeId,
+    minPrice,
+    maxPrice,
+    minArea,
+    maxArea,
+    numOfDays,
+    sortBy,
+    pageNumber,
+    pageSize
+  )
 
   const startIndex = (pageNumber - 1) * pageSize
   const endIndex = data ? startIndex + data.data.length : 0
@@ -45,17 +53,13 @@ function RentHouse() {
 
       <Row>
         <Col span={18}>
-          <Typography.Title level={4} style={{ marginTop: 16 }}>
-            Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T8/2024
+          <Typography.Title level={4} className='mt-3.5'>
+            Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T9/2024
           </Typography.Title>
 
-          <Flex
-            align="center"
-            justify="space-between"
-            style={{ backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8, marginRight: 16 }}
-          >
+          <Flex align='center' justify='space-between' className='rounded-lg bg-[#f0f0f0] p-2 pr-4'>
             {isLoading ? (
-              <Skeleton.Button active={true} size="small" shape="round" style={{ marginRight: 8, width: 200 }} />
+              <Skeleton.Button active={true} size='small' shape='round' className='mr-2 w-64' />
             ) : (
               <>
                 {total > 0 && (
@@ -68,15 +72,15 @@ function RentHouse() {
               </>
             )}
 
-            <Button type="default" style={{ backgroundColor: '#f0f0f0' }} icon={<BookOutlined />}>
+            <Button type='default' className='bg-[#f0f0f0]' icon={<BookOutlined />}>
               Lưu tìm kiếm
             </Button>
           </Flex>
 
-          <Divider style={{ marginTop: 12, marginBottom: 16 }} />
+          <Divider className='mb-4 mt-3' />
 
           {isError && (
-            <Typography.Title level={4} style={{ textAlign: 'center' }}>
+            <Typography.Title level={4} className='text-center'>
               Đã xảy ra lỗi khi tải dữ liệu
             </Typography.Title>
           )}
@@ -84,17 +88,17 @@ function RentHouse() {
           {isLoading && (
             <>
               {Array.from({ length: pageSize }).map((_, index) => (
-                <Card key={index} style={{ marginBottom: 8, marginRight: 16 }} loading={true}></Card>
+                <Card key={index} loading className='mb-2 mr-4' />
               ))}
             </>
           )}
 
           {data && data.data.length === 0 && (
             <Empty
-              style={{ marginTop: '32px', marginBottom: '64px' }}
+              className='mb-6 mt-12'
               description={<Typography.Text>Không tìm thấy bài đăng nào phù hợp</Typography.Text>}
             >
-              <Button type="primary">Tìm kiếm lại</Button>
+              <Button type='primary'>Tìm kiếm lại</Button>
             </Empty>
           )}
 
@@ -105,13 +109,13 @@ function RentHouse() {
               total={data.pageInfo.totalElements}
               pageSize={pageSize}
               current={pageNumber}
-              align="center"
+              align='center'
               showSizeChanger
               pageSizeOptions={['2', '4', '6']}
               locale={{ items_per_page: '/ trang' }}
               onChange={(page, pageSize) => setFilters({ pageNumber: page, pageSize })}
               onShowSizeChange={(current, size) => setFilters({ pageNumber: current, pageSize: size })}
-              style={{ margin: '20px 0 32px' }}
+              className='mt-4 mb-6'
             />
           )}
         </Col>

@@ -35,7 +35,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           description: (
             <Flex vertical>
               <Typography.Text>{review.comment}</Typography.Text>
-              <Typography.Text type='secondary' style={{ fontSize: 12, marginTop: 8 }}>
+              <Typography.Text type='secondary' className='mt-2 text-xs'>
                 <CalendarOutlined /> {formatDate(review.createdAt)}
               </Typography.Text>
             </Flex>
@@ -51,7 +51,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
 
   return (
     <>
-      <Typography.Title level={4} style={{ marginTop: 8 }}>
+      <Typography.Title level={4} className='mt-2'>
         Đánh giá
       </Typography.Title>
       {reviewListData.length > 0 ? (

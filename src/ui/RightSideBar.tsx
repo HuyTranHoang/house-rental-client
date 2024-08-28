@@ -1,11 +1,11 @@
-import { Button, List, Typography } from 'antd'
-import { useQuery } from '@tanstack/react-query'
-import { fetchAllRoomTypes } from '../api/roomType.api.ts'
+import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
+import { useQuery } from '@tanstack/react-query'
+import { Button, List, Typography } from 'antd'
 import { CSSProperties } from 'react'
 import { fetchAllCities } from '../api/city.api.ts'
 import { fetchAllDistricts } from '../api/district.api.ts'
-import { usePropertyFilters } from '@/hooks/useProperty.ts'
+import { fetchAllRoomTypes } from '../api/roomType.api.ts'
 
 const listStyle: CSSProperties = {
   width: '100%',
@@ -39,7 +39,7 @@ function RightSideBar() {
       <List
         size='small'
         header={
-          <Typography.Title level={5} style={{ margin: 0 }}>
+          <Typography.Title level={5} className='m-0'>
             Loại bất động sản
           </Typography.Title>
         }
@@ -48,13 +48,13 @@ function RightSideBar() {
         loading={roomTypeIsLoading}
         style={listStyle}
         renderItem={(item) => (
-          <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
+          <List.Item className='border-0 pb-0 pt-1'>
             <Button
               block
               type='text'
               icon={<RightCircleOutlined />}
               onClick={() => setFilters({ roomTypeId: item.id })}
-              style={{ justifyContent: 'start' }}
+              className='justify-start'
             >
               {item.name}
             </Button>
@@ -66,7 +66,7 @@ function RightSideBar() {
         <List
           size='small'
           header={
-            <Typography.Title level={5} style={{ margin: 0 }}>
+            <Typography.Title level={5} className='m-0'>
               Nhà đất cho thuê tại các khu vực
             </Typography.Title>
           }
@@ -75,13 +75,13 @@ function RightSideBar() {
           loading={cityIsLoading}
           style={listStyle}
           renderItem={(item) => (
-            <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
+            <List.Item className='border-0 pb-0 pt-1'>
               <Button
                 block
                 type='text'
                 icon={<RightCircleOutlined />}
                 onClick={() => setFilters({ cityId: item.id })}
-                style={{ justifyContent: 'start' }}
+                className='justify-start'
               >
                 {item.name}
               </Button>
@@ -93,7 +93,7 @@ function RightSideBar() {
         <List
           size='small'
           header={
-            <Typography.Title level={5} style={{ margin: 0 }}>
+            <Typography.Title level={5} className='m-0'>
               Nhà đất cho thuê tại {cityData.find((city) => city.id === cityId)?.name}
             </Typography.Title>
           }
@@ -102,13 +102,13 @@ function RightSideBar() {
           loading={districtIsLoading}
           style={listStyle}
           renderItem={(item) => (
-            <List.Item style={{ paddingTop: '4px', paddingBottom: 0, border: 0 }}>
+            <List.Item className='border-0 pb-0 pt-1'>
               <Button
                 block
                 type='text'
                 icon={<RightCircleOutlined />}
                 onClick={() => setFilters({ districtId: item.id })}
-                style={{ justifyContent: 'start' }}
+                className='justify-start'
               >
                 {item.name}
               </Button>

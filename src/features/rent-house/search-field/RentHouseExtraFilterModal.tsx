@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { Modal, Button, Select, Typography, Badge } from 'antd'
-import { ProductOutlined, SelectOutlined, CalendarOutlined } from '@ant-design/icons'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
+import { CalendarOutlined, ProductOutlined, SelectOutlined } from '@ant-design/icons'
+import { Badge, Button, Modal, Select, Typography } from 'antd'
+import { useState } from 'react'
 
 interface ExtraFiltersModalProps {
   count: number
@@ -56,7 +56,7 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
   return (
     <>
       <Badge count={count}>
-        <Button onClick={showModal} size='large' icon={<ProductOutlined style={{ color: '#91caff' }} />}>
+        <Button onClick={showModal} size='large' icon={<ProductOutlined className='text-blue-400' />}>
           Lọc thêm
         </Button>
       </Badge>
@@ -73,13 +73,13 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
           </Button>
         ]}
       >
-        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>Diện tích</Typography.Paragraph>
+        <Typography.Paragraph className='mb-1 mt-4'>Diện tích</Typography.Paragraph>
         <Select
           size='large'
           onChange={handleAreaChange}
           placeholder={'Diện tích'}
           value={area}
-          suffixIcon={<SelectOutlined style={{ fontSize: 16 }} />}
+          suffixIcon={<SelectOutlined className='text-base' />}
           options={[
             { value: '0,0', label: 'Tất cả' },
             { value: '0,3', label: '< 30 m2' },
@@ -88,15 +88,15 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
             { value: '7,10', label: '70 - 100 m2' },
             { value: '10,0', label: '> 100 m2' }
           ]}
-          style={{ width: '100%' }}
+          className='w-full'
         />
-        <Typography.Paragraph style={{ marginTop: '1rem', marginBottom: '8px' }}>Thời gian đăng</Typography.Paragraph>
+        <Typography.Paragraph className='mb-1 mt-4'>Thời gian đăng</Typography.Paragraph>
         <Select
           size='large'
           onChange={(value) => setTime(value)}
           placeholder={'Thời gian đăng'}
           value={time}
-          suffixIcon={<CalendarOutlined style={{ fontSize: 16 }} />}
+          suffixIcon={<CalendarOutlined className='text-base' />}
           options={[
             { value: '0', label: 'Tất cả' },
             { value: '1', label: 'Cách đây 1 ngày' },
@@ -105,7 +105,7 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
             { value: '15', label: 'Cách đây 15 ngày' },
             { value: '30', label: 'Cách đây 30 ngày' }
           ]}
-          style={{ width: '100%' }}
+          className='w-full'
         />
       </Modal>
     </>

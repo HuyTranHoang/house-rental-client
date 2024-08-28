@@ -1,5 +1,24 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { selectAuth } from '@/features/auth/authSlice.ts'
+import ReportButton from '@/features/property-detail/ReportButton.tsx'
+import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
+import { useProperty } from '@/hooks/useProperty'
+import { useUser } from '@/hooks/useUser'
 import Container from '@/ui/Container.tsx'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { formatDate, formatJoinedDate } from '@/utils/formatDate.ts'
+import { formatPhoneNumber, hidePhoneNumber } from '@/utils/formatPhoneNumber'
+import { red } from '@ant-design/colors'
+import {
+  CheckCircleFilled,
+  HeartFilled,
+  HeartOutlined,
+  LeftCircleOutlined,
+  MailOutlined,
+  PhoneFilled,
+  RightCircleOutlined
+} from '@ant-design/icons'
 import {
   Avatar,
   Button,
@@ -16,40 +35,19 @@ import {
   Tag,
   Typography
 } from 'antd'
-import { useNavigate, useParams } from 'react-router-dom'
-
-import DOMPurify from 'dompurify'
-
-import ReportButton from '@/features/property-detail/ReportButton.tsx'
-import { useProperty } from '@/hooks/useProperty'
-import { useUser } from '@/hooks/useUser'
-import { formatCurrency } from '@/utils/formatCurrentcy.ts'
-import { formatDate, formatJoinedDate } from '@/utils/formatDate.ts'
-import { formatPhoneNumber, hidePhoneNumber } from '@/utils/formatPhoneNumber'
-import { blue, red } from '@ant-design/colors'
-import {
-  CheckCircleFilled,
-  HeartFilled,
-  HeartOutlined,
-  LeftCircleOutlined,
-  MailOutlined,
-  PhoneFilled,
-  RightCircleOutlined
-} from '@ant-design/icons'
 import Meta from 'antd/es/card/Meta'
+import DOMPurify from 'dompurify'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
+import styled from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailReview from './PropertyDetailReview'
-import styled from 'styled-components'
-import { toast } from 'sonner'
-import { useSelector } from 'react-redux'
-import { selectAuth } from '@/features/auth/authSlice.ts'
-import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
-import ROUTER_NAMES from '@/constant/routerNames.ts'
 
 const PrevButton = styled(Button)`
   border: 0;
@@ -155,18 +153,18 @@ function PropertyDetail() {
   return (
     <Container>
       <Row gutter={24}>
-        <Col span={16} style={{ margin: '24px 0 16px' }}>
+        <Col span={16} className='mb-3 mt-5'>
           <CustomBreadcrumbs />
         </Col>
 
         <Col span={8}>
-          <Space style={{ margin: '24px 0 16px' }}>
+          <Space className='mb-3 mt-5'>
             <PrevButton size='small'>Về danh sách</PrevButton>
             <NextButton size='small'>Tin tiếp</NextButton>
           </Space>
         </Col>
 
-        <Col span={16} style={{ backgroundColor: '#FFFFFF', padding: 24, marginBottom: 32 }}>
+        <Col span={16} className='mb-6 bg-white p-5'>
           {propertyIsLoading && (
             <section>
               <Skeleton />
@@ -188,29 +186,20 @@ function PropertyDetail() {
                 slidesPerView={1}
                 spaceBetween={30}
                 onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
-                style={{ margin: '24px 0', backgroundColor: '#fafafa', position: 'relative' }}
               >
                 {propertyData.propertyImages.map((image, index) => (
-                  <SwiperSlide key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <SwiperSlide key={index} className='flex justify-center'>
                     <img src={image} alt='image' />
                   </SwiperSlide>
                 ))}
                 <div className='swiper-button-prev'>
-                  <LeftCircleOutlined style={{ fontSize: 32, color: blue.primary }} />
+                  <LeftCircleOutlined className='text-2xl' />
                 </div>
                 <div className='swiper-button-next'>
-                  <RightCircleOutlined style={{ fontSize: 32, color: blue.primary }} />
+                  <RightCircleOutlined className='text-2xl' />
                 </div>
 
-                <Tag
-                  color='#595959'
-                  style={{
-                    position: 'absolute',
-                    bottom: '15px',
-                    left: '10px',
-                    zIndex: 99
-                  }}
-                >
+                <Tag color='#595959' className='absolute bottom-0 right-0 z-10 m-4'>
                   {`${currentSlide + 1}/${propertyData.propertyImages.length}`}
                 </Tag>
               </Swiper>
@@ -219,7 +208,7 @@ function PropertyDetail() {
 
               <Typography.Text>{propertyData.location}</Typography.Text>
 
-              <Typography.Title level={3} style={{ color: '#096dd9', marginTop: 12 }}>
+              <Typography.Title level={3} className='mt-2 text-blue-600'>
                 {formatCurrency(propertyData.price)}
               </Typography.Title>
 
@@ -248,7 +237,7 @@ function PropertyDetail() {
                 <>
                   <Meta
                     avatar={
-                      <Flex align='center' justify='center' style={{ height: '100%', marginRight: 12 }}>
+                      <Flex align='center' justify='center' className='mr-2 h-full'>
                         <Avatar size='large' src={userData.avatarUrl} />
                       </Flex>
                     }
@@ -257,32 +246,26 @@ function PropertyDetail() {
                         <span>
                           {userData.firstName} {userData.lastName}
                         </span>
-                        <CheckCircleFilled style={{ color: blue[3] }} />
+                        <CheckCircleFilled className='text-blue-400' />
                       </Space>
                     }
                     description={<span>Đã tham gia: {formatJoinedDate(userData.createdAt)}</span>}
                   />
-                  <Divider style={{ margin: 16 }} />
+                  <Divider className='m-3' />
 
-                  <Button
-                    size='large'
-                    onClick={handleShowPhoneNumber}
-                    style={{ width: '100%', marginBottom: 12, borderColor: blue.primary }}
-                  >
-                    <Flex justify='space-between' style={{ width: '100%' }}>
+                  <Button block size='large' onClick={handleShowPhoneNumber} className='mb-2 border-blue-400'>
+                    <Flex justify='space-between' className='w-full'>
                       <span>
                         <PhoneFilled />{' '}
                         {isPhoneNumberVisible
                           ? formatPhoneNumber(userData.phoneNumber)
                           : hidePhoneNumber(userData.phoneNumber)}
                       </span>
-                      <b style={{ color: blue.primary }}>
-                        {isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}
-                      </b>
+                      <b className='text-blue-500'>{isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}</b>
                     </Flex>
                   </Button>
 
-                  <Button icon={<MailOutlined />} size='large' style={{ width: '100%' }} type='primary'>
+                  <Button block icon={<MailOutlined />} size='large' type='primary'>
                     Gửi tin nhắn
                   </Button>
                 </>
@@ -301,11 +284,7 @@ function PropertyDetail() {
             >
               <Button
                 icon={
-                  isFavorite ? (
-                    <HeartFilled style={{ color: red.primary }} />
-                  ) : (
-                    <HeartOutlined style={{ color: red.primary }} />
-                  )
+                  isFavorite ? <HeartFilled className='text-red-500' /> : <HeartOutlined className='text-red-500' />
                 }
                 onClick={() => {
                   if (!user) {
@@ -319,7 +298,7 @@ function PropertyDetail() {
                   }
                 }}
                 size='large'
-                style={{ marginTop: 16 }}
+                className='mt-3'
               >
                 Lưu tin
               </Button>

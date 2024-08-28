@@ -1,8 +1,8 @@
-import { getPropertyById } from '@/api/property.api'
-import { useQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'react-router-dom'
-import { useCallback } from 'react'
+import { fetchAllProperties, getPropertyById } from '@/api/property.api'
 import { PropertyFilters } from '@/models/property.type.ts'
+import { useQuery } from '@tanstack/react-query'
+import { useCallback } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 export const useProperty = (propertyId: number) => {
   const { data: propertyData, isLoading: propertyIsLoading } = useQuery({
@@ -11,6 +11,56 @@ export const useProperty = (propertyId: number) => {
     enabled: propertyId !== undefined
   })
   return { propertyData, propertyIsLoading }
+}
+
+export const useProperties = (
+  search: string,
+  cityId: number,
+  districtId: number,
+  roomTypeId: number,
+  minPrice: number,
+  maxPrice: number,
+  minArea: number,
+  maxArea: number,
+  numOfDays: number,
+  sortBy: string,
+  pageNumber: number,
+  pageSize: number
+) => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [
+      'properties',
+      search,
+      cityId,
+      districtId,
+      roomTypeId,
+      minPrice,
+      maxPrice,
+      minArea,
+      maxArea,
+      numOfDays,
+      sortBy,
+      pageNumber,
+      pageSize
+    ],
+    queryFn: () =>
+      fetchAllProperties(
+        search,
+        cityId,
+        districtId,
+        roomTypeId,
+        minPrice,
+        maxPrice,
+        minArea,
+        maxArea,
+        numOfDays,
+        sortBy,
+        pageNumber,
+        pageSize
+      )
+  })
+
+  return { data, isLoading, isError }
 }
 
 export const usePropertyFilters = () => {

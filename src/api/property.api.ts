@@ -1,7 +1,7 @@
-import { toast } from 'sonner'
-import { Property } from '@/models/property.type.ts'
-import { PageInfo } from '@/models/pageInfo.type.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import { PageInfo } from '@/models/pageInfo.type.ts'
+import { Property } from '@/models/property.type.ts'
+import { toast } from 'sonner'
 
 interface PropertyResponse {
   data: Property[]
@@ -50,10 +50,10 @@ export const fetchAllProperties = async (
 
 export const getPropertyById = async (id: number) => {
   try {
-    const response = await axiosInstance.get<Property>(`/api/properties/${id}`);
-    return response.data;
+    const response = await axiosInstance.get<Property>(`/api/properties/${id}`)
+    return response.data
   } catch (error) {
-    toast.error('Lỗi khi tải dữ liệu bài đăng');
-    throw error;
+    toast.error('Lỗi khi tải dữ liệu bài đăng')
+    throw error
   }
-};
+}
