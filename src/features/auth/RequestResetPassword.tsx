@@ -1,16 +1,15 @@
-import { useSelector } from 'react-redux'
-import { selectAuth } from './authSlice.ts'
-import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { toast } from 'sonner'
-import { Alert, Button, Col, Flex, Form, Input, Row, Spin, Typography } from 'antd'
-import { AntDesignOutlined, MailOutlined } from '@ant-design/icons'
-import GradientButton from '@/components/GradientButton.tsx'
 import CustomIndicator from '@/components/CustomIndicator.tsx'
+import GradientButton from '@/components/GradientButton.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { delay } from '@/utils/delay.ts'
-
+import { AntDesignOutlined, MailOutlined } from '@ant-design/icons'
+import { Alert, Button, Col, Form, Input, Row, Spin, Typography } from 'antd'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { selectAuth } from './authSlice.ts'
 
 type FieldType = {
   email: string
@@ -66,44 +65,44 @@ function RequestResetPassword() {
   }
 
   if (isAuthenticated) {
-    return <Spin indicator={<CustomIndicator />}
-                 spinning={spinning}
-                 tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
-                 fullscreen />
+    return (
+      <Spin
+        indicator={<CustomIndicator />}
+        spinning={spinning}
+        tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
+        fullscreen
+      />
+    )
   }
 
   return (
-    <Row style={{ textAlign: 'center', margin: '3rem 0' }}>
+    <Row className='my-12 text-center'>
       <Col span={24}>
-        <Flex justify="center" align="middle">
+        <div className='flex items-center justify-center'>
           <Form
-            name="requestResetPassword"
+            name='requestResetPassword'
             onFinish={onFinish}
-            autoComplete="off"
-            style={{
-              width: '400px',
-              backgroundColor: 'white',
-              borderRadius: '8px',
-              padding: '32px',
-              margin: '64px 0',
-              boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px'
-            }}
+            autoComplete='off'
+            className='my-16 w-[400px] rounded-lg bg-white p-8 shadow-lg'
           >
-
-            <Flex vertical justify="center" align="center" style={{ marginBottom: '24px' }}>
-              <img src="/logo.png" alt="Mogu logo" style={{ width: 140 }} />
-              <Typography.Title level={3} style={{ textAlign: 'center' }}>Quên mật khẩu</Typography.Title>
-              <Typography.Text type="secondary" className="centered-text" style={{ fontSize: 12 }}>
+            <div className='mb-6 flex flex-col items-center justify-center'>
+              <img src='/logo.png' alt='Mogu logo' className='w-36' />
+              <Typography.Title level={3} className='text-center'>
+                Quên mật khẩu
+              </Typography.Title>
+              <Typography.Text type='secondary' className='text-center text-xs'>
                 Vui lòng nhập email để đặt lại mật khẩu
               </Typography.Text>
-            </Flex>
+            </div>
 
-            {error && <Form.Item>
-              <Alert message={error} type="error" showIcon />
-            </Form.Item>}
+            {error && (
+              <Form.Item>
+                <Alert message={error} type='error' showIcon />
+              </Form.Item>
+            )}
 
             <Form.Item
-              name="email"
+              name='email'
               rules={[
                 {
                   required: true,
@@ -115,28 +114,30 @@ function RequestResetPassword() {
                 }
               ]}
             >
-              <Input placeholder="Email" prefix={<MailOutlined />} />
+              <Input placeholder='Email' prefix={<MailOutlined />} />
             </Form.Item>
 
-            <Form.Item style={{ marginBottom: '0.6rem' }}>
-              <GradientButton type="primary" htmlType="submit" size="large" icon={<AntDesignOutlined />}
-                              loading={isLoading} block>
+            <Form.Item className='mb-2'>
+              <GradientButton
+                type='primary'
+                htmlType='submit'
+                size='large'
+                icon={<AntDesignOutlined />}
+                loading={isLoading}
+                block
+              >
                 Gửi email đặt lại mật khẩu
               </GradientButton>
             </Form.Item>
 
-            <Form.Item style={{ display: 'inline' }}>
-              <Typography.Text>
-                Bạn đã có tài khoản?
-              </Typography.Text>
+            <Form.Item className='inline'>
+              <Typography.Text>Bạn đã có tài khoản?</Typography.Text>
               <Link to={ROUTER_NAMES.LOGIN}>
-                <Button type="link">
-                  Đăng nhập
-                </Button>
+                <Button type='link'>Đăng nhập</Button>
               </Link>
             </Form.Item>
           </Form>
-        </Flex>
+        </div>
       </Col>
     </Row>
   )

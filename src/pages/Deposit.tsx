@@ -1,14 +1,13 @@
-import { Form, Input, Button, Radio, Card, Space, Row, Col, Flex, Typography } from 'antd'
-import { toast } from 'sonner'
+import { selectAuth } from '@/features/auth/authSlice.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { RocketOutlined } from '@ant-design/icons'
-import { selectAuth } from '@/features/auth/authSlice.ts'
+import { Button, Card, Col, Flex, Form, Input, Radio, Row, Space, Typography } from 'antd'
 import { useSelector } from 'react-redux'
-import { green } from '@ant-design/colors'
+import { toast } from 'sonner'
 
 interface DepositForm {
-  amount: string;
-  customAmount?: number;
+  amount: string
+  customAmount?: number
 }
 
 const Deposit = () => {
@@ -46,11 +45,11 @@ const Deposit = () => {
       return (
         <>
           <Typography.Paragraph>
-            Số tiền bạn muốn nạp: <strong style={{ color: green.primary }}>{formatCurrency(customAmount)}</strong>
+            Số tiền bạn muốn nạp: <strong className='text-green-500'>{formatCurrency(customAmount)}</strong>
           </Typography.Paragraph>
           <Typography.Paragraph>
-            Sau khi nạp: <strong
-            style={{ color: green.primary }}>{formatCurrency(user!.balance + Number(customAmount))}</strong>
+            Sau khi nạp:{' '}
+            <strong className='text-green-500'>{formatCurrency(user!.balance + Number(customAmount))}</strong>
           </Typography.Paragraph>
         </>
       )
@@ -60,11 +59,10 @@ const Deposit = () => {
       return (
         <>
           <Typography.Paragraph>
-            Số tiền đã chọn: <strong style={{ color: green.primary }}>{formatCurrency(Number(amount))}</strong>
+            Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(Number(amount))}</strong>
           </Typography.Paragraph>
           <Typography.Paragraph>
-            Sau khi nạp: <strong
-            style={{ color: green.primary }}>{formatCurrency(user!.balance + Number(amount))}</strong>
+            Sau khi nạp: <strong className='text-green-500'>{formatCurrency(user!.balance + Number(amount))}</strong>
           </Typography.Paragraph>
         </>
       )
@@ -74,47 +72,53 @@ const Deposit = () => {
   }
 
   return (
-    <Row style={{ marginTop: 64 }} gutter={8}>
+    <Row className='mt-16' gutter={8}>
       <Col offset={8} span={6}>
-        <Card title={<Flex>
-          <img src="https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg" alt="deposit"
-               style={{ width: 32, height: 32, marginRight: 8 }} />
-          <span>Nạp tiền</span>
-        </Flex>
-        }>
-          <Form<DepositForm> form={form} layout="vertical" onFinish={handleSubmit}>
-            <Form.Item<DepositForm> name="amount" label="Số tiền" required>
+        <Card
+          title={
+            <Flex>
+              <img
+                src='https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg'
+                className='mr-4 w-8'
+                alt='deposit'
+              />
+              <span>Nạp tiền</span>
+            </Flex>
+          }
+        >
+          <Form<DepositForm> form={form} layout='vertical' onFinish={handleSubmit}>
+            <Form.Item<DepositForm> name='amount' label='Số tiền' required>
               <Radio.Group>
                 <Space wrap>
-                  <Radio.Button value="50000">{formatCurrency(50000)}</Radio.Button>
-                  <Radio.Button value="100000">{formatCurrency(100000)}</Radio.Button>
-                  <Radio.Button value="200000">{formatCurrency(200000)}</Radio.Button>
-                  <Radio.Button value="500000">{formatCurrency(500000)}</Radio.Button>
-                  <Radio.Button value="custom">Tùy chọn</Radio.Button>
+                  <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
+                  <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
+                  <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
+                  <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
+                  <Radio.Button value='custom'>Tùy chọn</Radio.Button>
                 </Space>
               </Radio.Group>
             </Form.Item>
 
-            {
-              amount === 'custom' && (
-                <Form.Item name="customAmount" label="Số tiền tùy chọn (VND)" required>
-                  <Input type="number" placeholder="Nhập số tiền bạn muốn nạp" />
-                </Form.Item>
-              )
-            }
+            {amount === 'custom' && (
+              <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)' required>
+                <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
+              </Form.Item>
+            )}
 
             <Form.Item>
-              <Button icon={<RocketOutlined />} type="primary" htmlType="submit">
+              <Button icon={<RocketOutlined />} type='primary' htmlType='submit'>
                 Nạp tiền
               </Button>
             </Form.Item>
           </Form>
         </Card>
       </Col>
-      {
-        user && <Col span={3}>
+      {user && (
+        <Col span={3}>
           <Card>
-            <Typography.Title level={5} style={{ marginTop: 0 }}>Số dư</Typography.Title>
+            <Typography.Title level={5} className='mt-0'>
+              Số dư
+            </Typography.Title>
             <Typography.Paragraph>
               Hiện tại: <strong>{formatCurrency(user.balance)}</strong>
             </Typography.Paragraph>
@@ -122,13 +126,10 @@ const Deposit = () => {
             {renderDepositInfo(amount, customAmount)}
 
             <Typography.Title level={5}>Lưu ý</Typography.Title>
-            <Typography.Paragraph>
-              - Số tiền nạp tối thiểu là 50.000đ.
-            </Typography.Paragraph>
-
+            <Typography.Paragraph>- Số tiền nạp tối thiểu là 50.000đ.</Typography.Paragraph>
           </Card>
         </Col>
-      }
+      )}
     </Row>
   )
 }

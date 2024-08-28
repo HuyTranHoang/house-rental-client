@@ -1,25 +1,19 @@
-import { Alert, Card, Form, FormProps, Input, Typography } from 'antd'
-import { AntDesignOutlined } from '@ant-design/icons'
-import { useState } from 'react'
 import { changePasswordApi } from '@/api/user.api.ts'
-import { toast } from 'sonner'
 import GradientButton from '@/components/GradientButton.tsx'
-
+import { AntDesignOutlined } from '@ant-design/icons'
+import { Alert, Card, Form, FormProps, Input, Typography } from 'antd'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 type FieldType = {
   oldPassword: string
   newPassword: string
 }
 
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo)
-}
-
 function ChangePassword() {
   const [error] = useState<undefined | string>(undefined)
   const [isLoading] = useState(false)
   const [form] = Form.useForm()
-
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('Success:', values)
@@ -29,30 +23,30 @@ function ChangePassword() {
       toast.success('Cập nhật mật khẩu thành công!')
       form.resetFields()
     }
-
-
   }
 
   return (
-    <Card title={<Typography.Title level={4}>Thay đổi mật khẩu</Typography.Title>}
-      style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
+    <Card
+      title={<Typography.Title level={4}>Thay đổi mật khẩu</Typography.Title>}
+      className='mb-12 w-[768px] rounded-none border-l-0'
+    >
       <Form
         form={form}
-        name="changePassword"
+        name='changePassword'
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         initialValues={{ oldPassword: '', newPassword: '', confirmPassword: '' }}
-        autoComplete="off"
+        autoComplete='off'
         labelCol={{ span: 6 }}
       >
-
-        {error && <Form.Item>
-          <Alert message={error} type="error" showIcon />
-        </Form.Item>}
+        {error && (
+          <Form.Item>
+            <Alert message={error} type='error' showIcon />
+          </Form.Item>
+        )}
 
         <Form.Item
-          label="Mật khẩu hiện tại"
-          name="oldPassword"
+          label='Mật khẩu hiện tại'
+          name='oldPassword'
           rules={[
             {
               required: true,
@@ -64,12 +58,12 @@ function ChangePassword() {
             }
           ]}
         >
-          <Input.Password placeholder="Mật khẩu hiện tại" />
+          <Input.Password placeholder='Mật khẩu hiện tại' />
         </Form.Item>
 
         <Form.Item
-          label="Mật khẩu mới"
-          name="newPassword"
+          label='Mật khẩu mới'
+          name='newPassword'
           rules={[
             {
               required: true,
@@ -81,12 +75,12 @@ function ChangePassword() {
             }
           ]}
         >
-          <Input.Password placeholder="Mật khẩu mới" />
+          <Input.Password placeholder='Mật khẩu mới' />
         </Form.Item>
 
         <Form.Item
-          label="Nhập lại mật khẩu mới"
-          name="confirmPassword"
+          label='Nhập lại mật khẩu mới'
+          name='confirmPassword'
           dependencies={['newPassword']}
           rules={[
             {
@@ -103,13 +97,11 @@ function ChangePassword() {
             })
           ]}
         >
-          <Input.Password placeholder="Nhập lại mật khẩu mới" />
+          <Input.Password placeholder='Nhập lại mật khẩu mới' />
         </Form.Item>
 
-
-        <Form.Item style={{ marginBottom: '0.6rem' }}>
-          <GradientButton type="primary" htmlType="submit" icon={<AntDesignOutlined />}
-                          loading={isLoading} block>
+        <Form.Item>
+          <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isLoading} block>
             Cập nhật
           </GradientButton>
         </Form.Item>

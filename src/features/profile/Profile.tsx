@@ -1,14 +1,12 @@
+import { updateUserProfileApi } from '@/api/user.api.ts'
+import GradientButton from '@/components/GradientButton.tsx'
+import { updateProfile } from '@/features/auth/authSlice.ts'
+import { selectMenu } from '@/features/profile/profileSlice.ts'
+import { useAppDispatch } from '@/store.ts'
+import { AntDesignOutlined } from '@ant-design/icons'
 import { Alert, Card, Form, FormProps, Input, Typography } from 'antd'
-import {
-  AntDesignOutlined
-} from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { useAppDispatch } from '@/store.ts'
-import { updateUserProfileApi } from '@/api/user.api.ts'
-import { updateProfile } from '@/features/auth/authSlice.ts'
-import GradientButton from '@/components/GradientButton.tsx'
-import { selectMenu } from '@/features/profile/profileSlice.ts'
 
 type ChangeProfileForm = {
   lastName: string
@@ -36,23 +34,20 @@ function Profile() {
   }, [dispatch])
 
   return (
-    <Card title={<Typography.Title level={4}>Thay đổi thông Tin Cá Nhân</Typography.Title>}
-      style={{ width: 768, marginBottom: '3rem', borderRadius: 0, borderLeft: 'none' }}>
-      <Form
-        name="profile"
-        onFinish={onFinish}
-        initialValues={{ remember: true }}
-        autoComplete="off"
-        labelCol={{ span: 6 }}
-      >
-
-        {error && <Form.Item>
-          <Alert message={error} type="error" showIcon />
-        </Form.Item>}
+    <Card
+      title={<Typography.Title level={4}>Thay đổi thông tin cá nhân</Typography.Title>}
+      className='mb-12 w-[768px] rounded-none border-l-0'
+    >
+      <Form name='profile' onFinish={onFinish} autoComplete='off' labelCol={{ span: 6 }}>
+        {error && (
+          <Form.Item>
+            <Alert message={error} type='error' showIcon />
+          </Form.Item>
+        )}
 
         <Form.Item
-          label="Họ"
-          name="lastName"
+          label='Họ'
+          name='lastName'
           rules={[
             {
               required: true,
@@ -60,11 +55,11 @@ function Profile() {
             }
           ]}
         >
-          <Input placeholder="Họ" />
+          <Input placeholder='Họ' />
         </Form.Item>
         <Form.Item
-          label="Tên"
-          name="firstName"
+          label='Tên'
+          name='firstName'
           rules={[
             {
               required: true,
@@ -72,12 +67,12 @@ function Profile() {
             }
           ]}
         >
-          <Input placeholder="Tên" />
+          <Input placeholder='Tên' />
         </Form.Item>
 
         <Form.Item
-          label="Số điện thoại"
-          name="phoneNumber"
+          label='Số điện thoại'
+          name='phoneNumber'
           rules={[
             {
               required: true,
@@ -89,12 +84,11 @@ function Profile() {
             }
           ]}
         >
-          <Input placeholder="Số điện thoại" />
+          <Input placeholder='Số điện thoại' />
         </Form.Item>
 
-        <Form.Item style={{ marginBottom: '0.6rem' }}>
-          <GradientButton type="primary" htmlType="submit" icon={<AntDesignOutlined />}
-                          loading={isLoading} block>
+        <Form.Item>
+          <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isLoading} block>
             Cập nhật
           </GradientButton>
         </Form.Item>

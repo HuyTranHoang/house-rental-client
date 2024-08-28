@@ -19,6 +19,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const navigate = useNavigate()
 
   const { favorites } = useFavoriteByUserId(user?.id)
+  const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
 
@@ -68,14 +69,13 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
                 </Typography.Paragraph>
 
                 <FavoriteButton
-                  isFavorite={favorites?.some((favorite) => favorite.propertyId === property.id)}
+                  isFavorite={isFavorite}
                   onClick={(e) => {
                     e.stopPropagation()
                     if (!user) {
                       navigate(ROUTER_NAMES.LOGIN)
                       return
                     }
-                    const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)
                     if (isFavorite) {
                       removeFavoriteMutate({ propertyId: property.id, userId: user.id })
                     } else {
