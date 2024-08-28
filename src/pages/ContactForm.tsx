@@ -11,10 +11,6 @@ type FieldType = {
   message: string;
 };
 
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo)
-}
-
 function ContactForm() {
 
   const [loading, setLoading] = useState(false)
@@ -55,7 +51,6 @@ function ContactForm() {
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.09)'
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FieldType>
