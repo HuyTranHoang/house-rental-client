@@ -1,28 +1,19 @@
 import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
-import ColorButton from '../components/ColorButton.jsx'
-import styled from 'styled-components'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { logout, selectAuth } from '../features/auth/authSlice.js'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import styled from 'styled-components'
+import ColorButton from '../components/ColorButton.jsx'
+import { logout, selectAuth } from '../features/auth/authSlice.js'
 
-import './Navbar.scss'
-import { useAppDispatch } from '../store.ts'
-import { selectMenu } from '../features/profile/profileSlice.ts'
-import { UserOutlined } from '@ant-design/icons'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { UserOutlined } from '@ant-design/icons'
+import { selectMenu } from '../features/profile/profileSlice.ts'
+import { useAppDispatch } from '../store.ts'
 
 const CustomImg = styled.img`
-    width: 100px;
-    height: 31px;
-`
-
-const CustomTypography = styled(Typography.Text)`
-    font-size: 16px;
-
-    &:hover {
-        color: #4096ff;
-    }
+  width: 100px;
+  height: 31px;
 `
 
 interface NavItemProps {
@@ -31,21 +22,24 @@ interface NavItemProps {
 }
 
 const NavItem = ({ title, link }: NavItemProps) => (
-  <Button type="link">
-    <NavLink to={link}>
-      <CustomTypography>
-        {title}
-      </CustomTypography>
+  <Button type='link'>
+    <NavLink
+      to={link}
+      className={({ isActive }) =>
+        isActive
+          ? 'text-base font-bold text-gray-700 hover:text-blue-500'
+          : 'text-base text-gray-700 hover:text-blue-500'
+      }
+    >
+      {title}
     </NavLink>
   </Button>
 )
-
 
 function Navbar() {
   const { user } = useSelector(selectAuth)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-
 
   const items: MenuProps['items'] = [
     {
@@ -59,8 +53,10 @@ function Navbar() {
     {
       key: '2',
       label: (
-        <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}
-              onClick={() => dispatch(selectMenu([ROUTER_NAMES.TRANSACTION_HISTORY]))}>
+        <Link
+          to={ROUTER_NAMES.TRANSACTION_HISTORY}
+          onClick={() => dispatch(selectMenu([ROUTER_NAMES.TRANSACTION_HISTORY]))}
+        >
           Lịch sử giao dịch
         </Link>
       )
@@ -92,37 +88,31 @@ function Navbar() {
     }
   }
 
-
   return (
     <>
-      <Link to={ROUTER_NAMES.HOME} style={{ display: 'flex' }}>
-        <CustomImg
-          src={'/logo.png'}
-          alt="Logo"
-        />
+      <Link to={ROUTER_NAMES.HOME} className='flex' >
+        <CustomImg src='/logo.png' alt='Logo' />
       </Link>
-      <Flex gap="small" wrap>
-        <NavItem title="Tìm thuê" link={ROUTER_NAMES.RENT_HOUSE} />
+      <Flex gap='small' wrap>
+        <NavItem title='Tìm thuê' link={ROUTER_NAMES.RENT_HOUSE} />
 
-        <NavItem title="Phí thành viên" link={ROUTER_NAMES.MEMBERSHIP_FEE} />
+        <NavItem title='Phí thành viên' link={ROUTER_NAMES.MEMBERSHIP_FEE} />
 
         {user && (
           <>
-            <NavItem title="Nạp tiền" link={ROUTER_NAMES.TOP_UP} />
+            <NavItem title='Nạp tiền' link={ROUTER_NAMES.TOP_UP} />
 
-            <NavItem title="Mã thưởng" link={ROUTER_NAMES.PROMOTION} />
+            <NavItem title='Mã thưởng' link={ROUTER_NAMES.PROMOTION} />
 
-            <NavItem title="Tin nhắn" link={ROUTER_NAMES.MESSAGE} />
+            <NavItem title='Tin nhắn' link={ROUTER_NAMES.MESSAGE} />
 
-            <Divider type="vertical" style={{ height: '2rem' }} />
+            <Divider type='vertical' style={{ height: '2rem' }} />
 
-            <Button type="link">
+            <Button type='link'>
               <Dropdown menu={{ items, onClick }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    <Typography.Text style={{ fontSize: 16, fontWeight: '600' }}>
-                      {user.username}
-                    </Typography.Text>
+                    <Typography.Text className='text-base font-semibold' >{user.username}</Typography.Text>
 
                     {user.avatarUrl && <Avatar size={'small'} src={user.avatarUrl} />}
                     {!user.avatarUrl && <Avatar size={'small'} icon={<UserOutlined />} />}
@@ -133,10 +123,17 @@ function Navbar() {
           </>
         )}
 
-        {!user && <NavItem title="Đăng nhập" link={ROUTER_NAMES.LOGIN} />}
+        {!user && <NavItem title='Đăng nhập' link={ROUTER_NAMES.LOGIN} />}
 
-        <ColorButton defaultHover="#4096ff" borderColor="#4096ff" borderHoverColor="#4096ff"
-                     lineWidth={1} fontWeight={'500'} type="default" style={{ marginLeft: 15 }}>
+        <ColorButton
+          defaultHover='#4096ff'
+          borderColor='#4096ff'
+          borderHoverColor='#4096ff'
+          lineWidth={1}
+          fontWeight={'500'}
+          type='default'
+          className='ml-4'
+        >
           Đăng Tin
         </ColorButton>
       </Flex>
