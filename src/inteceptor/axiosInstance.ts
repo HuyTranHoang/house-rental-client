@@ -28,7 +28,10 @@ axiosInstance.interceptors.response.use(response => response,
         window.location.href = ROUTER_NAMES.LOGIN
         break
       case 403:
-        // window.location.href = '/forbidden'
+        if (error.response.data.message) {
+          toast.error(error.response.data.message)
+          break
+        }
         break
       case 500:
         if (error.response.data.message === 'Bad credentials') {
