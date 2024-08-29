@@ -12,6 +12,8 @@ import { formatPhoneNumber, hidePhoneNumber } from '@/utils/formatPhoneNumber'
 import { red } from '@ant-design/colors'
 import {
   CheckCircleFilled,
+  CheckOutlined,
+  CopyOutlined,
   HeartFilled,
   HeartOutlined,
   LeftCircleOutlined,
@@ -33,6 +35,7 @@ import {
   Skeleton,
   Space,
   Tag,
+  Tooltip,
   Typography
 } from 'antd'
 import Meta from 'antd/es/card/Meta'
@@ -40,7 +43,6 @@ import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'sonner'
 import styled from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -108,6 +110,7 @@ function PropertyDetail() {
 
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
 
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
   const { userData, userIsLoading } = useUser(propertyData?.userId)
@@ -145,8 +148,11 @@ function PropertyDetail() {
     if (!isPhoneNumberVisible) {
       setIsPhoneNumberVisible(true)
     } else {
-      toast.info('Số điện thoại đã được sao chép')
       navigator.clipboard.writeText(userData!.phoneNumber)
+      setIsCopied(true)
+      setTimeout(() => {
+        setIsCopied(false)
+      }, 2000)
     }
   }
 
@@ -261,7 +267,19 @@ function PropertyDetail() {
                           ? formatPhoneNumber(userData.phoneNumber)
                           : hidePhoneNumber(userData.phoneNumber)}
                       </span>
-                      <b className='text-blue-500'>{isPhoneNumberVisible ? 'Bấm để sao chép' : 'Bấm để hiện số'}</b>
+                      <b className='text-blue-500'>
+                        {isPhoneNumberVisible ? (
+                          isCopied ? (
+                            <CheckOutlined />
+                          ) : (
+                            <Tooltip title='Sao chép số điện thoại'>
+                              <CopyOutlined />
+                            </Tooltip>
+                          )
+                        ) : (
+                          'Bấm để hiện số'
+                        )}
+                      </b>
                     </Flex>
                   </Button>
 

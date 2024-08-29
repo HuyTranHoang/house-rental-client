@@ -44,6 +44,8 @@ export const useRemoveFavorite = () => {
       queryClient.setQueryData(['favorites', variables.userId], (oldData: Favorite[]) => {
         return oldData.filter((favorite) => favorite.propertyId !== variables.propertyId)
       })
+
+      queryClient.invalidateQueries({ queryKey: ['favoriteProperty'] })
     }
   })
 

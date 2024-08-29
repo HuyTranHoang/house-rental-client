@@ -18,7 +18,6 @@ export const getFavoritePropertiesByUserId = async (userId: number) => {
     return response.data
   } catch (error) {
     console.error(error)
-    toast.error('Lỗi khi lấy danh sách yêu thích')
   }
 }
 
