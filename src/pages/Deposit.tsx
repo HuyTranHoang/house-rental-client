@@ -1,102 +1,136 @@
-import { selectAuth } from '@/features/auth/authSlice.ts'
-import { formatCurrency } from '@/utils/formatCurrentcy.ts'
-import { RocketOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Flex, Form, Input, Radio, Row, Space, Typography } from 'antd'
-import { useSelector } from 'react-redux'
-import { toast } from 'sonner'
+import { Button, Card, Col, Row, Typography, Form, Input, Radio, Space } from 'antd';
+import { RocketOutlined } from '@ant-design/icons';
+import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { selectAuth } from '@/features/auth/authSlice.ts';
+import { formatCurrency } from '@/utils/formatCurrentcy.ts';
+import { toast } from 'sonner';
+import axiosInstance from '@/inteceptor/axiosInstance';
 
 interface DepositForm {
-  amount: string
-  customAmount?: number
+  amount: string;
+  customAmount?: number;
 }
 
 const Deposit = () => {
-  const [form] = Form.useForm()
-  const amount = Form.useWatch('amount', form)
-  const customAmount = Form.useWatch('customAmount', form)
+  const { control, handleSubmit, watch } = useForm<DepositForm>();
+  const amount = watch('amount');
+  const customAmount = watch('customAmount');
 
-  const { user } = useSelector(selectAuth)
+  const { user } = useSelector(selectAuth);
 
-  const handleSubmit = (values: DepositForm) => {
-    if (values.amount === 'custom' && !values.customAmount) {
-      toast.error('Vui lòng nhập số tiền bạn muốn nạp.')
-      return
+  const onSubmit = async (data: DepositForm) => {
+    try {
+      const amountToDeposit = data.amount === 'custom' && data.customAmount ? data.customAmount : Number(data.amount);
+  
+      if (isNaN(amountToDeposit) || amountToDeposit <= 0) {
+        toast.error('Số tiền không hợp lệ');
+      }
+  
+      const response = await axiosInstance.post('/api/vnpay/create-payment', {
+        amount: amountToDeposit
+      });
+  
+      const { status, message, url } = response.data;
+  
+      if (status === 'Ok') {
+        window.location.href = url;
+
+      } else {
+        throw new Error(message || 'Lỗi khi tạo yêu cầu thanh toán.');
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const errorMessage = error.response?.data?.message || 'Đã xảy ra lỗi khi gửi yêu cầu.';
+  
+        switch (status) {
+          case 400:
+            toast.error(`Lỗi yêu cầu: ${errorMessage}`);
+            break;
+          case 401:
+            toast.error(`Lỗi xác thực: ${errorMessage}`);
+            break;
+          case 403:
+            toast.error(`Quyền truy cập bị từ chối: ${errorMessage}`);
+            break;
+          case 404:
+            toast.error(`Không tìm thấy: ${errorMessage}`);
+            break;
+          case 500:
+            toast.error(`Lỗi máy chủ: ${errorMessage}`);
+            break;
+          default:
+            toast.error(`Lỗi không xác định: ${errorMessage}`);
+        }
+      } else {
+        toast.error(`Lỗi không xác định: ${error.message}`);
+      }
     }
-
-    if (values.amount === 'custom' && values.customAmount && values.customAmount < 50000) {
-      toast.error('Số tiền nạp tối thiểu là 50.000đ.')
-      return
-    }
-
-    if (values.amount === 'custom' && values.customAmount && values.customAmount > 1000000) {
-      toast.error('Số tiền nạp tối đa là 1.000.000đ.')
-      return
-    }
-
-    if (values.amount === 'custom' && values.customAmount) {
-      values.amount = values.customAmount.toString()
-    }
-
-    toast.info(`Nạp ${formatCurrency(Number(values.amount))} thành công. --- Chỉ có toast chưa có call api`)
-  }
+  };
 
   const renderDepositInfo = (amount: string, customAmount?: number) => {
-    if (amount === 'custom' && customAmount) {
-      return (
-        <>
-          <Typography.Paragraph>
-            Số tiền bạn muốn nạp: <strong className='text-green-500'>{formatCurrency(customAmount)}</strong>
-          </Typography.Paragraph>
-          <Typography.Paragraph>
-            Sau khi nạp:{' '}
-            <strong className='text-green-500'>{formatCurrency(user!.balance + Number(customAmount))}</strong>
-          </Typography.Paragraph>
-        </>
-      )
-    }
+    const depositAmount = amount === 'custom' && customAmount ? customAmount : Number(amount);
+    const newBalance = user ? user.balance + depositAmount : 0;
 
-    if (amount && amount !== 'custom') {
-      return (
-        <>
-          <Typography.Paragraph>
-            Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(Number(amount))}</strong>
-          </Typography.Paragraph>
-          <Typography.Paragraph>
-            Sau khi nạp: <strong className='text-green-500'>{formatCurrency(user!.balance + Number(amount))}</strong>
-          </Typography.Paragraph>
-        </>
-      )
-    }
-
-    return null
-  }
+    return (
+      <>
+        {amount === 'custom' && customAmount ? (
+          <>
+            <Typography.Paragraph>
+              Số tiền bạn muốn nạp: <strong className='text-green-500'>{formatCurrency(customAmount)}</strong>
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+              Sau khi nạp: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
+            </Typography.Paragraph>
+          </>
+        ) : amount && amount !== 'custom' ? (
+          <>
+            <Typography.Paragraph>
+              Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(Number(amount))}</strong>
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+              Sau khi nạp: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
+            </Typography.Paragraph>
+          </>
+        ) : null}
+      </>
+    );
+  };
 
   return (
     <Row className='mt-16' gutter={8}>
       <Col offset={8} span={6}>
         <Card
           title={
-            <Flex>
+            <div className='flex items-center'>
               <img
                 src='https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg'
                 className='mr-4 w-8'
                 alt='deposit'
               />
               <span>Nạp tiền</span>
-            </Flex>
+            </div>
           }
         >
-          <Form<DepositForm> form={form} layout='vertical' onFinish={handleSubmit}>
-            <Form.Item<DepositForm> name='amount' label='Số tiền' required>
-              <Radio.Group>
-                <Space wrap>
-                  <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
-                  <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
-                  <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
-                  <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
-                  <Radio.Button value='custom'>Tùy chọn</Radio.Button>
-                </Space>
-              </Radio.Group>
+          <Form layout='vertical' onFinish={handleSubmit(onSubmit)}>
+            <Form.Item name='amount' label='Số tiền' required>
+              <Controller
+                name='amount'
+                control={control}
+                render={({ field }) => (
+                  <Radio.Group {...field}>
+                    <Space wrap>
+                      <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
+                      <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
+                      <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
+                      <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
+                      <Radio.Button value='custom'>Tùy chọn</Radio.Button>
+                    </Space>
+                  </Radio.Group>
+                )}
+              />
             </Form.Item>
 
             {amount === 'custom' && (
@@ -131,7 +165,7 @@ const Deposit = () => {
         </Col>
       )}
     </Row>
-  )
-}
+  );
+};
 
-export default Deposit
+export default Deposit;
