@@ -4,7 +4,7 @@ import ROUTER_NAMES from '@/constant/routerNames.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { delay } from '@/utils/delay.ts'
 import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
-import { Alert, Button, Col, Flex, Form, FormProps, Input, Row, Space, Spin, Typography } from 'antd'
+import { Alert, Button, Col, Flex, Form, Input, Row, Space, Spin, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -18,10 +18,6 @@ type FieldType = {
   password: string
   email: string
   phoneNumber: string
-}
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo)
 }
 
 function Register() {
@@ -109,7 +105,6 @@ function Register() {
             <Form
               name='register'
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
               autoComplete='off'
               className='my-16 w-[400px] rounded-lg bg-white p-8 shadow-lg'
             >

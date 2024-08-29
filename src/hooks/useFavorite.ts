@@ -1,6 +1,6 @@
-import { getFavoritesByUserId, addFavorite, removeFavorite } from '@/api/favorite.api.ts'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { addFavorite, getFavoritePropertiesByUserId, getFavoritesByUserId, removeFavorite } from '@/api/favorite.api.ts'
 import { Favorite } from '@/models/favorite.type.ts'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useFavoriteByUserId = (userId: number | undefined) => {
   const { data: favorites, isLoading: isLoadingFavorites } = useQuery({
@@ -9,6 +9,15 @@ export const useFavoriteByUserId = (userId: number | undefined) => {
     enabled: userId !== undefined
   })
   return { favorites, isLoadingFavorites }
+}
+
+export const useFavoritePropertyByUserId = (userId: number | undefined) => {
+  const { data: favortieProperties, isLoading: isLoadingFavoriteProperties } = useQuery({
+    queryKey: ['favoriteProperty', userId],
+    queryFn: async () => getFavoritePropertiesByUserId(userId!),
+    enabled: userId !== undefined
+  })
+  return { favortieProperties, isLoadingFavoriteProperties }
 }
 
 export const useAddFavorite = () => {

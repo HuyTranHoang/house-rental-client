@@ -1,10 +1,20 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { Favorite } from '@/models/favorite.type.ts'
+import { Favorite, FavoriteProperty } from '@/models/favorite.type.ts'
 import { toast } from 'sonner'
 
 export const getFavoritesByUserId = async (userId: number) => {
   try {
     const response = await axiosInstance.get<Favorite[]>(`/api/favorite/${userId}/user`)
+    return response.data
+  } catch (error) {
+    console.error(error)
+    toast.error('Lỗi khi lấy danh sách yêu thích')
+  }
+}
+
+export const getFavoritePropertiesByUserId = async (userId: number) => {
+  try {
+    const response = await axiosInstance.get<FavoriteProperty>(`/api/favorite/${userId}/userProperty`)
     return response.data
   } catch (error) {
     console.error(error)
