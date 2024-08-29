@@ -1,8 +1,8 @@
-import { useCreateReview, useReview } from '@/hooks/useReview'
+import { useCreateReview, useDeleteReview, useReview } from '@/hooks/useReview'
 import { ReviewFieldType } from '@/models/review.type'
 import { formatDate } from '@/utils/formatDate'
-import { CalendarOutlined, CommentOutlined } from '@ant-design/icons'
-import { Avatar, Button, Flex, Form, FormProps, Input, List, Rate, Space, Typography } from 'antd'
+import { CalendarOutlined, CommentOutlined, DeleteOutlined } from '@ant-design/icons'
+import { Avatar, Button, Flex, Form, FormProps, Input, List, Rate, Space, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
 
 const { TextArea } = Input
@@ -21,11 +21,14 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
 
   const { reviewData, reviewIsLoading } = useReview(Number(propertyId), pageNumber, pageSize)
   const { createReview, createReviewIsPending } = useCreateReview()
+  const { deleteReview, deleteReviewIsPending } = useDeleteReview()
 
   const reviewListData = reviewData
     ? [
         ...reviewData.data.map((review) => ({
-          avatar: review.userAvatar ? review.userAvatar : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.userId}`,
+          avatar: review.userAvatar
+            ? review.userAvatar
+            : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.userId}`,
           title: (
             <Space size='large'>
               <Typography.Text strong>{review.userName}</Typography.Text>
@@ -35,9 +38,23 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           description: (
             <Flex vertical>
               <Typography.Text>{review.comment}</Typography.Text>
-              <Typography.Text type='secondary' className='mt-2 text-xs'>
-                <CalendarOutlined /> {formatDate(review.createdAt)}
-              </Typography.Text>
+              <Flex justify='space-between' align='center'>
+                <Typography.Text type='secondary' className='mt-2 text-xs'>
+                  <CalendarOutlined /> {formatDate(review.createdAt)}
+                </Typography.Text>
+
+                <Tooltip title='Xóa đánh giá'>
+                  <Button
+                    danger
+                    size='small'
+                    type='text'
+                    icon={<DeleteOutlined />}
+                    onClick={() => deleteReview(review.id)}
+                  >
+                    Xóa -- Chưa hoàn thiện [Phân quyền. Modal xác nhận]
+                  </Button>
+                </Tooltip>
+              </Flex>
             </Flex>
           )
         }))
@@ -65,7 +82,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
             onChange: (page) => setPageNumber(page)
           }}
           dataSource={reviewListData}
-          loading={reviewIsLoading || createReviewIsPending}
+          loading={reviewIsLoading || createReviewIsPending || deleteReviewIsPending}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta avatar={<Avatar src={item.avatar} />} title={item.title} description={item.description} />

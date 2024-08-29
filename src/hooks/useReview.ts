@@ -1,4 +1,4 @@
-import { createReview, getAllReviewsWithParams } from '@/api/review.api'
+import { createReview, deleteReview, getAllReviewsWithParams } from '@/api/review.api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
@@ -22,4 +22,17 @@ export const useCreateReview = () => {
     }
   })
   return { createReview: mutate, createReviewIsPending: isPending }
+}
+
+export const useDeleteReview = () => {
+  const queryClient = useQueryClient()
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reviews'] })
+      toast.success('Đánh giá đã được xóa!')
+    }
+  })
+  return { deleteReview: mutate, deleteReviewIsPending: isPending }
 }

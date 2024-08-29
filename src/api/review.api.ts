@@ -29,10 +29,18 @@ export const getAllReviewsWithParams = async (propertyId: number, pageNumber: nu
 
 export const createReview = async (review: ReviewFieldType) => {
   try {
-    const response = await axiosInstance.post<Review>('/api/review', review)
-    return response
+    return await axiosInstance.post<Review>('/api/review', review)
   } catch (error) {
     console.error('Failed to create review', error)
     toast.error('Không thể gửi đánh giá!')
+  }
+}
+
+export const deleteReview = async (reviewId: number) => {
+  try {
+    return await axiosInstance.delete<Review>(`/api/review/${reviewId}`)
+  } catch (error) {
+    console.error('Failed to delete review', error)
+    toast.error('Không thể xóa đánh giá!')
   }
 }
