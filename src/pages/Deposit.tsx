@@ -1,54 +1,60 @@
-import { Button, Card, Col, Row, Typography, Form, Input, Radio, Space } from 'antd';
-import { RocketOutlined } from '@ant-design/icons';
-import axiosInstance from '@/inteceptor/axiosInstance';
-import { useSelector } from 'react-redux';
-import { selectAuth } from '@/features/auth/authSlice';
-import { formatCurrency } from '@/utils/formatCurrentcy';
-import { toast } from 'sonner';
-import { useState } from 'react';
+import { selectAuth } from '@/features/auth/authSlice'
+import axiosInstance from '@/inteceptor/axiosInstance'
+import { formatCurrency } from '@/utils/formatCurrentcy'
+import { RocketOutlined } from '@ant-design/icons'
+import { Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
+import { useSelector } from 'react-redux'
+import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
+import { HttpStatusCode } from 'axios'
 
 interface DepositForm {
-  amount: string;
-  customAmount?: number;
+  amount: string
+  customAmount?: number
 }
 
 const Deposit = () => {
-  const [form] = Form.useForm();
-  const [selectedAmount, setSelectedAmount] = useState<string | undefined>();
-  const { user } = useSelector(selectAuth);
+  const [form] = Form.useForm()
+  const amount = Form.useWatch('amount', form)
+  const selectedAmount = Form.useWatch('customAmount', form)
+
+  const { user } = useSelector(selectAuth)
+
+  const navigate = useNavigate()
 
   const onFinish = async (values: DepositForm) => {
     try {
-      const amountToDeposit = values.amount === 'custom' && values.customAmount !== undefined ? values.customAmount : Number(values.amount);
-  
-      if (isNaN(amountToDeposit) || amountToDeposit <= 0) {
-        toast.error('Số tiền không hợp lệ');
-        return;
+      const amountToDeposit =
+        values.amount === 'custom' && values.customAmount !== undefined ? values.customAmount : Number(values.amount)
+
+      if (isNaN(amountToDeposit) || amountToDeposit <= 50000) {
+        toast.error('Số tiền không hợp lệ')
+        return
       }
-  
+
       const response = await axiosInstance.post('/api/transaction', {
         amount: amountToDeposit,
-        type: "deposit"
-      });
+        type: 'deposit'
+      })
       // const response = await axiosInstance.post('/api/vnpay/create-payment', {
       //   amount: amountToDeposit
       // });
-  
-      const { status, message, url } = response.data;
-  
-      if (status === 'Ok') {
-        window.location.href = url;
+
+      const { status, message, url } = response.data
+
+      if (status === HttpStatusCode.Ok) {
+        navigate(url)
       } else {
-        throw new Error(message || 'Lỗi khi tạo yêu cầu thanh toán.');
+        throw new Error(message || 'Lỗi khi tạo yêu cầu thanh toán.')
       }
     } catch (error) {
-      toast.error(`Đã xảy ra lỗi`);
+      toast.error('Lỗi khi tạo yêu cầu thanh toán.')
     }
-  };
+  }
 
   const renderDepositInfo = (amount: string, customAmount?: number) => {
-    const depositAmount = amount === 'custom' && customAmount ? customAmount : Number(amount);
-    const newBalance = user ? user.balance + depositAmount : 0;
+    const depositAmount = amount === 'custom' && customAmount ? customAmount : Number(amount)
+    const newBalance = user ? user.balance + depositAmount : 0
 
     return (
       <>
@@ -59,8 +65,8 @@ const Deposit = () => {
           Sau khi nạp: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
         </Typography.Paragraph>
       </>
-    );
-  };
+    )
+  }
 
   return (
     <Row className='mt-16' gutter={8}>
@@ -79,7 +85,7 @@ const Deposit = () => {
         >
           <Form form={form} layout='vertical' onFinish={onFinish}>
             <Form.Item name='amount' label='Số tiền' required>
-              <Radio.Group onChange={(e) => setSelectedAmount(e.target.value)}>
+              <Radio.Group>
                 <Space wrap>
                   <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
                   <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
@@ -90,7 +96,7 @@ const Deposit = () => {
               </Radio.Group>
             </Form.Item>
 
-            {selectedAmount === 'custom' && (
+            {amount === 'custom' && (
               <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)' required>
                 <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
               </Form.Item>
@@ -122,7 +128,7 @@ const Deposit = () => {
         </Col>
       )}
     </Row>
-  );
-};
+  )
+}
 
-export default Deposit;
+export default Deposit
