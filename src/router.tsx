@@ -22,6 +22,7 @@ import { HomeOutlined } from '@ant-design/icons'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import Deposit from './pages/Deposit.tsx'
+import PaymentSuccess from './pages/PaymentSuccess.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -35,6 +36,14 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
             element: <Deposit />
           }
         ]
+      },
+      {
+        path: ROUTER_NAMES.PAYMENT_SUCCESS,
+        element: <PaymentSuccess />
+      },
+      {
+        path: ROUTER_NAMES.PAYMENT_FAILED,
+        element: <PaymentSuccess />
       },
       {
         path: ROUTER_NAMES.CONTACT,

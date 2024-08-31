@@ -18,6 +18,8 @@ const ROUTER_NAMES = {
 
   MEMBERSHIP_FEE: '/phi-thanh-vien',
   TOP_UP: '/nap-tien',
+  PAYMENT_SUCCESS: '/thanh-toan-thanh-cong',
+  PAYMENT_FAILED: '/thanh-toan-that-bai',
   PROMOTION: '/khuyen-mai',
 
   MESSAGE: '/tin-nhan',
