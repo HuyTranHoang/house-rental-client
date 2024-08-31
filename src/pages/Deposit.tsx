@@ -94,7 +94,7 @@ const Deposit = () => {
     const depositAmount = amount === 'custom' && customAmount ? customAmount : amount
     const newBalance = user ? user.balance + Number(depositAmount) : 0
 
-    if (amount === 'custom' && customAmount === undefined) {
+    if (amount === 'custom' && !customAmount ) {
       return null
     }
 
@@ -127,7 +127,10 @@ const Deposit = () => {
         >
           {!isSubmitting && !isSuccess && !isFail && (
             <Form form={form} layout='vertical' onFinish={onFinish}>
-              <Form.Item name='amount' label='Số tiền'>
+              <Form.Item name='amount' label='Số tiền' rules={[{
+                required: true,
+                message: 'Vui lòng chọn số tiền muốn nạp'
+              }]}>
                 <Radio.Group>
                   <Space wrap>
                     <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
@@ -140,7 +143,10 @@ const Deposit = () => {
               </Form.Item>
 
               {amount === 'custom' && (
-                <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)'>
+                <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)' rules={[{
+                  required: true,
+                  message: 'Vui lòng nhập số tiền bạn muốn nạp'
+                }]}>
                   <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
                 </Form.Item>
               )}
