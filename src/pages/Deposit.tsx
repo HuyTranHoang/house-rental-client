@@ -26,9 +26,13 @@ const Deposit = () => {
         return;
       }
   
-      const response = await axiosInstance.post('/api/vnpay/create-payment', {
-        amount: amountToDeposit
+      const response = await axiosInstance.post('/api/transaction', {
+        amount: amountToDeposit,
+        type: "deposit"
       });
+      // const response = await axiosInstance.post('/api/vnpay/create-payment', {
+      //   amount: amountToDeposit
+      // });
   
       const { status, message, url } = response.data;
   
