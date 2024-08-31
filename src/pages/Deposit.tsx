@@ -3,10 +3,9 @@ import axiosInstance from '@/inteceptor/axiosInstance'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { RocketOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
+import { HttpStatusCode } from 'axios'
 import { useSelector } from 'react-redux'
 import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
-import { HttpStatusCode } from 'axios'
 
 interface DepositForm {
   amount: string
@@ -20,34 +19,28 @@ const Deposit = () => {
 
   const { user } = useSelector(selectAuth)
 
-  const navigate = useNavigate()
-
   const onFinish = async (values: DepositForm) => {
+    const amountToDeposit =
+      values.amount === 'custom' && values.customAmount ? values.customAmount : Number(values.amount)
+
+    if (amountToDeposit < 50000) {
+      toast.error('Số tiền nạp tối thiểu là 50.000đ.')
+      return
+    }
+
     try {
-      const amountToDeposit =
-        values.amount === 'custom' && values.customAmount !== undefined ? values.customAmount : Number(values.amount)
-
-      if (isNaN(amountToDeposit) || amountToDeposit <= 50000) {
-        toast.error('Số tiền không hợp lệ')
-        return
-      }
-
       const response = await axiosInstance.post('/api/transaction', {
         amount: amountToDeposit,
         type: 'deposit'
       })
-      // const response = await axiosInstance.post('/api/vnpay/create-payment', {
-      //   amount: amountToDeposit
-      // });
 
-      const { status, message, url } = response.data
+      const { url } = response.data
 
-      if (status === HttpStatusCode.Ok) {
-        navigate(url)
-      } else {
-        throw new Error(message || 'Lỗi khi tạo yêu cầu thanh toán.')
+      if (response.status === HttpStatusCode.Ok) {
+        window.open(url, '_blank')
       }
     } catch (error) {
+      console.log(error)
       toast.error('Lỗi khi tạo yêu cầu thanh toán.')
     }
   }
