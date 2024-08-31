@@ -1,9 +1,9 @@
+import { createTransaction, getTransaction } from '@/api/transaction.api.ts'
 import { selectAuth } from '@/features/auth/authSlice'
-import axiosInstance from '@/inteceptor/axiosInstance'
 import { formatCurrency } from '@/utils/formatCurrentcy'
-import { RocketOutlined } from '@ant-design/icons'
+import { CheckOutlined, CloseOutlined, LoadingOutlined, RocketOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
-import { HttpStatusCode } from 'axios'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { toast } from 'sonner'
 
@@ -15,7 +15,11 @@ interface DepositForm {
 const Deposit = () => {
   const [form] = Form.useForm()
   const amount = Form.useWatch('amount', form)
-  const selectedAmount = Form.useWatch('customAmount', form)
+  const customAmount = Form.useWatch('customAmount', form)
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess] = useState(false)
+  const [isError] = useState(false)
 
   const { user } = useSelector(selectAuth)
 
@@ -23,36 +27,50 @@ const Deposit = () => {
     const amountToDeposit =
       values.amount === 'custom' && values.customAmount ? values.customAmount : Number(values.amount)
 
-    if (amountToDeposit < 50000) {
+    if (isNaN(amountToDeposit) || amountToDeposit < 50000) {
       toast.error('Số tiền nạp tối thiểu là 50.000đ.')
       return
     }
 
-    try {
-      const response = await axiosInstance.post('/api/transaction', {
-        amount: amountToDeposit,
-        type: 'deposit'
-      })
+    const response = await createTransaction({
+      amount: amountToDeposit,
+      type: 'deposit'
+    })
 
-      const { url } = response.data
+    if (response) {
+      const { url, transactionId } = response
+      setIsSubmitting(true)
+      window.open(url, '_blank')
 
-      if (response.status === HttpStatusCode.Ok) {
-        window.open(url, '_blank')
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error('Lỗi khi tạo yêu cầu thanh toán.')
+      const interval = setInterval(async () => {
+        const transaction = await getTransaction(transactionId)
+        if (transaction && transaction.status === 'success') {
+          clearInterval(interval)
+          setIsSubmitting(false)
+          toast.success('Nạp tiền thành công!')
+        }
+
+        if (transaction && transaction.status === 'failed') {
+          clearInterval(interval)
+          setIsSubmitting(false)
+          toast.error('Nạp tiền thất bại!')
+        }
+      }, 5000)
     }
   }
 
-  const renderDepositInfo = (amount: string, customAmount?: number) => {
-    const depositAmount = amount === 'custom' && customAmount ? customAmount : Number(amount)
-    const newBalance = user ? user.balance + depositAmount : 0
+  const renderDepositInfo = () => {
+    const depositAmount = amount === 'custom' && customAmount ? customAmount : amount
+    const newBalance = user ? user.balance + Number(depositAmount) : 0
+
+    if (amount === 'custom' && customAmount === undefined) {
+      return null
+    }
 
     return (
       <>
         <Typography.Paragraph>
-          Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(depositAmount)}</strong>
+          Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(Number(depositAmount))}</strong>
         </Typography.Paragraph>
         <Typography.Paragraph>
           Sau khi nạp: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
@@ -76,8 +94,8 @@ const Deposit = () => {
             </div>
           }
         >
-          <Form form={form} layout='vertical' onFinish={onFinish}>
-            <Form.Item name='amount' label='Số tiền' required>
+          <Form form={form} layout='vertical' onFinish={onFinish} disabled={isSubmitting}>
+            <Form.Item name='amount' label='Số tiền'>
               <Radio.Group>
                 <Space wrap>
                   <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
@@ -90,7 +108,7 @@ const Deposit = () => {
             </Form.Item>
 
             {amount === 'custom' && (
-              <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)' required>
+              <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)'>
                 <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
               </Form.Item>
             )}
@@ -101,6 +119,25 @@ const Deposit = () => {
               </Button>
             </Form.Item>
           </Form>
+
+          {isSubmitting && (
+            <Typography.Paragraph type='secondary'>
+              <LoadingOutlined className='mr-2' />
+              Hoàn tất quá trình thanh toán để tiếp tục...
+            </Typography.Paragraph>
+          )}
+          {isSuccess && (
+            <Typography.Paragraph type='success'>
+              <CheckOutlined className='mr-2' />
+              Nạp tiền thành công!
+            </Typography.Paragraph>
+          )}
+          {isError && (
+            <Typography.Paragraph type='danger'>
+              <CloseOutlined className='mr-2' />
+              Nạp tiền thất bại!
+            </Typography.Paragraph>
+          )}
         </Card>
       </Col>
       {user && (
@@ -113,7 +150,7 @@ const Deposit = () => {
               Hiện tại: <strong>{formatCurrency(user.balance)}</strong>
             </Typography.Paragraph>
 
-            {selectedAmount && renderDepositInfo(selectedAmount, form.getFieldValue('customAmount'))}
+            {amount && renderDepositInfo()}
 
             <Typography.Title level={5}>Lưu ý</Typography.Title>
             <Typography.Paragraph>- Số tiền nạp tối thiểu là 50.000đ.</Typography.Paragraph>
