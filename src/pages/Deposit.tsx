@@ -1,10 +1,15 @@
 import { createTransaction, getTransaction } from '@/api/transaction.api.ts'
-import { selectAuth } from '@/features/auth/authSlice'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { selectAuth, updateUserBalance } from '@/features/auth/authSlice'
+import { TransactionStatus } from '@/models/transaction.type.ts'
+import { useAppDispatch } from '@/store.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy'
-import { CheckOutlined, CloseOutlined, LoadingOutlined, RocketOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
-import { useState } from 'react'
+import { LoadingOutlined, RocketOutlined } from '@ant-design/icons'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Alert, Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 interface DepositForm {
@@ -12,16 +17,61 @@ interface DepositForm {
   customAmount?: number
 }
 
+const useGetTransaction = (transactionId: string) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['transaction', transactionId],
+    queryFn: () => getTransaction(transactionId),
+    enabled: !!transactionId,
+    refetchInterval: 5000
+  })
+
+  return { data, isLoading }
+}
+
 const Deposit = () => {
   const [form] = Form.useForm()
   const amount = Form.useWatch('amount', form)
   const customAmount = Form.useWatch('customAmount', form)
 
+  const queryClient = useQueryClient()
+  const dispatch = useAppDispatch()
+  const [transactionId, setTransactionId] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [isFail, setIsFail] = useState(false)
 
   const { user } = useSelector(selectAuth)
+
+  const { data: transaction } = useGetTransaction(transactionId)
+
+  const { mutate: createTransactionMutation } = useMutation({
+    mutationFn: createTransaction,
+    onSuccess: (response) => {
+      if (!response) return
+
+      const { url, transactionId } = response.data
+      setIsSubmitting(true)
+      setTransactionId(transactionId)
+      window.open(url, '_blank')
+    },
+    onError: (error) => {
+      console.error('Failed to create transaction', error)
+      toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')
+    }
+  })
+
+  useEffect(() => {
+    if (transaction) {
+      if (transaction.status === TransactionStatus.SUCCESS) {
+        setIsSubmitting(false)
+        setIsSuccess(true)
+        dispatch(updateUserBalance(transaction.amount))
+      } else if (transaction.status === TransactionStatus.FAILED) {
+        setIsSubmitting(false)
+        setIsFail(true)
+      }
+    }
+  }, [transaction, queryClient, dispatch])
 
   const onFinish = async (values: DepositForm) => {
     const amountToDeposit =
@@ -32,32 +82,11 @@ const Deposit = () => {
       return
     }
 
-    const response = await createTransaction({
+    createTransactionMutation({
       amount: amountToDeposit,
       type: 'deposit',
       description: 'Nạp tiền vào tài khoản'
     })
-
-    if (response) {
-      const { url, transactionId } = response
-      setIsSubmitting(true)
-      window.open(url, '_blank')
-
-      const interval = setInterval(async () => {
-        const transaction = await getTransaction(transactionId)
-        if (transaction && transaction.status === 'SUCCESS') {
-          clearInterval(interval)
-          setIsSubmitting(false)
-          setIsSuccess(true)
-        }
-
-        if (transaction && transaction.status === 'FAILED') {
-          clearInterval(interval)
-          setIsSubmitting(false)
-          setIsFail(true)
-        }
-      }, 5000)
-    }
   }
 
   const renderDepositInfo = () => {
@@ -95,31 +124,37 @@ const Deposit = () => {
             </div>
           }
         >
-          <Form form={form} layout='vertical' onFinish={onFinish} disabled={isSubmitting}>
-            <Form.Item name='amount' label='Số tiền'>
-              <Radio.Group>
-                <Space wrap>
-                  <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
-                  <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
-                  <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
-                  <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
-                  <Radio.Button value='custom'>Tùy chọn</Radio.Button>
-                </Space>
-              </Radio.Group>
-            </Form.Item>
-
-            {amount === 'custom' && (
-              <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)'>
-                <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
+          {!isSubmitting && !isSuccess && !isFail && (
+            <Form form={form} layout='vertical' onFinish={onFinish}>
+              <Form.Item name='amount' label='Số tiền'>
+                <Radio.Group>
+                  <Space wrap>
+                    <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
+                    <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
+                    <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
+                    <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
+                    <Radio.Button value='custom'>Tùy chọn</Radio.Button>
+                  </Space>
+                </Radio.Group>
               </Form.Item>
-            )}
 
-            <Form.Item>
-              <Button icon={<RocketOutlined />} type='primary' htmlType='submit'>
-                Nạp tiền
-              </Button>
-            </Form.Item>
-          </Form>
+              {amount === 'custom' && (
+                <Form.Item name='customAmount' label='Số tiền tùy chọn (VND)'>
+                  <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
+                </Form.Item>
+              )}
+
+              <Form.Item>
+                <Button
+                  htmlType='submit'
+                  icon={<RocketOutlined />}
+                  className='w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300'
+                >
+                  Thanh toán
+                </Button>
+              </Form.Item>
+            </Form>
+          )}
 
           {isSubmitting && (
             <Typography.Paragraph type='secondary'>
@@ -128,16 +163,56 @@ const Deposit = () => {
             </Typography.Paragraph>
           )}
           {isSuccess && (
-            <Typography.Paragraph type='success'>
-              <CheckOutlined className='mr-2' />
-              Nạp tiền thành công!
-            </Typography.Paragraph>
+            <>
+              <Alert message='Thanh toán thành công!' type='success' showIcon className='mb-4' />
+
+              <Typography.Paragraph>
+                Số tiền đã nạp: <strong>{formatCurrency(transaction!.amount)}</strong>
+              </Typography.Paragraph>
+
+              <Typography.Paragraph>
+                Mã giao dịch: <strong>{transaction!.transactionId}</strong>
+              </Typography.Paragraph>
+
+              <Typography.Paragraph>
+                Thời gian: <strong>{new Date(transaction!.transactionDate).toLocaleString()}</strong>
+              </Typography.Paragraph>
+
+              <Space>
+                <Typography.Paragraph>
+                  <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
+                </Typography.Paragraph>
+
+                <Typography.Paragraph>
+                  <Button type='link' onClick={() => setIsSuccess(false)}>
+                    Nạp tiếp
+                  </Button>
+                </Typography.Paragraph>
+              </Space>
+            </>
           )}
           {isFail && (
-            <Typography.Paragraph type='danger'>
-              <CloseOutlined className='mr-2' />
-              Nạp tiền thất bại!
-            </Typography.Paragraph>
+            <>
+              <Alert message='Thanh toán thất bại' type='error' showIcon className='mb-4' />
+
+              <Typography.Paragraph>Thanh toán của bạn không thành công.</Typography.Paragraph>
+
+              <Typography.Paragraph>
+                Mã giao dịch: <strong>{transaction!.transactionId}</strong>
+              </Typography.Paragraph>
+
+              <Space>
+                <Typography.Paragraph>
+                  <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
+                </Typography.Paragraph>
+
+                <Typography.Paragraph>
+                  <Button type='link' onClick={() => setIsSuccess(false)}>
+                    Thử lại
+                  </Button>
+                </Typography.Paragraph>
+              </Space>
+            </>
           )}
         </Card>
       </Col>

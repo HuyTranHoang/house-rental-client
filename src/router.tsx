@@ -23,6 +23,7 @@ import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import Deposit from './pages/Deposit.tsx'
 import PaymentSuccess from './pages/PaymentSuccess.tsx'
+import PaymentFailure from '@/pages/PaymentFailed.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -43,7 +44,7 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
       },
       {
         path: ROUTER_NAMES.PAYMENT_FAILED,
-        element: <PaymentSuccess />
+        element: <PaymentFailure />
       },
       {
         path: ROUTER_NAMES.CONTACT,

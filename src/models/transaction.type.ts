@@ -9,3 +9,9 @@ export interface Transaction {
   status: string
   description: string
 }
+
+export enum TransactionStatus {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING'
+}

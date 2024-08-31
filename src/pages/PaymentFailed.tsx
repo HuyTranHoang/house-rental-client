@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Typography } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'
 
 const PaymentFailure = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const PaymentFailure = () => {
   }, [vnp_ResponseCode, vnp_OrderInfo]);
 
   return (
-    <div className='flex items-center justify-center min-h-60 bg-red-50'>
+    <div className='flex items-center justify-center min-h-60'>
       <div className='text-center'>
         <Typography.Title level={2} className='mb-4 text-red-600'>
           Thanh toán thất bại
@@ -27,9 +27,9 @@ const PaymentFailure = () => {
           Rất tiếc, thanh toán của bạn không thành công. Vui lòng thử lại hoặc liên hệ với hỗ trợ khách hàng nếu vấn đề vẫn tiếp tục.
         </Typography.Paragraph>
         <Typography.Paragraph>
-          <a href='/' className='text-blue-500 hover:underline'>
+          <Link to='/' className='text-blue-500 hover:underline'>
             Trở về trang chủ
-          </a>
+          </Link>
         </Typography.Paragraph>
       </div>
     </div>
