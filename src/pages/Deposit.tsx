@@ -50,7 +50,6 @@ const Deposit = () => {
       if (!response) return
 
       const { url, transactionId } = response.data
-      setIsSubmitting(true)
       setTransactionId(transactionId)
       window.open(url, '_blank')
     },
@@ -81,6 +80,8 @@ const Deposit = () => {
       toast.error('Số tiền nạp tối thiểu là 50.000đ.')
       return
     }
+
+    setIsSubmitting(true)
 
     createTransactionMutation({
       amount: amountToDeposit,
