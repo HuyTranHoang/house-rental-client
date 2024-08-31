@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 interface TransactionForm {
   amount: number
   type: string
+  description?: string
 }
 
 export const createTransaction = async (values: TransactionForm) => {

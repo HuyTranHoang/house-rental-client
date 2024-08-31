@@ -18,8 +18,8 @@ const Deposit = () => {
   const customAmount = Form.useWatch('customAmount', form)
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess] = useState(false)
-  const [isError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isFail, setIsFail] = useState(false)
 
   const { user } = useSelector(selectAuth)
 
@@ -34,7 +34,8 @@ const Deposit = () => {
 
     const response = await createTransaction({
       amount: amountToDeposit,
-      type: 'deposit'
+      type: 'deposit',
+      description: 'Nạp tiền vào tài khoản'
     })
 
     if (response) {
@@ -44,16 +45,16 @@ const Deposit = () => {
 
       const interval = setInterval(async () => {
         const transaction = await getTransaction(transactionId)
-        if (transaction && transaction.status === 'success') {
+        if (transaction && transaction.status === 'SUCCESS') {
           clearInterval(interval)
           setIsSubmitting(false)
-          toast.success('Nạp tiền thành công!')
+          setIsSuccess(true)
         }
 
-        if (transaction && transaction.status === 'failed') {
+        if (transaction && transaction.status === 'FAILED') {
           clearInterval(interval)
           setIsSubmitting(false)
-          toast.error('Nạp tiền thất bại!')
+          setIsFail(true)
         }
       }, 5000)
     }
@@ -132,7 +133,7 @@ const Deposit = () => {
               Nạp tiền thành công!
             </Typography.Paragraph>
           )}
-          {isError && (
+          {isFail && (
             <Typography.Paragraph type='danger'>
               <CloseOutlined className='mr-2' />
               Nạp tiền thất bại!
