@@ -7,6 +7,8 @@ import path from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+const apiTarget = process.env.API_TARGET || 'http://localhost:8080/api'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -19,9 +21,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        // Bỏ comment dòng dưới để chạy ở local
-        // target: 'http://localhost:8080/api',
-        target: 'https://house-rental-latest.onrender.com/api',
+        target: apiTarget,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

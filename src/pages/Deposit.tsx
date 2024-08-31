@@ -124,7 +124,7 @@ const Deposit = () => {
           {isSubmitting && (
             <Typography.Paragraph type='secondary'>
               <LoadingOutlined className='mr-2' />
-              Hoàn tất quá trình thanh toán để tiếp tục...
+              Đang chuyển hướng đến cổng thanh toán...
             </Typography.Paragraph>
           )}
           {isSuccess && (
