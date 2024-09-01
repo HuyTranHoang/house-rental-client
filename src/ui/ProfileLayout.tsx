@@ -1,4 +1,6 @@
-import { Avatar, Card, Col, GetProp, Menu, MenuProps, Row, Space, Tooltip, Upload, UploadProps } from 'antd'
+import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import {
   IdcardOutlined,
   LoadingOutlined,
@@ -8,25 +10,24 @@ import {
   ReadOutlined,
   StarOutlined
 } from '@ant-design/icons'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { logout, selectAuth, updateProfile } from '../features/auth/authSlice.js'
-import { toast } from 'sonner'
-import { selectMenu, selectProfile } from '../features/profile/profileSlice.ts'
+import { Avatar, Card, Col, GetProp, Menu, MenuProps, Row, Space, Tooltip, Upload, UploadProps } from 'antd'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import styled from 'styled-components'
-import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
-import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { logout, selectAuth, updateProfile } from '../features/auth/authSlice.js'
+import { selectMenu, selectProfile } from '../features/profile/profileSlice.ts'
 
 const CustomUpload = styled(Upload)`
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover {
-        opacity: 0.8;
-    }
+  &:hover {
+    opacity: 0.8;
+  }
 `
 
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>['items'][number]
 
 const items: MenuItem[] = [
   {
@@ -65,7 +66,7 @@ const items: MenuItem[] = [
 
 // Avatar section
 
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
 
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
   const reader = new FileReader()
@@ -95,8 +96,11 @@ function ProfileLayout() {
     switch (key) {
       case 'dangXuat':
         dispatch(logout())
-        navigate(ROUTER_NAMES.HOME)
-        toast.success('Đăng xuất thành công')
+        localStorage.removeItem('jwtToken')
+        axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
+          navigate(ROUTER_NAMES.HOME)
+          toast.success('Đăng xuất thành công')
+        })
         break
       case 'thongTinCaNhan':
         dispatch(selectMenu(['thongTinCaNhan']))
@@ -129,12 +133,11 @@ function ProfileLayout() {
   }
 
   const uploadButton = (
-    <button style={{ border: 0, background: 'none' }} type="button">
+    <button style={{ border: 0, background: 'none' }} type='button'>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
   )
-
 
   return (
     <Row>
@@ -146,29 +149,31 @@ function ProfileLayout() {
       <Col span={6}>
         <Card style={{ width: 256, borderRadius: 0, borderLeft: 'none' }}>
           <Space wrap size={16}>
-
             <Tooltip title={loading ? 'Đang tải lên...' : 'Thay đổi ảnh đại diện'}>
               <CustomUpload
-                name="avatar"
-                action="/api/user/update-avatar"
-                method="PUT"
-                headers={{ 'Authorization': `Bearer ${localStorage.getItem('jwtToken')}` }}
+                name='avatar'
+                action='/api/user/update-avatar'
+                method='PUT'
+                headers={{ Authorization: `Bearer ${localStorage.getItem('jwtToken')}` }}
                 showUploadList={false}
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
               >
-                {!loading && user && user.avatarUrl ?
-                  <Avatar size={64} src={user.avatarUrl} style={{ cursor: 'pointer' }} /> : uploadButton}
+                {!loading && user && user.avatarUrl ? (
+                  <Avatar size={64} src={user.avatarUrl} style={{ cursor: 'pointer' }} />
+                ) : (
+                  uploadButton
+                )}
               </CustomUpload>
             </Tooltip>
 
-            <Space direction="vertical">
+            <Space direction='vertical'>
               {user && (
                 <>
-                  <div>{user.lastName} {user.firstName}</div>
                   <div>
-                    {user.phoneNumber}
+                    {user.lastName} {user.firstName}
                   </div>
+                  <div>{user.phoneNumber}</div>
                 </>
               )}
             </Space>
@@ -178,7 +183,7 @@ function ProfileLayout() {
           onClick={onClick}
           style={{ width: 256, marginBottom: '3rem' }}
           selectedKeys={currentSelectMenu}
-          mode="inline"
+          mode='inline'
           items={items}
         />
       </Col>
