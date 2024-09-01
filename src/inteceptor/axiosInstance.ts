@@ -19,6 +19,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
+    const accessToken = localStorage.getItem('jwtToken')
 
     switch (error.response?.status) {
       case 400:
@@ -31,7 +32,7 @@ axiosInstance.interceptors.response.use(
         window.location.href = ROUTER_NAMES.LOGIN
         break
       case 403:
-        if (!originalRequest._retry) {
+        if (!originalRequest._retry && accessToken) {
           originalRequest._retry = true
           try {
             const response = await axios.post('/api/auth/refresh-token', {}, { withCredentials: true })
@@ -40,11 +41,12 @@ axiosInstance.interceptors.response.use(
             originalRequest.headers['Authorization'] = `Bearer ${newToken}`
             return axiosInstance(originalRequest)
           } catch (refreshError) {
-            toast.error('Failed to refresh token')
-            window.location.href = ROUTER_NAMES.LOGIN
+            await axiosInstance.post('/api/auth/logout', {}, { withCredentials: true })
+            toast.error('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại')
           }
         } else {
-          window.location.href = ROUTER_NAMES.LOGIN
+          await axiosInstance.post('/api/auth/logout', {}, { withCredentials: true })
+          toast.error('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại')
         }
         break
       case 500:

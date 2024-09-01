@@ -7,6 +7,7 @@ import ColorButton from '../components/ColorButton.jsx'
 import { logout, selectAuth } from '../features/auth/authSlice.js'
 
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { UserOutlined } from '@ant-design/icons'
 import { selectMenu } from '../features/profile/profileSlice.ts'
 import { useAppDispatch } from '../store.ts'
@@ -81,16 +82,18 @@ function Navbar() {
 
   const onClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
-      localStorage.removeItem('jwtToken')
       dispatch(logout())
-      navigate(ROUTER_NAMES.HOME)
-      toast.success('Đăng xuất thành công')
+      localStorage.removeItem('jwtToken')
+      axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
+        navigate(ROUTER_NAMES.HOME)
+        toast.success('Đăng xuất thành công')
+      })
     }
   }
 
   return (
     <>
-      <Link to={ROUTER_NAMES.HOME} className='flex' >
+      <Link to={ROUTER_NAMES.HOME} className='flex'>
         <CustomImg src='/logo.png' alt='Logo' />
       </Link>
       <Flex gap='small' wrap>
@@ -112,7 +115,7 @@ function Navbar() {
               <Dropdown menu={{ items, onClick }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    <Typography.Text className='text-base font-semibold' >{user.username}</Typography.Text>
+                    <Typography.Text className='text-base font-semibold'>{user.username}</Typography.Text>
 
                     {user.avatarUrl && <Avatar size={'small'} src={user.avatarUrl} />}
                     {!user.avatarUrl && <Avatar size={'small'} icon={<UserOutlined />} />}

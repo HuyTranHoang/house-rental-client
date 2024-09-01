@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import { IRootState } from '@/store.ts'
 import { User } from '@/models/user.type.ts'
 
-
 interface IAuthState {
   user: User | null
   token: string | null

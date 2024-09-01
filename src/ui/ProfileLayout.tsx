@@ -94,7 +94,6 @@ function ProfileLayout() {
   const onClick = ({ key }: { key: string }) => {
     switch (key) {
       case 'dangXuat':
-        localStorage.removeItem('jwtToken')
         dispatch(logout())
         navigate(ROUTER_NAMES.HOME)
         toast.success('Đăng xuất thành công')
