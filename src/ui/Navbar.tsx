@@ -83,9 +83,9 @@ function Navbar() {
   const onClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
       dispatch(logout())
+      navigate(ROUTER_NAMES.HOME)
       localStorage.removeItem('jwtToken')
       axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
-        navigate(ROUTER_NAMES.HOME)
         toast.success('Đăng xuất thành công')
       })
     }
