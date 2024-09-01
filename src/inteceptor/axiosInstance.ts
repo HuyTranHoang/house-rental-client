@@ -1,12 +1,12 @@
+import ROUTER_NAMES from '@/constant/routerNames.ts'
 import axios from 'axios'
 import { toast } from 'sonner'
-import ROUTER_NAMES from '@/constant/routerNames.ts'
 
-const axiosInstance = axios.create({})
+const axiosInstance = axios.create({
+  withCredentials: true
+})
 
-axiosInstance.defaults.withCredentials = true
-
-axiosInstance.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwtToken')
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`
@@ -15,8 +15,11 @@ axiosInstance.interceptors.request.use(config => {
   return config
 })
 
-axiosInstance.interceptors.response.use(response => response,
-  error => {
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config
+
     switch (error.response?.status) {
       case 400:
         if (error.response?.data.message) {
@@ -28,9 +31,20 @@ axiosInstance.interceptors.response.use(response => response,
         window.location.href = ROUTER_NAMES.LOGIN
         break
       case 403:
-        if (error.response.data.message) {
-          toast.error(error.response.data.message)
-          break
+        if (!originalRequest._retry) {
+          originalRequest._retry = true
+          try {
+            const response = await axios.post('/api/auth/refresh-token', {}, { withCredentials: true })
+            const newToken = response.headers['jwt-token']
+            localStorage.setItem('jwtToken', newToken)
+            originalRequest.headers['Authorization'] = `Bearer ${newToken}`
+            return axiosInstance(originalRequest)
+          } catch (refreshError) {
+            toast.error('Failed to refresh token')
+            window.location.href = ROUTER_NAMES.LOGIN
+          }
+        } else {
+          window.location.href = ROUTER_NAMES.LOGIN
         }
         break
       case 500:
@@ -38,10 +52,6 @@ axiosInstance.interceptors.response.use(response => response,
           toast.error('Sai tài khoản hoặc mật khẩu')
           break
         }
-        
-        // if (error.response.data.message.contains('HmacSHA512')) {
-        //   break
-        // }
 
         window.location.href = ROUTER_NAMES.SERVER_ERROR
         break
@@ -55,6 +65,7 @@ axiosInstance.interceptors.response.use(response => response,
     }
 
     return Promise.reject(error)
-  })
+  }
+)
 
 export default axiosInstance
