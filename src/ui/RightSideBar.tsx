@@ -35,7 +35,7 @@ function RightSideBar() {
 
   return (
     <>
-      <img src='/aptechonehome.jpg' style={{ width: '100%', marginTop: '16px' }} alt='banner' />
+      <img src='/aptechonehome.webp' style={{ width: '100%', marginTop: '16px' }} alt='banner' />
       <List
         size='small'
         header={

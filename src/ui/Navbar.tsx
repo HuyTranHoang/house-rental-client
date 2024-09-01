@@ -94,7 +94,7 @@ function Navbar() {
   return (
     <>
       <Link to={ROUTER_NAMES.HOME} className='flex'>
-        <CustomImg src='/logo.png' alt='Logo' />
+        <CustomImg src='/logo.webp' alt='Logo' />
       </Link>
       <Flex gap='small' wrap>
         <NavItem title='Tìm thuê' link={ROUTER_NAMES.RENT_HOUSE} />
