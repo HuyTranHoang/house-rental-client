@@ -20,6 +20,7 @@ function App() {
   useEffect(() => {
     const refresh = async () => {
       try {
+        setIsLoading(true)
         const response = await axiosInstance.post<User>('/api/auth/refresh-token', {}, { withCredentials: true })
         const user = response.data
         const newJwtToken = response.headers['jwt-token']
