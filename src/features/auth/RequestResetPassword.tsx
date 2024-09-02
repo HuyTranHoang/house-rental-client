@@ -86,7 +86,7 @@ function RequestResetPassword() {
             className='my-16 w-[400px] rounded-lg bg-white p-8 shadow-lg'
           >
             <div className='mb-6 flex flex-col items-center justify-center'>
-              <img src='/logo.png' alt='Mogu logo' className='w-36' />
+              <img src='/logo.webp' alt='Mogu logo' className='w-36' />
               <Typography.Title level={3} className='text-center'>
                 Quên mật khẩu
               </Typography.Title>
