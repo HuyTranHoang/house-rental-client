@@ -1,39 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { Tooltip } from 'antd'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
-import styled from 'styled-components'
+import { Tooltip } from 'antd'
+import { clsx } from 'clsx/lite'
+import React, { useEffect, useState } from 'react'
 
 interface FavoriteButtonProps {
   isFavorite: boolean | undefined
   onClick: (e: React.MouseEvent) => void
 }
-
-const HeartIcon = styled.div<{ $isFavorite: boolean }>`
-    font-size: 24px;
-    color: ${(props) => (props.$isFavorite ? '#ff4d4f' : 'inherit')};
-    transition: all 0.3s ease;
-    transform: ${(props) => (props.$isFavorite ? 'scale(1.1)' : 'scale(1)')};
-`
-
-const ButtonWrapper = styled.div<{ $isFavorite: boolean }>`
-    font-size: 24px;
-    position: relative;
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover ${HeartIcon} {
-        transform: ${(props) => (props.$isFavorite ? 'scale(1.2)' : 'scale(1.1)')};
-        color: ${(props) => (props.$isFavorite ? '#ff4d4f' : '#ff7875')};
-    }
-
-    &:active ${HeartIcon} {
-        transform: scale(0.95);
-    }
-`
 
 const FavoriteButton = ({ isFavorite, onClick }: FavoriteButtonProps) => {
   const [isAnimating, setIsAnimating] = useState(false)
@@ -51,11 +24,17 @@ const FavoriteButton = ({ isFavorite, onClick }: FavoriteButtonProps) => {
   }
 
   return (
-    <ButtonWrapper onClick={handleClick} $isFavorite={!!isFavorite}>
+    <div
+      onClick={handleClick}
+      className={clsx(
+        'relative flex cursor-pointer items-center justify-center text-2xl transition ease-in-out hover:scale-110 hover:text-red-400 active:scale-95',
+        isFavorite && 'text-red-500'
+      )}
+    >
       <Tooltip title={isFavorite ? 'Bỏ khỏi danh sách yêu thích' : 'Thêm vào danh sách yêu thích'}>
-        <HeartIcon $isFavorite={!!isFavorite}>{isFavorite ? <HeartFilled /> : <HeartOutlined />}</HeartIcon>
+        {isFavorite ? <HeartFilled /> : <HeartOutlined />}
       </Tooltip>
-    </ButtonWrapper>
+    </div>
   )
 }
 
