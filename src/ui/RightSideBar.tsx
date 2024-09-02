@@ -1,11 +1,11 @@
+import { fetchAllCities } from '@/api/city.api.ts'
+import { fetchAllDistricts } from '@/api/district.api.ts'
+import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Button, List, Typography } from 'antd'
 import { CSSProperties } from 'react'
-import { fetchAllCities } from '../api/city.api.ts'
-import { fetchAllDistricts } from '../api/district.api.ts'
-import { fetchAllRoomTypes } from '../api/roomType.api.ts'
 
 const listStyle: CSSProperties = {
   width: '100%',

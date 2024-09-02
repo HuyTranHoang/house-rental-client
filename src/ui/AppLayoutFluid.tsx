@@ -1,12 +1,10 @@
+import MyFooter from '@/ui/Footer.tsx'
+import Navbar from '@/ui/Navbar.tsx'
 import { Layout } from 'antd'
-
-import MyFooter from './Footer.tsx'
+import React from 'react'
+import { Outlet } from 'react-router-dom'
 
 const { Header, Footer, Content } = Layout
-
-import Navbar from './Navbar.tsx'
-import { Outlet } from 'react-router-dom'
-import React from 'react'
 
 const headerStyle: React.CSSProperties = {
   display: 'flex',
@@ -18,12 +16,6 @@ const headerStyle: React.CSSProperties = {
   backgroundColor: '#FFFFFF'
 }
 
-
-const footerStyle: React.CSSProperties = {
-  backgroundColor: '#E9E9E9'
-}
-
-
 function AppLayout() {
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -33,7 +25,7 @@ function AppLayout() {
       <Content>
         <Outlet />
       </Content>
-      <Footer style={footerStyle}>
+      <Footer className='bg-[#E9E9E9]'>
         <MyFooter />
       </Footer>
     </Layout>

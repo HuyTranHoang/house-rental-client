@@ -1,16 +1,15 @@
+import ColorButton from '@/components/ColorButton.jsx'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { logout, selectAuth } from '@/features/auth/authSlice.js'
+import { selectMenu } from '@/features/profile/profileSlice.ts'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import { useAppDispatch } from '@/store.ts'
+import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
 import { useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import styled from 'styled-components'
-import ColorButton from '../components/ColorButton.jsx'
-import { logout, selectAuth } from '../features/auth/authSlice.js'
-
-import ROUTER_NAMES from '@/constant/routerNames.ts'
-import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { UserOutlined } from '@ant-design/icons'
-import { selectMenu } from '../features/profile/profileSlice.ts'
-import { useAppDispatch } from '../store.ts'
 
 const CustomImg = styled.img`
   width: 100px;

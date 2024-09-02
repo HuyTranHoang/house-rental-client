@@ -1,7 +1,7 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import Container from '@/ui/Container.tsx'
 import { Button, Col, Row, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import Container from '../ui/Container.tsx'
 
 function About() {
   return (
@@ -36,8 +36,7 @@ function About() {
           <Typography.Paragraph>
             <strong>Mogu.vn</strong> sẽ góp phần giải quyết các vấn đề về tìm kiếm phòng trọ cũng như cho thuê phòng trọ
             hiện nay, giúp mọi người có thể tìm kiếm cho mình một phòng trọ, nhà trọ phù hợp nhất với bản thân mình. Hy
-            vọng <strong>Mogu.vn</strong>{' '}
-            sẽ là một địa chỉ quen thuộc và đáng tin cậy cho mọi người.
+            vọng <strong>Mogu.vn</strong> sẽ là một địa chỉ quen thuộc và đáng tin cậy cho mọi người.
           </Typography.Paragraph>
         </Col>
         <Col span='12' offset='1'>

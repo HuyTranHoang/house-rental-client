@@ -1,5 +1,7 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { logout, selectAuth, updateProfile } from '@/features/auth/authSlice.js'
+import { selectMenu, selectProfile } from '@/features/profile/profileSlice.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import {
   IdcardOutlined,
@@ -16,8 +18,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import styled from 'styled-components'
-import { logout, selectAuth, updateProfile } from '../features/auth/authSlice.js'
-import { selectMenu, selectProfile } from '../features/profile/profileSlice.ts'
 
 const CustomUpload = styled(Upload)`
   cursor: pointer;

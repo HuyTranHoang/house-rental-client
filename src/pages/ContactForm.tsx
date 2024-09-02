@@ -1,8 +1,8 @@
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { Button, Col, Form, FormProps, Input, Row } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import axiosInstance from '../inteceptor/axiosInstance.ts'
 
 type FieldType = {
   name: string
