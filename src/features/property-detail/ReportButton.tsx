@@ -8,6 +8,16 @@ import { toast } from 'sonner'
 
 const { Option } = Select
 
+type ReportCategory = 'SCAM' | 'INAPPROPRIATE_CONTENT' | 'DUPLICATE' | 'MISINFORMATION' | 'OTHER'
+
+const reasons: Record<ReportCategory, string> = {
+  SCAM: 'Bài đăng này có dấu hiệu lừa đảo!',
+  INAPPROPRIATE_CONTENT: 'Bài đăng này có nội dung không phù hợp!',
+  DUPLICATE: 'Bài đăng này bị trùng lặp!',
+  MISINFORMATION: 'Bài đăng này có thông tin sai sự thật!',
+  OTHER: ''
+}
+
 function ReportButton({ propertyId }: { propertyId: number }) {
   const [reportForm] = Form.useForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -21,25 +31,8 @@ function ReportButton({ propertyId }: { propertyId: number }) {
     setIsModalOpen(false)
   }
 
-  const onCategoryChange = (value: string) => {
-    switch (value) {
-      case 'SCAM':
-        reportForm.setFieldsValue({ reason: 'Bài đăng này có dấu hiệu lừa đảo!' })
-        break
-      case 'INAPPROPRIATE_CONTENT':
-        reportForm.setFieldsValue({ reason: 'Bài đăng này có nội dung không phù hợp!' })
-        break
-      case 'DUPLICATE':
-        reportForm.setFieldsValue({ reason: 'Bài đăng này bị trùng lặp!' })
-        break
-      case 'MISINFORMATION':
-        reportForm.setFieldsValue({ reason: 'Bài đăng này có thông tin sai sự thật!' })
-        break
-      case 'OTHER':
-        reportForm.setFieldsValue({ reason: '' })
-        break
-      default:
-    }
+  const onCategoryChange = (value: ReportCategory) => {
+    reportForm.setFieldsValue({ reason: reasons[value] })
   }
 
   const { mutate, isPending } = useMutation({
@@ -68,11 +61,12 @@ function ReportButton({ propertyId }: { propertyId: number }) {
         size='small'
         onClick={showModal}
         className='mt-6 border-[#9fbdd4] font-semibold text-[#657786]'
+        aria-label='Report violation'
       >
         Báo vi phạm
       </Button>
 
-      <Modal title='Báo cáo vi phạm' footer={null} onCancel={handleCancel} open={isModalOpen}>
+      <Modal title='Báo cáo vi phạm' footer={null} onCancel={handleCancel} open={isModalOpen} destroyOnClose>
         <Form form={reportForm} name='report' layout='vertical' onFinish={onFinish} autoComplete='off'>
           <Form.Item<ReportFormData> name='propertyId' hidden>
             <Input />
