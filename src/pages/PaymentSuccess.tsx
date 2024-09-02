@@ -38,7 +38,7 @@ const PaymentSuccess = () => {
         <div className='bg-gray-100 px-4 py-12 sm:px-6 lg:px-8'>
           <div className='mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md'>
             <div className='px-4 py-5 sm:p-6'>
-              <h1 className='font-poppins bg-gradient-to-r from-sky-500 to-lime-500 bg-clip-text text-center text-3xl font-extrabold leading-9 text-transparent'>
+              <h1 className='font-inter bg-gradient-to-r from-sky-500 to-lime-500 bg-clip-text text-center text-3xl font-extrabold leading-9 text-transparent'>
                 Thanh toán thành công!
               </h1>
               <div className='mt-5 text-center text-gray-600'>

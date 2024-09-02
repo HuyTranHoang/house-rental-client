@@ -1,39 +1,71 @@
-import { useEffect } from 'react';
-import { Typography } from 'antd';
-import { Link, useLocation } from 'react-router-dom'
+import { getTransaction } from '@/api/transaction.api.ts'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { useQuery } from '@tanstack/react-query'
+import { Divider, Skeleton } from 'antd'
+import { useLocation } from 'react-router-dom'
+
+const Item = ({ label, value }: { label: string; value: string }) => (
+  <div className='sm:col-span-1'>
+    <dt className='text-sm font-medium text-gray-500'>{label}</dt>
+    <dd className='mt-1 text-sm text-gray-900'>{value}</dd>
+  </div>
+)
 
 const PaymentFailure = () => {
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const vnp_ResponseCode = query.get('vnp_ResponseCode');
-  const vnp_OrderInfo = query.get('vnp_OrderInfo');
+  const location = useLocation()
+  const query = new URLSearchParams(location.search)
+  const transactionId = query.get('vnp_TxnRef')
 
-  useEffect(() => {
-    if (vnp_ResponseCode) {
-      console.log('Mã phản hồi:', vnp_ResponseCode);
-    }
-    if (vnp_OrderInfo) {
-      console.log('Thông tin đơn hàng:', vnp_OrderInfo);
-    }
-  }, [vnp_ResponseCode, vnp_OrderInfo]);
+  const { data, isLoading } = useQuery({
+    queryKey: ['transaction', transactionId],
+    queryFn: () => getTransaction(transactionId!),
+    enabled: !!transactionId
+  })
 
   return (
-    <div className='flex items-center justify-center min-h-60'>
-      <div className='text-center'>
-        <Typography.Title level={2} className='mb-4 text-red-600'>
-          Thanh toán thất bại
-        </Typography.Title>
-        <Typography.Paragraph>
-          Rất tiếc, thanh toán của bạn không thành công. Vui lòng thử lại hoặc liên hệ với hỗ trợ khách hàng nếu vấn đề vẫn tiếp tục.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          <Link to='/' className='text-blue-500 hover:underline'>
-            Trở về trang chủ
-          </Link>
-        </Typography.Paragraph>
-      </div>
-    </div>
-  );
-};
+    <>
+      {isLoading && (
+        <div className='bg-gray-100 px-4 py-12 sm:px-6 lg:px-8'>
+          <div className='mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md'>
+            <Skeleton className='p-4' />
+            <Skeleton className='p-4' />
+            <Skeleton className='p-4' />
+          </div>
+        </div>
+      )}
 
-export default PaymentFailure;
+      {data && (
+        <div className='bg-gray-100 px-4 py-12 sm:px-6 lg:px-8'>
+          <div className='mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md'>
+            <div className='px-4 py-5 sm:p-6'>
+              <h1 className='font-inter bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-center text-3xl font-extrabold leading-9 text-transparent'>
+                Thanh toán thất bại!
+              </h1>
+              <div className='mt-5 text-center text-gray-600'>Rất tiếc, thanh toán của bạn không thành công.</div>
+              <Divider />
+              <dl className='grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-2'>
+                <Item label='Mã giao dịch' value={data.transactionId || 'N/A'} />
+                <Item label='Số tiền' value={formatCurrency(data.amount)} />
+                <Item label='Ngày giao dịch' value={new Date(data!.transactionDate).toLocaleString()} />
+                <Item label='Phương thức' value='VNPAY' />
+                <div className='sm:col-span-2'>
+                  <dt className='text-sm font-medium text-gray-500'>Nội dung giao dịch</dt>
+                  <dd className='mt-1 text-sm text-gray-900'>{data.description}</dd>
+                </div>
+                <div className='sm:col-span-2'>
+                  <dt className='text-sm font-medium text-gray-500'>Trạng thái</dt>
+                  <dd className='mt-1 text-sm font-semibold text-red-600'>{data.status}</dd>
+                </div>
+              </dl>
+            </div>
+            <div className='bg-gray-50 px-4 py-4 text-center text-sm text-gray-500 sm:px-6'>
+              Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với bộ phận hỗ trợ của chúng tôi.
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+export default PaymentFailure

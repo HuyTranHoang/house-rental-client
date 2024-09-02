@@ -11,7 +11,7 @@ function App() {
   const isLoading = useRefreshToken()
 
   if (isLoading) {
-    return <Spin indicator={<CustomIndicator />} tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'} fullscreen />
+    return <Spin indicator={<CustomIndicator />} tip='Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!' fullscreen />
   }
 
   return (

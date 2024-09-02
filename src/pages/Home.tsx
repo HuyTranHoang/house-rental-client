@@ -1,11 +1,23 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { Button } from 'antd'
+import { Button, Space } from 'antd'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 
 function Home() {
   return (
     <div style={{ width: 600 }}>
       <h1>Home page</h1>
+
+      <Space>
+        <Button onClick={() => toast.success('Success')}>
+          Success Toast
+        </Button>
+
+        <Button onClick={() => toast.error('Error')}>
+          Error Toast
+        </Button>
+      </Space>
+
       <Link to={ROUTER_NAMES.TOP_UP}>
         <Button className='mb-4' size='large' block>
           Nạp tiền
