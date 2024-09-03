@@ -1,29 +1,32 @@
 import { changePasswordApi } from '@/api/user.api.ts'
 import GradientButton from '@/components/GradientButton.tsx'
 import { AntDesignOutlined } from '@ant-design/icons'
-import { Alert, Card, Form, FormProps, Input, Typography } from 'antd'
+import { useMutation } from '@tanstack/react-query'
+import { Alert, Card, Form, Input, Typography } from 'antd'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-type FieldType = {
+type ChangePasswordField = {
   oldPassword: string
   newPassword: string
 }
 
 function ChangePassword() {
   const [error] = useState<undefined | string>(undefined)
-  const [isLoading] = useState(false)
   const [form] = Form.useForm()
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
-    console.log('Success:', values)
-    const response = await changePasswordApi(values)
-
-    if (response && response.status === 200) {
-      toast.success('Cập nhật mật khẩu thành công!')
-      form.resetFields()
+  const { mutate: updatePasswordMutate, isPending } = useMutation({
+    mutationFn: changePasswordApi,
+    onSuccess: (response) => {
+      if (response && response.status === 200) {
+        toast.success('Cập nhật mật khẩu thành công!')
+        form.resetFields()
+      }
+    },
+    onError: (error: string[]) => {
+      toast.error(error || 'Cập nhật mật khẩu thất bại!')
     }
-  }
+  })
 
   return (
     <Card
@@ -33,7 +36,7 @@ function ChangePassword() {
       <Form
         form={form}
         name='changePassword'
-        onFinish={onFinish}
+        onFinish={(values: ChangePasswordField) => updatePasswordMutate(values)}
         initialValues={{ oldPassword: '', newPassword: '', confirmPassword: '' }}
         autoComplete='off'
         labelCol={{ span: 6 }}
@@ -101,7 +104,7 @@ function ChangePassword() {
         </Form.Item>
 
         <Form.Item>
-          <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isLoading} block>
+          <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isPending} block>
             Cập nhật
           </GradientButton>
         </Form.Item>

@@ -7,6 +7,7 @@ import {
   LoadingOutlined,
   LockOutlined,
   LogoutOutlined,
+  PhoneOutlined,
   PlusOutlined,
   ReadOutlined,
   StarOutlined
@@ -166,10 +167,10 @@ function ProfileLayout() {
             <Space direction='vertical'>
               {user && (
                 <>
+                  <div className='font-inter font-semibold text-slate-600'>@{user.username}</div>
                   <div>
-                    {user.lastName} {user.firstName}
+                    <PhoneOutlined /> {user.phoneNumber}
                   </div>
-                  <div>{user.phoneNumber}</div>
                 </>
               )}
             </Space>

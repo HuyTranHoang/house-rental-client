@@ -1,7 +1,6 @@
 export function hidePhoneNumber(phoneNumber: string): string {
   const lastFourDigits = phoneNumber.slice(-4)
-  const formattedNumber = `**** ${lastFourDigits}`
-  return formattedNumber
+  return `**** ${lastFourDigits}`
 }
 
 export function formatPhoneNumber(phoneNumber: string): string {

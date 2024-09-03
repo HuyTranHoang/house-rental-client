@@ -15,18 +15,14 @@ type changePasswordType = {
 
 export const updateUserProfileApi = async (values: updateProfileType) => {
   try {
-    return await axiosInstance.put('/api/user/profile', values)
+    return await axiosInstance.put<User>('/api/user/profile', values)
   } catch (error) {
     toast.error('Không thể cập nhật thông tin cá nhân')
   }
 }
 
 export const changePasswordApi = async (values: changePasswordType) => {
-  try {
-    return await axiosInstance.put('/api/user/change-password', values)
-  } catch (error) {
-    toast.error('Không thể thay đổi mật khẩu')
-  }
+  return await axiosInstance.put<User>('/api/user/change-password', values)
 }
 
 export const getUserById = async (id: number) => {
