@@ -8,7 +8,7 @@ import { useUser } from '@/hooks/useUser'
 import Container from '@/ui/Container.tsx'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate, formatJoinedDate } from '@/utils/formatDate.ts'
-import { formatPhoneNumber, hidePhoneNumber } from '@/utils/formatPhoneNumber'
+import { formatPhoneNumberWithSpaces, maskPhoneNumber } from '@/utils/formatPhoneNumber'
 import { red } from '@ant-design/colors'
 import {
   CheckCircleFilled,
@@ -264,8 +264,8 @@ function PropertyDetail() {
                       <span>
                         <PhoneFilled />{' '}
                         {isPhoneNumberVisible
-                          ? formatPhoneNumber(userData.phoneNumber)
-                          : hidePhoneNumber(userData.phoneNumber)}
+                          ? formatPhoneNumberWithSpaces(userData.phoneNumber)
+                          : maskPhoneNumber(userData.phoneNumber)}
                       </span>
                       <b className='text-blue-500'>
                         {isPhoneNumberVisible ? (

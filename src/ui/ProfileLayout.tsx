@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import styled from 'styled-components'
+import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber.ts'
 
 const CustomUpload = styled(Upload)`
   cursor: pointer;
@@ -169,7 +170,7 @@ function ProfileLayout() {
                 <>
                   <div className='font-inter font-semibold text-slate-600'>@{user.username}</div>
                   <div>
-                    <PhoneOutlined /> {user.phoneNumber}
+                    <PhoneOutlined /> {formatPhoneNumberWithDashes(user.phoneNumber)}
                   </div>
                 </>
               )}
