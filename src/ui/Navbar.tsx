@@ -1,7 +1,6 @@
 import ColorButton from '@/components/ColorButton.jsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import { logout, selectAuth } from '@/features/auth/authSlice.js'
-import { selectMenu } from '@/features/profile/profileSlice.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { useAppDispatch } from '@/store.ts'
 import { UserOutlined } from '@ant-design/icons'
@@ -43,31 +42,16 @@ function Navbar() {
 
   const items: MenuProps['items'] = [
     {
-      key: '1',
-      label: (
-        <Link to={ROUTER_NAMES.PROFILE} onClick={() => dispatch(selectMenu(['thongTinCaNhan']))}>
-          Thông tin cá nhân
-        </Link>
-      )
+      key: ROUTER_NAMES.PROFILE,
+      label: <Link to={ROUTER_NAMES.PROFILE}>Thông tin cá nhân</Link>
     },
     {
-      key: '2',
-      label: (
-        <Link
-          to={ROUTER_NAMES.TRANSACTION_HISTORY}
-          onClick={() => dispatch(selectMenu([ROUTER_NAMES.TRANSACTION_HISTORY]))}
-        >
-          Lịch sử giao dịch
-        </Link>
-      )
+      key: ROUTER_NAMES.TRANSACTION_HISTORY,
+      label: <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>Lịch sử giao dịch</Link>
     },
     {
-      key: '3',
-      label: (
-        <Link to={ROUTER_NAMES.FAVORITE} onClick={() => dispatch(selectMenu([ROUTER_NAMES.FAVORITE]))}>
-          Bất động sản yêu thích
-        </Link>
-      )
+      key: ROUTER_NAMES.FAVORITE,
+      label: <Link to={ROUTER_NAMES.FAVORITE}>Bất động sản yêu thích</Link>
     },
     {
       type: 'divider'

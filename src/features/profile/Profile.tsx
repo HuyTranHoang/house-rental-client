@@ -1,11 +1,10 @@
 import { updateUserProfileApi } from '@/api/user.api.ts'
 import GradientButton from '@/components/GradientButton.tsx'
 import { updateProfile } from '@/features/auth/authSlice.ts'
-import { selectMenu } from '@/features/profile/profileSlice.ts'
 import { useAppDispatch } from '@/store.ts'
 import { AntDesignOutlined } from '@ant-design/icons'
 import { Alert, Card, Form, FormProps, Input, Typography } from 'antd'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 type ChangeProfileForm = {
@@ -28,10 +27,6 @@ function Profile() {
       toast.success('Cập nhật thông tin cá nhân thành công!')
     }
   }
-
-  useEffect(() => {
-    dispatch(selectMenu(['thongTinCaNhan']))
-  }, [dispatch])
 
   return (
     <Card
