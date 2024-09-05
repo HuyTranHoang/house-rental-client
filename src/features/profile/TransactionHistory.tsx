@@ -1,10 +1,10 @@
 import { useUserTransactionHistory } from '@/hooks/useTransaction'
 import { Transaction } from '@/models/transaction.type.ts'
-import { Divider, Flex, TableProps, Typography } from 'antd'
-import Search from 'antd/es/input/Search'
+import { formatDate } from '@/utils/formatDate'
+import { Card, TableProps, Typography } from 'antd'
 import { useState } from 'react'
 import TransactionHistoryTable from './TransactionHistoryTable'
-import { formatDate } from '@/utils/formatDate'
+import { formatCurrency } from '@/utils/formatCurrentcy'
 
 function TransactionHistory() {
   const userId = 4
@@ -19,10 +19,13 @@ function TransactionHistory() {
         key: transaction.id,
         index: (pageNumber - 1) * pageSize + idx + 1,
         id: transaction.id,
-        amount: transaction.amount,
+        amount: formatCurrency(transaction.amount),
         transactionDate: formatDate(transaction.transactionDate),
         transactionType: transaction.transactionType,
-        status: transaction.status
+        status: transaction.status,
+        transactionId: transaction.transactionId,
+        userId: transaction.userId,
+        username: transaction.username
       }))
     : []
 
@@ -38,29 +41,25 @@ function TransactionHistory() {
 
   return (
     <>
-      <Flex align='center' justify='space-between' style={{ marginBottom: 12 }}>
-        <Flex align='center'>
-          <Typography.Title level={2} style={{ margin: 0 }}>
-            Danh sách giao dich
-          </Typography.Title>
-          <Divider type='vertical' style={{ height: 40, backgroundColor: '#9a9a9b', margin: '0 16px' }} />
-          <Search allowClear onSearch={(value) => {}} placeholder='Tìm kiếm ' style={{ width: 250 }} />
-        </Flex>
-      </Flex>
+      <Card
+        title={<Typography.Title level={4}>Danh sách giao dịch</Typography.Title>}
+        className='mb-12 w-[768px] rounded-none border-l-0'
+      >
 
-      <TransactionHistoryTable
-        dataSource={dataSource}
-        loading={isLoading}
-        paginationProps={{
-          total: data?.pageInfo.totalElements,
-          pageSize: pageSize,
-          current: pageNumber,
-          showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} giao dịch`,
-          onShowSizeChange: (_, size) => setPageSize(size),
-          onChange: (page) => setPageNumber(page)
-        }}
-        handleTableChange={handleTableChange}
-      />
+        <TransactionHistoryTable
+          dataSource={dataSource}
+          loading={isLoading}
+          paginationProps={{
+            total: data?.pageInfo.totalElements,
+            pageSize: pageSize,
+            current: pageNumber,
+            showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} giao dịch`,
+            onShowSizeChange: (_, size) => setPageSize(size),
+            onChange: (page) => setPageNumber(page)
+          }}
+          handleTableChange={handleTableChange}
+        />
+      </Card>
     </>
   )
 }
