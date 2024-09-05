@@ -1,8 +1,8 @@
-import { Transaction, TransactionDataSource, TransactionStatus } from '@/models/transaction.type'
+import { Transaction, TransactionDataSource, TransactionStatus, TransactionType } from '@/models/transaction.type'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
-import { formatDate } from '@/utils/formatDate.ts'
 import { Table, TablePaginationConfig, TableProps, Tag } from 'antd'
 import { clsx } from 'clsx'
+import { formatDateWithTime } from '@/utils/formatDate.ts'
 
 interface TransactionHistoryTableProps {
   dataSource: TransactionDataSource[]
@@ -34,29 +34,26 @@ function TransactionHistoryTable({
       dataIndex: 'amount',
       key: 'amount',
       sorter: true,
-      render: (value: Transaction['amount']) => formatCurrency(value)
-    },
-    {
-      title: 'Ngày',
-      dataIndex: 'transactionDate',
-      key: 'transactionDate',
-      sorter: true,
-      render: (value: Transaction['transactionDate']) => formatDate(value)
-    },
-    {
-      title: 'Loại giao dịch',
-      dataIndex: 'transactionType',
-      key: 'transactionType',
-      width: 150,
-      sorter: true,
-      render: (value: Transaction['transactionType']) => {
-        const transactionType = value === 'DEPOSIT' ? 'Nạp tiền' : 'Sử dụng'
+      render: (value: Transaction['amount'], record: Transaction) => {
         return (
-          <span className={clsx('font-semibold', value === 'DEPOSIT' ? 'text-blue-500' : 'text-orange-500')}>
-            {transactionType}
+          <span
+            className={clsx('font-semibold', {
+              'text-green-400': record.transactionType === TransactionType.DEPOSIT,
+              'text-red-400': record.transactionType === TransactionType.WITHDRAWAL
+            })}
+          >
+            {record.transactionType === TransactionType.WITHDRAWAL ? '-' : '+'}
+            {formatCurrency(value)}
           </span>
         )
       }
+    },
+    {
+      title: 'Thời gian',
+      dataIndex: 'transactionDate',
+      key: 'transactionDate',
+      sorter: true,
+      render: (value: Transaction['transactionDate']) => formatDateWithTime(value)
     },
     {
       title: 'Trạng thái',

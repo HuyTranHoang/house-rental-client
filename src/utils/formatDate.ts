@@ -23,3 +23,10 @@ export function formatJoinedDate(createdAt: string | undefined): string {
 
   return formatDistance(date, now, { locale: vi })
 }
+
+export function formatDateWithTime(createdAt: string | undefined): string {
+  if (!createdAt) return ''
+
+  const date = parseISO(createdAt)
+  return format(date, 'dd-MM-yyyy HH:mm')
+}
