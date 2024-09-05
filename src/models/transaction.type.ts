@@ -15,3 +15,8 @@ export enum TransactionStatus {
   FAILED = 'FAILED',
   PENDING = 'PENDING'
 }
+
+export type TransactionDataSource = Transaction & {
+  index: number,
+  key: number,
+}

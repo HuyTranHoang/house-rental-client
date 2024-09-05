@@ -1,11 +1,14 @@
-import { Transaction } from '@/models/transaction.type'
+import { Transaction, TransactionDataSource, TransactionStatus } from '@/models/transaction.type'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { formatDate } from '@/utils/formatDate.ts'
 import { Table, TablePaginationConfig, TableProps, Tag } from 'antd'
+import { clsx } from 'clsx'
 
 interface TransactionHistoryTableProps {
-  dataSource: Transaction[]
+  dataSource: TransactionDataSource[]
   loading: boolean
   paginationProps: false | TablePaginationConfig | undefined
-  handleTableChange: TableProps<Transaction>['onChange']
+  handleTableChange: TableProps<TransactionDataSource>['onChange']
 }
 
 function TransactionHistoryTable({
@@ -18,7 +21,8 @@ function TransactionHistoryTable({
     {
       title: '#',
       dataIndex: 'index',
-      key: 'id'
+      key: 'id',
+      width: 50
     },
     {
       title: 'Mã giao dịch',
@@ -29,49 +33,48 @@ function TransactionHistoryTable({
       title: 'Số tiền',
       dataIndex: 'amount',
       key: 'amount',
-      sorter: true
+      sorter: true,
+      render: (value: Transaction['amount']) => formatCurrency(value)
     },
     {
       title: 'Ngày',
       dataIndex: 'transactionDate',
       key: 'transactionDate',
-      sorter: true
+      sorter: true,
+      render: (value: Transaction['transactionDate']) => formatDate(value)
     },
     {
       title: 'Loại giao dịch',
       dataIndex: 'transactionType',
       key: 'transactionType',
+      width: 150,
       sorter: true,
-      render: (_, record: Transaction) => {
-        let className
-        switch (record.transactionType) {
-          case 'DEPOSIT':
-            className = 'text-blue-500'
-            break
-          default:
-            className = 'text-orange-500'
-        }
-        return <span className={`font-bold ${className}`}>{record.transactionType}</span>
+      render: (value: Transaction['transactionType']) => {
+        const transactionType = value === 'DEPOSIT' ? 'Nạp tiền' : 'Sử dụng'
+        return (
+          <span className={clsx('font-semibold', value === 'DEPOSIT' ? 'text-blue-500' : 'text-orange-500')}>
+            {transactionType}
+          </span>
+        )
       }
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
+      width: 120,
       sorter: true,
-      render: (_, record: Transaction) => {
-        let className
-        switch (record.status) {
-          case 'SUCCESS':
-            className = 'bg-green-100 text-green-800'
-            break
-          case 'PENDING':
-            className = 'bg-yellow-100 text-yellow-800'
-            break
-          default:
-            className = 'bg-red-100 text-red-800'
-        }
-        return <Tag className={`${className}`}>{record.status}</Tag>
+      render: (value: Transaction['status']) => {
+        const color =
+          value === TransactionStatus.SUCCESS ? 'green' : value === TransactionStatus.PENDING ? 'blue' : 'red'
+
+        const status =
+          value === TransactionStatus.SUCCESS
+            ? 'Thành công'
+            : value === TransactionStatus.PENDING
+              ? 'Đang xử lý'
+              : 'Thất bại'
+        return <Tag color={color}>{status}</Tag>
       }
     }
   ]
@@ -83,7 +86,12 @@ function TransactionHistoryTable({
       loading={loading}
       pagination={paginationProps}
       onChange={handleTableChange}
-      rowKey='id'
+      locale={{
+        emptyText: 'Không có dữ liệu',
+        triggerDesc: 'Sắp xếp giảm dần',
+        triggerAsc: 'Sắp xếp tăng dần',
+        cancelSort: 'Hủy sắp xếp'
+      }}
     />
   )
 }
