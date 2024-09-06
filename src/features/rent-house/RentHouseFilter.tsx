@@ -14,6 +14,8 @@ interface Option {
   children?: Option[]
 }
 
+const milion = 1000000
+
 function RentHouseFilter() {
   const [form] = Form.useForm()
   const { search, cityId, districtId, roomTypeId, minPrice, maxPrice, setFilters } = usePropertyFilters()
@@ -69,55 +71,22 @@ function RentHouseFilter() {
 
   const handlePriceChange = (value: string) => {
     const [min, max] = value.split(',')
-
-    const milion = 1000000
-
-    if (min === '0' && max === '0') {
-      setFilters({ minPrice: 0, maxPrice: 0 })
-    } else if (min === '0') {
-      setFilters({ minPrice: 0, maxPrice: Number(max) * milion })
-    } else if (max === '0') {
-      setFilters({ minPrice: Number(min) * milion, maxPrice: 0 })
-    } else {
-      setFilters({ minPrice: Number(min) * milion, maxPrice: Number(max) * milion })
-    }
+    setFilters({
+      minPrice: Number(min || '0') * milion,
+      maxPrice: Number(max || '0') * milion
+    })
   }
 
   // Dùng useEffect để cập nhật giá trị của form khi có thay đổi từ các biến roomTypeId, cityId, districtId ở bên ngoài
   useEffect(() => {
-    if (search) {
-      form.setFieldsValue({ search })
-    } else {
-      form.setFieldsValue({ search: undefined })
-    }
-  }, [form, search])
-
-  useEffect(() => {
-    if (roomTypeId) {
-      form.setFieldsValue({ roomType: roomTypeId.toString() })
-    } else {
-      form.setFieldsValue({ roomType: undefined })
-    }
-  }, [form, roomTypeId])
-
-  useEffect(() => {
-    if (cityId && districtId) {
-      form.setFieldsValue({ cityDistrict: [cityId.toString(), districtId.toString()] })
-    } else if (cityId) {
-      form.setFieldsValue({ cityDistrict: [cityId.toString(), '0'] })
-    } else {
-      form.setFieldsValue({ cityDistrict: [] })
-    }
-  }, [form, cityId, districtId])
-
-  useEffect(() => {
-    if (minPrice || maxPrice) {
-      const milion = 1000000
-      form.setFieldsValue({ price: `${minPrice / milion},${maxPrice / milion}` })
-    } else {
-      form.setFieldsValue({ price: undefined })
-    }
-  }, [form, maxPrice, minPrice])
+    form.setFieldsValue({
+      search: search || undefined,
+      roomType: roomTypeId ? roomTypeId.toString() : undefined,
+      cityDistrict:
+        cityId && districtId ? [cityId.toString(), districtId.toString()] : cityId ? [cityId.toString(), '0'] : [],
+      price: minPrice || maxPrice ? `${minPrice / milion},${maxPrice / milion}` : '0,0'
+    })
+  }, [form, search, cityId, districtId, roomTypeId, minPrice, maxPrice])
 
   return (
     <>
