@@ -5,17 +5,6 @@ import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Button, List, Typography } from 'antd'
-import { CSSProperties } from 'react'
-
-const listStyle: CSSProperties = {
-  width: '100%',
-  backgroundColor: 'white',
-  border: 0,
-  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-  marginTop: '15px',
-  marginBottom: '30px',
-  paddingBottom: '8px'
-}
 
 function RightSideBar() {
   const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
@@ -35,7 +24,7 @@ function RightSideBar() {
 
   return (
     <>
-      <img src='/aptechonehome.webp' style={{ width: '100%', marginTop: '16px' }} alt='banner' />
+      <img src='/aptechonehome.webp' className='mt-4 w-full' alt='banner' />
       <List
         size='small'
         header={
@@ -46,7 +35,7 @@ function RightSideBar() {
         bordered
         dataSource={roomTypeData}
         loading={roomTypeIsLoading}
-        style={listStyle}
+        className='mb-5 mt-3 w-full bg-white pb-2 shadow-myShadow'
         renderItem={(item) => (
           <List.Item className='border-0 pb-0 pt-1'>
             <Button
@@ -73,7 +62,7 @@ function RightSideBar() {
           bordered
           dataSource={cityData}
           loading={cityIsLoading}
-          style={listStyle}
+          className='mb-5 mt-3 w-full bg-white pb-2 shadow-myShadow'
           renderItem={(item) => (
             <List.Item className='border-0 pb-0 pt-1'>
               <Button
@@ -100,7 +89,7 @@ function RightSideBar() {
           bordered
           dataSource={districtData.filter((district) => district.cityId === cityId)}
           loading={districtIsLoading}
-          style={listStyle}
+          className='mb-5 mt-3 w-full bg-white pb-2 shadow-myShadow'
           renderItem={(item) => (
             <List.Item className='border-0 pb-0 pt-1'>
               <Button

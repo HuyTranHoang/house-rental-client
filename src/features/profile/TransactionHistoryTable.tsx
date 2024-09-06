@@ -33,7 +33,6 @@ function TransactionHistoryTable({
       title: 'Số tiền',
       dataIndex: 'amount',
       key: 'amount',
-      sorter: true,
       render: (value: Transaction['amount'], record: Transaction) => {
         return (
           <span

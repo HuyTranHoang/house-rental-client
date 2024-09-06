@@ -27,6 +27,8 @@ function TransactionHistory() {
     if (!Array.isArray(sorter) && sorter.order) {
       const order = sorter.order === 'ascend' ? 'Asc' : 'Desc'
       setSortBy(`${sorter.field}${order}`)
+    } else {
+      setSortBy('transactionDateDesc')
     }
   }
 
