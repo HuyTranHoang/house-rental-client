@@ -11,6 +11,12 @@ interface TransactionHistoryTableProps {
   handleTableChange: TableProps<TransactionDataSource>['onChange']
 }
 
+const statusMap = {
+  [TransactionStatus.SUCCESS]: ['green', 'Thành công'],
+  [TransactionStatus.PENDING]: ['blue', 'Đang xử lý'],
+  [TransactionStatus.FAILED]: ['red', 'Thất bại']
+}
+
 function TransactionHistoryTable({
   dataSource,
   loading,
@@ -61,16 +67,8 @@ function TransactionHistoryTable({
       width: 120,
       sorter: true,
       render: (value: Transaction['status']) => {
-        const color =
-          value === TransactionStatus.SUCCESS ? 'green' : value === TransactionStatus.PENDING ? 'blue' : 'red'
-
-        const status =
-          value === TransactionStatus.SUCCESS
-            ? 'Thành công'
-            : value === TransactionStatus.PENDING
-              ? 'Đang xử lý'
-              : 'Thất bại'
-        return <Tag color={color}>{status}</Tag>
+        const [color, text] = statusMap[value as TransactionStatus]
+        return <Tag color={color}>{text}</Tag>
       }
     }
   ]
