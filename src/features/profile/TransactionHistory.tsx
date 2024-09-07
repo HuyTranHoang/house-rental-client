@@ -5,6 +5,7 @@ import { Card, TableProps, Typography } from 'antd'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import TransactionHistoryTable from './TransactionHistoryTable'
+import Search from 'antd/es/input/Search'
 
 function TransactionHistory() {
   const { user } = useSelector(selectAuth)
@@ -13,7 +14,9 @@ function TransactionHistory() {
   const [pageSize, setPageSize] = useState<number>(10)
   const [sortBy, setSortBy] = useState<string>('transactionDateDesc')
 
-  const { data, isLoading, isError, error } = useUserTransactionHistory(user?.id, sortBy, pageNumber, pageSize)
+  const [transactionId, setTransactionId] = useState('')
+
+  const { data, isLoading, isError, error } = useUserTransactionHistory(user?.id, transactionId, sortBy, pageNumber, pageSize)
 
   const dataSource: TransactionDataSource[] = data
     ? data.data.map((transaction, idx) => ({
@@ -40,11 +43,14 @@ function TransactionHistory() {
         title={<Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>}
         className='mb-12 w-[768px] rounded-none border-l-0'
       >
+        <Search allowClear onSearch={(value: string) => {setTransactionId(value); setPageNumber(1);console.log('Search value:', value); }}
+                placeholder="Nhập mã giao dịch"
+                style={{ width: 250 }} />
         <TransactionHistoryTable
           dataSource={dataSource}
           loading={isLoading}
           paginationProps={{
-            total: data?.pageInfo.totalElements,
+            total: data?.pageInfo.totalElements || 0,
             pageSize: pageSize,
             current: pageNumber,
             showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} giao dịch`,
