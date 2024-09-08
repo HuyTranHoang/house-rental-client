@@ -1,11 +1,11 @@
 import { selectAuth } from '@/features/auth/authSlice.ts'
 import { useUserTransactionHistory } from '@/hooks/useTransaction.ts'
 import { TransactionDataSource } from '@/models/transaction.type.ts'
-import { Card, TableProps, Typography } from 'antd'
+import { Card, Flex, TableProps, Typography } from 'antd'
+import Search from 'antd/es/input/Search'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import TransactionHistoryTable from './TransactionHistoryTable'
-import Search from 'antd/es/input/Search'
 
 function TransactionHistory() {
   const { user } = useSelector(selectAuth)
@@ -16,7 +16,13 @@ function TransactionHistory() {
 
   const [transactionId, setTransactionId] = useState('')
 
-  const { data, isLoading, isError, error } = useUserTransactionHistory(user?.id, transactionId, sortBy, pageNumber, pageSize)
+  const { data, isLoading, isError, error } = useUserTransactionHistory(
+    user?.id,
+    transactionId,
+    sortBy,
+    pageNumber,
+    pageSize
+  )
 
   const dataSource: TransactionDataSource[] = data
     ? data.data.map((transaction, idx) => ({
@@ -40,12 +46,22 @@ function TransactionHistory() {
   return (
     <>
       <Card
-        title={<Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>}
+        title={
+          <Flex justify='space-between' align='center'>
+            <Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>
+            <Search
+              allowClear
+              className='w-64 mt-3'
+              onSearch={(value: string) => {
+                setTransactionId(value)
+                setPageNumber(1)
+              }}
+              placeholder='Tìm kiếm theo mã giao dịch'
+            />
+          </Flex>
+        }
         className='mb-12 w-[768px] rounded-none border-l-0'
       >
-        <Search allowClear onSearch={(value: string) => {setTransactionId(value); setPageNumber(1);console.log('Search value:', value); }}
-                placeholder="Nhập mã giao dịch"
-                style={{ width: 250 }} />
         <TransactionHistoryTable
           dataSource={dataSource}
           loading={isLoading}
