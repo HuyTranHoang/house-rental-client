@@ -38,6 +38,7 @@ export const getTransaction = async (transactionId: string) => {
 }
 export const fetchUserTransactionHistory = async (
   userId: number,
+  transactionId: string,
   sortBy: string,
   pageNumber: number,
   pageSize: number
@@ -45,7 +46,7 @@ export const fetchUserTransactionHistory = async (
   pageNumber = pageNumber - 1
 
   try {
-    const params = { userId, sortBy, pageNumber, pageSize }
+    const params = { userId, transactionId, sortBy, pageNumber, pageSize }
 
     const response = await axiosInstance.get<TransactionResponse>('/api/transaction', { params })
     return response.data

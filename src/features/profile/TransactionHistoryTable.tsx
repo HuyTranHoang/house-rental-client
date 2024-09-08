@@ -25,12 +25,6 @@ function TransactionHistoryTable({
 }: TransactionHistoryTableProps) {
   const columns = [
     {
-      title: '#',
-      dataIndex: 'index',
-      key: 'id',
-      width: 50
-    },
-    {
       title: 'Mã giao dịch',
       dataIndex: 'transactionId',
       key: 'transactionId'
@@ -80,6 +74,13 @@ function TransactionHistoryTable({
       loading={loading}
       pagination={paginationProps}
       onChange={handleTableChange}
+      expandable={{
+        expandedRowRender: (record) => <>
+          <p><strong>Loại giao dịch:</strong> {record.transactionType === TransactionType.DEPOSIT ? 'Nạp tiền' : 'Rút tiền'}</p>
+          <p><strong>Phương thức:</strong> VNPAY</p>
+          <p><strong>Nội dung:</strong> {record.description}</p>
+        </>
+      }}
       locale={{
         emptyText: 'Không có dữ liệu',
         triggerDesc: 'Sắp xếp giảm dần',
