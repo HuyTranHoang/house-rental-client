@@ -5,6 +5,7 @@ import { Property } from '@/models/property.type.ts'
 import RightSideBar from '@/ui/RightSideBar.tsx'
 import { BookOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
+import { useMemo } from 'react'
 import RentHouseCardItem from './RentHouseCardItem.tsx'
 
 function RentHouse() {
@@ -39,11 +40,10 @@ function RentHouse() {
     pageSize
   )
 
-  const startIndex = (pageNumber - 1) * pageSize
-  const endIndex = data ? startIndex + data.data.length : 0
-
-  const range = data ? [startIndex + 1, endIndex] : [0, 0]
-  const total = data ? data.pageInfo.totalElements : 0
+  const startIndex = useMemo(() => (pageNumber - 1) * pageSize, [pageNumber, pageSize])
+  const endIndex = useMemo(() => (data ? startIndex + data.data.length : 0), [data, startIndex])
+  const range = useMemo(() => [startIndex + 1, endIndex], [startIndex, endIndex])
+  const total = useMemo(() => (data ? data.pageInfo.totalElements : 0), [data])
 
   return (
     <>
@@ -115,7 +115,7 @@ function RentHouse() {
               locale={{ items_per_page: '/ trang' }}
               onChange={(page, pageSize) => setFilters({ pageNumber: page, pageSize })}
               onShowSizeChange={(current, size) => setFilters({ pageNumber: current, pageSize: size })}
-              className='mt-4 mb-6'
+              className='mb-6 mt-4'
             />
           )}
         </Col>

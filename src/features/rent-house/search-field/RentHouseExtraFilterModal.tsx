@@ -4,7 +4,7 @@ import RentHouseFilterRoomType from '@/features/rent-house/search-field/RentHous
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { CalendarOutlined, ProductOutlined, SelectOutlined } from '@ant-design/icons'
 import { Badge, Button, CascaderProps, Modal, Select, Typography } from 'antd'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 interface Option {
   value: string
@@ -24,26 +24,35 @@ function RentHouseExtraFilterModal() {
   const [time, setTime] = useState('0')
   const [count, setCount] = useState(0)
 
-  const onCityDistrictChange: CascaderProps<Option>['onChange'] = (value) => {
-    if (value && value.length === 2) {
-      const [cityId, districtId] = value.map(Number)
-      setCityId(cityId)
-      setDistrictId(districtId)
-    } else {
-      setCityId(0)
-      setDistrictId(0)
-    }
-  }
+  const onCityDistrictChange: CascaderProps<Option>['onChange'] = useCallback(
+    (value: string[]) => {
+      if (value && value.length === 2) {
+        const [cityId, districtId] = value.map(Number)
+        setCityId(cityId)
+        setDistrictId(districtId)
+      } else {
+        setCityId(0)
+        setDistrictId(0)
+      }
+    },
+    [setCityId, setDistrictId]
+  )
 
-  const onRoomTypeChange = (value: string) => {
-    setRoomType(parseInt(value))
-  }
+  const onRoomTypeChange = useCallback(
+    (value: string) => {
+      setRoomType(parseInt(value))
+    },
+    [setRoomType]
+  )
 
-  const onPriceChange = (value: string) => {
-    const [min, max] = value.split(',')
-    setMinPrice(Number(min || '0'))
-    setMaxPrice(Number(max || '0'))
-  }
+  const onPriceChange = useCallback(
+    (value: string) => {
+      const [min, max] = value.split(',')
+      setMinPrice(Number(min || '0'))
+      setMaxPrice(Number(max || '0'))
+    },
+    [setMinPrice, setMaxPrice]
+  )
 
   const handleOk = () => {
     const [minArea, maxArea] = area.split(',')
@@ -83,10 +92,6 @@ function RentHouseExtraFilterModal() {
     setIsModalOpen(false)
   }
 
-  const handleCancel = () => {
-    setIsModalOpen(false)
-  }
-
   const handleResetExtraFilter = () => {
     setIsModalOpen(false)
     setCityId(0)
@@ -120,7 +125,7 @@ function RentHouseExtraFilterModal() {
       <Modal
         title='Bộ lọc'
         open={isModalOpen}
-        onCancel={handleCancel}
+        onCancel={() => setIsModalOpen(false)}
         footer={[
           <Button key='back' onClick={handleResetExtraFilter}>
             Xóa lọc
