@@ -1,81 +1,16 @@
-import { fetchAllCities } from '@/api/city.api.ts'
-import { fetchAllDistricts } from '@/api/district.api.ts'
-import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
-import { DollarIcon, GeoIcon, HomeIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
+import RentHouseFilterCityDistrict from '@/features/rent-house/search-field/RentHouseFilterCityDistrict.tsx'
+import RentHouseFilterPrice from '@/features/rent-house/search-field/RentHouseFilterPrice.tsx'
+import RentHouseFilterRoomType from '@/features/rent-house/search-field/RentHouseFilterRoomType.tsx'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
-import { useQuery } from '@tanstack/react-query'
-import { Cascader, CascaderProps, Col, Form, Input, Row, Select } from 'antd'
-import { useEffect, useState } from 'react'
+import { Col, Form, Input, Row } from 'antd'
+import { useEffect } from 'react'
 import RentHouseExtraFilterModal from './search-field/RentHouseExtraFilterModal.tsx'
-
-interface Option {
-  value: string
-  label: string
-  children?: Option[]
-}
 
 const milion = 1000000
 
 function RentHouseFilter() {
   const [form] = Form.useForm()
   const { search, cityId, districtId, roomTypeId, minPrice, maxPrice, setFilters } = usePropertyFilters()
-  const { data: cityData, isLoading: cityIsLoading } = useQuery({ queryKey: ['cities'], queryFn: fetchAllCities })
-  const { data: districtData, isLoading: districtIsLoading } = useQuery({
-    queryKey: ['districts'],
-    queryFn: fetchAllDistricts
-  })
-  const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
-    queryKey: ['roomTypes'],
-    queryFn: fetchAllRoomTypes
-  })
-
-  const [count, setCount] = useState<number>(0)
-
-  const cityDistrictOptions: Option[] = [{ value: '0', label: 'Toàn Quốc' }]
-  const roomTypeOptions: Option[] = [{ value: '0', label: 'Tất cả' }]
-
-  if (cityData && districtData) {
-    const cityMap = cityData.map((city) => ({
-      value: city.id.toString(),
-      label: city.name,
-      children: [
-        { value: '0', label: 'Tất cả' },
-        ...districtData
-          .filter((district) => district.cityId === city.id)
-          .map((district) => ({
-            value: district.id.toString(),
-            label: district.name
-          }))
-      ]
-    }))
-    cityDistrictOptions.push(...cityMap)
-  }
-
-  if (roomTypeData) {
-    roomTypeOptions.push(
-      ...roomTypeData.map((roomType) => ({
-        value: roomType.id.toString(),
-        label: roomType.name
-      }))
-    )
-  }
-
-  const onCityDistrictChange: CascaderProps<Option>['onChange'] = (value) => {
-    if (value && value.length === 2) {
-      const [cityId, districtId] = value.map(Number)
-      setFilters({ cityId, districtId })
-    } else {
-      setFilters({ cityId: 0, districtId: 0 })
-    }
-  }
-
-  const handlePriceChange = (value: string) => {
-    const [min, max] = value.split(',')
-    setFilters({
-      minPrice: Number(min || '0') * milion,
-      maxPrice: Number(max || '0') * milion
-    })
-  }
 
   // Dùng useEffect để cập nhật giá trị của form khi có thay đổi từ các biến roomTypeId, cityId, districtId ở bên ngoài
   useEffect(() => {
@@ -104,7 +39,7 @@ function RentHouseFilter() {
         className='mt-4'
       >
         <Row gutter={12}>
-          <Col span={7}>
+          <Col xs={16} md={7}>
             <Form.Item name='search'>
               <Input.Search
                 size='large'
@@ -114,53 +49,18 @@ function RentHouseFilter() {
               />
             </Form.Item>
           </Col>
-          <Col span={5}>
-            <Form.Item name='cityDistrict'>
-              <Cascader
-                options={cityDistrictOptions}
-                onChange={onCityDistrictChange}
-                size='large'
-                allowClear={false}
-                loading={cityIsLoading || districtIsLoading}
-                placeholder='Chọn quận huyện'
-                suffixIcon={<GeoIcon />}
-              />
-            </Form.Item>
+          <Col xs={0} md={5}>
+            <RentHouseFilterCityDistrict />
           </Col>
-          <Col span={5}>
-            <Form.Item name='roomType'>
-              <Select
-                size='large'
-                onChange={(value) => {
-                  setFilters({ roomTypeId: Number(value) })
-                }}
-                loading={roomTypeIsLoading}
-                placeholder={'Loại phòng'}
-                suffixIcon={<HomeIcon />}
-                options={roomTypeOptions}
-              />
-            </Form.Item>
+          <Col xs={0} md={5}>
+            <RentHouseFilterRoomType />
           </Col>
-          <Col span={5}>
-            <Form.Item name='price'>
-              <Select
-                size='large'
-                onChange={handlePriceChange}
-                placeholder={'Giá thuê'}
-                suffixIcon={<DollarIcon />}
-                options={[
-                  { value: '0,0', label: 'Tất cả' },
-                  { value: '0,3', label: 'Dưới 3 triệu' },
-                  { value: '3,7', label: '3 đến 7 triệu' },
-                  { value: '7,10', label: '7 đến 10 triệu' },
-                  { value: '10,0', label: 'Trên 10 triệu' }
-                ]}
-              />
-            </Form.Item>
+          <Col xs={0} md={5}>
+            <RentHouseFilterPrice />
           </Col>
-          <Col span={2}>
+          <Col xs={8} md={2}>
             <Form.Item>
-              <RentHouseExtraFilterModal count={count} setCount={setCount} />
+              <RentHouseExtraFilterModal />
             </Form.Item>
           </Col>
         </Row>

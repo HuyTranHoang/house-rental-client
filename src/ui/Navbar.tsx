@@ -150,7 +150,7 @@ function Navbar() {
       {/*Mobile*/}
       <MenuOutlined onClick={() => setOpen(true)} className='mr-2 text-xl md:hidden' />
       <Drawer title='Menu' onClose={() => setOpen(false)} open={open}>
-        <Row gutter={12} className='w-64'>
+        <Row gutter={12}>
           <Col span={12}>
             <Button className='border-blue-500 text-blue-500' block>
               Đăng nhập
@@ -172,7 +172,6 @@ function Navbar() {
               )}
             />
           </Col>
-          <Divider />
           <Col span={24} className='mt-4'>
             <Button danger block>
               Đăng xuất

@@ -2,17 +2,16 @@ import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { CalendarOutlined, ProductOutlined, SelectOutlined } from '@ant-design/icons'
 import { Badge, Button, Modal, Select, Typography } from 'antd'
 import { useState } from 'react'
+import RentHouseFilterCityDistrict from '@/features/rent-house/search-field/RentHouseFilterCityDistrict.tsx'
+import RentHouseFilterRoomType from '@/features/rent-house/search-field/RentHouseFilterRoomType.tsx'
+import RentHouseFilterPrice from '@/features/rent-house/search-field/RentHouseFilterPrice.tsx'
 
-interface ExtraFiltersModalProps {
-  count: number
-  setCount: (count: number) => void
-}
-
-function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) {
+function RentHouseExtraFilterModal() {
   const { setFilters } = usePropertyFilters()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [area, setArea] = useState<string>('0,0')
   const [time, setTime] = useState<string>('0')
+  const [count, setCount] = useState<number>(0)
 
   const showModal = () => {
     setIsModalOpen(true)
@@ -73,6 +72,15 @@ function RentHouseExtraFilterModal({ count, setCount }: ExtraFiltersModalProps) 
           </Button>
         ]}
       >
+        <Typography.Paragraph className='mb-1 mt-4'>Thành phố và quận huyện</Typography.Paragraph>
+        <RentHouseFilterCityDistrict />
+
+        <Typography.Paragraph className='mb-1 mt-4'>Loại phòng</Typography.Paragraph>
+        <RentHouseFilterRoomType />
+
+        <Typography.Paragraph className='mb-1 mt-4'>Giá</Typography.Paragraph>
+        <RentHouseFilterPrice />
+
         <Typography.Paragraph className='mb-1 mt-4'>Diện tích</Typography.Paragraph>
         <Select
           size='large'
