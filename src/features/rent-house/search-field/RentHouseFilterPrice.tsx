@@ -1,27 +1,12 @@
 import { Form, Select } from 'antd'
 import { DollarIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
-import { usePropertyFilters } from '@/hooks/useProperty.ts'
 
-const milion = 1000000
-
-
-function RentHouseFilterPrice() {
-
-  const { setFilters } = usePropertyFilters()
-
-  const handlePriceChange = (value: string) => {
-    const [min, max] = value.split(',')
-    setFilters({
-      minPrice: Number(min || '0') * milion,
-      maxPrice: Number(max || '0') * milion
-    })
-  }
-
+function RentHouseFilterPrice({ onPriceChange }: { onPriceChange: (value: string) => void }) {
   return (
     <Form.Item name='price'>
       <Select
         size='large'
-        onChange={handlePriceChange}
+        onChange={onPriceChange}
         placeholder={'Giá thuê'}
         suffixIcon={<DollarIcon />}
         options={[

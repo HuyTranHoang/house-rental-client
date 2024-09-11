@@ -1,8 +1,7 @@
-import { Form, Select } from 'antd'
+import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
 import { HomeIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
 import { useQuery } from '@tanstack/react-query'
-import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
-import { usePropertyFilters } from '@/hooks/useProperty.ts'
+import { Form, Select } from 'antd'
 
 interface Option {
   value: string
@@ -10,10 +9,8 @@ interface Option {
   children?: Option[]
 }
 
-function RentHouseFilterRoomType() {
-
+function RentHouseFilterRoomType({ onRoomTypeChange }: { onRoomTypeChange: (value: string) => void }) {
   const roomTypeOptions: Option[] = [{ value: '0', label: 'Tất cả' }]
-  const { setFilters } = usePropertyFilters()
 
   const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
     queryKey: ['roomTypes'],
@@ -33,9 +30,7 @@ function RentHouseFilterRoomType() {
     <Form.Item name='roomType'>
       <Select
         size='large'
-        onChange={(value) => {
-          setFilters({ roomTypeId: Number(value) })
-        }}
+        onChange={onRoomTypeChange}
         loading={roomTypeIsLoading}
         placeholder={'Loại phòng'}
         suffixIcon={<HomeIcon />}

@@ -2,15 +2,42 @@ import RentHouseFilterCityDistrict from '@/features/rent-house/search-field/Rent
 import RentHouseFilterPrice from '@/features/rent-house/search-field/RentHouseFilterPrice.tsx'
 import RentHouseFilterRoomType from '@/features/rent-house/search-field/RentHouseFilterRoomType.tsx'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
-import { Col, Form, Input, Row } from 'antd'
+import { CascaderProps, Col, Form, Input, Row } from 'antd'
 import { useEffect } from 'react'
 import RentHouseExtraFilterModal from './search-field/RentHouseExtraFilterModal.tsx'
+
+interface Option {
+  value: string
+  label: string
+  children?: Option[]
+}
 
 const milion = 1000000
 
 function RentHouseFilter() {
   const [form] = Form.useForm()
   const { search, cityId, districtId, roomTypeId, minPrice, maxPrice, setFilters } = usePropertyFilters()
+
+  const onCityDistrictChange: CascaderProps<Option>['onChange'] = (value) => {
+    if (value && value.length === 2) {
+      const [cityId, districtId] = value.map(Number)
+      setFilters({ cityId, districtId })
+    } else {
+      setFilters({ cityId: 0, districtId: 0 })
+    }
+  }
+
+  const onRoomTypeChange = (value: string) => {
+    setFilters({ roomTypeId: parseInt(value) })
+  }
+
+  const onPriceChange = (value: string) => {
+    const [min, max] = value.split(',')
+    setFilters({
+      minPrice: Number(min || '0') * milion,
+      maxPrice: Number(max || '0') * milion
+    })
+  }
 
   // Dùng useEffect để cập nhật giá trị của form khi có thay đổi từ các biến roomTypeId, cityId, districtId ở bên ngoài
   useEffect(() => {
@@ -50,13 +77,13 @@ function RentHouseFilter() {
             </Form.Item>
           </Col>
           <Col xs={0} md={5}>
-            <RentHouseFilterCityDistrict />
+            <RentHouseFilterCityDistrict onCityDistrictChange={onCityDistrictChange} />
           </Col>
           <Col xs={0} md={5}>
-            <RentHouseFilterRoomType />
+            <RentHouseFilterRoomType onRoomTypeChange={onRoomTypeChange} />
           </Col>
           <Col xs={0} md={5}>
-            <RentHouseFilterPrice />
+            <RentHouseFilterPrice onPriceChange={onPriceChange} />
           </Col>
           <Col xs={8} md={2}>
             <Form.Item>
