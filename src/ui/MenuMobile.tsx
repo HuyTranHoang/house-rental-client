@@ -12,71 +12,50 @@ import {
 } from '@ant-design/icons'
 import { Avatar, Button, Col, Drawer, Flex, List, Row, Typography } from 'antd'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const navData = [
   {
     key: ROUTER_NAMES.RENT_HOUSE,
-    label: (
-      <Link to={ROUTER_NAMES.RENT_HOUSE} className='font-medium'>
-        Tìm thuê
-      </Link>
-    ),
-    icon: <HomeOutlined className='text-xl' />
+    label: 'Tìm thuê',
+    navigate: ROUTER_NAMES.RENT_HOUSE,
+    icon: <HomeOutlined className='text-xl pl-2' />
   },
   {
     key: ROUTER_NAMES.MEMBERSHIP_FEE,
-    label: (
-      <Link to={ROUTER_NAMES.MEMBERSHIP_FEE} className='font-medium'>
-        Phí thành viên
-      </Link>
-    ),
-    icon: <CreditCardOutlined className='text-xl' />
+    label: 'Phí thành viên',
+    navigate: ROUTER_NAMES.MEMBERSHIP_FEE,
+    icon: <CreditCardOutlined className='text-xl pl-2' />
   },
   {
     key: ROUTER_NAMES.TOP_UP,
-    label: (
-      <Link to={ROUTER_NAMES.TOP_UP} className='font-medium'>
-        Nạp tiền
-      </Link>
-    ),
-    icon: <DollarOutlined className='text-xl' />
+    label: 'Nạp tiền',
+    navigate: ROUTER_NAMES.TOP_UP,
+    icon: <DollarOutlined className='text-xl pl-2' />
   },
   {
     key: ROUTER_NAMES.PROFILE,
-    label: (
-      <Link to={ROUTER_NAMES.PROFILE} className='font-medium'>
-        Thông tin cá nhân
-      </Link>
-    ),
-    icon: <UserOutlined className='text-xl' />
+    label: 'Thông tin cá nhân',
+    navigate: ROUTER_NAMES.PROFILE,
+    icon: <UserOutlined className='text-xl pl-2' />
   },
   {
     key: ROUTER_NAMES.TRANSACTION_HISTORY,
-    label: (
-      <Link to={ROUTER_NAMES.TRANSACTION_HISTORY} className='font-medium'>
-        Lịch sử giao dịch
-      </Link>
-    ),
-    icon: <HistoryOutlined className='text-xl' />
+    label: 'Lịch sử giao dịch',
+    navigate: ROUTER_NAMES.TRANSACTION_HISTORY,
+    icon: <HistoryOutlined className='text-xl pl-2' />
   },
   {
     key: ROUTER_NAMES.FAVORITE,
-    label: (
-      <Link to={ROUTER_NAMES.FAVORITE} className='font-medium'>
-        Bất động sản yêu thích
-      </Link>
-    ),
-    icon: <HeartOutlined className='text-xl' />
+    label: 'Bất động sản yêu thích',
+    navigate: ROUTER_NAMES.FAVORITE,
+    icon: <HeartOutlined className='text-xl pl-2' />
   },
   {
     key: ROUTER_NAMES.FAVORITE,
-    label: (
-      <Link to={ROUTER_NAMES.FAVORITE} className='font-medium'>
-        Đăng tin
-      </Link>
-    ),
-    icon: <FormOutlined className='text-xl' />
+    label: 'Đăng tin',
+    navigate: 'not-found',
+    icon: <FormOutlined className='text-xl pl-2' />
   }
 ]
 
@@ -105,6 +84,7 @@ const logout = (
 
 function MenuMobile({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <>
@@ -113,23 +93,36 @@ function MenuMobile({ user }: { user: User | null }) {
         <Row gutter={12}>
           {!user && loginRegister}
 
-          {user && <Col span={24} className='mt-4'>
-            <Flex align='center' vertical>
-              <Link to={ROUTER_NAMES.PROFILE}>
-                <Avatar className='size-24' src={user.avatarUrl} />
-              </Link>
-              <Typography.Text className='ml-2'>{user.lastName} {user.firstName}</Typography.Text>
-              <Typography.Text className='ml-2 text-xs text-gray-500'>{user.email}</Typography.Text>
-            </Flex>
-          </Col>}
+          {user && (
+            <Col span={24} className='mt-4'>
+              <Flex align='center' vertical>
+                <Link to={ROUTER_NAMES.PROFILE}>
+                  <Avatar className='size-24' src={user.avatarUrl} />
+                </Link>
+                <Typography.Text className='ml-2'>
+                  {user.lastName} {user.firstName}
+                </Typography.Text>
+                <Typography.Text className='ml-2 text-xs text-gray-500'>{user.email}</Typography.Text>
+              </Flex>
+            </Col>
+          )}
 
           <Col span={24} className='mt-4'>
             <List
               itemLayout='horizontal'
               dataSource={navData}
               renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta avatar={item.icon} title={item.label} />
+                <List.Item
+                  onClick={() => {
+                    navigate(item.navigate)
+                    setOpen(false)
+                  }}
+                  className='cursor-pointer hover:bg-gray-100'
+                >
+                  <List.Item.Meta
+                    avatar={item.icon}
+                    title={<Typography.Text className='font-medium'>{item.label}</Typography.Text>}
+                  />
                 </List.Item>
               )}
             />
