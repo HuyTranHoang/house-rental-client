@@ -18,7 +18,6 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
-
 const navData = [
   {
     key: ROUTER_NAMES.RENT_HOUSE,
@@ -68,6 +67,17 @@ function MenuMobile({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  const filteredNavData = user
+    ? navData
+    : navData
+        .filter((_item, index) => index < 2)
+        .concat({
+          key: ROUTER_NAMES.FAVORITE,
+          label: 'Đăng tin',
+          navigate: 'not-found',
+          icon: <FormOutlined className='pl-2 text-xl' />
+        })
 
   const loginRegister = (
     <>
@@ -140,7 +150,7 @@ function MenuMobile({ user }: { user: User | null }) {
           <Col span={24} className='mt-4'>
             <List
               itemLayout='horizontal'
-              dataSource={navData}
+              dataSource={filteredNavData}
               renderItem={(item) => (
                 <List.Item
                   onClick={() => {
