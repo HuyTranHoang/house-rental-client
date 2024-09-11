@@ -56,11 +56,9 @@ function Login() {
   }, [isAuthenticated, navigate, redirectTo])
 
   const onFinish = async (values: FieldType) => {
-    console.log('Success submit:', values)
     try {
       dispatch(loginRequest())
       const response = await axiosInstance.post<User>('/api/auth/login', values)
-      console.log('>>>LOGIN.JSX', response)
       toast.success('Đăng nhập thành công')
 
       const payload: { user: User; token: string } = {
@@ -72,7 +70,6 @@ function Login() {
       dispatch(loginSuccess(payload))
       navigate(redirectTo)
     } catch (error) {
-      console.log('>>>LOGIN.JSX', error)
       dispatch(loginFailure())
     }
   }

@@ -55,6 +55,11 @@ axiosInstance.interceptors.response.use(
           break
         }
 
+        if (error.response.data.message === 'Tài khoản đã bị khóa!') {
+          toast.error('Tài khoản đã bị khóa!')
+          break
+        }
+
         window.location.href = ROUTER_NAMES.SERVER_ERROR
         break
       default:

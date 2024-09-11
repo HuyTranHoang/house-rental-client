@@ -134,7 +134,7 @@ function Navbar() {
   const onClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
       dispatch(logout())
-      navigate(ROUTER_NAMES.HOME)
+      navigate(ROUTER_NAMES.RENT_HOUSE)
       localStorage.removeItem('jwtToken')
       axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
         toast.success('Đăng xuất thành công')
@@ -144,7 +144,7 @@ function Navbar() {
 
   return (
     <Flex justify='space-between' align='center' className='h-16 text-[#4E4E4E]'>
-      <Link to={ROUTER_NAMES.HOME} className='flex'>
+      <Link to={ROUTER_NAMES.RENT_HOUSE} className='flex'>
         <img className='my-auto w-32' src='/logo.webp' alt='Logo' />
       </Link>
       {/*Mobile*/}

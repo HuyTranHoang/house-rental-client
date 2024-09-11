@@ -135,14 +135,17 @@ function RentHouseExtraFilterModal() {
           </Button>
         ]}
       >
-        <Typography.Paragraph className='mb-1 mt-4'>Thành phố và quận huyện</Typography.Paragraph>
-        <RentHouseFilterCityDistrict onCityDistrictChange={onCityDistrictChange} />
+        <div className='md:hidden'>
+          <Typography.Paragraph className='mb-1 mt-4'>Thành phố và quận huyện</Typography.Paragraph>
+          <RentHouseFilterCityDistrict onCityDistrictChange={onCityDistrictChange} />
 
-        <Typography.Paragraph className='mb-1 mt-4'>Loại phòng</Typography.Paragraph>
-        <RentHouseFilterRoomType onRoomTypeChange={onRoomTypeChange} />
+          <Typography.Paragraph className='mb-1 mt-4'>Loại phòng</Typography.Paragraph>
+          <RentHouseFilterRoomType onRoomTypeChange={onRoomTypeChange} />
 
-        <Typography.Paragraph className='mb-1 mt-4'>Giá</Typography.Paragraph>
-        <RentHouseFilterPrice onPriceChange={onPriceChange} />
+          <Typography.Paragraph className='mb-1 mt-4'>Giá</Typography.Paragraph>
+          <RentHouseFilterPrice onPriceChange={onPriceChange} />
+        </div>
+
 
         <Typography.Paragraph className='mb-1 mt-4'>Diện tích</Typography.Paragraph>
         <Select

@@ -99,7 +99,7 @@ function ProfileLayout() {
     switch (key) {
       case 'dangXuat':
         dispatch(logout())
-        navigate(ROUTER_NAMES.HOME)
+        navigate(ROUTER_NAMES.TEST)
         localStorage.removeItem('jwtToken')
         axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
           toast.success('Đăng xuất thành công')

@@ -89,14 +89,14 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
     element: <AppLayout />,
     children: [
       {
-        element: <Home />,
+        element: <RentHouse />,
         index: true,
         breadcrumb: () => <span><HomeOutlined /> Mogu</span>
       },
       {
-        path: ROUTER_NAMES.HOME,
+        path: ROUTER_NAMES.TEST,
         element: <Home />,
-        breadcrumb: 'Mogu'
+        breadcrumb: () => <span><HomeOutlined /> Mogu</span>
       },
       {
         path: ROUTER_NAMES.RENT_HOUSE,
