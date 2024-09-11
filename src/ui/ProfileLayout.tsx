@@ -2,6 +2,7 @@ import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import { logout, selectAuth, updateProfile } from '@/features/auth/authSlice.js'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber.ts'
 import {
   IdcardOutlined,
   LoadingOutlined,
@@ -18,7 +19,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import styled from 'styled-components'
-import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber.ts'
 
 const CustomUpload = styled(Upload)`
   cursor: pointer;
@@ -138,14 +138,14 @@ function ProfileLayout() {
   )
 
   return (
-    <Row>
+    <Row gutter={12}>
       <Col span={24}>
-        <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
+        <div className='mb-4 mt-8'>
           <CustomBreadcrumbs />
         </div>
       </Col>
       <Col span={6}>
-        <Card style={{ width: 256, borderRadius: 0, borderLeft: 'none' }}>
+        <Card>
           <Space wrap size={16}>
             <Tooltip title={loading ? 'Đang tải lên...' : 'Thay đổi ảnh đại diện'}>
               <CustomUpload
@@ -179,7 +179,6 @@ function ProfileLayout() {
         </Card>
         <Menu
           onClick={onClick}
-          style={{ width: 256, marginBottom: '3rem' }}
           selectedKeys={[currentPath]}
           mode='inline'
           items={items}
