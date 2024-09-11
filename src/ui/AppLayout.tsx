@@ -22,7 +22,7 @@ function AppLayout() {
           <Col xs={1} sm={2} md={5}></Col>
         </Row>
       </Layout>
-      <Footer className='bg-[#E9E9E9]'>
+      <Footer className='bg-[#E9E9E9] px-2 md:px-4'>
         <MyFooter />
       </Footer>
     </Layout>

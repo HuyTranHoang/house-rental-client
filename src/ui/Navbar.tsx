@@ -181,6 +181,8 @@ function Navbar() {
       </Drawer>
       {/*Desktop*/}
       <Flex className='hidden md:flex' gap='small' wrap>
+        <NavItem title='TEST - DEV ONLY' link={ROUTER_NAMES.TEST} />
+
         <NavItem title='Tìm thuê' link={ROUTER_NAMES.RENT_HOUSE} />
 
         <NavItem title='Phí thành viên' link={ROUTER_NAMES.MEMBERSHIP_FEE} />

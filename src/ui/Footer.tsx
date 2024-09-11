@@ -1,5 +1,5 @@
 ﻿import { FacebookFilled, MailOutlined, PhoneOutlined, YoutubeFilled } from '@ant-design/icons'
-import { Col, Row, Typography } from 'antd'
+import { Col, Row, Space, Typography } from 'antd'
 
 interface FooterItemProps {
   title: string
@@ -8,8 +8,8 @@ interface FooterItemProps {
 
 function FooterItem({ title, items }: FooterItemProps) {
   return (
-    <Col md={6}>
-      <Typography.Title level={5}>{title}</Typography.Title>
+    <Col xs={12} md={6} className='md:mb-4'>
+      <Typography.Title level={5} className='mt-0'>{title}</Typography.Title>
       <ul className='list-none p-0'>
         {items.map((item, index) => (
           <li className='text-xs text-[#5e5e5e]' key={index}>
@@ -23,45 +23,39 @@ function FooterItem({ title, items }: FooterItemProps) {
 
 function Footer() {
   return (
-    <Row>
-      <Col xs={1} sm={2} md={4}></Col>
-      <Col xs={22} sm={20} md={16}>
-        <Row>
-          <Col md={6}>
-            <ul className='list-none p-0'>
-              <li>
-                <img className='w-24' src='/logo.webp' alt='Logo' />
-              </li>
-              <li>
-                <PhoneOutlined /> (012) 123456789
-              </li>
-              <li>
-                <MailOutlined /> trogiup@mogu.vn
-              </li>
-            </ul>
+    <Row className='py-8'>
+      <Col xs={1} md={4}></Col>
+      <Col xs={22} md={16}>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} md={6}>
+            <Space direction='vertical' size='small' className='w-full'>
+              <img className='w-24' src='/logo.webp' alt='Logo' />
+              <Space>
+                <PhoneOutlined /> <span className='text-sm'>(012) 123456789</span>
+              </Space>
+              <Space>
+                <MailOutlined /> <span className='text-sm'>trogiup@mogu.vn</span>
+              </Space>
+              <Space className='mt-2'>
+                <FacebookFilled className='text-2xl text-blue-600' />
+                <YoutubeFilled className='text-2xl text-red-600' />
+              </Space>
+            </Space>
 
-            <div>
-              <FacebookFilled className='mr-3 text-2xl text-blue-600' />
-              <YoutubeFilled className='text-2xl text-red-600' />
-            </div>
-
-            <div className='mr-6'>
+            <div className='mt-4'>
               <Typography.Title level={5}>CÔNG TY CỔ PHẦN MOGU</Typography.Title>
-
-              <p className='text-gray-600'>
+              <p className='text-sm text-gray-600'>
                 Trụ sở chính: Quận Bình Thạnh, TP. Hồ Chí Minh Giấy phép số: 111/GP-BTTTT do Bộ TTTT cấp ngày 01/01/2024
               </p>
-
-              <img className='w-32' src='https://mogi.vn/content/images/bocongthuong.png' alt='Bộ công thương' />
-
-              <p className='text-gray-600'>
+              <img className='my-2 w-32' src='https://mogi.vn/content/images/bocongthuong.png' alt='Bộ công thương' />
+              <p className='text-sm text-gray-600'>
                 Mogu có trách nhiệm chuyển tải thông tin. Chúng tôi không chịu bất kỳ trách nhiệm nào từ các tin này.
               </p>
             </div>
           </Col>
 
-          <Col md={18}>
-            <Row>
+          <Col xs={24} md={18}>
+            <Row gutter={8}>
               <FooterItem
                 title='Bất động sản TPHCM'
                 items={[
@@ -107,7 +101,7 @@ function Footer() {
                 ]}
               />
             </Row>
-            <Row>
+            <Row gutter={8} className='mt-4'>
               <FooterItem
                 title='Về Mogu'
                 items={['Về chúng tôi', 'Điều khoản sử dụng', 'Quy chế hoạt động', 'Thỏa thuận mạng XH', 'Liên hệ']}
@@ -134,7 +128,7 @@ function Footer() {
           </Col>
         </Row>
       </Col>
-      <Col xs={1} sm={2} md={4}></Col>
+      <Col xs={1} md={4}></Col>
     </Row>
   )
 }
