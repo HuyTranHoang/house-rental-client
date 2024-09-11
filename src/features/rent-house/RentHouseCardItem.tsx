@@ -24,7 +24,10 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const { removeFavoriteMutate } = useRemoveFavorite()
 
   return (
-    <Card className='mb-2 mr-4 cursor-pointer' onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}>
+    <Card
+      className='mb-2 mr-0 cursor-pointer md:mr-4'
+      onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}
+    >
       <Row gutter={24}>
         <Col xs={24} md={8}>
           <div

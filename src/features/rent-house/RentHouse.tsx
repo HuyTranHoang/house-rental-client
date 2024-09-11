@@ -52,7 +52,7 @@ function RentHouse() {
       <CustomBreadcrumbs />
 
       <Row>
-        <Col span={18}>
+        <Col xs={24} md={18}>
           <Typography.Title level={4} className='mt-3.5'>
             Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T9/2024
           </Typography.Title>
@@ -88,7 +88,7 @@ function RentHouse() {
           {isLoading && (
             <>
               {Array.from({ length: pageSize }).map((_, index) => (
-                <Card key={index} loading className='mb-2 mr-4' />
+                <Card key={index} loading className='mb-2 mr-0 md:mr-4' />
               ))}
             </>
           )}
@@ -120,7 +120,7 @@ function RentHouse() {
           )}
         </Col>
 
-        <Col span={6}>
+        <Col xs={0} md={6}>
           <RightSideBar />
         </Col>
       </Row>
