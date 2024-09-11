@@ -3,10 +3,10 @@ import { Button, Space } from 'antd'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
-function Home() {
+function TestPage() {
   return (
-    <div style={{ width: 600 }}>
-      <h1>Home page</h1>
+    <div>
+      <h1>Test page</h1>
 
       <Space>
         <Button onClick={() => toast.success('Success')}>
@@ -67,4 +67,4 @@ function Home() {
   )
 }
 
-export default Home
+export default TestPage

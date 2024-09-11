@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import AppLayout from './ui/AppLayout.tsx'
 import RentHouse from './features/rent-house/RentHouse.tsx'
-import Home from './pages/Home.tsx'
+import TestPage from './pages/TestPage.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import Contact from './pages/Contact.tsx'
 import About from './pages/About.tsx'
@@ -95,7 +95,7 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
       },
       {
         path: ROUTER_NAMES.TEST,
-        element: <Home />,
+        element: <TestPage />,
         breadcrumb: () => <span><HomeOutlined /> Mogu</span>
       },
       {
