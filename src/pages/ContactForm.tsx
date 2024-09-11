@@ -30,17 +30,17 @@ function ContactForm() {
   }
 
   return (
-    <Row>
-      <Col span={12}>
+    <Row gutter={[16, 24]} className='flex flex-col-reverse md:flex-row'>
+      <Col xs={24} md={12}>
         <Form
           form={form}
           name='contact'
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 18 }}
-          className='mb-16 mt-4 max-w-lg rounded-lg border border-gray-500 bg-white p-8'
+          className='mx-auto mb-8 mt-4 max-w-lg rounded-lg border border-gray-500 bg-white p-4 sm:p-8 md:mx-0 md:mb-16'
           style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.09)' }}
           onFinish={onFinish}
           autoComplete='off'
+          layout='vertical'
+          size='large'
         >
           <Form.Item<FieldType>
             label='Nội dung'
@@ -53,7 +53,7 @@ function ContactForm() {
           <Form.Item<FieldType>
             label='Họ tên'
             name='name'
-            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
           >
             <Input />
           </Form.Item>
@@ -69,15 +69,15 @@ function ContactForm() {
             <Input />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 5, span: 18 }}>
-            <Button type='primary' htmlType='submit' className='w-24' loading={loading}>
+          <Form.Item>
+            <Button type='primary' htmlType='submit' className='w-full sm:w-24' loading={loading}>
               Gửi
             </Button>
           </Form.Item>
         </Form>
       </Col>
-      <Col span={12}>
-        <img src='/contact-icon-mail.png' alt='email image' className='w-64 opacity-50' />
+      <Col xs={24} md={12} className='flex items-center justify-center md:justify-start'>
+        <img src='/contact-icon-mail.png' alt='email image' className='hidden w-48 opacity-50 md:block md:w-64' />
       </Col>
     </Row>
   )
