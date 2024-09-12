@@ -113,7 +113,7 @@ const Deposit = () => {
   return (
     <Row className='mb-10 mt-16' gutter={[16, 16]}>
       <Col
-        xs={{ span: 24, offset: 0 }}
+        xs={{ span: 22, offset: 1 }}
         sm={{ span: 20, offset: 2 }}
         md={{ span: 16, offset: 4 }}
         lg={{ span: 8, offset: 6 }}
@@ -223,7 +223,7 @@ const Deposit = () => {
       </Col>
 
       {user && (
-        <Col xs={{ span: 24 }} sm={{ span: 20, offset: 2 }} md={{ span: 16, offset: 4 }} lg={{ span: 4, offset: 0 }}>
+        <Col xs={{ span: 22, offset: 1 }} sm={{ span: 20, offset: 2 }} md={{ span: 16, offset: 4 }} lg={{ span: 4, offset: 0 }}>
           <Card className='flex items-center'>
             <Typography.Title level={5} className='mt-0'>
               Số dư
