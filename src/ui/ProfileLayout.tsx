@@ -144,7 +144,7 @@ function ProfileLayout() {
           <CustomBreadcrumbs />
         </div>
       </Col>
-      <Col span={6}>
+      <Col xs={0} md={6} className='mb-10'>
         <Card>
           <Space wrap size={16}>
             <Tooltip title={loading ? 'Đang tải lên...' : 'Thay đổi ảnh đại diện'}>
@@ -177,14 +177,9 @@ function ProfileLayout() {
             </Space>
           </Space>
         </Card>
-        <Menu
-          onClick={onClick}
-          selectedKeys={[currentPath]}
-          mode='inline'
-          items={items}
-        />
+        <Menu onClick={onClick} selectedKeys={[currentPath]} mode='inline' items={items} />
       </Col>
-      <Col span={18}>
+      <Col xs={24} md={18}>
         <Outlet />
       </Col>
     </Row>

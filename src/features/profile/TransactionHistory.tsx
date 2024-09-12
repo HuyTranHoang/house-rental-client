@@ -1,7 +1,7 @@
 import { selectAuth } from '@/features/auth/authSlice.ts'
 import { useUserTransactionHistory } from '@/hooks/useTransaction.ts'
 import { TransactionDataSource } from '@/models/transaction.type.ts'
-import { Card, Flex, TableProps, Typography } from 'antd'
+import { Card, TableProps, Typography } from 'antd'
 import Search from 'antd/es/input/Search'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -47,20 +47,20 @@ function TransactionHistory() {
     <>
       <Card
         title={
-          <Flex justify='space-between' align='center'>
+          <div className='flex items-center justify-between flex-col md:flex-row'>
             <Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>
             <Search
               allowClear
-              className='w-64 mt-3'
+              className='mt-3 md:w-64'
               onSearch={(value: string) => {
                 setTransactionId(value)
                 setPageNumber(1)
               }}
               placeholder='Tìm kiếm theo mã giao dịch'
             />
-          </Flex>
+          </div>
         }
-        className='mb-12 w-[768px] rounded-none border-l-0'
+        className='mb-12 rounded-none border-l-0'
       >
         <TransactionHistoryTable
           dataSource={dataSource}

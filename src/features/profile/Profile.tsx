@@ -36,7 +36,7 @@ function Profile() {
   return (
     <Card
       title={<Typography.Title level={4}>Thay đổi thông tin cá nhân</Typography.Title>}
-      className='mb-12 w-[768px] rounded-none border-l-0'
+      className='mb-12 rounded-none border-l-0'
     >
       <Form
         name='profile'

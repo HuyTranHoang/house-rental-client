@@ -1,13 +1,16 @@
-import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { selectAuth } from '@/features/auth/authSlice.ts'
-import { useFavoritePropertyByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
-import { formatCurrency } from '@/utils/formatCurrentcy.ts'
-import { formatDate } from '@/utils/formatDate.ts'
-import { Card, Empty, Flex, List, Space, Typography } from 'antd'
+import ROUTER_NAMES from '@/constant/routerNames'
+import { selectAuth } from '@/features/auth/authSlice'
+import { useFavoritePropertyByUserId, useRemoveFavorite } from '@/hooks/useFavorite'
+import { formatCurrency } from '@/utils/formatCurrentcy'
+import { formatDate } from '@/utils/formatDate'
+import { Card, Empty, Flex, Grid, List, Space, Typography } from 'antd'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-function Favorite() {
+const { useBreakpoint } = Grid
+
+export default function Favorite() {
+  const screens = useBreakpoint()
   const { user: currentUser } = useSelector(selectAuth)
   const { favortieProperties, isLoadingFavoriteProperties } = useFavoritePropertyByUserId(currentUser?.id)
   const { removeFavoriteMutate, isPendingRemoveFavorite } = useRemoveFavorite()
@@ -24,11 +27,11 @@ function Favorite() {
   return (
     <Card
       title={<Typography.Title level={4}>Danh sách bất động sản đã lưu</Typography.Title>}
-      className='mb-12 w-[768px] rounded-none border-l-0'
+      className='mb-12 rounded-none border-l-0 sm:border-l'
     >
       <List
         loading={isLoadingFavoriteProperties || isPendingRemoveFavorite}
-        itemLayout='horizontal'
+        itemLayout={screens.sm ? 'horizontal' : 'vertical'}
         dataSource={propertiesData}
         locale={{
           emptyText: (
@@ -46,7 +49,6 @@ function Favorite() {
         }}
         pagination={{
           pageSize: 3,
-          size: 'small',
           showTotal: (total, range) => (
             <span className='text-xs text-slate-500'>
               {range[0]}-{range[1]} trong {total} bất động sản
@@ -55,51 +57,50 @@ function Favorite() {
         }}
         renderItem={(item) => (
           <List.Item>
-            <List.Item.Meta
-              title={
-                <Link to={ROUTER_NAMES.getRentHouseDetail(item.id)} target='_blank' rel='noopener noreferrer'>
-                  {item.title}
-                </Link>
-              }
-              description={
-                <Flex vertical>
-                  <Typography.Text type='secondary'>{item.location}</Typography.Text>
-
-                  <Typography.Text className='mt-1 font-semibold text-blue-500'>
-                    {formatCurrency(item.price)}
+            <Flex vertical={!screens.sm} align={screens.sm ? 'flex-start' : 'stretch'} className='w-full'>
+              <div
+                className='mb-4 h-48 w-full overflow-hidden rounded-lg bg-cover bg-center sm:mb-0 sm:h-24 sm:w-32 sm:flex-shrink-0'
+                style={{ backgroundImage: `url(${item.image})` }}
+              />
+              <Flex vertical className='ml-0 w-full sm:ml-4'>
+                <Typography.Title level={5} className='mb-2 mt-0'>
+                  <Link
+                    to={ROUTER_NAMES.getRentHouseDetail(item.id)}
+                    className='text-gray-700'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {item.title}
+                  </Link>
+                </Typography.Title>
+                <Typography.Text type='secondary' className='mb-2'>
+                  {item.location}
+                </Typography.Text>
+                <Typography.Text className='mb-2 font-semibold text-blue-500'>
+                  {formatCurrency(item.price)}
+                </Typography.Text>
+                <Space direction={screens.sm ? 'horizontal' : 'vertical'} size='small' className='w-full'>
+                  <Typography.Text type='secondary' className='text-xs'>
+                    Ngày đăng: {formatDate(item.createdAt)}
                   </Typography.Text>
-
-                  <Space size='large' className='mt-1'>
-                    <Typography.Text type='secondary' className='text-xs'>
-                      Ngày đăng: {formatDate(item.createdAt)}
-                    </Typography.Text>
-
-                    <Typography.Text className='text-xs'>
-                      <Link to={ROUTER_NAMES.getRentHouseDetail(item.id)} target='_blank' rel='noopener noreferrer'>
-                        Xem chi tiết
-                      </Link>
-                    </Typography.Text>
-
-                    <Typography.Text
-                      type='danger'
-                      className='cursor-pointer text-xs hover:underline'
-                      onClick={() => removeFavoriteMutate({ propertyId: item.id, userId: currentUser!.id })}
-                    >
-                      Xóa khỏi danh sách
-                    </Typography.Text>
-                  </Space>
-                </Flex>
-              }
-            />
-            <div
-              className='h-24 w-32 overflow-hidden rounded-lg bg-cover bg-center'
-              style={{ backgroundImage: `url(${item.image})` }}
-            />
+                  <Typography.Text className='text-xs'>
+                    <Link to={ROUTER_NAMES.getRentHouseDetail(item.id)} target='_blank' rel='noopener noreferrer'>
+                      Xem chi tiết
+                    </Link>
+                  </Typography.Text>
+                  <Typography.Text
+                    type='danger'
+                    className='cursor-pointer text-xs hover:underline'
+                    onClick={() => removeFavoriteMutate({ propertyId: item.id, userId: currentUser!.id })}
+                  >
+                    Xóa khỏi danh sách
+                  </Typography.Text>
+                </Space>
+              </Flex>
+            </Flex>
           </List.Item>
         )}
       />
     </Card>
   )
 }
-
-export default Favorite

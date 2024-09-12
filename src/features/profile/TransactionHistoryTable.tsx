@@ -69,6 +69,7 @@ function TransactionHistoryTable({
 
   return (
     <Table
+      className='overflow-x-scroll'
       columns={columns}
       dataSource={dataSource}
       loading={loading}

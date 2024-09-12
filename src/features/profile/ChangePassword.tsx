@@ -31,7 +31,7 @@ function ChangePassword() {
   return (
     <Card
       title={<Typography.Title level={4}>Thay đổi mật khẩu</Typography.Title>}
-      className='mb-12 w-[768px] rounded-none border-l-0'
+      className='mb-12 rounded-none border-l-0'
     >
       <Form
         form={form}
