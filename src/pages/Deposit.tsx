@@ -94,7 +94,7 @@ const Deposit = () => {
     const depositAmount = amount === 'custom' && customAmount ? customAmount : amount
     const newBalance = user ? user.balance + Number(depositAmount) : 0
 
-    if (amount === 'custom' && !customAmount ) {
+    if (amount === 'custom' && !customAmount) {
       return null
     }
 
@@ -111,143 +111,135 @@ const Deposit = () => {
   }
 
   return (
-    <Row className='mt-16 mb-10' gutter={[16, 16]}>
-  {/* Col chính cho nạp tiền */}
-  <Col
-    xs={{ span: 24, offset: 0 }}
-    sm={{ span: 20, offset: 2 }}
-    md={{ span: 16, offset: 4 }}
-    lg={{ span: 8, offset: 6 }}
-  >
-    <Card
-      title={
-        <div className='flex items-center'>
-          <img
-            src='https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg'
-            className='mr-4 w-8'
-            alt='deposit'
-          />
-          <span>Nạp tiền</span>
-        </div>
-      }
-    >
-      {!isSubmitting && !isSuccess && !isFail && (
-        <Form form={form} layout='vertical' onFinish={onFinish}>
-          <Form.Item
-            name='amount'
-            label='Số tiền'
-            rules={[{ required: true, message: 'Vui lòng chọn số tiền muốn nạp' }]}
-          >
-            <Radio.Group>
-              <Space wrap>
-                <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
-                <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
-                <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
-                <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
-                <Radio.Button value='custom'>Tùy chọn</Radio.Button>
-              </Space>
-            </Radio.Group>
-          </Form.Item>
+    <Row className='mb-10 mt-16' gutter={[16, 16]}>
+      <Col
+        xs={{ span: 24, offset: 0 }}
+        sm={{ span: 20, offset: 2 }}
+        md={{ span: 16, offset: 4 }}
+        lg={{ span: 8, offset: 6 }}
+      >
+        <Card
+          title={
+            <div className='flex items-center'>
+              <img
+                src='https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg'
+                className='mr-4 w-8'
+                alt='deposit'
+              />
+              <span>Nạp tiền</span>
+            </div>
+          }
+        >
+          {!isSubmitting && !isSuccess && !isFail && (
+            <Form form={form} layout='vertical' onFinish={onFinish}>
+              <Form.Item
+                name='amount'
+                label='Số tiền'
+                rules={[{ required: true, message: 'Vui lòng chọn số tiền muốn nạp' }]}
+              >
+                <Radio.Group>
+                  <Space wrap>
+                    <Radio.Button value='50000'>{formatCurrency(50000)}</Radio.Button>
+                    <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
+                    <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
+                    <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
+                    <Radio.Button value='custom'>Tùy chọn</Radio.Button>
+                  </Space>
+                </Radio.Group>
+              </Form.Item>
 
-          {amount === 'custom' && (
-            <Form.Item
-              name='customAmount'
-              label='Số tiền tùy chọn (VND)'
-              rules={[{ required: true, message: 'Vui lòng nhập số tiền bạn muốn nạp' }]}
-            >
-              <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
-            </Form.Item>
+              {amount === 'custom' && (
+                <Form.Item
+                  name='customAmount'
+                  label='Số tiền tùy chọn (VND)'
+                  rules={[{ required: true, message: 'Vui lòng nhập số tiền bạn muốn nạp' }]}
+                >
+                  <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
+                </Form.Item>
+              )}
+
+              <Form.Item>
+                <Button
+                  htmlType='submit'
+                  icon={<RocketOutlined />}
+                  className='w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300'
+                >
+                  Thanh toán
+                </Button>
+              </Form.Item>
+            </Form>
           )}
 
-          <Form.Item>
-            <Button
-              htmlType='submit'
-              icon={<RocketOutlined />}
-              className='w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300'
-            >
-              Thanh toán
-            </Button>
-          </Form.Item>
-        </Form>
-      )}
-
-      {isSubmitting && (
-        <Typography.Paragraph type='secondary'>
-          <LoadingOutlined className='mr-2' />
-          Đang chuyển hướng đến cổng thanh toán...
-        </Typography.Paragraph>
-      )}
-      {isSuccess && (
-        <>
-          <Alert message='Thanh toán thành công!' type='success' showIcon className='mb-4' />
-          <Typography.Paragraph>
-            Số tiền đã nạp: <strong>{formatCurrency(transaction!.amount)}</strong>
-          </Typography.Paragraph>
-          <Typography.Paragraph>
-            Mã giao dịch: <strong>{transaction!.transactionId}</strong>
-          </Typography.Paragraph>
-          <Typography.Paragraph>
-            Thời gian: <strong>{new Date(transaction!.transactionDate).toLocaleString()}</strong>
-          </Typography.Paragraph>
-          <Space>
-            <Typography.Paragraph>
-              <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
+          {isSubmitting && (
+            <Typography.Paragraph type='secondary'>
+              <LoadingOutlined className='mr-2' />
+              Đang chuyển hướng đến cổng thanh toán...
             </Typography.Paragraph>
+          )}
+          {isSuccess && (
+            <>
+              <Alert message='Thanh toán thành công!' type='success' showIcon className='mb-4' />
+              <Typography.Paragraph>
+                Số tiền đã nạp: <strong>{formatCurrency(transaction!.amount)}</strong>
+              </Typography.Paragraph>
+              <Typography.Paragraph>
+                Mã giao dịch: <strong>{transaction!.transactionId}</strong>
+              </Typography.Paragraph>
+              <Typography.Paragraph>
+                Thời gian: <strong>{new Date(transaction!.transactionDate).toLocaleString()}</strong>
+              </Typography.Paragraph>
+              <Space>
+                <Typography.Paragraph>
+                  <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
+                </Typography.Paragraph>
+                <Typography.Paragraph>
+                  <Button type='link' onClick={() => setIsSuccess(false)}>
+                    Nạp tiếp
+                  </Button>
+                </Typography.Paragraph>
+              </Space>
+            </>
+          )}
+          {isFail && (
+            <>
+              <Alert message='Thanh toán thất bại' type='error' showIcon className='mb-4' />
+              <Typography.Paragraph>Thanh toán của bạn không thành công.</Typography.Paragraph>
+              <Typography.Paragraph>
+                Mã giao dịch: <strong>{transaction!.transactionId}</strong>
+              </Typography.Paragraph>
+              <Space>
+                <Typography.Paragraph>
+                  <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
+                </Typography.Paragraph>
+                <Typography.Paragraph>
+                  <Button type='link' onClick={() => setIsSuccess(false)}>
+                    Thử lại
+                  </Button>
+                </Typography.Paragraph>
+              </Space>
+            </>
+          )}
+        </Card>
+      </Col>
+
+      {user && (
+        <Col xs={{ span: 24 }} sm={{ span: 20, offset: 2 }} md={{ span: 16, offset: 4 }} lg={{ span: 4, offset: 0 }}>
+          <Card className='flex items-center'>
+            <Typography.Title level={5} className='mt-0'>
+              Số dư
+            </Typography.Title>
             <Typography.Paragraph>
-              <Button type='link' onClick={() => setIsSuccess(false)}>
-                Nạp tiếp
-              </Button>
+              Hiện tại: <strong>{formatCurrency(user.balance)}</strong>
             </Typography.Paragraph>
-          </Space>
-        </>
+
+            {amount && renderDepositInfo()}
+
+            <Typography.Title level={5}>Lưu ý</Typography.Title>
+            <Typography.Paragraph>- Số tiền nạp tối thiểu là 50.000đ.</Typography.Paragraph>
+          </Card>
+        </Col>
       )}
-      {isFail && (
-        <>
-          <Alert message='Thanh toán thất bại' type='error' showIcon className='mb-4' />
-          <Typography.Paragraph>Thanh toán của bạn không thành công.</Typography.Paragraph>
-          <Typography.Paragraph>
-            Mã giao dịch: <strong>{transaction!.transactionId}</strong>
-          </Typography.Paragraph>
-          <Space>
-            <Typography.Paragraph>
-              <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
-            </Typography.Paragraph>
-            <Typography.Paragraph>
-              <Button type='link' onClick={() => setIsSuccess(false)}>
-                Thử lại
-              </Button>
-            </Typography.Paragraph>
-          </Space>
-        </>
-      )}
-    </Card>
-  </Col>
-
-  {/* Col phụ cho hiển thị số dư */}
-  {user && (
-    <Col
-    xs={{ span: 24}}
-    sm={{ span: 20, offset: 2}}
-    md={{ span: 16, offset: 4}}
-    lg={{ span: 4, offset: 0}}
-    >
-      <Card className='flex items-center'>
-        <Typography.Title level={5} className='mt-0'>
-          Số dư
-        </Typography.Title>
-        <Typography.Paragraph>
-          Hiện tại: <strong>{formatCurrency(user.balance)}</strong>
-        </Typography.Paragraph>
-
-        {amount && renderDepositInfo()}
-
-        <Typography.Title level={5}>Lưu ý</Typography.Title>
-        <Typography.Paragraph>- Số tiền nạp tối thiểu là 50.000đ.</Typography.Paragraph>
-      </Card>
-    </Col>
-  )}
-</Row>
-
+    </Row>
   )
 }
 
