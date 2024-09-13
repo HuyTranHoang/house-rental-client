@@ -1,7 +1,6 @@
-import { fetchAllCities } from '@/api/city.api.ts'
-import { fetchAllDistricts } from '@/api/district.api.ts'
 import { GeoIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
-import { useQuery } from '@tanstack/react-query'
+import { useCities } from '@/hooks/useCity.ts'
+import { useDistricts } from '@/hooks/useDistrict.ts'
 import { Cascader, Form } from 'antd'
 
 interface Option {
@@ -17,11 +16,8 @@ interface RentHouseFilterCityDistrictProps {
 function RentHouseFilterCityDistrict({ onCityDistrictChange }: RentHouseFilterCityDistrictProps) {
   const cityDistrictOptions: Option[] = [{ value: '0', label: 'Toàn Quốc' }]
 
-  const { data: cityData, isLoading: cityIsLoading } = useQuery({ queryKey: ['cities'], queryFn: fetchAllCities })
-  const { data: districtData, isLoading: districtIsLoading } = useQuery({
-    queryKey: ['districts'],
-    queryFn: fetchAllDistricts
-  })
+  const { cityData, cityIsLoading } = useCities()
+  const { districtData, districtIsLoading } = useDistricts()
 
   if (cityData && districtData) {
     const cityMap = cityData.map((city) => ({

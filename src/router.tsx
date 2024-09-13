@@ -1,29 +1,30 @@
+import ROUTER_NAMES from '@/constant/routerNames.ts'
+import PostProperty from '@/features/post-property/PostProperty.tsx'
+import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
+import PaymentFailure from '@/pages/PaymentFailed.tsx'
+import { HomeOutlined } from '@ant-design/icons'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
-import AppLayout from './ui/AppLayout.tsx'
-import RentHouse from './features/rent-house/RentHouse.tsx'
-import TestPage from './pages/TestPage.tsx'
-import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
-import Contact from './pages/Contact.tsx'
-import About from './pages/About.tsx'
+import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
+import NotFound from './error/NotFound.tsx'
+import ServerError from './error/ServerError.tsx'
 import Login from './features/auth/Login.tsx'
 import Register from './features/auth/Register.tsx'
 import RequestResetPassword from './features/auth/RequestResetPassword.tsx'
 import ResetPassword from './features/auth/ResetPassword.tsx'
-import ProtectedRoute from './components/ProtectedRoute.tsx'
-import ProfileLayout from './ui/ProfileLayout.tsx'
-import Profile from './features/profile/Profile.tsx'
 import ChangePassword from './features/profile/ChangePassword.tsx'
-import TransactionHistory from './features/profile/TransactionHistory.tsx'
 import Favorite from './features/profile/Favorite.tsx'
-import ServerError from './error/ServerError.tsx'
-import NotFound from './error/NotFound.tsx'
-import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
-import { HomeOutlined } from '@ant-design/icons'
-import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
-import ROUTER_NAMES from '@/constant/routerNames.ts'
+import Profile from './features/profile/Profile.tsx'
+import TransactionHistory from './features/profile/TransactionHistory.tsx'
+import RentHouse from './features/rent-house/RentHouse.tsx'
+import About from './pages/About.tsx'
+import Contact from './pages/Contact.tsx'
 import Deposit from './pages/Deposit.tsx'
 import PaymentSuccess from './pages/PaymentSuccess.tsx'
-import PaymentFailure from '@/pages/PaymentFailed.tsx'
+import TestPage from './pages/TestPage.tsx'
+import AppLayout from './ui/AppLayout.tsx'
+import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
+import ProfileLayout from './ui/ProfileLayout.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -35,16 +36,20 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
           {
             path: ROUTER_NAMES.TOP_UP,
             element: <Deposit />
+          },
+          {
+            path: ROUTER_NAMES.PAYMENT_SUCCESS,
+            element: <PaymentSuccess />
+          },
+          {
+            path: ROUTER_NAMES.PAYMENT_FAILED,
+            element: <PaymentFailure />
+          },
+          {
+            path: ROUTER_NAMES.POST_PROPERTY,
+            element: <PostProperty />
           }
         ]
-      },
-      {
-        path: ROUTER_NAMES.PAYMENT_SUCCESS,
-        element: <PaymentSuccess />
-      },
-      {
-        path: ROUTER_NAMES.PAYMENT_FAILED,
-        element: <PaymentFailure />
       },
       {
         path: ROUTER_NAMES.CONTACT,
@@ -91,12 +96,20 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
       {
         element: <RentHouse />,
         index: true,
-        breadcrumb: () => <span><HomeOutlined /> Mogu</span>
+        breadcrumb: () => (
+          <span>
+            <HomeOutlined /> Mogu
+          </span>
+        )
       },
       {
         path: ROUTER_NAMES.TEST,
         element: <TestPage />,
-        breadcrumb: () => <span><HomeOutlined /> Mogu</span>
+        breadcrumb: () => (
+          <span>
+            <HomeOutlined /> Mogu
+          </span>
+        )
       },
       {
         path: ROUTER_NAMES.RENT_HOUSE,
