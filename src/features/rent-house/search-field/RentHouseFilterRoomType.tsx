@@ -1,6 +1,5 @@
-import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
 import { HomeIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
-import { useQuery } from '@tanstack/react-query'
+import { useRoomTypes } from '@/hooks/useRoomType.ts'
 import { Form, Select } from 'antd'
 
 interface Option {
@@ -12,10 +11,7 @@ interface Option {
 function RentHouseFilterRoomType({ onRoomTypeChange }: { onRoomTypeChange: (value: string) => void }) {
   const roomTypeOptions: Option[] = [{ value: '0', label: 'Tất cả' }]
 
-  const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
-    queryKey: ['roomTypes'],
-    queryFn: fetchAllRoomTypes
-  })
+  const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
 
   if (roomTypeData) {
     roomTypeOptions.push(

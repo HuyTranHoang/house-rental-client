@@ -102,7 +102,9 @@ function MenuDesktop({ user }: { user: User | null }) {
 
       {!user && <NavItem title='Đăng nhập' link={ROUTER_NAMES.LOGIN} />}
 
-      <Button className='border-blue-500 font-semibold'>Đăng Tin</Button>
+      <Button className='border-blue-500 font-semibold'>
+        <Link to={ROUTER_NAMES.POST_PROPERTY}>Đăng tin</Link>
+      </Button>
     </Flex>
   )
 }

@@ -54,7 +54,7 @@ const navData = [
   {
     key: ROUTER_NAMES.FAVORITE,
     label: 'Đăng tin',
-    navigate: 'not-found',
+    navigate: ROUTER_NAMES.POST_PROPERTY,
     icon: <FormOutlined className='text-base' />
   }
 ]
@@ -89,7 +89,7 @@ function MenuMobile({ user }: { user: User | null }) {
         .concat({
           key: ROUTER_NAMES.FAVORITE,
           label: 'Đăng tin',
-          navigate: 'not-found',
+          navigate: ROUTER_NAMES.POST_PROPERTY,
           icon: <FormOutlined className='text-base' />
         })
 

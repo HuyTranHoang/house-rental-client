@@ -26,6 +26,8 @@ const ROUTER_NAMES = {
 
   SERVER_ERROR: '/loi-server',
 
+  POST_PROPERTY: '/dang-tin',
+
   getRentHouseDetail: (id: number | string) => `/tim-thue-phong-tro/${id}`,
 };
 
