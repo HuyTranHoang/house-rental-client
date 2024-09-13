@@ -3,13 +3,23 @@ import { useDistricts } from '@/hooks/useDistrict.ts'
 import { Form, FormInstance, Input, Select, Spin, Typography } from 'antd'
 import { useState } from 'react'
 
-const { Option } = Select
-
 export default function PostPropertyLocation({ form }: { form: FormInstance }) {
   const [selectedCity, setselectedCity] = useState<string | null>(null)
 
   const { cityData, cityIsLoading } = useCities()
   const { districtData, districtIsLoading } = useDistricts()
+
+  const cityOptions = cityData?.map((city) => ({
+    label: city.name,
+    value: city.id
+  }))
+
+  const districtOptions = districtData
+    ?.filter((district) => district.cityId === Number(selectedCity))
+    .map((district) => ({
+      label: district.name,
+      value: district.id
+    }))
 
   if (cityIsLoading || districtIsLoading) {
     return (
@@ -28,33 +38,18 @@ export default function PostPropertyLocation({ form }: { form: FormInstance }) {
       <Form form={form} layout='vertical' className='space-y-4'>
         <Form.Item name='city' label='Tỉnh/Thành phố' required>
           <Select
+            options={cityOptions}
             placeholder='Chọn Tỉnh/Thành phố'
             onChange={(value) => {
               setselectedCity(value)
               form.setFieldValue('district', undefined)
-              console.log(form.getFieldValue('city'))
-              console.log(form.getFieldValue('district'))
             }}
             className='w-full'
-          >
-            {cityData?.map((city) => (
-              <Option key={city.id} value={city.id}>
-                {city.name}
-              </Option>
-            ))}
-          </Select>
+          />
         </Form.Item>
 
         <Form.Item name='district' label='Quận/Huyện' required>
-          <Select placeholder='Chọn Quận/Huyện' disabled={!selectedCity} className='w-full'>
-            {districtData
-              ?.filter((district) => district.cityId === Number(selectedCity))
-              .map((district) => (
-                <Option key={district.id} value={district.id}>
-                  {district.name}
-                </Option>
-              ))}
-          </Select>
+          <Select options={districtOptions} placeholder='Chọn Quận/Huyện' disabled={!selectedCity} className='w-full' />
         </Form.Item>
 
         <Form.Item name='location' label='Địa chỉ cụ thể' required>

@@ -1,10 +1,13 @@
 import { useAmenities } from '@/hooks/useAmenity.ts'
 import { Form, FormInstance, Input, Select, Spin, Typography } from 'antd'
 
-const { Option } = Select
-
 export default function PostPropertyDetail({ form }: { form: FormInstance }) {
   const { amenityData, amenityIsLoading } = useAmenities()
+
+  const amenityOptions = amenityData?.map((amenity) => ({
+    label: amenity.name,
+    value: amenity.id
+  }))
 
   if (amenityIsLoading) {
     return (
@@ -26,13 +29,13 @@ export default function PostPropertyDetail({ form }: { form: FormInstance }) {
         </Form.Item>
 
         <Form.Item name='amenities' label='Tiện nghi' required>
-          <Select mode='multiple' placeholder='Chọn tiện nghi' style={{ width: '100%' }} optionFilterProp='children'>
-            {amenityData?.map((amenity) => (
-              <Option key={amenity.id} value={amenity.id}>
-                {amenity.name}
-              </Option>
-            ))}
-          </Select>
+          <Select
+            options={amenityOptions}
+            mode='multiple'
+            placeholder='Chọn tiện nghi'
+            style={{ width: '100%' }}
+            optionFilterProp='children'
+          />
         </Form.Item>
 
         <Form.Item name='area' label='Diện tích' required>
