@@ -88,7 +88,7 @@ function TransactionHistory() {
         title={
           <div className='flex flex-col items-center justify-between md:flex-row'>
             <Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>
-            <Space className='mt-3' size='large' align='center'>
+            <Space className='mt-3 mb-2 md:mb-0' size='large' align='center'>
               <Badge count={filterCount}>
                 <FilterOutlined onClick={() => setIsModalOpen(true)} className='cursor-pointer text-xl' />
               </Badge>
