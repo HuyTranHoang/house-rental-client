@@ -60,7 +60,7 @@ export default function Register() {
     try {
       await axiosInstance.post('/api/auth/register', values)
       toast.success('Đăng ký thành công')
-      navigate('/login')
+      navigate(ROUTER_NAMES.LOGIN)
     } catch (error) {
       console.log('>>>REGISTER.JSX ERROR', error)
       setError(error as string)
