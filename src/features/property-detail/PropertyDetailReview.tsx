@@ -1,8 +1,8 @@
 import { useCreateReview, useDeleteReview, useReview } from '@/hooks/useReview'
-import { ReviewFieldType } from '@/models/review.type'
+import { Review, ReviewFieldType } from '@/models/review.type'
 import { formatDate } from '@/utils/formatDate'
-import { CalendarOutlined, CommentOutlined, DeleteOutlined } from '@ant-design/icons'
-import { Avatar, Button, Flex, Form, FormProps, Input, List, Rate, Space, Tooltip, Typography } from 'antd'
+import { CalendarOutlined, CommentOutlined, DeleteOutlined, WarningOutlined } from '@ant-design/icons'
+import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Rate, Space, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
 
 const { TextArea } = Input
@@ -16,6 +16,8 @@ interface PropertyDetailReviewProps {
 function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(5)
+  const [open, setOpen] = useState(false)
+  const [currentReview, setCurrentReview] = useState<Review | undefined>(undefined)
 
   const [form] = Form.useForm()
 
@@ -49,9 +51,12 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
                     size='small'
                     type='text'
                     icon={<DeleteOutlined />}
-                    onClick={() => deleteReview(review.id)}
+                    onClick={() => {
+                      setCurrentReview(review)
+                      setOpen(true)
+                    }}
                   >
-                    Xóa -- Chưa hoàn thiện [Phân quyền. Modal xác nhận]
+                    Xóa
                   </Button>
                 </Tooltip>
               </Flex>
@@ -128,6 +133,39 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           </Button>
         </Form.Item>
       </Form>
+
+      {currentReview && (
+        <Modal
+          title={
+            <Flex vertical align='center'>
+              <div className='flex size-12 items-center justify-center rounded-full bg-red-100'>
+                <WarningOutlined className='text-2xl text-red-600' />
+              </div>
+              <Typography.Title level={3} className='text-gray-600'>
+                Xác nhận xóa
+              </Typography.Title>
+            </Flex>
+          }
+          open={open}
+          onOk={() => {
+            deleteReview(currentReview.id)
+            setOpen(false)
+            setCurrentReview(undefined)
+          }}
+          onCancel={() => setOpen(false)}
+          okText='Xóa đánh giá'
+          cancelText='Quay lại'
+          okButtonProps={{ className: 'bg-red-500 hover:bg-red-400 hover:border-red-600' }}
+        >
+          <Typography.Paragraph className='mb-1 mt-2'>
+            Bạn có chắc chắn muốn xóa đánh giá của <span className='font-semibold'>{currentReview.userName}</span>?
+          </Typography.Paragraph>
+
+          <Typography.Paragraph className='mb-0 text-gray-500'>
+            Lưu ý, hành động này không thể hoàn tác.
+          </Typography.Paragraph>
+        </Modal>
+      )}
     </>
   )
 }
