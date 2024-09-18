@@ -1,3 +1,4 @@
+import useAuthStore from '@/features/auth/authStore.ts'
 import { useCreateReview, useDeleteReview, useReview } from '@/hooks/useReview'
 import { Review, ReviewFieldType } from '@/models/review.type'
 import { formatDate } from '@/utils/formatDate'
@@ -18,6 +19,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
   const [pageSize, setPageSize] = useState(5)
   const [open, setOpen] = useState(false)
   const [currentReview, setCurrentReview] = useState<Review | undefined>(undefined)
+  const haveDeleteReviewPrivilege = useAuthStore((state) => state.haveDeleteReviewPrivilege)
 
   const [form] = Form.useForm()
 
@@ -45,20 +47,19 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
                   <CalendarOutlined /> {formatDate(review.createdAt)}
                 </Typography.Text>
 
-                <Tooltip title='Xóa đánh giá'>
-                  <Button
-                    danger
-                    size='small'
-                    type='text'
-                    icon={<DeleteOutlined />}
-                    onClick={() => {
-                      setCurrentReview(review)
-                      setOpen(true)
-                    }}
-                  >
-                    Xóa
-                  </Button>
-                </Tooltip>
+                {haveDeleteReviewPrivilege && (
+                  <Tooltip title='Xóa đánh giá'>
+                    <Button
+                      type='text'
+                      danger
+                      icon={<DeleteOutlined />}
+                      onClick={() => {
+                        setCurrentReview(review)
+                        setOpen(true)
+                      }}
+                    />
+                  </Tooltip>
+                )}
               </Flex>
             </Flex>
           )
