@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
-    const accessToken = localStorage.getItem('jwtToken')
+    const accessToken = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken')
 
     switch (error.response?.status) {
       case 400:

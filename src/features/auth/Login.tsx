@@ -24,7 +24,7 @@ export default function Login() {
 
   const loginMutation = useMutation({
     mutationFn: (values: LoginFormType) => axiosInstance.post<User>('/api/auth/login', values),
-    onSuccess: (response) => {
+    onSuccess: (response, variables) => {
       toast.success('Đăng nhập thành công')
 
       const payload = {
@@ -32,7 +32,12 @@ export default function Login() {
         token: response.headers['jwt-token']
       }
 
-      localStorage.setItem('jwtToken', payload.token)
+      if (variables.remember) {
+        localStorage.setItem('jwtToken', payload.token)
+      } else {
+        sessionStorage.setItem('jwtToken', payload.token)
+      }
+
       loginSuccess(payload.user, payload.token)
       navigate(redirectTo)
     },
