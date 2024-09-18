@@ -25,7 +25,7 @@ export default function Register() {
       toast.success('Đăng ký thành công')
       navigate(ROUTER_NAMES.LOGIN)
     },
-    onError: (error) => {
+    onError: () => {
       toast.error('Đăng ký thất bại. Vui lòng thử lại.')
     }
   })
