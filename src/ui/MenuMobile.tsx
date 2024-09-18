@@ -1,8 +1,6 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { logout } from '@/features/auth/authSlice.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { User } from '@/models/user.type.ts'
-import { useAppDispatch } from '@/store.ts'
 import {
   CreditCardOutlined,
   DollarOutlined,
@@ -19,6 +17,7 @@ import { clsx } from 'clsx/lite'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import useAuthStore from '@/features/auth/authStore.ts'
 
 const navData = [
   {
@@ -77,7 +76,7 @@ const profileData = [
 function MenuMobile({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const logout = useAuthStore(state => state.logout)
 
   const location = useLocation()
   const currentPath = location.pathname
@@ -123,7 +122,7 @@ function MenuMobile({ user }: { user: User | null }) {
   )
 
   const logoutHandler = () => {
-    dispatch(logout())
+    logout()
     navigate(ROUTER_NAMES.RENT_HOUSE)
     localStorage.removeItem('jwtToken')
     axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {

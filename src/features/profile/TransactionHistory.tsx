@@ -1,10 +1,9 @@
-import { selectAuth } from '@/features/auth/authSlice.ts'
+import useAuthStore from '@/features/auth/authStore.ts'
 import { useUserTransactionHistory } from '@/hooks/useTransaction.ts'
 import { TransactionDataSource, TransactionStatus, TransactionType } from '@/models/transaction.type.ts'
 import { FilterOutlined } from '@ant-design/icons'
 import { Badge, Button, Card, Form, Input, Modal, Select, Space, TableProps, Typography } from 'antd'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import TransactionHistoryTable from './TransactionHistoryTable'
 
 const { Search } = Input
@@ -21,7 +20,7 @@ const transactionStatusOptions = [
 ]
 
 function TransactionHistory() {
-  const { user } = useSelector(selectAuth)
+  const currentUser = useAuthStore((state) => state.user)
 
   const [transactionId, setTransactionId] = useState('')
   const [transactionType, setTransactionType] = useState<string>('')
@@ -35,7 +34,7 @@ function TransactionHistory() {
   const [form] = Form.useForm()
 
   const { data, isLoading, isError, error } = useUserTransactionHistory(
-    user?.id,
+    currentUser?.id,
     transactionId,
     transactionType,
     transactionStatus,
@@ -88,7 +87,7 @@ function TransactionHistory() {
         title={
           <div className='flex flex-col items-center justify-between md:flex-row'>
             <Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>
-            <Space className='mt-3 mb-2 md:mb-0' size='large' align='center'>
+            <Space className='mb-2 mt-3 md:mb-0' size='large' align='center'>
               <Badge count={filterCount}>
                 <FilterOutlined onClick={() => setIsModalOpen(true)} className='cursor-pointer text-xl' />
               </Badge>

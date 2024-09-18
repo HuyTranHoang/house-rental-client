@@ -1,17 +1,13 @@
-import CustomIndicator from '@/components/CustomIndicator'
 import GradientButton from '@/components/GradientButton'
 import ROUTER_NAMES from '@/constant/routerNames'
 import axiosInstance from '@/inteceptor/axiosInstance'
-import { delay } from '@/utils/delay'
 import { AntDesignOutlined, MailOutlined, PhoneOutlined, UnlockOutlined, UserOutlined } from '@ant-design/icons'
-import { Alert, Button, Col, Flex, Form, Input, Row, Space, Spin, Typography } from 'antd'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import { Alert, Button, Col, Flex, Form, Input, Row, Space, Typography } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { selectAuth } from './authSlice'
 
-type FieldType = {
+type RegisterFormType = {
   lastName: string
   firstName: string
   username: string
@@ -21,64 +17,18 @@ type FieldType = {
 }
 
 export default function Register() {
-  const { isAuthenticated } = useSelector(selectAuth)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
-  const location = useLocation()
-  const redirectTo = location.state?.from || '/'
 
-  const [spinning, setSpinning] = useState(true)
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (isAuthenticated) {
-      delay(300).then(() => {
-        if (isMounted) {
-          toast.info('Bạn đã đăng nhập rồi!!!')
-          navigate(redirectTo)
-        }
-      })
-    } else {
-      delay(300).then(() => {
-        if (isMounted) {
-          setSpinning(false)
-        }
-      })
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [isAuthenticated, navigate, redirectTo])
-
-  const onFinish = async (values: FieldType) => {
-    console.log('Success submit:', values)
-    setIsLoading(true)
-    setError(undefined)
-    try {
-      await axiosInstance.post('/api/auth/register', values)
+  const registerMutation = useMutation({
+    mutationFn: (values: RegisterFormType) => axiosInstance.post('/api/auth/register', values),
+    onSuccess: () => {
       toast.success('Đăng ký thành công')
       navigate(ROUTER_NAMES.LOGIN)
-    } catch (error) {
-      console.log('>>>REGISTER.JSX ERROR', error)
-      setError(error as string)
-    } finally {
-      setIsLoading(false)
+    },
+    onError: () => {
+      toast.error('Đăng ký thất bại. Vui lòng thử lại.')
     }
-  }
-
-  if (isAuthenticated) {
-    return (
-      <Spin
-        indicator={<CustomIndicator />}
-        spinning={spinning}
-        tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
-        fullscreen
-      />
-    )
-  }
+  })
 
   return (
     <Row className='relative min-h-screen bg-gray-100 md:min-h-0 md:py-24'>
@@ -101,7 +51,7 @@ export default function Register() {
       <Col xs={24} md={24} className='mb-24 flex items-center justify-center px-4 md:mb-0'>
         <Form
           name='register'
-          onFinish={onFinish}
+          onFinish={(values: RegisterFormType) => registerMutation.mutate(values)}
           autoComplete='off'
           className='w-full max-w-[400px] rounded-lg bg-white p-8 shadow-lg'
         >
@@ -115,9 +65,9 @@ export default function Register() {
             </Typography.Text>
           </Flex>
 
-          {error && (
+          {registerMutation.isError && (
             <Form.Item>
-              <Alert message={error} type='error' showIcon />
+              <Alert message='Đăng ký thất bại. Vui lòng thử lại.' type='error' showIcon />
             </Form.Item>
           )}
 
@@ -221,7 +171,7 @@ export default function Register() {
               htmlType='submit'
               size='large'
               icon={<AntDesignOutlined />}
-              loading={isLoading}
+              loading={registerMutation.isPending}
               block
             >
               Đăng ký

@@ -1,16 +1,14 @@
 import { createTransaction, getTransaction } from '@/api/transaction.api.ts'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { selectAuth, updateUserBalance } from '@/features/auth/authSlice'
 import { TransactionStatus } from '@/models/transaction.type.ts'
-import { useAppDispatch } from '@/store.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { LoadingOutlined, RocketOutlined } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
+import useAuthStore from '@/features/auth/authStore.ts'
 
 interface DepositForm {
   amount: string
@@ -34,13 +32,13 @@ const Deposit = () => {
   const customAmount = Form.useWatch('customAmount', form)
 
   const queryClient = useQueryClient()
-  const dispatch = useAppDispatch()
   const [transactionId, setTransactionId] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [isFail, setIsFail] = useState(false)
 
-  const { user } = useSelector(selectAuth)
+  const currentUser = useAuthStore((state) => state.user)
+  const updateUserBalance = useAuthStore((state) => state.updateUserBalance)
 
   const { data: transaction } = useGetTransaction(transactionId)
 
@@ -64,13 +62,13 @@ const Deposit = () => {
       if (transaction.status === TransactionStatus.SUCCESS) {
         setIsSubmitting(false)
         setIsSuccess(true)
-        dispatch(updateUserBalance(transaction.amount))
+        updateUserBalance(transaction.amount)
       } else if (transaction.status === TransactionStatus.FAILED) {
         setIsSubmitting(false)
         setIsFail(true)
       }
     }
-  }, [transaction, queryClient, dispatch])
+  }, [transaction, queryClient, updateUserBalance])
 
   const onFinish = async (values: DepositForm) => {
     const amountToDeposit =
@@ -92,7 +90,7 @@ const Deposit = () => {
 
   const renderDepositInfo = () => {
     const depositAmount = amount === 'custom' && customAmount ? customAmount : amount
-    const newBalance = user ? user.balance + Number(depositAmount) : 0
+    const newBalance = currentUser ? currentUser.balance + Number(depositAmount) : 0
 
     if (amount === 'custom' && !customAmount) {
       return null
@@ -222,14 +220,14 @@ const Deposit = () => {
         </Card>
       </Col>
 
-      {user && (
+      {currentUser && (
         <Col xs={{ span: 22, offset: 1 }} sm={{ span: 20, offset: 2 }} md={{ span: 16, offset: 4 }} lg={{ span: 4, offset: 0 }}>
           <Card className='flex items-center'>
             <Typography.Title level={5} className='mt-0'>
               Số dư
             </Typography.Title>
             <Typography.Paragraph>
-              Hiện tại: <strong>{formatCurrency(user.balance)}</strong>
+              Hiện tại: <strong>{formatCurrency(currentUser.balance)}</strong>
             </Typography.Paragraph>
 
             {amount && renderDepositInfo()}
