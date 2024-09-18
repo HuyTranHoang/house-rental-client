@@ -5,10 +5,10 @@ import { User } from '@/models/user.type'
 import { AntDesignOutlined, FacebookFilled, GoogleCircleFilled, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Space, Typography } from 'antd'
-import axios from 'axios'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import './Login.css'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 
 type LoginFormType = {
   username: string
@@ -23,7 +23,7 @@ export default function Login() {
   const loginSuccess = useAuthStore((state) => state.loginSuccess)
 
   const loginMutation = useMutation({
-    mutationFn: (values: LoginFormType) => axios.post<User>('/api/auth/login', values),
+    mutationFn: (values: LoginFormType) => axiosInstance.post<User>('/api/auth/login', values),
     onSuccess: (response) => {
       toast.success('Đăng nhập thành công')
 
@@ -36,8 +36,9 @@ export default function Login() {
       loginSuccess(payload.user, payload.token)
       navigate(redirectTo)
     },
-    onError: () => {
-      toast.error('Sai tên tài khoản hoặc mật khẩu')
+    onError: (error) => {
+      // Toast đã handle trong interceptor rồi
+      console.log(error)
     }
   })
 
