@@ -70,9 +70,7 @@ export default function PostProperty() {
     <Container>
       <Card>
         Giá trị hiện tại của form:
-        <pre>
-          {JSON.stringify(formData, null, 2)}
-        </pre>
+        <pre>{JSON.stringify(formData, null, 2)}</pre>
       </Card>
 
       <Card title='Đăng tin bất động sản' className='mb-10 mt-12'>
@@ -89,22 +87,20 @@ export default function PostProperty() {
               {current === 4 && <PostPropertyImage form={form} />}
               {current === 5 && <PostPropertyOverview form={form} />}
 
-              <Flex vertical className='mt-auto pt-8'>
-                <Space className='mt-4'>
-                  <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
-                    Quay lại
-                  </Button>
-                  <Button
-                    onClick={handleNext}
-                    icon={<StepForwardOutlined />}
-                    iconPosition='end'
-                    type='primary'
-                    disabled={current === stepItems.length - 1}
-                  >
-                    Tiếp tục
-                  </Button>
-                </Space>
-              </Flex>
+              <Space className='mt-auto pt-8'>
+                <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
+                  Quay lại
+                </Button>
+                <Button
+                  onClick={handleNext}
+                  icon={<StepForwardOutlined />}
+                  iconPosition='end'
+                  type='primary'
+                  disabled={current === stepItems.length - 1}
+                >
+                  Tiếp tục
+                </Button>
+              </Space>
             </Flex>
           </Col>
         </Row>
