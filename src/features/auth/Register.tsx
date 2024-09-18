@@ -26,7 +26,6 @@ export default function Register() {
       navigate(ROUTER_NAMES.LOGIN)
     },
     onError: (error) => {
-      console.error('>>>REGISTER.JSX ERROR', error)
       toast.error('Đăng ký thất bại. Vui lòng thử lại.')
     }
   })
