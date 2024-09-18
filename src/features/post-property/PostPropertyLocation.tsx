@@ -36,7 +36,16 @@ export default function PostPropertyLocation({ form }: { form: FormInstance }) {
       </Typography.Title>
 
       <Form form={form} layout='vertical' className='space-y-4'>
-        <Form.Item name='city' label='Tỉnh/Thành phố' required>
+        <Form.Item
+          name='city'
+          label='Tỉnh/Thành phố'
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng chọn Tỉnh/Thành phố.'
+            }
+          ]}
+        >
           <Select
             options={cityOptions}
             placeholder='Chọn Tỉnh/Thành phố'
@@ -48,11 +57,29 @@ export default function PostPropertyLocation({ form }: { form: FormInstance }) {
           />
         </Form.Item>
 
-        <Form.Item name='district' label='Quận/Huyện' required>
+        <Form.Item
+          name='district'
+          label='Quận/Huyện'
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng chọn Quận/Huyện.'
+            }
+          ]}
+        >
           <Select options={districtOptions} placeholder='Chọn Quận/Huyện' disabled={!selectedCity} className='w-full' />
         </Form.Item>
 
-        <Form.Item name='location' label='Địa chỉ cụ thể' required>
+        <Form.Item
+          name='location'
+          label='Địa chỉ cụ thể'
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng nhập địa chỉ cụ thể.'
+            }
+          ]}
+        >
           <Input placeholder='Nhập địa chỉ cụ thể' />
         </Form.Item>
       </Form>

@@ -7,7 +7,7 @@ import PostPropertyRoomType from '@/features/post-property/PostPropertyRoomType'
 import Container from '@/ui/Container'
 import { StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Flex, Form, Row, Space, Steps } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './post-property.css'
 
 const stepItems = [
@@ -40,19 +40,41 @@ const stepItems = [
 export default function PostProperty() {
   const [current, setCurrent] = useState(0)
   const [form] = Form.useForm()
+  const [formData, setFormData] = useState({})
+
+  const handleNext = async () => {
+    try {
+      const values = await form.validateFields()
+      setFormData({ ...formData, ...values })
+      if (current < stepItems.length - 1) {
+        setCurrent(current + 1)
+      }
+      console.log('Success:', values)
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo)
+    }
+  }
 
   const handlePrev = () => {
-    if (current === 0) return
-    setCurrent((prevState) => prevState - 1)
+    setFormData({ ...formData, ...form.getFieldsValue() })
+    if (current > 0) {
+      setCurrent(current - 1)
+    }
   }
 
-  const handleNext = () => {
-    if (current === stepItems.length - 1) return
-    setCurrent((prevState) => prevState + 1)
-  }
+  useEffect(() => {
+    form.setFieldsValue(formData)
+  }, [current, form, formData])
 
   return (
     <Container>
+      <Card>
+        Giá trị hiện tại của form:
+        <pre>
+          {JSON.stringify(formData, null, 2)}
+        </pre>
+      </Card>
+
       <Card title='Đăng tin bất động sản' className='mb-10 mt-12'>
         <Row className='overflow-hidden rounded-lg bg-gray-50'>
           <Col span={8} className='border-0 border-r border-solid border-gray-200 p-6 shadow-md'>
@@ -60,27 +82,29 @@ export default function PostProperty() {
           </Col>
           <Col span={16} className='bg-white p-6'>
             <Flex vertical className='min-h-[400px]'>
-              {current === 0 && <PostPropertyRoomType />}
+              {current === 0 && <PostPropertyRoomType form={form} />}
               {current === 1 && <PostPropertyLocation form={form} />}
               {current === 2 && <PostPropertyDetail form={form} />}
               {current === 3 && <PostPropertyDescription form={form} />}
               {current === 4 && <PostPropertyImage form={form} />}
-              {current === 5 && <PostPropertyOverview form={form}/>}
+              {current === 5 && <PostPropertyOverview form={form} />}
 
-              <Space className='mt-auto pt-8'>
-                <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
-                  Quay lại
-                </Button>
-                <Button
-                  onClick={handleNext}
-                  icon={<StepForwardOutlined />}
-                  iconPosition='end'
-                  type='primary'
-                  disabled={current === stepItems.length - 1}
-                >
-                  Tiếp tục
-                </Button>
-              </Space>
+              <Flex vertical className='mt-auto pt-8'>
+                <Space className='mt-4'>
+                  <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
+                    Quay lại
+                  </Button>
+                  <Button
+                    onClick={handleNext}
+                    icon={<StepForwardOutlined />}
+                    iconPosition='end'
+                    type='primary'
+                    disabled={current === stepItems.length - 1}
+                  >
+                    Tiếp tục
+                  </Button>
+                </Space>
+              </Flex>
             </Flex>
           </Col>
         </Row>

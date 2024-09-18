@@ -1,7 +1,7 @@
 import { useRoomTypes } from '@/hooks/useRoomType'
-import { Radio, Spin, Typography } from 'antd'
+import { Form, FormInstance, Radio, Spin, Typography } from 'antd'
 
-export default function PostPropertyRoomType() {
+export default function PostPropertyRoomType({ form }: { form: FormInstance }) {
   const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
 
   if (roomTypeIsLoading) {
@@ -15,16 +15,20 @@ export default function PostPropertyRoomType() {
   return (
     <>
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
-        <span className='text-red-500'>*</span> Chọn loại phòng
+        <span className='text-red-500'>*</span> Chọn loại bất động sản
       </Typography.Title>
 
-      <Radio.Group optionType='button' buttonStyle='solid' className='w-full space-y-2'>
-        {roomTypeData?.map((roomType) => (
-          <Radio key={roomType.id} value={roomType.id} className='w-full rounded-none'>
-            <div className='hover:bg-primary/10 w-full'>{roomType.name}</div>
-          </Radio>
-        ))}
-      </Radio.Group>
+      <Form form={form}>
+        <Form.Item name='roomType' rules={[{ required: true, message: 'Vui lòng chọn loại bất động sản.' }]} preserve>
+          <Radio.Group optionType='button' buttonStyle='solid' className='w-full space-y-2'>
+            {roomTypeData?.map((roomType) => (
+              <Radio key={roomType.id} value={roomType.id} className='w-full rounded-none'>
+                <div className='hover:bg-primary/10 w-full'>{roomType.name}</div>
+              </Radio>
+            ))}
+          </Radio.Group>
+        </Form.Item>
+      </Form>
     </>
   )
 }
