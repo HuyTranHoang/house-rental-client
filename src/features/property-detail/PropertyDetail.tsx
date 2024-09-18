@@ -1,6 +1,5 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { selectAuth } from '@/features/auth/authSlice.ts'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { useProperty } from '@/hooks/useProperty'
@@ -41,7 +40,6 @@ import {
 import Meta from 'antd/es/card/Meta'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import 'swiper/css'
@@ -50,6 +48,7 @@ import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailReview from './PropertyDetailReview'
+import useAuthStore from '@/features/auth/authStore.ts'
 
 const PrevButton = styled(Button)`
   border: 0;
@@ -104,8 +103,8 @@ function PropertyDetail() {
   const navigate = useNavigate()
 
   const { id } = useParams<{ id: string }>()
-  const { user } = useSelector(selectAuth)
-  const { favorites } = useFavoriteByUserId(user?.id)
+  const currentUser = useAuthStore((state) => state.user)
+  const { favorites } = useFavoriteByUserId(currentUser?.id)
   const isFavorite = favorites?.some((favorite) => favorite.propertyId === Number(id))
 
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -305,12 +304,12 @@ function PropertyDetail() {
                   isFavorite ? <HeartFilled className='text-red-500' /> : <HeartOutlined className='text-red-500' />
                 }
                 onClick={() => {
-                  if (!user) {
+                  if (!currentUser) {
                     navigate(ROUTER_NAMES.LOGIN)
                     return
                   }
                   if (isFavorite) {
-                    removeFavoriteMutate({ propertyId: Number(id), userId: user.id })
+                    removeFavoriteMutate({ propertyId: Number(id), userId: currentUser.id })
                   } else {
                     addFavoriteMutate(Number(id))
                   }

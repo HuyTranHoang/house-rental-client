@@ -1,13 +1,12 @@
 import FavoriteButton from '@/components/FavoriteButton.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { selectAuth } from '@/features/auth/authSlice.ts'
+import useAuthStore from '@/features/auth/authStore.ts'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { Property } from '@/models/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Card, Col, Flex, Row, Space, Tag, Typography } from 'antd'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 interface RentHouseCardItemProps {
@@ -15,10 +14,9 @@ interface RentHouseCardItemProps {
 }
 
 function RentHouseCardItem({ property }: RentHouseCardItemProps) {
-  const { user } = useSelector(selectAuth)
   const navigate = useNavigate()
-
-  const { favorites } = useFavoriteByUserId(user?.id)
+  const currentUser = useAuthStore((state) => state.user)
+  const { favorites } = useFavoriteByUserId(currentUser?.id)
   const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
@@ -75,12 +73,12 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
                   isFavorite={isFavorite}
                   onClick={(e) => {
                     e.stopPropagation()
-                    if (!user) {
+                    if (!currentUser) {
                       navigate(ROUTER_NAMES.LOGIN)
                       return
                     }
                     if (isFavorite) {
-                      removeFavoriteMutate({ propertyId: property.id, userId: user.id })
+                      removeFavoriteMutate({ propertyId: property.id, userId: currentUser.id })
                     } else {
                       addFavoriteMutate(property.id)
                     }
