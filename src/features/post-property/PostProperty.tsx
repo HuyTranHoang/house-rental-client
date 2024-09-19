@@ -136,7 +136,7 @@ export default function PostProperty() {
                 </Space>
 
                 {current === stepItems.length - 1 && (
-                  <Button icon={<SendOutlined />} type='primary' className='ml-auto'>
+                  <Button icon={<SendOutlined />} type='primary' className='ml-auto bg-green-500 hover:bg-green-400'>
                     Đăng tin
                   </Button>
                 )}
