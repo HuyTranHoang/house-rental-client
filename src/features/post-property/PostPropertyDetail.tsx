@@ -1,13 +1,35 @@
 import { useAmenities } from '@/hooks/useAmenity.ts'
 import { Form, FormInstance, Input, Select, Spin, Typography } from 'antd'
+import React, { useState } from 'react'
+import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 
-export default function PostPropertyDetail({ form }: { form: FormInstance }) {
+const formatNumber = (value: string) => {
+  return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+export default function PostPropertyDetail({ form }: { form: FormInstance<PostPropertyFormData> }) {
   const { amenityData, amenityIsLoading } = useAmenities()
+  const [areaValue, setAreaValue] = useState('')
+  const [priceValue, setPriceValue] = useState('')
 
   const amenityOptions = amenityData?.map((amenity) => ({
     label: amenity.name,
     value: amenity.id
   }))
+
+  const handleAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    const formattedValue = formatNumber(value.replace(/,/g, ''))
+    setAreaValue(formattedValue)
+    form.setFieldsValue({ area: formattedValue })
+  }
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    const formattedValue = formatNumber(value.replace(/,/g, ''))
+    setPriceValue(formattedValue)
+    form.setFieldsValue({ price: formattedValue })
+  }
 
   if (amenityIsLoading) {
     return (
@@ -24,7 +46,7 @@ export default function PostPropertyDetail({ form }: { form: FormInstance }) {
       </Typography.Title>
 
       <Form form={form} layout='vertical' className='space-y-4'>
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='numRooms'
           label='Số phòng ngủ'
           rules={[
@@ -41,7 +63,7 @@ export default function PostPropertyDetail({ form }: { form: FormInstance }) {
           <Input placeholder='Nhập số phòng ngủ' />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='amenities'
           label='Tiện nghi'
           rules={[
@@ -60,7 +82,7 @@ export default function PostPropertyDetail({ form }: { form: FormInstance }) {
           />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='area'
           label='Diện tích'
           rules={[
@@ -69,15 +91,20 @@ export default function PostPropertyDetail({ form }: { form: FormInstance }) {
               message: 'Vui lòng nhập diện tích bất động sản'
             },
             {
-              pattern: new RegExp(/^[0-9]+$/),
+              pattern: new RegExp(/^[0-9,]+$/),
               message: "Vui lòng nhập số cho 'diện tích'"
             }
           ]}
         >
-          <Input placeholder='Nhập diện tích bất động sản' addonAfter='m²' />
+          <Input
+            placeholder='Nhập diện tích bất động sản'
+            addonAfter='m²'
+            value={areaValue}
+            onChange={handleAreaChange}
+          />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='price'
           label='Giá'
           rules={[
@@ -86,12 +113,17 @@ export default function PostPropertyDetail({ form }: { form: FormInstance }) {
               message: 'Vui lòng nhập giá cho thuê'
             },
             {
-              pattern: new RegExp(/^[0-9]+$/),
+              pattern: new RegExp(/^[0-9,]+$/),
               message: "Vui lòng nhập số cho 'giá'"
             }
           ]}
         >
-          <Input placeholder='Nhập giá cho thuê' addonAfter='₫ / tháng' />
+          <Input
+            placeholder='Nhập giá cho thuê'
+            addonAfter='₫ / tháng'
+            value={priceValue}
+            onChange={handlePriceChange}
+          />
         </Form.Item>
       </Form>
     </>

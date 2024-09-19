@@ -5,10 +5,39 @@ import PostPropertyLocation from '@/features/post-property/PostPropertyLocation'
 import PostPropertyOverview from '@/features/post-property/PostPropertyOverview.tsx'
 import PostPropertyRoomType from '@/features/post-property/PostPropertyRoomType'
 import Container from '@/ui/Container'
-import { StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
+import { SendOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Flex, Form, Row, Space, Steps } from 'antd'
 import { useEffect, useState } from 'react'
 import './post-property.css'
+
+export interface OriginFileObj {
+  uid: string
+}
+
+interface Image {
+  uid: string
+  lastModified: number
+  name: string
+  size: number
+  type: string
+  percent: number
+  originFileObj: OriginFileObj
+  thumbUrl: string
+}
+
+export interface PostPropertyFormData {
+  roomType: string
+  city: string
+  district: string
+  location: string
+  numRooms: string
+  area: string
+  price: string
+  amenities: string[]
+  title: string
+  description: string
+  images: Image[]
+}
 
 const stepItems = [
   {
@@ -40,11 +69,19 @@ const stepItems = [
 export default function PostProperty() {
   const [current, setCurrent] = useState(0)
   const [form] = Form.useForm()
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState<PostPropertyFormData>({} as PostPropertyFormData)
 
   const handleNext = async () => {
     try {
       const values = await form.validateFields()
+
+      if (values.price) {
+        values.price = values.price.replace(/,/g, '')
+      }
+      if (values.area) {
+        values.area = values.area.replace(/,/g, '')
+      }
+
       setFormData({ ...formData, ...values })
       if (current < stepItems.length - 1) {
         setCurrent(current + 1)
@@ -68,11 +105,6 @@ export default function PostProperty() {
 
   return (
     <Container>
-      <Card>
-        Giá trị hiện tại của form:
-        <pre>{JSON.stringify(formData, null, 2)}</pre>
-      </Card>
-
       <Card title='Đăng tin bất động sản' className='mb-10 mt-12'>
         <Row className='overflow-hidden rounded-lg bg-gray-50'>
           <Col span={8} className='border-0 border-r border-solid border-gray-200 p-6 shadow-md'>
@@ -85,22 +117,30 @@ export default function PostProperty() {
               {current === 2 && <PostPropertyDetail form={form} />}
               {current === 3 && <PostPropertyDescription form={form} />}
               {current === 4 && <PostPropertyImage form={form} />}
-              {current === 5 && <PostPropertyOverview form={form} />}
+              {current === 5 && <PostPropertyOverview formData={formData} />}
 
-              <Space className='mt-auto pt-8'>
-                <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
-                  Quay lại
-                </Button>
-                <Button
-                  onClick={handleNext}
-                  icon={<StepForwardOutlined />}
-                  iconPosition='end'
-                  type='primary'
-                  disabled={current === stepItems.length - 1}
-                >
-                  Tiếp tục
-                </Button>
-              </Space>
+              <Flex className='mt-auto pt-8'>
+                <Space>
+                  <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
+                    Quay lại
+                  </Button>
+                  <Button
+                    onClick={handleNext}
+                    icon={<StepForwardOutlined />}
+                    iconPosition='end'
+                    type='primary'
+                    disabled={current === stepItems.length - 1}
+                  >
+                    Tiếp tục
+                  </Button>
+                </Space>
+
+                {current === stepItems.length - 1 && (
+                  <Button icon={<SendOutlined />} type='primary' className='ml-auto'>
+                    Đăng tin
+                  </Button>
+                )}
+              </Flex>
             </Flex>
           </Col>
         </Row>

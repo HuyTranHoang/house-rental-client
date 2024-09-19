@@ -2,8 +2,9 @@ import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
 import { Form, FormInstance, Input, Select, Spin, Typography } from 'antd'
 import { useState } from 'react'
+import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 
-export default function PostPropertyLocation({ form }: { form: FormInstance }) {
+export default function PostPropertyLocation({ form }: { form: FormInstance<PostPropertyFormData> }) {
   const [selectedCity, setselectedCity] = useState<string | null>(null)
 
   const { cityData, cityIsLoading } = useCities()
@@ -36,7 +37,7 @@ export default function PostPropertyLocation({ form }: { form: FormInstance }) {
       </Typography.Title>
 
       <Form form={form} layout='vertical' className='space-y-4'>
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='city'
           label='Tỉnh/Thành phố'
           rules={[
@@ -57,7 +58,7 @@ export default function PostPropertyLocation({ form }: { form: FormInstance }) {
           />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='district'
           label='Quận/Huyện'
           rules={[

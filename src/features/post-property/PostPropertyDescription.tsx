@@ -1,6 +1,7 @@
 import { Form, FormInstance, Input, Typography } from 'antd'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 
 const quillModules = {
   toolbar: [
@@ -13,14 +14,14 @@ const quillModules = {
 
 const quillFormats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet']
 
-export default function PostPropertyDescription({ form }: { form: FormInstance }) {
+export default function PostPropertyDescription({ form }: { form: FormInstance<PostPropertyFormData> }) {
   return (
     <>
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
         <span className='text-red-500'>*</span> Tiêu đề
       </Typography.Title>
       <Form form={form} layout='vertical'>
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='title'
           rules={[
             {
@@ -37,7 +38,7 @@ export default function PostPropertyDescription({ form }: { form: FormInstance }
         <span className='text-red-500'>*</span> Mô tả
       </Typography.Title>
       <Form form={form} layout='vertical'>
-        <Form.Item
+        <Form.Item<PostPropertyFormData>
           name='description'
           rules={[
             {

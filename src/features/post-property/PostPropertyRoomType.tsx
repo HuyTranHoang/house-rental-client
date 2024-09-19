@@ -1,7 +1,8 @@
 import { useRoomTypes } from '@/hooks/useRoomType'
 import { Form, FormInstance, Radio, Spin, Typography } from 'antd'
+import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 
-export default function PostPropertyRoomType({ form }: { form: FormInstance }) {
+export default function PostPropertyRoomType({ form }: { form: FormInstance<PostPropertyFormData> }) {
   const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
 
   if (roomTypeIsLoading) {
@@ -19,7 +20,7 @@ export default function PostPropertyRoomType({ form }: { form: FormInstance }) {
       </Typography.Title>
 
       <Form form={form}>
-        <Form.Item name='roomType' rules={[{ required: true, message: 'Vui lòng chọn loại bất động sản.' }]} preserve>
+        <Form.Item<PostPropertyFormData> name='roomType' rules={[{ required: true, message: 'Vui lòng chọn loại bất động sản.' }]} preserve>
           <Radio.Group optionType='button' buttonStyle='solid' className='w-full space-y-2'>
             {roomTypeData?.map((roomType) => (
               <Radio key={roomType.id} value={roomType.id} className='w-full rounded-none'>
