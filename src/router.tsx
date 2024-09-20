@@ -26,6 +26,7 @@ import ProfileLayout from '@/ui/ProfileLayout.tsx'
 import { HomeOutlined } from '@ant-design/icons'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
+import MemberFee from '@/pages/MemberFee.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
