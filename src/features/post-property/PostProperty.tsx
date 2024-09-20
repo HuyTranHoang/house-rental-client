@@ -19,7 +19,7 @@ export interface OriginFileObj extends Blob {
   uid: string
 }
 
-interface Image {
+export interface Image {
   uid: string
   lastModified: number
   name: string

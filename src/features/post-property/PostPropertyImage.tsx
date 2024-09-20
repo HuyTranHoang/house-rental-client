@@ -1,10 +1,10 @@
+import { Image, OriginFileObj, PostPropertyFormData } from '@/features/post-property/PostProperty'
 import { PlusOutlined, WarningOutlined } from '@ant-design/icons'
 import { Form, FormInstance, Typography, Upload } from 'antd'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { UploadChangeParam } from 'antd/lib/upload'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 
 const { Dragger } = Upload
 
@@ -27,7 +27,6 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
   }
 
   const createThumbUrl = (file: UploadFile) => {
-    // Sử dụng FileReader để tạo thumbUrl từ file ảnh
     return new Promise<string | undefined>((resolve) => {
       const reader = new FileReader()
       reader.onload = () => resolve(reader.result as string)
@@ -41,14 +40,13 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
   }
 
   const handleFileChange = async ({ fileList: newFileList }: UploadChangeParam<UploadFile>) => {
-    // Kiểm tra xem có ảnh nào chưa có thumbUrl và tạo thumbUrl cho chúng
     const updatedFileList = await Promise.all(
       newFileList.map(async (file) => {
         if (!file.thumbUrl) {
           const thumbUrl = await createThumbUrl(file)
           return {
             ...file,
-            thumbUrl,
+            thumbUrl
           }
         }
         return file
@@ -56,7 +54,20 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
     )
 
     setFileList(updatedFileList)
-    form.setFieldsValue({ images: updatedFileList })
+
+    // Transform UploadFile[] to Image[]
+    const images: Image[] = updatedFileList.map((file) => ({
+      uid: file.uid,
+      lastModified: file.lastModified ?? 0,
+      name: file.name,
+      size: file.size ?? 0,
+      type: file.type ?? '',
+      percent: file.percent ?? 0,
+      originFileObj: file.originFileObj as OriginFileObj,
+      thumbUrl: file.thumbUrl ?? ''
+    }))
+
+    form.setFieldsValue({ images })
   }
 
   return (
@@ -91,9 +102,9 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
             fileList={fileList}
             beforeUpload={(file) => {
               const isValid = validateFile(file)
-              return isValid ? false : Upload.LIST_IGNORE // Ngăn không cho tải file nếu không hợp lệ
+              return isValid ? false : Upload.LIST_IGNORE
             }}
-            onChange={handleFileChange} // Dùng onChange để cập nhật fileList
+            onChange={handleFileChange}
             multiple
             accept='image/*'
             maxCount={10}
