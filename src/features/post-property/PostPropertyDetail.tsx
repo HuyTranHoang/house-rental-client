@@ -14,7 +14,7 @@ export default function PostPropertyDetail({ form }: { form: FormInstance<PostPr
 
   const amenityOptions = amenityData?.map((amenity) => ({
     label: amenity.name,
-    value: amenity.id
+    value: amenity.name
   }))
 
   const handleAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {

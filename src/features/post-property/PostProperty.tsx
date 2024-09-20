@@ -1,16 +1,21 @@
-import PostPropertyDescription from '@/features/post-property/PostPropertyDescription.tsx'
-import PostPropertyDetail from '@/features/post-property/PostPropertyDetail.tsx'
-import PostPropertyImage from '@/features/post-property/PostPropertyImage.tsx'
+import useAuthStore from '@/features/auth/authStore.ts'
+import PostPropertyDescription from '@/features/post-property/PostPropertyDescription'
+import PostPropertyDetail from '@/features/post-property/PostPropertyDetail'
+import PostPropertyImage from '@/features/post-property/PostPropertyImage'
 import PostPropertyLocation from '@/features/post-property/PostPropertyLocation'
-import PostPropertyOverview from '@/features/post-property/PostPropertyOverview.tsx'
+import PostPropertyOverview from '@/features/post-property/PostPropertyOverview'
 import PostPropertyRoomType from '@/features/post-property/PostPropertyRoomType'
+import PostPropertySuccess from '@/features/post-property/PostPropertySuccess.tsx'
+import axiosInstance from '@/inteceptor/axiosInstance'
 import Container from '@/ui/Container'
 import { SendOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Card, Col, Flex, Form, Row, Space, Steps } from 'antd'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import './post-property.css'
 
-export interface OriginFileObj {
+export interface OriginFileObj extends Blob {
   uid: string
 }
 
@@ -37,6 +42,8 @@ export interface PostPropertyFormData {
   title: string
   description: string
   images: Image[]
+
+  [key: string]: string | string[] | Image[]
 }
 
 const stepItems = [
@@ -67,9 +74,27 @@ const stepItems = [
 ]
 
 export default function PostProperty() {
+  const currentUser = useAuthStore((state) => state.user)
   const [current, setCurrent] = useState(0)
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<PostPropertyFormData>()
   const [formData, setFormData] = useState<PostPropertyFormData>({} as PostPropertyFormData)
+
+  const cartTitle = current > stepItems.length ? null : 'Đăng tin bất động sản'
+
+  const postPropertyMutation = useMutation({
+    mutationFn: (data: FormData) => {
+      return axiosInstance.postForm('/api/properties', data)
+    },
+    onSuccess: () => {
+      setCurrent(stepItems.length + 1)
+      setFormData({} as PostPropertyFormData)
+      form.resetFields()
+    },
+    onError: (error) => {
+      console.error('Error posting property:', error)
+      toast.error('Có lỗi xảy ra khi đăng tin, vui lòng thử lại sau.')
+    }
+  })
 
   const handleNext = async () => {
     try {
@@ -99,50 +124,96 @@ export default function PostProperty() {
     }
   }
 
+  const handleFinish = async () => {
+    if (!currentUser) return
+
+    const formDataToSend = new FormData()
+    formDataToSend.append('title', formData.title)
+    formDataToSend.append('description', formData.description)
+    formDataToSend.append('price', formData.price)
+    formDataToSend.append('location', formData.location)
+    formDataToSend.append('area', formData.area)
+    formDataToSend.append('numRooms', formData.numRooms)
+    formDataToSend.append('userId', currentUser.id.toString())
+    formDataToSend.append('cityId', formData.city)
+    formDataToSend.append('districtId', formData.district)
+    formDataToSend.append('roomTypeId', formData.roomType)
+
+    formData.amenities.forEach((amenity) => {
+      formDataToSend.append('amenities', amenity)
+    })
+
+    formData.images.forEach((image) => {
+      formDataToSend.append('images', image.originFileObj)
+    })
+
+    formDataToSend.append('status', 'PENDING')
+
+    await postPropertyMutation.mutateAsync(formDataToSend)
+  }
+
   useEffect(() => {
     form.setFieldsValue(formData)
   }, [current, form, formData])
 
   return (
     <Container>
-      <Card title='Đăng tin bất động sản' className='mb-10 mt-12'>
+      <Card title={cartTitle} className='mb-10 mt-12'>
         <Row className='overflow-hidden rounded-lg bg-gray-50'>
-          <Col span={8} className='border-0 border-r border-solid border-gray-200 p-6 shadow-md'>
-            <Steps current={current} direction='vertical' items={stepItems} />
-          </Col>
-          <Col span={16} className='bg-white p-6'>
-            <Flex vertical className='min-h-[400px]'>
-              {current === 0 && <PostPropertyRoomType form={form} />}
-              {current === 1 && <PostPropertyLocation form={form} />}
-              {current === 2 && <PostPropertyDetail form={form} />}
-              {current === 3 && <PostPropertyDescription form={form} />}
-              {current === 4 && <PostPropertyImage form={form} />}
-              {current === 5 && <PostPropertyOverview formData={formData} />}
+          {current < 6 && (
+            <>
+              <Col span={8} className='border-0 border-r border-solid border-gray-200 p-6 shadow-md'>
+                <Steps current={current} direction='vertical' items={stepItems} />
+              </Col>
+              <Col span={16} className='bg-white p-6'>
+                <Flex vertical className='min-h-[400px]'>
+                  {current === 0 && <PostPropertyRoomType form={form} />}
+                  {current === 1 && <PostPropertyLocation form={form} />}
+                  {current === 2 && <PostPropertyDetail form={form} />}
+                  {current === 3 && <PostPropertyDescription form={form} />}
+                  {current === 4 && <PostPropertyImage form={form} />}
+                  {current === 5 && <PostPropertyOverview formData={formData} />}
 
-              <Flex className='mt-auto pt-8'>
-                <Space>
-                  <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
-                    Quay lại
-                  </Button>
-                  <Button
-                    onClick={handleNext}
-                    icon={<StepForwardOutlined />}
-                    iconPosition='end'
-                    type='primary'
-                    disabled={current === stepItems.length - 1}
-                  >
-                    Tiếp tục
-                  </Button>
-                </Space>
+                  <Flex className='mt-auto pt-8'>
+                    {current <= stepItems.length && (
+                      <Space>
+                        <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
+                          Quay lại
+                        </Button>
+                        <Button
+                          onClick={handleNext}
+                          icon={<StepForwardOutlined />}
+                          iconPosition='end'
+                          type='primary'
+                          disabled={current === stepItems.length - 1}
+                        >
+                          Tiếp tục
+                        </Button>
+                      </Space>
+                    )}
 
-                {current === stepItems.length - 1 && (
-                  <Button icon={<SendOutlined />} type='primary' className='ml-auto bg-green-500 hover:bg-green-400'>
-                    Đăng tin
-                  </Button>
-                )}
-              </Flex>
-            </Flex>
-          </Col>
+                    {current === stepItems.length - 1 && (
+                      <Button
+                        icon={<SendOutlined />}
+                        onClick={handleFinish}
+                        type='primary'
+                        className='ml-auto bg-green-500 hover:bg-green-400'
+                        loading={postPropertyMutation.isPending}
+                      >
+                        Đăng tin
+                      </Button>
+                    )}
+                  </Flex>
+                </Flex>
+              </Col>
+            </>
+          )}
+
+          {current > stepItems.length && (
+            <Col span={24}>
+              <PostPropertySuccess setCurrent={setCurrent} />
+            </Col>
+          )}
         </Row>
       </Card>
     </Container>

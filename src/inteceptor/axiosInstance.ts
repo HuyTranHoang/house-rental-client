@@ -60,7 +60,7 @@ axiosInstance.interceptors.response.use(
           break
         }
 
-        window.location.href = ROUTER_NAMES.SERVER_ERROR
+        // window.location.href = ROUTER_NAMES.SERVER_ERROR
         break
       default:
         if (error.code === 'ERR_NETWORK') {

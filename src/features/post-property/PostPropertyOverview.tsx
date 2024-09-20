@@ -1,5 +1,4 @@
 import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
-import { useAmenities } from '@/hooks/useAmenity.ts'
 import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
 import { useRoomTypes } from '@/hooks/useRoomType.ts'
@@ -14,7 +13,6 @@ function PostPropertyOverview({ formData }: { formData: PostPropertyFormData }) 
   const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
   const { cityData, cityIsLoading } = useCities()
   const { districtData, districtIsLoading } = useDistricts()
-  const { amenityData, amenityIsLoading } = useAmenities()
 
   const descriptionCleanHTML = formData ? DOMPurify.sanitize(formData.description) : ''
 
@@ -27,14 +25,8 @@ function PostPropertyOverview({ formData }: { formData: PostPropertyFormData }) 
     () => new Map(roomTypeData?.map((roomType) => [roomType.id, roomType.name])),
     [roomTypeData]
   )
-  const amenityMap = useMemo(() => new Map(amenityData?.map((amenity) => [amenity.id, amenity.name])), [amenityData])
 
-  const renderAmenities = () =>
-    formData.amenities?.map((amenity, index) => (
-      <Tag color='blue' key={index}>
-        {amenityMap.get(Number(amenity))}
-      </Tag>
-    ))
+  const renderAmenities = () => formData.amenities?.map((amenity) => <Tag color='blue'>{amenity}</Tag>)
 
   const renderImages = () =>
     formData.images?.map((image, index) => (
@@ -48,7 +40,7 @@ function PostPropertyOverview({ formData }: { formData: PostPropertyFormData }) 
       />
     ))
 
-  if (cityIsLoading || districtIsLoading || roomTypeIsLoading || amenityIsLoading) {
+  if (cityIsLoading || districtIsLoading || roomTypeIsLoading) {
     return <Spin size='large' />
   }
 
