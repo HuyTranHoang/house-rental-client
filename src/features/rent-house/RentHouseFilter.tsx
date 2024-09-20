@@ -55,7 +55,7 @@ function RentHouseFilter() {
       roomType: roomTypeId ? roomTypeId.toString() : undefined,
       cityDistrict:
         cityId && districtId ? [cityId.toString(), districtId.toString()] : cityId ? [cityId.toString(), '0'] : [],
-      price: minPrice || maxPrice ? `${minPrice / milion},${maxPrice / milion}` : '0,0'
+      price: minPrice || maxPrice ? `${minPrice / milion},${maxPrice / milion}` : undefined
     })
   }, [form, search, cityId, districtId, roomTypeId, minPrice, maxPrice])
 
@@ -65,17 +65,10 @@ function RentHouseFilter() {
         form={form}
         name='search'
         autoComplete='off'
-        initialValues={{
-          search: search,
-          cityDistrict:
-            cityId && districtId ? [cityId.toString(), districtId.toString()] : cityId ? [cityId.toString(), '0'] : [],
-          roomType: roomTypeId ? roomTypeId.toString() : undefined,
-          price: minPrice || maxPrice ? `${minPrice},${maxPrice}` : '0,0'
-        }}
         className='mt-4'
       >
-        <Row gutter={12}>
-          <Col xs={16} md={7}>
+        <Row gutter={8}>
+          <Col xs={16} md={8}>
             <Form.Item name='search'>
               <Input.Search
                 size='large'
@@ -88,13 +81,13 @@ function RentHouseFilter() {
           <Col xs={0} md={5}>
             <RentHouseFilterCityDistrict onCityDistrictChange={onCityDistrictChange} />
           </Col>
-          <Col xs={0} md={5}>
+          <Col xs={0} md={4}>
             <RentHouseFilterRoomType onRoomTypeChange={onRoomTypeChange} />
           </Col>
-          <Col xs={0} md={5}>
+          <Col xs={0} md={4}>
             <RentHouseFilterPrice onPriceChange={onPriceChange} />
           </Col>
-          <Col xs={8} md={2}>
+          <Col xs={8} md={3}>
             <Form.Item>
               <RentHouseExtraFilterModal />
             </Form.Item>

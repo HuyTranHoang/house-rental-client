@@ -1,12 +1,10 @@
 import { updateUserProfileApi } from '@/api/user.api.ts'
 import GradientButton from '@/components/GradientButton.tsx'
-import { selectAuth, updateProfile } from '@/features/auth/authSlice.ts'
-import { useAppDispatch } from '@/store.ts'
+import useAuthStore from '@/features/auth/authStore.ts'
 import { AntDesignOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Alert, Card, Form, Input, Typography } from 'antd'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { toast } from 'sonner'
 
 type ChangeProfileForm = {
@@ -17,15 +15,15 @@ type ChangeProfileForm = {
 
 function Profile() {
   const [error] = useState(null)
-  const dispatch = useAppDispatch()
-  const { user } = useSelector(selectAuth)
+  const currentUser = useAuthStore((state) => state.user)
+  const updateProfile = useAuthStore((state) => state.updateProfile)
 
   const { mutate: updateUserProfileMutate, isPending } = useMutation({
     mutationFn: updateUserProfileApi,
     onSuccess: (response) => {
       if (!response) return
 
-      dispatch(updateProfile(response.data))
+      updateProfile(response.data)
       toast.success('Cập nhật thông tin cá nhân thành công!')
     },
     onError: () => {
@@ -41,9 +39,9 @@ function Profile() {
       <Form
         name='profile'
         initialValues={{
-          lastName: user!.lastName,
-          firstName: user!.firstName,
-          phoneNumber: user!.phoneNumber
+          lastName: currentUser!.lastName,
+          firstName: currentUser!.firstName,
+          phoneNumber: currentUser!.phoneNumber
         }}
         onFinish={(values) => updateUserProfileMutate(values)}
         autoComplete='off'

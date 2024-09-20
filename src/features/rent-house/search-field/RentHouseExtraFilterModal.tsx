@@ -61,8 +61,8 @@ function RentHouseExtraFilterModal() {
       cityId,
       districtId,
       roomTypeId: roomType,
-      minArea: parseInt(minArea) * 10,
-      maxArea: parseInt(maxArea) * 10,
+      minArea: parseInt(minArea),
+      maxArea: parseInt(maxArea),
       numOfDays: parseInt(time)
     })
 
@@ -156,11 +156,11 @@ function RentHouseExtraFilterModal() {
           suffixIcon={<SelectOutlined className='text-base' />}
           options={[
             { value: '0,0', label: 'Tất cả' },
-            { value: '0,3', label: '< 30 m2' },
-            { value: '3,5', label: '30 - 50 m2' },
-            { value: '5,7', label: '50 - 70 m2' },
-            { value: '7,10', label: '70 - 100 m2' },
-            { value: '10,0', label: '> 100 m2' }
+            { value: '0,30', label: '< 30 m2' },
+            { value: '30,50', label: '30 - 50 m2' },
+            { value: '50,70', label: '50 - 70 m2' },
+            { value: '70,100', label: '70 - 100 m2' },
+            { value: '100,0', label: '> 100 m2' }
           ]}
           className='w-full'
         />

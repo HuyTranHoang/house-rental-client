@@ -1,6 +1,6 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { logout, selectAuth, updateProfile } from '@/features/auth/authSlice.js'
+import useAuthStore from '@/features/auth/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber.ts'
 import {
@@ -15,7 +15,6 @@ import {
 } from '@ant-design/icons'
 import { Avatar, Card, Col, GetProp, Menu, MenuProps, Row, Space, Tooltip, Upload, UploadProps } from 'antd'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import styled from 'styled-components'
@@ -89,8 +88,9 @@ const beforeUpload = (file: FileType) => {
 
 function ProfileLayout() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { user } = useSelector(selectAuth)
+  const currentUser = useAuthStore((state) => state.user)
+  const logout = useAuthStore((state) => state.logout)
+  const updateProfile = useAuthStore((state) => state.updateProfile)
 
   const location = useLocation()
   const currentPath = location.pathname
@@ -98,7 +98,7 @@ function ProfileLayout() {
   const onClick = ({ key }: { key: string }) => {
     switch (key) {
       case 'dangXuat':
-        dispatch(logout())
+        logout()
         navigate(ROUTER_NAMES.TEST)
         localStorage.removeItem('jwtToken')
         axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
@@ -119,7 +119,7 @@ function ProfileLayout() {
     }
     if (info.file.status === 'done') {
       getBase64(info.file.originFileObj as FileType, () => {
-        dispatch(updateProfile(info.file.response))
+        updateProfile(info.file.response)
         setLoading(false)
         toast.success('Cập nhật ảnh đại diện thành công!')
       })
@@ -157,8 +157,8 @@ function ProfileLayout() {
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
               >
-                {!loading && user && user.avatarUrl ? (
-                  <Avatar size={64} src={user.avatarUrl} style={{ cursor: 'pointer' }} />
+                {!loading && currentUser && currentUser.avatarUrl ? (
+                  <Avatar size={64} src={currentUser.avatarUrl} style={{ cursor: 'pointer' }} />
                 ) : (
                   uploadButton
                 )}
@@ -166,11 +166,11 @@ function ProfileLayout() {
             </Tooltip>
 
             <Space direction='vertical'>
-              {user && (
+              {currentUser && (
                 <>
-                  <div className='font-inter font-semibold text-slate-600'>@{user.username}</div>
+                  <div className='font-inter font-semibold text-slate-600'>@{currentUser.username}</div>
                   <div>
-                    <PhoneOutlined /> {formatPhoneNumberWithDashes(user.phoneNumber)}
+                    <PhoneOutlined /> {formatPhoneNumberWithDashes(currentUser.phoneNumber)}
                   </div>
                 </>
               )}

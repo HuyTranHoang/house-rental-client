@@ -1,60 +1,30 @@
-import CustomIndicator from '@/components/CustomIndicator'
 import GradientButton from '@/components/GradientButton'
 import ROUTER_NAMES from '@/constant/routerNames'
-import axiosInstance from '@/inteceptor/axiosInstance'
+import useAuthStore from '@/features/auth/authStore'
 import { User } from '@/models/user.type'
-import { useAppDispatch } from '@/store'
-import { delay } from '@/utils/delay'
 import { AntDesignOutlined, FacebookFilled, GoogleCircleFilled, LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Space, Spin, Typography } from 'antd'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useMutation } from '@tanstack/react-query'
+import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Space, Typography } from 'antd'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { loginFailure, loginRequest, loginSuccess, selectAuth } from './authSlice'
 import './Login.css'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 
-type FieldType = {
+type LoginFormType = {
   username: string
   password: string
+  remember: boolean
 }
 
 export default function Login() {
-  const { isAuthenticated, isLoading } = useSelector(selectAuth)
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = location.state?.from || '/'
+  const loginSuccess = useAuthStore((state) => state.loginSuccess)
 
-  const [spinning, setSpinning] = useState(true)
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (isAuthenticated) {
-      delay(300).then(() => {
-        if (isMounted) {
-          toast.info('Bạn đã đăng nhập rồi!!!')
-          navigate(redirectTo)
-        }
-      })
-    } else {
-      delay(300).then(() => {
-        if (isMounted) {
-          setSpinning(false)
-        }
-      })
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [isAuthenticated, navigate, redirectTo])
-
-  const onFinish = async (values: FieldType) => {
-    try {
-      dispatch(loginRequest())
-      const response = await axiosInstance.post<User>('/api/auth/login', values)
+  const loginMutation = useMutation({
+    mutationFn: (values: LoginFormType) => axiosInstance.post<User>('/api/auth/login', values),
+    onSuccess: (response, variables) => {
       toast.success('Đăng nhập thành công')
 
       const payload = {
@@ -62,24 +32,20 @@ export default function Login() {
         token: response.headers['jwt-token']
       }
 
-      localStorage.setItem('jwtToken', payload.token)
-      dispatch(loginSuccess(payload))
-      navigate(redirectTo)
-    } catch (error) {
-      dispatch(loginFailure())
-    }
-  }
+      if (variables.remember) {
+        localStorage.setItem('jwtToken', payload.token)
+      } else {
+        sessionStorage.setItem('jwtToken', payload.token)
+      }
 
-  if (isAuthenticated) {
-    return (
-      <Spin
-        indicator={<CustomIndicator />}
-        spinning={spinning}
-        tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
-        fullscreen
-      />
-    )
-  }
+      loginSuccess(payload.user, payload.token)
+      navigate(redirectTo)
+    },
+    onError: (error) => {
+      // Toast đã handle trong interceptor rồi
+      console.log(error)
+    }
+  })
 
   return (
     <Row className='relative min-h-screen bg-gray-100 md:min-h-0 md:py-24'>
@@ -103,7 +69,7 @@ export default function Login() {
         <Form
           name='login'
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={(values) => loginMutation.mutate(values)}
           autoComplete='off'
           className='w-full max-w-[400px] rounded-lg bg-white p-8 shadow-lg'
         >
@@ -117,11 +83,14 @@ export default function Login() {
             </Typography.Text>
           </Flex>
 
-          <Form.Item<FieldType> name='username' rules={[{ required: true, message: 'Vui lòng nhập tên tài khoản!' }]}>
+          <Form.Item<LoginFormType>
+            name='username'
+            rules={[{ required: true, message: 'Vui lòng nhập tên tài khoản!' }]}
+          >
             <Input prefix={<UserOutlined />} placeholder='Tài khoản' />
           </Form.Item>
 
-          <Form.Item<FieldType> name='password' rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}>
+          <Form.Item<LoginFormType> name='password' rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}>
             <Input.Password prefix={<LockOutlined />} placeholder='Mật khẩu' />
           </Form.Item>
 
@@ -135,7 +104,13 @@ export default function Login() {
           </Form.Item>
 
           <Form.Item>
-            <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isLoading} block>
+            <GradientButton
+              type='primary'
+              htmlType='submit'
+              icon={<AntDesignOutlined />}
+              loading={loginMutation.isPending}
+              block
+            >
               Đăng nhập
             </GradientButton>
           </Form.Item>

@@ -1,17 +1,14 @@
-import CustomIndicator from '@/components/CustomIndicator.tsx'
-import GradientButton from '@/components/GradientButton.tsx'
-import ROUTER_NAMES from '@/constant/routerNames.ts'
-import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { delay } from '@/utils/delay.ts'
+import GradientButton from '@/components/GradientButton'
+import ROUTER_NAMES from '@/constant/routerNames'
+import axiosInstance from '@/inteceptor/axiosInstance'
 import { AntDesignOutlined, UnlockOutlined } from '@ant-design/icons'
-import { Alert, Button, Col, Form, Input, Row, Spin, Typography } from 'antd'
+import { useMutation } from '@tanstack/react-query'
+import { Alert, Button, Col, Form, Input, Row, Typography } from 'antd'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { selectAuth } from './authSlice.ts'
 
-type FieldType = {
+type ResetPasswordForm = {
   email: string
   token: string
   newPassword: string
@@ -19,82 +16,39 @@ type FieldType = {
 }
 
 function ResetPassword() {
-  const { isAuthenticated } = useSelector(selectAuth)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
-  const location = useLocation()
-  const redirectTo = location.state?.from || '/'
-
-  const [spinning, setSpinning] = useState(true)
-
+  const [searchParams] = useSearchParams()
   const [email, setEmail] = useState<string | null>(null)
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search)
     setEmail(searchParams.get('email'))
     setToken(searchParams.get('token'))
-  }, [location.search])
+  }, [searchParams])
 
-  useEffect(() => {
-    let isMounted = true
-
-    if (isAuthenticated) {
-      delay(300).then(() => {
-        if (isMounted) {
-          toast.info('Bạn đã đăng nhập rồi!!!')
-          navigate(redirectTo)
-        }
-      })
-    } else {
-      delay(300).then(() => {
-        if (isMounted) {
-          setSpinning(false)
-        }
-      })
+  const resetPasswordMutation = useMutation({
+    mutationFn: (values: ResetPasswordForm) => axiosInstance.post('/api/auth/reset-password', values),
+    onSuccess: () => {
+      toast.success('Đặt lại mật khẩu thành công')
+      navigate(ROUTER_NAMES.LOGIN)
+    },
+    onError: (error) => {
+      console.error('>>>RESET PASSWORD.JSX ERROR', error)
+      toast.error('Có lỗi xảy ra khi đặt lại mật khẩu. Vui lòng thử lại.')
     }
+  })
 
-    return () => {
-      isMounted = false
-    }
-  }, [isAuthenticated, navigate, redirectTo])
-
-  const onFinish = async (values: FieldType) => {
-    console.log('Success submit:', values)
-    setIsLoading(true)
-    setError(undefined)
-
+  const onFinish = (values: Omit<ResetPasswordForm, 'email' | 'token'>) => {
     if (!email || !token) {
-      setError('Email hoặc token không hợp lệ!')
-      setIsLoading(false)
+      toast.error('Email hoặc token không hợp lệ!')
       return
     }
 
-    values.email = email
-    values.token = token
-
-    try {
-      await axiosInstance.post('/api/auth/reset-password', values)
-      toast.success('Đặt lại mật khẩu thành công')
-      navigate(ROUTER_NAMES.LOGIN)
-    } catch (error) {
-      console.log('>>>RESET PASSWORD.JSX ERROR', error)
-      setError(error as string)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  if (isAuthenticated) {
-    return (
-      <Spin
-        indicator={<CustomIndicator />}
-        spinning={spinning}
-        tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
-        fullscreen
-      />
-    )
+    resetPasswordMutation.mutate({
+      ...values,
+      email,
+      token
+    })
   }
 
   return (
@@ -103,7 +57,6 @@ function ResetPassword() {
         <div className='flex items-center justify-center'>
           <Form
             name='resetPassword'
-            initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete='off'
             className='my-16 w-[400px] rounded-lg bg-white p-8 shadow-lg'
@@ -118,9 +71,9 @@ function ResetPassword() {
               </Typography.Text>
             </div>
 
-            {error && (
+            {resetPasswordMutation.isError && (
               <Form.Item>
-                <Alert message={error} type='error' showIcon />
+                <Alert message='Có lỗi xảy ra khi đặt lại mật khẩu. Vui lòng thử lại.' type='error' showIcon />
               </Form.Item>
             )}
 
@@ -167,7 +120,7 @@ function ResetPassword() {
                 htmlType='submit'
                 size='large'
                 icon={<AntDesignOutlined />}
-                loading={isLoading}
+                loading={resetPasswordMutation.isPending}
                 block
               >
                 Đặt lại mật khẩu

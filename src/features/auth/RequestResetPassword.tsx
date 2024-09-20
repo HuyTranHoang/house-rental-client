@@ -1,79 +1,31 @@
-import CustomIndicator from '@/components/CustomIndicator.tsx'
-import GradientButton from '@/components/GradientButton.tsx'
-import ROUTER_NAMES from '@/constant/routerNames.ts'
-import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { delay } from '@/utils/delay.ts'
+import GradientButton from '@/components/GradientButton'
+import ROUTER_NAMES from '@/constant/routerNames'
+import axiosInstance from '@/inteceptor/axiosInstance'
 import { AntDesignOutlined, MailOutlined } from '@ant-design/icons'
-import { Alert, Button, Col, Form, Input, Row, Spin, Typography } from 'antd'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import { Alert, Button, Col, Form, Input, Row, Typography } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { selectAuth } from './authSlice.ts'
 
-type FieldType = {
+type ResetPasswordForm = {
   email: string
 }
 
 function RequestResetPassword() {
-  const { isAuthenticated } = useSelector(selectAuth)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
-  const location = useLocation()
-  const redirectTo = location.state?.from || '/'
 
-  const [spinning, setSpinning] = useState(true)
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (isAuthenticated) {
-      delay(300).then(() => {
-        if (isMounted) {
-          toast.info('Bạn đã đăng nhập rồi!!!')
-          navigate(redirectTo)
-        }
-      })
-    } else {
-      delay(300).then(() => {
-        if (isMounted) {
-          setSpinning(false)
-        }
-      })
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [isAuthenticated, navigate, redirectTo])
-
-  const onFinish = async (values: FieldType) => {
-    console.log('Success submit:', values)
-    setIsLoading(true)
-    setError(undefined)
-    try {
-      await axiosInstance.post(`/api/auth/send-reset-password-email?email=${values.email}`, {})
+  const resetPasswordMutation = useMutation({
+    mutationFn: (values: ResetPasswordForm) =>
+      axiosInstance.post(`/api/auth/send-reset-password-email?email=${values.email}`, {}),
+    onSuccess: () => {
       toast.success('Vui lòng kiểm tra email để đặt lại mật khẩu')
       navigate(ROUTER_NAMES.LOGIN)
-    } catch (error) {
-      console.log('>>>REQUEST RESET PASSWORD.JSX ERROR', error)
-      setError(error as string)
-    } finally {
-      setIsLoading(false)
+    },
+    onError: (error) => {
+      console.error('>>>REQUEST RESET PASSWORD.JSX ERROR', error)
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại sau.')
     }
-  }
-
-  if (isAuthenticated) {
-    return (
-      <Spin
-        indicator={<CustomIndicator />}
-        spinning={spinning}
-        tip={'Đang tải dữ liệu...Vui lòng đợi trong giây lát!!!'}
-        fullscreen
-      />
-    )
-  }
+  })
 
   return (
     <Row className='my-12 text-center'>
@@ -81,7 +33,7 @@ function RequestResetPassword() {
         <div className='flex items-center justify-center'>
           <Form
             name='requestResetPassword'
-            onFinish={onFinish}
+            onFinish={(values: ResetPasswordForm) => resetPasswordMutation.mutate(values)}
             autoComplete='off'
             className='my-16 w-[400px] rounded-lg bg-white p-8 shadow-lg'
           >
@@ -95,9 +47,9 @@ function RequestResetPassword() {
               </Typography.Text>
             </div>
 
-            {error && (
+            {resetPasswordMutation.isError && (
               <Form.Item>
-                <Alert message={error} type='error' showIcon />
+                <Alert message='Có lỗi xảy ra. Vui lòng thử lại sau.' type='error' showIcon />
               </Form.Item>
             )}
 
@@ -123,7 +75,7 @@ function RequestResetPassword() {
                 htmlType='submit'
                 size='large'
                 icon={<AntDesignOutlined />}
-                loading={isLoading}
+                loading={resetPasswordMutation.isPending}
                 block
               >
                 Gửi email đặt lại mật khẩu

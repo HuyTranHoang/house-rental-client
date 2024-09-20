@@ -1,13 +1,12 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { logout } from '@/features/auth/authSlice.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { User } from '@/models/user.type.ts'
-import { useAppDispatch } from '@/store.ts'
 import { MailOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
 import { clsx } from 'clsx'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import useAuthStore from '@/features/auth/authStore.ts'
 
 interface NavItemProps {
   title: string
@@ -49,12 +48,12 @@ const items: MenuProps['items'] = [
 ]
 
 function MenuDesktop({ user }: { user: User | null }) {
-  const dispatch = useAppDispatch()
+  const logout = useAuthStore((state) => state.logout)
   const navigate = useNavigate()
 
   const onClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
-      dispatch(logout())
+      logout()
       navigate(ROUTER_NAMES.RENT_HOUSE)
       localStorage.removeItem('jwtToken')
       axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {

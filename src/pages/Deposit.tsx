@@ -1,20 +1,22 @@
 import { createTransaction, getTransaction } from '@/api/transaction.api.ts'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { selectAuth, updateUserBalance } from '@/features/auth/authSlice'
+import useAuthStore from '@/features/auth/authStore.ts'
 import { TransactionStatus } from '@/models/transaction.type.ts'
-import { useAppDispatch } from '@/store.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { LoadingOutlined, RocketOutlined } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 interface DepositForm {
   amount: string
   customAmount?: number
+}
+
+const formatNumber = (value: string) => {
+  return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
 const useGetTransaction = (transactionId: string) => {
@@ -31,16 +33,18 @@ const useGetTransaction = (transactionId: string) => {
 const Deposit = () => {
   const [form] = Form.useForm()
   const amount = Form.useWatch('amount', form)
-  const customAmount = Form.useWatch('customAmount', form)
+
 
   const queryClient = useQueryClient()
-  const dispatch = useAppDispatch()
   const [transactionId, setTransactionId] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [isFail, setIsFail] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const [rawCustomAmount, setRawCustomAmount] = useState<number | null>(null)
 
-  const { user } = useSelector(selectAuth)
+  const currentUser = useAuthStore((state) => state.user)
+  const updateUserBalance = useAuthStore((state) => state.updateUserBalance)
 
   const { data: transaction } = useGetTransaction(transactionId)
 
@@ -59,22 +63,30 @@ const Deposit = () => {
     }
   })
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    const rawValue = parseInt(value.replace(/,/g, ''), 10)
+    const formattedValue = formatNumber(value.replace(/,/g, ''))
+    setInputValue(formattedValue)
+    setRawCustomAmount(rawValue)
+    form.setFieldsValue({ customAmount: formattedValue })
+  }
+
   useEffect(() => {
     if (transaction) {
       if (transaction.status === TransactionStatus.SUCCESS) {
         setIsSubmitting(false)
         setIsSuccess(true)
-        dispatch(updateUserBalance(transaction.amount))
+        updateUserBalance(transaction.amount)
       } else if (transaction.status === TransactionStatus.FAILED) {
         setIsSubmitting(false)
         setIsFail(true)
       }
     }
-  }, [transaction, queryClient, dispatch])
+  }, [transaction, queryClient, updateUserBalance])
 
   const onFinish = async (values: DepositForm) => {
-    const amountToDeposit =
-      values.amount === 'custom' && values.customAmount ? values.customAmount : Number(values.amount)
+    const amountToDeposit = values.amount === 'custom' && rawCustomAmount ? rawCustomAmount : Number(values.amount)
 
     if (isNaN(amountToDeposit) || amountToDeposit < 50000) {
       toast.error('Số tiền nạp tối thiểu là 50.000đ.')
@@ -91,17 +103,17 @@ const Deposit = () => {
   }
 
   const renderDepositInfo = () => {
-    const depositAmount = amount === 'custom' && customAmount ? customAmount : amount
-    const newBalance = user ? user.balance + Number(depositAmount) : 0
+    const depositAmount = amount === 'custom' && rawCustomAmount ? rawCustomAmount : Number(amount)
+    const newBalance = currentUser ? currentUser.balance + depositAmount : 0
 
-    if (amount === 'custom' && !customAmount) {
+    if (amount === 'custom' && !rawCustomAmount) {
       return null
     }
 
     return (
       <>
         <Typography.Paragraph>
-          Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(Number(depositAmount))}</strong>
+          Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(depositAmount)}</strong>
         </Typography.Paragraph>
         <Typography.Paragraph>
           Sau khi nạp: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
@@ -154,7 +166,13 @@ const Deposit = () => {
                   label='Số tiền tùy chọn (VND)'
                   rules={[{ required: true, message: 'Vui lòng nhập số tiền bạn muốn nạp' }]}
                 >
-                  <Input type='number' placeholder='Nhập số tiền bạn muốn nạp' />
+                  <Input
+                    type='text'
+                    placeholder='Nhập số tiền bạn muốn nạp'
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    addonAfter='₫'
+                  />
                 </Form.Item>
               )}
 
@@ -190,7 +208,7 @@ const Deposit = () => {
               </Typography.Paragraph>
               <Space>
                 <Typography.Paragraph>
-                  <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
+                  <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>Lịch sử giao dịch</Link>
                 </Typography.Paragraph>
                 <Typography.Paragraph>
                   <Button type='link' onClick={() => setIsSuccess(false)}>
@@ -222,14 +240,19 @@ const Deposit = () => {
         </Card>
       </Col>
 
-      {user && (
-        <Col xs={{ span: 22, offset: 1 }} sm={{ span: 20, offset: 2 }} md={{ span: 16, offset: 4 }} lg={{ span: 4, offset: 0 }}>
+      {currentUser && (
+        <Col
+          xs={{ span: 22, offset: 1 }}
+          sm={{ span: 20, offset: 2 }}
+          md={{ span: 16, offset: 4 }}
+          lg={{ span: 4, offset: 0 }}
+        >
           <Card className='flex items-center'>
             <Typography.Title level={5} className='mt-0'>
               Số dư
             </Typography.Title>
             <Typography.Paragraph>
-              Hiện tại: <strong>{formatCurrency(user.balance)}</strong>
+              Hiện tại: <strong>{formatCurrency(currentUser.balance)}</strong>
             </Typography.Paragraph>
 
             {amount && renderDepositInfo()}

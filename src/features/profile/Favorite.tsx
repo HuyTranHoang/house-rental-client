@@ -1,17 +1,16 @@
 import ROUTER_NAMES from '@/constant/routerNames'
-import { selectAuth } from '@/features/auth/authSlice'
+import useAuthStore from '@/features/auth/authStore.ts'
 import { useFavoritePropertyByUserId, useRemoveFavorite } from '@/hooks/useFavorite'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { formatDate } from '@/utils/formatDate'
 import { Card, Empty, Flex, Grid, List, Space, Typography } from 'antd'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const { useBreakpoint } = Grid
 
 export default function Favorite() {
   const screens = useBreakpoint()
-  const { user: currentUser } = useSelector(selectAuth)
+  const currentUser = useAuthStore((state) => state.user)
   const { favortieProperties, isLoadingFavoriteProperties } = useFavoritePropertyByUserId(currentUser?.id)
   const { removeFavoriteMutate, isPendingRemoveFavorite } = useRemoveFavorite()
 
