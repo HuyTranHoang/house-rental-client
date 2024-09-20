@@ -39,6 +39,10 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
             element: <Deposit />
           },
           {
+            path: ROUTER_NAMES.MEMBERSHIP_FEE,
+            element: <MemberFee />
+          },
+          {
             path: ROUTER_NAMES.PAYMENT_SUCCESS,
             element: <PaymentSuccess />
           },
