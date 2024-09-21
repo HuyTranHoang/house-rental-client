@@ -10,11 +10,6 @@
     background-color: #69b1ff !important;
 }
 
-.ant-upload-drag {
-    border: 2px dashed #69b1ff !important;
-    margin-bottom: 16px;
-}
-
 .swiper-button-next::after, .swiper-button-prev::after {
     content: "" !important;
 }

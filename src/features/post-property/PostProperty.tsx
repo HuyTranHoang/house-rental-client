@@ -42,6 +42,7 @@ export interface PostPropertyFormData {
   title: string
   description: string
   images: Image[]
+  thumbnailOriginalName: string
 
   [key: string]: string | string[] | Image[]
 }
@@ -107,6 +108,11 @@ export default function PostProperty() {
         values.area = values.area.replace(/,/g, '')
       }
 
+      if (current === 4 && !values.thumbnailOriginalName) {
+        toast.error('Vui lòng chọn ảnh bìa cho bài đăng')
+        return
+      }
+
       setFormData({ ...formData, ...values })
       if (current < stepItems.length - 1) {
         setCurrent(current + 1)
@@ -138,6 +144,7 @@ export default function PostProperty() {
     formDataToSend.append('cityId', formData.city)
     formDataToSend.append('districtId', formData.district)
     formDataToSend.append('roomTypeId', formData.roomType)
+    formDataToSend.append('thumbnailOriginalName', formData.thumbnailOriginalName)
 
     formData.amenities.forEach((amenity) => {
       formDataToSend.append('amenities', amenity)
@@ -158,6 +165,9 @@ export default function PostProperty() {
 
   return (
     <Container>
+      {/*<Card>*/}
+      {/*  <pre>{JSON.stringify(formData, null, 2)}</pre>*/}
+      {/*</Card>*/}
       <Card title={cartTitle} className='mb-10 mt-12'>
         <Row className='overflow-hidden rounded-lg bg-gray-50'>
           {current < 6 && (

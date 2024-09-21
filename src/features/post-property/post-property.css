@@ -1,6 +1,17 @@
 .custom-quill {
     height: 200px;
 }
+
 .custom-quill .ql-container {
     height: 150px;
+}
+
+.ant-upload-drag {
+    border: 2px dashed #69b1ff !important;
+    margin-bottom: 16px;
+}
+
+.ant-upload-list-item-container {
+    width: 140px;
+    height: 130px;
 }
