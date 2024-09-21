@@ -42,10 +42,12 @@ axiosInstance.interceptors.response.use(
             return axiosInstance(originalRequest)
           } catch (refreshError) {
             await axiosInstance.post('/api/auth/logout', {}, { withCredentials: true })
+            localStorage.removeItem('jwtToken')
             toast.error('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại')
           }
         } else {
           await axiosInstance.post('/api/auth/logout', {}, { withCredentials: true })
+          localStorage.removeItem('jwtToken')
           toast.error('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại')
         }
         break

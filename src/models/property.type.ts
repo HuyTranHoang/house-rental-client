@@ -16,9 +16,14 @@ export interface Property {
   roomTypeId: number
   roomTypeName: string
   amenities: string[]
-  propertyImages: string[]
+  propertyImages: PropertyImage[]
   blocked: boolean
   createdAt: string
+}
+
+interface PropertyImage {
+  imageUrl: string,
+  blurhash: string
 }
 
 export type PropertyFilters = {
