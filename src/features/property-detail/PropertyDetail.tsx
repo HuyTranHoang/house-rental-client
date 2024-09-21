@@ -194,7 +194,7 @@ function PropertyDetail() {
               >
                 {propertyData.propertyImages.map((image, index) => (
                   <SwiperSlide key={index} className='flex justify-center'>
-                    <img src={image} alt='image' />
+                    <img src={image.imageUrl} alt='image' />
                   </SwiperSlide>
                 ))}
                 <div className='swiper-button-prev'>

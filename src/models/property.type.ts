@@ -21,7 +21,7 @@ export interface Property {
   createdAt: string
 }
 
-interface PropertyImage {
+export interface PropertyImage {
   imageUrl: string,
   blurhash: string
 }

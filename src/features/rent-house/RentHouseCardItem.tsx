@@ -1,4 +1,5 @@
 import FavoriteButton from '@/components/FavoriteButton.tsx'
+import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import useAuthStore from '@/features/auth/authStore.ts'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
@@ -28,10 +29,9 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
     >
       <Row gutter={24}>
         <Col xs={24} md={8}>
-          <div
-            className='h-52 w-full overflow-hidden rounded-lg bg-cover bg-center'
-            style={{ backgroundImage: `url(${property.propertyImages[0]})` }}
-          />
+          <div className='h-52 w-full overflow-hidden rounded-lg'>
+            <ImageComponent image={property.propertyImages[0]} className='h-full w-full object-cover' />
+          </div>
         </Col>
 
         <Col xs={24} md={16}>
