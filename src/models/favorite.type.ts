@@ -11,6 +11,5 @@ export interface Favorite {
 
 export interface FavoriteProperty {
   userId: number
-  username: string
   properties: Property[]
 }
