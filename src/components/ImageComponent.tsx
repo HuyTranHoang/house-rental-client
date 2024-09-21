@@ -12,7 +12,7 @@ function ImageComponent({ image, className }: ImageComponentProps) {
 
   return (
     <>
-      {!imageLoaded && <Blurhash hash={image.blurhash} className='h-full w-full' />}
+      {!imageLoaded && <Blurhash hash={image.blurhash} className='w-full h-full' />}
 
       <img
         src={image.imageUrl}

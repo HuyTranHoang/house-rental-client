@@ -1,5 +1,7 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
+import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import useAuthStore from '@/features/auth/authStore.ts'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { useProperty } from '@/hooks/useProperty'
@@ -48,7 +50,6 @@ import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailReview from './PropertyDetailReview'
-import useAuthStore from '@/features/auth/authStore.ts'
 
 const PrevButton = styled(Button)`
   border: 0;
@@ -191,10 +192,12 @@ function PropertyDetail() {
                 slidesPerView={1}
                 spaceBetween={30}
                 onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
+                className='h-[500px] w-full'
               >
                 {propertyData.propertyImages.map((image, index) => (
                   <SwiperSlide key={index} className='flex justify-center'>
-                    <img src={image.imageUrl} alt='image' />
+                    {/*<img src={image.imageUrl} alt='image' />*/}
+                    <ImageComponent image={image} />
                   </SwiperSlide>
                 ))}
                 <div className='swiper-button-prev'>
