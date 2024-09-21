@@ -22,6 +22,13 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
 
+  const thumbnailImage = property.thumbnailUrl
+    ? {
+        imageUrl: property.thumbnailUrl,
+        blurhash: property.thumbnailBlurhash
+      }
+    : property.propertyImages[0]
+
   return (
     <Card
       className='mb-2 mr-0 cursor-pointer md:mr-4'
@@ -30,7 +37,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
       <Row gutter={24}>
         <Col xs={24} md={8}>
           <div className='h-52 w-full overflow-hidden rounded-lg'>
-            <ImageComponent image={property.propertyImages[0]} className='h-full w-full object-cover' />
+            <ImageComponent image={thumbnailImage} className='h-full w-full object-cover' />
           </div>
         </Col>
 

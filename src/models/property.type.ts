@@ -17,12 +17,14 @@ export interface Property {
   roomTypeName: string
   amenities: string[]
   propertyImages: PropertyImage[]
+  thumbnailUrl: string
+  thumbnailBlurhash: string
   blocked: boolean
   createdAt: string
 }
 
 export interface PropertyImage {
-  imageUrl: string,
+  imageUrl: string
   blurhash: string
 }
 
