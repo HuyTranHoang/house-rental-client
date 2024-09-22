@@ -5,7 +5,7 @@ import { Property } from '@/models/property.type.ts'
 import RightSideBar from '@/ui/RightSideBar.tsx'
 import { BookOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import RentHouseCardItem from './RentHouseCardItem.tsx'
 
 function RentHouse() {
@@ -40,6 +40,8 @@ function RentHouse() {
     pageSize
   )
 
+  const myRef = useRef<null | HTMLDivElement>(null);
+
   const startIndex = useMemo(() => (pageNumber - 1) * pageSize, [pageNumber, pageSize])
   const endIndex = useMemo(() => (data ? startIndex + data.data.length : 0), [data, startIndex])
   const range = useMemo(() => [startIndex + 1, endIndex], [startIndex, endIndex])
@@ -53,7 +55,7 @@ function RentHouse() {
 
       <Row>
         <Col xs={24} md={18}>
-          <Typography.Title level={4} className='mt-3.5'>
+          <Typography.Title level={4} className='mt-3.5' ref={myRef}>
             Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T9/2024
           </Typography.Title>
 
@@ -111,9 +113,14 @@ function RentHouse() {
               current={pageNumber}
               align='center'
               showSizeChanger
-              pageSizeOptions={['2', '4', '6']}
+              pageSizeOptions={['5', '10', '20']}
               locale={{ items_per_page: '/ trang' }}
-              onChange={(page, pageSize) => setFilters({ pageNumber: page, pageSize })}
+              onChange={(page, pageSize) => {
+                setFilters({ pageNumber: page, pageSize })
+                if (myRef && myRef.current) {
+                  myRef.current.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               onShowSizeChange={(current, size) => setFilters({ pageNumber: current, pageSize: size })}
               className='mb-6 mt-4'
             />
