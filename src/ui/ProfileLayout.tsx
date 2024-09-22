@@ -1,31 +1,28 @@
-import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
-import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
-import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber.ts'
+import CustomBreadcrumbs from '@/components/CustomBreadcrumbs'
+import ROUTER_NAMES from '@/constant/routerNames'
+import useAuthStore from '@/features/auth/authStore'
+import axiosInstance from '@/inteceptor/axiosInstance'
+import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber'
 import {
   IdcardOutlined,
   LoadingOutlined,
   LockOutlined,
   LogoutOutlined,
+  MailOutlined,
   PhoneOutlined,
   PlusOutlined,
   ReadOutlined,
-  StarOutlined
+  StarOutlined,
+  UserOutlined,
+  WalletOutlined
 } from '@ant-design/icons'
-import { Avatar, Card, Col, GetProp, Menu, MenuProps, Row, Space, Tooltip, Upload, UploadProps } from 'antd'
+import { Divider, MenuProps, UploadProps } from 'antd'
+import { Avatar, Card, Col, Menu, Row, Tooltip, Typography, Upload } from 'antd'
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import styled from 'styled-components'
 
-const CustomUpload = styled(Upload)`
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`
+const { Text, Title } = Typography
 
 type MenuItem = Required<MenuProps>['items'][number]
 
@@ -64,9 +61,7 @@ const items: MenuItem[] = [
   }
 ]
 
-// Avatar section
-
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
+type FileType = Parameters<NonNullable<UploadProps['beforeUpload']>>[0]
 
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
   const reader = new FileReader()
@@ -86,7 +81,7 @@ const beforeUpload = (file: FileType) => {
   return isJpgOrPng && isLt2M
 }
 
-function ProfileLayout() {
+export default function ProfileLayout() {
   const navigate = useNavigate()
   const currentUser = useAuthStore((state) => state.user)
   const logout = useAuthStore((state) => state.logout)
@@ -95,18 +90,16 @@ function ProfileLayout() {
   const location = useLocation()
   const currentPath = location.pathname
 
-  const onClick = ({ key }: { key: string }) => {
-    switch (key) {
-      case 'dangXuat':
-        logout()
-        navigate(ROUTER_NAMES.TEST)
-        localStorage.removeItem('jwtToken')
-        axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
-          toast.success('Đăng xuất thành công')
-        })
-        break
-      default:
-        navigate(key)
+  const onClick: MenuProps['onClick'] = ({ key }) => {
+    if (key === 'dangXuat') {
+      logout()
+      navigate(ROUTER_NAMES.TEST)
+      localStorage.removeItem('jwtToken')
+      axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
+        toast.success('Đăng xuất thành công')
+      })
+    } else {
+      navigate(key)
     }
   }
 
@@ -131,59 +124,80 @@ function ProfileLayout() {
   }
 
   const uploadButton = (
-    <button style={{ border: 0, background: 'none' }} type='button'>
+    <button className='border-0 bg-transparent' type='button'>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div className='mt-2'>Upload</div>
     </button>
   )
 
   return (
-    <Row gutter={12}>
+    <Row gutter={24}>
       <Col span={24}>
         <div className='mb-4 mt-8'>
           <CustomBreadcrumbs />
         </div>
       </Col>
-      <Col xs={0} md={6} className='mb-10'>
-        <Card>
-          <Space wrap size={16}>
-            <Tooltip title={loading ? 'Đang tải lên...' : 'Thay đổi ảnh đại diện'}>
-              <CustomUpload
-                name='avatar'
-                action='/api/user/update-avatar'
-                method='PUT'
-                headers={{ Authorization: `Bearer ${localStorage.getItem('jwtToken')}` }}
-                showUploadList={false}
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                {!loading && currentUser && currentUser.avatarUrl ? (
-                  <Avatar size={64} src={currentUser.avatarUrl} style={{ cursor: 'pointer' }} />
-                ) : (
-                  uploadButton
-                )}
-              </CustomUpload>
-            </Tooltip>
-
-            <Space direction='vertical'>
-              {currentUser && (
-                <>
-                  <div className='font-inter font-semibold text-slate-600'>@{currentUser.username}</div>
-                  <div>
-                    <PhoneOutlined /> {formatPhoneNumberWithDashes(currentUser.phoneNumber)}
+      <Col xs={24} md={8} lg={6} className='mb-6'>
+        <Card className='rounded-none'>
+          <div className='flex flex-col items-center'>
+            <div className='flex justify-center'>
+              <Tooltip title={loading ? 'Đang tải lên...' : 'Thay đổi ảnh đại diện'}>
+                <Upload
+                  name='avatar'
+                  action='/api/user/update-avatar'
+                  method='PUT'
+                  headers={{ Authorization: `Bearer ${localStorage.getItem('jwtToken')}` }}
+                  showUploadList={false}
+                  beforeUpload={beforeUpload}
+                  onChange={handleChange}
+                  className='cursor-pointer hover:opacity-80'
+                >
+                  {!loading && currentUser ? (
+                    <>
+                      {currentUser.avatarUrl ? (
+                        <Avatar size={96} src={currentUser.avatarUrl} className='cursor-pointer' />
+                      ) : (
+                        <Avatar size={96} icon={<UserOutlined />} />
+                      )}
+                    </>
+                  ) : (
+                    uploadButton
+                  )}
+                </Upload>
+              </Tooltip>
+            </div>
+            {currentUser && (
+              <>
+                <div className='text-center my-4'>
+                  <Title level={4} className='m-0'>
+                    {`${currentUser.lastName} ${currentUser.firstName}` || 'Chưa cập nhật'}
+                  </Title>
+                  <Text type='secondary'>@{currentUser.username}</Text>
+                </div>
+                <Divider className='m-0 mb-4' />
+                <div className='w-full space-y-3'>
+                  <div className='flex items-center'>
+                    <PhoneOutlined className='mr-2 text-lg text-gray-500' />
+                    <Text>{formatPhoneNumberWithDashes(currentUser.phoneNumber)}</Text>
                   </div>
-                </>
-              )}
-            </Space>
-          </Space>
+                  <div className='flex items-center'>
+                    <MailOutlined className='mr-2 text-lg text-gray-500' />
+                    <Text>{currentUser.email || 'Chưa cập nhật'}</Text>
+                  </div>
+                  <div className='flex items-center'>
+                    <WalletOutlined className='mr-2 text-lg text-gray-500' />
+                    <Text>Số dư: {currentUser.balance?.toLocaleString('vi-VN')} VNĐ</Text>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </Card>
         <Menu onClick={onClick} selectedKeys={[currentPath]} mode='inline' items={items} />
       </Col>
-      <Col xs={24} md={18}>
+      <Col xs={24} md={16} lg={18}>
         <Outlet />
       </Col>
     </Row>
   )
 }
-
-export default ProfileLayout

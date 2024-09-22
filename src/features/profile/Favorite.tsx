@@ -52,7 +52,8 @@ export default function Favorite() {
             <span className='text-xs text-slate-500'>
               {range[0]}-{range[1]} trong {total} bất động sản
             </span>
-          )
+          ),
+          hideOnSinglePage: true
         }}
         renderItem={(item) => (
           <List.Item>
