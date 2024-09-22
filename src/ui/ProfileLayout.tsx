@@ -21,6 +21,7 @@ import { Avatar, Card, Col, Menu, Row, Tooltip, Typography, Upload } from 'antd'
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 
 const { Text, Title } = Typography
 
@@ -137,7 +138,7 @@ export default function ProfileLayout() {
           <CustomBreadcrumbs />
         </div>
       </Col>
-      <Col xs={24} md={8} lg={6} className='mb-6'>
+      <Col xs={24} md={8} lg={6} className='mb-6 shadow-md p-0'>
         <Card className='rounded-none'>
           <div className='flex flex-col items-center'>
             <div className='flex justify-center'>
@@ -170,7 +171,7 @@ export default function ProfileLayout() {
               <>
                 <div className='text-center my-4'>
                   <Title level={4} className='m-0'>
-                    {`${currentUser.lastName} ${currentUser.firstName}` || 'Chưa cập nhật'}
+                    {`${currentUser.lastName} ${currentUser.firstName}`}
                   </Title>
                   <Text type='secondary'>@{currentUser.username}</Text>
                 </div>
@@ -182,11 +183,11 @@ export default function ProfileLayout() {
                   </div>
                   <div className='flex items-center'>
                     <MailOutlined className='mr-2 text-lg text-gray-500' />
-                    <Text>{currentUser.email || 'Chưa cập nhật'}</Text>
+                    <Text>{currentUser.email}</Text>
                   </div>
                   <div className='flex items-center'>
                     <WalletOutlined className='mr-2 text-lg text-gray-500' />
-                    <Text>Số dư: {currentUser.balance?.toLocaleString('vi-VN')} VNĐ</Text>
+                    <Text>Số dư: {formatCurrency(currentUser.balance)}</Text>
                   </div>
                 </div>
               </>

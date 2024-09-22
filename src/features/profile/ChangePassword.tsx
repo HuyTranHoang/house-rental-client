@@ -105,7 +105,7 @@ function ChangePassword() {
 
         <Form.Item>
           <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isPending} block>
-            Cập nhật
+            Cập nhật mật khẩu
           </GradientButton>
         </Form.Item>
       </Form>
