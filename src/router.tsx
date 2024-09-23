@@ -17,6 +17,7 @@ import RentHouse from '@/features/rent-house/RentHouse.tsx'
 import About from '@/pages/About.tsx'
 import Contact from '@/pages/Contact.tsx'
 import Deposit from '@/pages/Deposit.tsx'
+import MemberFee from '@/pages/MemberFee.tsx'
 import PaymentFailure from '@/pages/PaymentFailed.tsx'
 import PaymentSuccess from '@/pages/PaymentSuccess.tsx'
 import TestPage from '@/pages/TestPage.tsx'
@@ -26,7 +27,7 @@ import ProfileLayout from '@/ui/ProfileLayout.tsx'
 import { HomeOutlined } from '@ant-design/icons'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
-import MemberFee from '@/pages/MemberFee.tsx'
+import PostManagement from './features/post-management/PostManagement'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -54,6 +55,10 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
           {
             path: ROUTER_NAMES.POST_PROPERTY,
             element: <PostProperty />
+          },
+          {
+            path: ROUTER_NAMES.POST_MANAGEMENT,
+            element: <PostManagement />
           }
         ]
       },
