@@ -1,7 +1,7 @@
+import { useMemberships } from '@/hooks/useMembership'
 import Container from '@/ui/Container'
 import { CheckOutlined, CrownOutlined, RocketOutlined, StarOutlined } from '@ant-design/icons'
-import { Button, Card, Tooltip, Typography } from 'antd'
-import React from 'react'
+import { Button, Card, Spin, Tooltip, Typography } from 'antd'
 
 const { Text, Link, Title } = Typography
 
@@ -53,45 +53,100 @@ const plans = [
   }
 ]
 
-const MemberFee: React.FC = () => {
+function MemberFee() {
+  const { membershipData, membershipIsLoading, membershipIsError } = useMemberships()
+
+  if (membershipIsLoading) {
+    return (
+      <div className='flex h-screen items-center justify-center'>
+        <Spin size='large' />
+      </div>
+    )
+  }
+
+  if (membershipIsError) {
+    return <div>Đã xảy ra lỗi khi lấy dữ liệu gói thành viên.</div>
+  }
   return (
     <Container>
       <div className='flex flex-wrap justify-center gap-6'>
-        {plans.map((plan, index) => (
-          <Card key={index} className={`mb-10 mt-12 w-80 rounded-xl border-2 shadow-sm`}>
+        {membershipData?.map((membership) => (
+          <Card key={membership.id} className={`mb-10 mt-12 w-72 rounded-xl border-2 shadow-sm`}>
             <div className='mb-4 flex items-center justify-between'>
               <div>
-                <Text className='text-lg font-semibold'>{plan.name}</Text>
+                <Text className='text-lg font-semibold'>{membership.name}</Text>
                 <Title level={5} className='m-0 text-lg font-semibold text-gray-500'>
-                  {plan.price}
+                  {membership.price}đ{membership.name !== 'Free' ? ' / ' + membership.durationDays + ' days' : ''}
                 </Title>
               </div>
-              {plan.icon}
+              {membership.name === 'Free' && <StarOutlined className='text-2xl text-yellow-500' />}
+              {membership.name === 'Standard' && <CrownOutlined className='text-2xl text-blue-500' />}
+              {membership.name === 'Premium' && <RocketOutlined className='text-2xl text-purple-500' />}
             </div>
-            <Text className='mt-2 block text-sm text-gray-500'>{plan.description}</Text>
+            <Text className='mt-2 block text-sm text-gray-500'>{membership.description}</Text>
 
-            <Tooltip title={plan.buttonDisabled ? 'Bạn đang sử dụng gói này' : ''}>
+            <Tooltip title='Bạn đang sử dụng gói này'>
               <Button
-                type={plan.buttonDisabled ? 'default' : 'primary'}
-                disabled={plan.buttonDisabled}
+                // type={plan.buttonDisabled ? 'default' : 'primary'}
+                // disabled={plan.buttonDisabled}
                 block
                 size='middle'
                 className='mb-4 mt-4 font-semibold'
               >
-                {plan.buttonText}
+                {membership.name === 'Free' && 'Gói hiện tại của bản'}
+                {membership.name === 'Standard' && 'Nâng lên gói Tiêu chuẩn'}
+                {membership.name === 'Premium' && 'Nâng lên gói Cao cấp'}
               </Button>
             </Tooltip>
 
             <ul className='mb-4 space-y-2 p-0'>
-              {plan.features.map((feature, featureIndex) => (
-                <li key={featureIndex} className='flex items-start'>
-                  <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
-                  <Text className='text-sm'>{feature}</Text>
-                </li>
-              ))}
+              {membership.name === 'Free' && (
+                <>
+                  <li className='flex items-start'>
+                    <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
+                    <Text className='text-sm'>Tìm kiếm, đăng bài và nhiều tính năng khác</Text>
+                  </li>
+                </>
+              )}
+              {membership.name === 'Standard' && (
+                <>
+                  <li className='flex items-start'>
+                    <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
+                    <Text className='text-sm'>Tất cả tính năng của gói Cơ bản</Text>
+                  </li>
+                  <li className='flex items-start'>
+                    <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
+                    <Text className='text-sm'>Tăng hiệu suất, khả năng tiếp cận người dùng</Text>
+                  </li>
+                </>
+              )}
+              {membership.name === 'Premium' && (
+                <>
+                  <li className='flex items-start'>
+                    <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
+                    <Text className='text-sm'>Tất cả tính năng của gói Tiêu chuẩn</Text>
+                  </li>
+                  <li className='flex items-start'>
+                    <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
+                    <Text className='text-sm'>Hỗ trợ khách hàng nâng cao</Text>
+                  </li>
+                </>
+              )}
+              <li className='flex items-start'>
+                <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
+                <Text className='text-sm'>
+                  Ưu tiên bài đăng: <span className='font-bold'>{membership.priority} lượt</span>
+                </Text>
+              </li>
+              <li className='flex items-start'>
+                <CheckOutlined className='mr-2 mt-1 flex-shrink-0 text-green-500' />
+                <Text className='text-sm'>
+                  Làm mới bài đăng: <span className='font-bold'>{membership.refresh} lượt</span>
+                </Text>
+              </li>
             </ul>
 
-            {index === 0 && (
+            {membership.id === 1 && (
               <Text className='block text-xs text-gray-500'>
                 Hiện tại bạn có kế hoạch rồi? Xem{' '}
                 <Link
