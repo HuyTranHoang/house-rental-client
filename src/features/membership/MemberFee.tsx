@@ -61,9 +61,9 @@ export function MemberFee() {
 
   return (
     <>
-      <Row gutter={32} justify='center' className='mb-10 mt-12 px-24'>
+      <Row gutter={32} justify='center' className='mb-10 mt-12 md:px-24'>
         {membershipData?.map((membership) => (
-          <Col key={membership.id} xs={24} sm={12} md={8}>
+          <Col key={membership.id} xs={24} sm={12} md={8} className='my-2 md:my-0'>
             <MembershipCard
               membership={membership}
               isCurrentMembership={membership.id === userMembership?.membershipId}
