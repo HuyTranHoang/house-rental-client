@@ -1,6 +1,7 @@
 import GradientButton from '@/components/GradientButton'
 import ROUTER_NAMES from '@/constant/routerNames'
 import useAuthStore from '@/features/auth/authStore'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { User } from '@/models/user.type'
 import { AntDesignOutlined, FacebookFilled, GoogleCircleFilled, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
@@ -8,7 +9,6 @@ import { Button, Checkbox, Col, Divider, Flex, Form, Input, Row, Space, Typograp
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import './Login.css'
-import axiosInstance from '@/inteceptor/axiosInstance.ts'
 
 type LoginFormType = {
   username: string
@@ -39,7 +39,14 @@ export default function Login() {
       }
 
       loginSuccess(payload.user, payload.token)
-      navigate(redirectTo)
+
+      const redirectUrl = localStorage.getItem('redirectMembership')
+      if (redirectUrl) {
+        localStorage.removeItem('redirectMembership')
+        navigate(ROUTER_NAMES.MEMBERSHIP_FEE)
+      } else {
+        navigate(redirectTo)
+      }
     },
     onError: (error) => {
       // Toast đã handle trong interceptor rồi

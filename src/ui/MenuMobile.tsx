@@ -28,7 +28,7 @@ const navData = [
   },
   {
     key: ROUTER_NAMES.MEMBERSHIP_FEE,
-    label: 'Phí thành viên',
+    label: 'Gói thành viên',
     navigate: ROUTER_NAMES.MEMBERSHIP_FEE,
     icon: <CreditCardOutlined className='text-base' />
   },
