@@ -7,7 +7,8 @@ type AuthStore = {
   loginSuccess: (user: User, token: string) => void
   logout: () => void
   updateProfile: (user: User) => void
-  updateUserBalance: (amount: number) => void
+  incrementUserBalance: (amount: number) => void
+  deincrementUserBalance: (amount: number) => void
   haveDeleteReviewPrivilege: boolean
 }
 
@@ -20,10 +21,17 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
   logout: () => set({ user: null, token: null }),
   updateProfile: (user) => set({ user }),
-  updateUserBalance: (amount) =>
+  incrementUserBalance: (amount) =>
     set((state) => {
       if (state.user) {
         return { user: { ...state.user, balance: state.user.balance + amount } }
+      }
+      return state
+    }),
+  deincrementUserBalance: (amount) =>
+    set((state) => {
+      if (state.user) {
+        return { user: { ...state.user, balance: state.user.balance - amount } }
       }
       return state
     }),

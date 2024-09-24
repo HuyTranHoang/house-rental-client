@@ -44,7 +44,7 @@ const Deposit = () => {
   const [rawCustomAmount, setRawCustomAmount] = useState<number | null>(null)
 
   const currentUser = useAuthStore((state) => state.user)
-  const updateUserBalance = useAuthStore((state) => state.updateUserBalance)
+  const updateUserBalance = useAuthStore((state) => state.incrementUserBalance)
 
   const { data: transaction } = useGetTransaction(transactionId)
 
