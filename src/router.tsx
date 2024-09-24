@@ -25,7 +25,7 @@ import TestPage from './pages/TestPage.tsx'
 import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
-import MemberFee from './features/membership/MemberFee.tsx'
+import { MemberFee } from '@/features/membership/MemberFee.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {

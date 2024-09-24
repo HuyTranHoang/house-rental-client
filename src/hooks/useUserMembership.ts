@@ -7,10 +7,10 @@ interface UpdateMembershipParams {
   }
   
 
-export const useUserMembership = (userId: number) => {
+export const useUserMembership = (userId: number | undefined) => {
   return useQuery({
     queryKey: ['userMembership', userId],
-    queryFn: () => fetchByUserId(userId),
+    queryFn: () => fetchByUserId(userId!),
     enabled: !!userId,
   });
 };
