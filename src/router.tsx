@@ -25,7 +25,7 @@ import TestPage from './pages/TestPage.tsx'
 import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
-import MemberFee from './pages/MemberFee.tsx'
+import MemberFee from './features/membership/MemberFee.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -37,10 +37,6 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
           {
             path: ROUTER_NAMES.TOP_UP,
             element: <Deposit />
-          },
-          {
-            path: ROUTER_NAMES.MEMBERSHIP_FEE,
-            element: <MemberFee />
           },
           {
             path: ROUTER_NAMES.PAYMENT_SUCCESS,
@@ -120,6 +116,10 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
         path: ROUTER_NAMES.RENT_HOUSE,
         element: <RentHouse />,
         breadcrumb: 'Tìm thuê'
+      },
+      {
+        path: ROUTER_NAMES.MEMBERSHIP_FEE,
+        element: <MemberFee />
       },
       {
         element: <ProtectedRoute />,

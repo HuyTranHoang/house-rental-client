@@ -7,12 +7,14 @@ import { CheckOutlined, CrownOutlined, RocketOutlined, StarOutlined } from '@ant
 import { Button, Card, Modal, Spin, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import MembershipCard from './MembershipCard'
 const { Text, Title } = Typography
 
 function MemberFee() {
   const navigate = useNavigate()
   const currentUser = useAuthStore((state) => state.user)
-  const { data: userMembership } = useUserMembership(currentUser!.id)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: userMembership } = currentUser ? useUserMembership(currentUser.id) : { data: null };
   const { membershipData, membershipIsLoading, membershipIsError } = useMemberships()
   const [confirmModal, setConfirmModal] = useState(false)
   const [selectedMembership, setSelectedMembership] = useState<Membership | null>(null)
@@ -48,12 +50,13 @@ function MemberFee() {
   }
 
   if (membershipIsError) {
-    return <div>Đã xảy ra lỗi khi lấy dữ liệu gói thành viên.</div>
+    return <Text>Đã xảy ra lỗi khi lấy dữ liệu gói thành viên.</Text>
   }
   return (
     <>
       <Container>
-        <div className='flex flex-wrap justify-center gap-6'>
+      {currentUser ? (
+        <div className='flex flex-wrap justify-center gap-1'>
           {membershipData?.map((membership) => (
             <Card key={membership.id} className={`mb-10 mt-12 w-72 rounded-xl border-2 shadow-sm`}>
               <div className='mb-4 flex items-center justify-between'>
@@ -150,24 +153,12 @@ function MemberFee() {
                   </Text>
                 </li>
               </ul>
-
-              {/* {membership.id === 1 && (
-              <Text className='block text-xs text-gray-500'>
-                Hiện tại bạn có kế hoạch rồi? Xem{' '}
-                <Link
-                  href='https://help.openai.com/en/collections/3943089-billing'
-                  target='_blank'
-                  className='font-semibold'
-                >
-                  trợ giúp thanh toán
-                </Link>
-              </Text>
-            )} */}
             </Card>
           ))}
         </div>
+      ) : <MembershipCard memberships={membershipData}/>}
       </Container>
-      <Modal title='Xác nhận nâng cấp' visible={confirmModal} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title='Xác nhận nâng cấp' open={confirmModal} onOk={handleOk} onCancel={handleCancel}>
         <p>Bạn có chắc chắn muốn nâng cấp lên gói {selectedMembership?.name} không?</p>
       </Modal>
     </>
