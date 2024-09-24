@@ -1,16 +1,16 @@
-
-
 export interface UserMembership {
     id: number
     userId: number
+    username: string
     membershipId: number
-    priorityLimit: number
-    refreshLimit: number
-    priorityUsed: number
-    refreshUsed: number
-    status: UserMembershipStatus
+    membershipName: string
     startDate: string
     endDate: string
+    totalPriorityLimit: number
+    totalRefreshLimit: number
+    priorityPostsUsed: number
+    refreshesPostsUsed: number
+    status: UserMembershipStatus
 }
 
 export enum UserMembershipStatus {

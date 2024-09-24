@@ -48,7 +48,7 @@ export function MembershipCard({ membership, isCurrentMembership, onUpgrade, isL
       <Text className="mt-2 block flex-grow text-sm text-gray-500">{description}</Text>
 
       <div className="mt-auto">
-        <Tooltip title={isCurrentMembership ? 'Bạn đang sử dụng gói này' : 'Nâng cấp gói'}>
+        <Tooltip title={isCurrentMembership ? 'Gia hạn' : 'Nâng cấp gói'}>
           <Button
             type="primary"
             disabled={name === 'Free' || (!isLoggedIn && name !== 'Free')}
