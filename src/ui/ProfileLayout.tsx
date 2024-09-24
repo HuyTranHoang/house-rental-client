@@ -40,6 +40,7 @@ import {
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
 
 const { Text, Title } = Typography
 
@@ -117,17 +118,7 @@ export default function ProfileLayout() {
   const currentPath = location.pathname
 
   const membershipName = membershipData ? membershipData.find((m) => m.id === membership?.id)?.name : 'Đang tải...'
-
-  const calculateRemainingDays = () => {
-    if (!membership) return 0
-
-    const endDate = new Date(membership.endDate)
-    const today = new Date()
-    const diffTime = endDate.getTime() - today.getTime()
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  }
-
-  const remainingDays = calculateRemainingDays()
+  const remainingDays = calculateMembershipRemainingDays(membership)
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'dangXuat') {
