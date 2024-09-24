@@ -1,60 +1,18 @@
+import useAuthStore from '@/features/auth/authStore'
 import { useMemberships } from '@/hooks/useMembership'
+import { useUserMembership } from '@/hooks/useUserMembership'
 import Container from '@/ui/Container'
 import { CheckOutlined, CrownOutlined, RocketOutlined, StarOutlined } from '@ant-design/icons'
 import { Button, Card, Spin, Tooltip, Typography } from 'antd'
-
 const { Text, Link, Title } = Typography
 
-const plans = [
-  {
-    name: 'Miễn phí',
-    price: '0₫/tháng',
-    description: 'Cùng khám phá sự hỗ trợ của AI trong các công việc hằng ngày của bạn',
-    icon: <StarOutlined className='text-2xl text-yellow-500' />,
-    features: [
-      'Hỗ trợ viết, giải quyết vấn đề và nhiều tính năng khác',
-      'Truy cập vào GPT-4o mini',
-      'Quyền truy cập hạn chế vào GPT‑4o',
-      'Truy cập hạn chế vào phân tích dữ liệu, tải lên tệp, thị giác, duyệt web và tạo hình ảnh',
-      'Sử dụng GPT tùy chỉnh'
-    ],
-    buttonText: 'Kế hoạch hiện tại của bạn',
-    buttonDisabled: true
-  },
-  {
-    name: 'Tiêu chuẩn',
-    price: '200.000₫/tháng',
-    description: 'Trải nghiệm đầy đủ các tính năng AI với tốc độ cao',
-    icon: <CrownOutlined className='text-2xl text-blue-500' />,
-    features: [
-      'Tất cả các tính năng của gói Miễn phí',
-      'Truy cập đầy đủ vào GPT-4o',
-      'Tốc độ phản hồi nhanh hơn',
-      'Ưu tiên truy cập vào các tính năng mới',
-      'Hỗ trợ khách hàng nâng cao'
-    ],
-    buttonText: 'Nâng cấp lên Tiêu chuẩn',
-    buttonDisabled: false
-  },
-  {
-    name: 'Cao cấp',
-    price: '500.000₫/tháng',
-    description: 'Giải pháp AI tối ưu cho doanh nghiệp và chuyên gia',
-    icon: <RocketOutlined className='text-2xl text-purple-500' />,
-    features: [
-      'Tất cả các tính năng của gói Tiêu chuẩn',
-      'Tốc độ xử lý cực nhanh',
-      'Tùy chỉnh AI theo nhu cầu riêng',
-      'Tích hợp API nâng cao',
-      'Hỗ trợ kỹ thuật 24/7'
-    ],
-    buttonText: 'Nâng cấp lên Cao cấp',
-    buttonDisabled: false
-  }
-]
 
 function MemberFee() {
+  const currentUser = useAuthStore((state) => state.user)
+  const { data: userMembership} = useUserMembership(currentUser!.id);
   const { membershipData, membershipIsLoading, membershipIsError } = useMemberships()
+
+
 
   if (membershipIsLoading) {
     return (
@@ -85,10 +43,10 @@ function MemberFee() {
             </div>
             <Text className='mt-2 block text-sm text-gray-500'>{membership.description}</Text>
 
-            <Tooltip title='Bạn đang sử dụng gói này'>
+            <Tooltip title={membership.name === 'Free' ? 'Bạn đang sử dụng gói này' : 'Nâng cấp gói'}>
               <Button
-                // type={plan.buttonDisabled ? 'default' : 'primary'}
-                // disabled={plan.buttonDisabled}
+                type='primary'
+                disabled={membership.id === userMembership?.id}
                 block
                 size='middle'
                 className='mb-4 mt-4 font-semibold'
@@ -146,7 +104,7 @@ function MemberFee() {
               </li>
             </ul>
 
-            {membership.id === 1 && (
+            {/* {membership.id === 1 && (
               <Text className='block text-xs text-gray-500'>
                 Hiện tại bạn có kế hoạch rồi? Xem{' '}
                 <Link
@@ -157,7 +115,7 @@ function MemberFee() {
                   trợ giúp thanh toán
                 </Link>
               </Text>
-            )}
+            )} */}
           </Card>
         ))}
       </div>
