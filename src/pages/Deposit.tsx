@@ -1,4 +1,4 @@
-import { createTransaction, getTransaction } from '@/api/transaction.api.ts'
+import { createTransactionDeposit, getTransaction } from '@/api/transaction.api.ts'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import useAuthStore from '@/features/auth/authStore.ts'
 import { TransactionStatus } from '@/models/transaction.type.ts'
@@ -49,7 +49,7 @@ const Deposit = () => {
   const { data: transaction } = useGetTransaction(transactionId)
 
   const { mutate: createTransactionMutation } = useMutation({
-    mutationFn: createTransaction,
+    mutationFn: createTransactionDeposit,
     onSuccess: (response) => {
       if (!response) return
 
