@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import './post-property.css'
 
+
 export interface OriginFileObj extends Blob {
   uid: string
 }
@@ -172,11 +173,11 @@ export default function PostProperty() {
         <Row className='overflow-hidden rounded-lg bg-gray-50'>
           {current < 6 && (
             <>
-              <Col span={8} className='border-0 border-r border-solid border-gray-200 p-6 shadow-md'>
+              <Col xs={24} md={8} className='border-0 border-r border-solid border-gray-200 p-6 shadow-md'>
                 <Steps current={current} direction='vertical' items={stepItems} />
               </Col>
-              <Col span={16} className='bg-white p-6'>
-                <Flex vertical className='min-h-[400px]'>
+              <Col xs={24} md={16} className='bg-white p-6'>
+                <Flex vertical className='min-h-[400px] border-r'>
                   {current === 0 && <PostPropertyRoomType form={form} />}
                   {current === 1 && <PostPropertyLocation form={form} />}
                   {current === 2 && <PostPropertyDetail form={form} />}
@@ -186,8 +187,13 @@ export default function PostProperty() {
 
                   <Flex className='mt-auto pt-8'>
                     {current <= stepItems.length && (
-                      <Space>
-                        <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
+                      <Space direction="vertical" style={{ width: '100%' }}>
+                        <Button
+                          onClick={handlePrev}
+                          icon={<StepBackwardOutlined />}
+                          danger
+                          disabled={current === 0}
+                          className='mt-3 mb-2 w-full md:mb-0 md:w-32'>
                           Quay lại
                         </Button>
                         <Button
@@ -196,10 +202,10 @@ export default function PostProperty() {
                           iconPosition='end'
                           type='primary'
                           disabled={current === stepItems.length - 1}
-                        >
+                          className='mt-3 mb-6 w-full md:mb-0 md:w-32'>
                           Tiếp tục
                         </Button>
-                      </Space>
+                    </Space>
                     )}
 
                     {current === stepItems.length - 1 && (
@@ -220,7 +226,7 @@ export default function PostProperty() {
           )}
 
           {current > stepItems.length && (
-            <Col span={24}>
+            <Col xs={24} md={24}>
               <PostPropertySuccess setCurrent={setCurrent} />
             </Col>
           )}
