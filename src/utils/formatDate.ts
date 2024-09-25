@@ -33,7 +33,7 @@ export function formatDateWithTime(createdAt: string | undefined): string {
 }
 
 export const calculateMembershipRemainingDays = (membership: UserMembership | undefined) => {
-  if (!membership) return 0
+  if (!membership || !membership.endDate) return 0
 
   const endDate = new Date(membership.endDate)
   const today = new Date()

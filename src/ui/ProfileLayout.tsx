@@ -1,10 +1,10 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs'
 import ROUTER_NAMES from '@/constant/routerNames'
 import useAuthStore from '@/features/auth/authStore'
-import { useMemberships } from '@/hooks/useMembership.ts'
 import { useUserMembership } from '@/hooks/useUserMembership.ts'
 import axiosInstance from '@/inteceptor/axiosInstance'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
 import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber'
 import {
   ClockCircleOutlined,
@@ -40,7 +40,6 @@ import {
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
 
 const { Text, Title } = Typography
 
@@ -110,14 +109,12 @@ export default function ProfileLayout() {
   const navigate = useNavigate()
   const currentUser = useAuthStore((state) => state.user)
   const { data: membership } = useUserMembership(currentUser?.id)
-  const { membershipData } = useMemberships()
   const logout = useAuthStore((state) => state.logout)
   const updateProfile = useAuthStore((state) => state.updateProfile)
 
   const location = useLocation()
   const currentPath = location.pathname
 
-  const membershipName = membershipData ? membershipData.find((m) => m.id === membership?.id)?.name : 'Đang tải...'
   const remainingDays = calculateMembershipRemainingDays(membership)
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
@@ -224,7 +221,7 @@ export default function ProfileLayout() {
                       <div className='flex items-center'>
                         <CrownOutlined className='mr-2 text-lg text-yellow-500' />
                         <Text>
-                          Loại tài khoản: <strong>{membershipName}</strong>
+                          Loại tài khoản: <strong>{membership.membershipName}</strong>
                         </Text>
                       </div>
                       <div className='space-y-2'>
@@ -233,13 +230,17 @@ export default function ProfileLayout() {
                             <ClockCircleOutlined className='mr-2' />
                             Thời hạn còn lại:
                           </Text>
-                          <Text strong>{remainingDays} ngày</Text>
+                          {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
+                          {remainingDays > 0 && <Text strong>{remainingDays} ngày</Text>}
                         </div>
-                        <Progress
-                          strokeColor={twoColors}
-                          percent={Math.round((remainingDays / 30) * 100)}
-                          showInfo={false}
-                        />
+                        {remainingDays <= 0 && <Progress strokeColor={twoColors} percent={100} showInfo={false} />}
+                        {remainingDays > 0 && (
+                          <Progress
+                            strokeColor={twoColors}
+                            percent={Math.round((remainingDays / 30) * 100)}
+                            showInfo={false}
+                          />
+                        )}
                         <div className='flex items-center justify-between'>
                           <Text>
                             <ReloadOutlined className='mr-2' />
