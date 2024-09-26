@@ -1,5 +1,5 @@
 import ErrorFetching from '@/components/ErrorFetching.tsx'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import PostManagementTable from '@/features/post-management/PostManagementTable.tsx'
 import { usePropertiesByUserId } from '@/hooks/useProperty.ts'
 import { PropertyDataSource, PropertyStatus } from '@/models/property.type.ts'

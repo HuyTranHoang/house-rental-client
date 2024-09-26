@@ -1,6 +1,6 @@
 import { updateUserProfileApi } from '@/api/user.api.ts'
 import GradientButton from '@/components/GradientButton.tsx'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { useUserMembership } from '@/hooks/useUserMembership.ts'
 import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
 import { AntDesignOutlined, ClockCircleOutlined, CrownOutlined, ReloadOutlined } from '@ant-design/icons'

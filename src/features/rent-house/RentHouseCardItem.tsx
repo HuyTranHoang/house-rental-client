@@ -1,9 +1,10 @@
 import FavoriteButton from '@/components/FavoriteButton.tsx'
 import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { Property } from '@/models/property.type.ts'
+import useAuthStore from '@/store/authStore.ts'
+import usePropertyStore from '@/store/propertyStore.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
 import { CalendarOutlined } from '@ant-design/icons'
@@ -23,6 +24,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
   const slug = slugify(property.title, { lower: true, locale: 'vi' }) + '-' + property.id
+  const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
   const thumbnailImage = property.thumbnailUrl
     ? {
@@ -34,7 +36,10 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   return (
     <Card
       className='mb-2 mr-0 cursor-pointer md:mr-4'
-      onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(slug))}
+      onClick={() => {
+        setBreadcrumbName(property.title)
+        navigate(ROUTER_NAMES.getRentHouseDetail(slug))
+      }}
     >
       <Row gutter={24}>
         <Col xs={24} md={8}>

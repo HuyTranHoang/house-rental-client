@@ -1,5 +1,5 @@
 import ROUTER_NAMES from '@/constant/routerNames'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { useFavoritePropertyByUserId, useRemoveFavorite } from '@/hooks/useFavorite'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { formatDate } from '@/utils/formatDate'

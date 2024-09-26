@@ -28,6 +28,7 @@ import TestPage from './pages/TestPage.tsx'
 import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
+import { PropertyDetailBreadcrumb } from '@/utils/breadcrumbFormat.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -69,7 +70,7 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
       {
         path: ROUTER_NAMES.PROPERTY_DETAIL,
         element: <PropertyDetail />,
-        breadcrumb: 'Chi tiết bài đăng'
+        breadcrumb: PropertyDetailBreadcrumb
       },
       {
         path: ROUTER_NAMES.LOGIN,

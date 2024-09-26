@@ -1,6 +1,6 @@
 import { createTransactionDeposit, getTransaction } from '@/api/transaction.api.ts'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { TransactionStatus } from '@/models/transaction.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { LoadingOutlined, RocketOutlined } from '@ant-design/icons'

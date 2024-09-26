@@ -1,6 +1,6 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs'
 import ROUTER_NAMES from '@/constant/routerNames'
-import useAuthStore from '@/features/auth/authStore'
+import useAuthStore from '@/store/authStore.ts'
 import { useUserMembership } from '@/hooks/useUserMembership.ts'
 import axiosInstance from '@/inteceptor/axiosInstance'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'

@@ -1,6 +1,6 @@
 import CustomIndicator from '@/components/CustomIndicator.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { MembershipCard } from '@/features/membership/MembershipCard.tsx'
 import { useMemberships } from '@/hooks/useMembership.ts'
 import { useCreateTransactionWithDrawal } from '@/hooks/useTransaction'

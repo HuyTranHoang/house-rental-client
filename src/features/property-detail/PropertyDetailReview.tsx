@@ -1,4 +1,4 @@
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { useCreateReview, useDeleteReview, useReview } from '@/hooks/useReview'
 import { Review, ReviewFieldType } from '@/models/review.type'
 import { formatDate } from '@/utils/formatDate'

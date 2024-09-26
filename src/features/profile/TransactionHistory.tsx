@@ -1,4 +1,4 @@
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { useUserTransactionHistory } from '@/hooks/useTransaction.ts'
 import { TransactionDataSource, TransactionStatus, TransactionType } from '@/models/transaction.type.ts'
 import { FilterOutlined } from '@ant-design/icons'

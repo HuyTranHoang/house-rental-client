@@ -1,4 +1,4 @@
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import PostPropertyDescription from '@/features/post-property/PostPropertyDescription'
 import PostPropertyDetail from '@/features/post-property/PostPropertyDetail'
 import PostPropertyImage from '@/features/post-property/PostPropertyImage'

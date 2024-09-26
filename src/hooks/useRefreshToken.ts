@@ -1,4 +1,4 @@
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { User } from '@/models/user.type.ts'
 import { delay } from '@/utils/delay.ts'

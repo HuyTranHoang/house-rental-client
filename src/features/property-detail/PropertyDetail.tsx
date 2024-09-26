@@ -1,11 +1,11 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { useProperty } from '@/hooks/useProperty'
 import { useUser } from '@/hooks/useUser'
+import useAuthStore from '@/store/authStore.ts'
 import Container from '@/ui/Container.tsx'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate, formatJoinedDate } from '@/utils/formatDate.ts'
@@ -94,12 +94,6 @@ const NextButton = styled(Button)`
   }
 `
 
-const StickyDiv = styled('div')`
-  position: sticky;
-  top: 24px;
-  z-index: 1000;
-`
-
 function PropertyDetail() {
   const navigate = useNavigate()
 
@@ -167,7 +161,9 @@ function PropertyDetail() {
 
         <Col span={8}>
           <Space className='mb-3 mt-5'>
-            <PrevButton size='small'>Về danh sách</PrevButton>
+            <PrevButton size='small' onClick={() => navigate(ROUTER_NAMES.RENT_HOUSE)}>
+              Về danh sách
+            </PrevButton>
             <NextButton size='small'>Tin tiếp</NextButton>
           </Space>
         </Col>
@@ -241,7 +237,7 @@ function PropertyDetail() {
         </Col>
 
         <Col span={8}>
-          <StickyDiv>
+          <div className='sticky z-10 top-6'>
             <Card loading={userIsLoading}>
               {userData && (
                 <>
@@ -325,7 +321,7 @@ function PropertyDetail() {
                 Lưu tin
               </Button>
             </ConfigProvider>
-          </StickyDiv>
+          </div>
         </Col>
       </Row>
     </Container>

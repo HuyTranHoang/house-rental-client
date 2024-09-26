@@ -1,6 +1,6 @@
 import GradientButton from '@/components/GradientButton'
 import ROUTER_NAMES from '@/constant/routerNames'
-import useAuthStore from '@/features/auth/authStore'
+import useAuthStore from '@/store/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { User } from '@/models/user.type'
 import { AntDesignOutlined, FacebookFilled, GoogleCircleFilled, LockOutlined, UserOutlined } from '@ant-design/icons'

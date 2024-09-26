@@ -3,7 +3,7 @@ import MenuDesktop from '@/ui/MenuDesktop.tsx'
 import MenuMobile from '@/ui/MenuMobile.tsx'
 import { Flex } from 'antd'
 import { Link } from 'react-router-dom'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 
 function Navbar() {
   const currentUser = useAuthStore((state) => state.user)
