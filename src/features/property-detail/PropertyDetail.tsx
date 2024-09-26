@@ -49,7 +49,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import PropertyDetailReview from './PropertyDetailReview'
+import PropertyDetailComment from './PropertyDetailComment.tsx'
 
 const PrevButton = styled(Button)`
   border: 0;
@@ -231,7 +231,7 @@ function PropertyDetail() {
 
               <Divider />
 
-              <PropertyDetailReview propertyId={id} />
+              <PropertyDetailComment propertyId={id} />
             </section>
           )}
         </Col>

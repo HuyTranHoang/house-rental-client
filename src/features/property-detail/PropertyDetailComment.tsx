@@ -12,11 +12,11 @@ interface PropertyDetailReviewProps {
   propertyId: string | undefined
 }
 
-function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
+function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(5)
   const [open, setOpen] = useState(false)
-  const [currentReview, setCurrentReview] = useState<Comment | undefined>(undefined)
+  const [currentComment, setcurrentComment] = useState<Comment | undefined>(undefined)
   const haveDeleteReviewPrivilege = useAuthStore((state) => state.haveDeleteReviewPrivilege)
 
   const [form] = Form.useForm()
@@ -41,13 +41,13 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
                 </Typography.Text>
 
                 {haveDeleteReviewPrivilege && (
-                  <Tooltip title='Xóa đánh giá'>
+                  <Tooltip title='Xóa bình luận'>
                     <Button
                       type='text'
                       danger
                       icon={<DeleteOutlined />}
                       onClick={() => {
-                        setCurrentReview(review)
+                        setcurrentComment(review)
                         setOpen(true)
                       }}
                     />
@@ -68,7 +68,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
   return (
     <>
       <Typography.Title level={4} className='mt-2'>
-        Đánh giá
+        Bình luận
       </Typography.Title>
       {reviewListData.length > 0 ? (
         <List
@@ -89,39 +89,39 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           )}
         />
       ) : (
-        <Typography.Text type='secondary'>Chưa có đánh giá nào cho bất động sản này!!!</Typography.Text>
+        <Typography.Text type='secondary'>Chưa có bình luận nào cho bất động sản này!!!</Typography.Text>
       )}
 
       <Typography.Title level={5}>
-        Để lại đánh giá <CommentOutlined />
+        Để lại bình luận <CommentOutlined />
       </Typography.Title>
       <Form form={form} layout='vertical' name='feedbackForm' autoComplete='off' onFinish={onFinish}>
         <Form.Item<CommentFieldType>
           name='comment'
           validateTrigger={['onBlur']}
           rules={[
-            { required: true, message: 'Vui lòng nhập đánh giá của bạn' },
+            { required: true, message: 'Vui lòng nhập bình luận của bạn' },
             {
               min: 10,
-              message: 'Đánh giá phải có ít nhất 10 ký tự'
+              message: 'Bình luận phải có ít nhất 10 ký tự'
             },
             {
               max: 500,
-              message: 'Đánh giá không được vượt quá 500 ký tự'
+              message: 'Bình luận không được vượt quá 500 ký tự'
             }
           ]}
         >
-          <TextArea rows={4} placeholder='Đánh giá của bạn về bất động sản này...' />
+          <TextArea rows={4} placeholder='Bình luận của bạn về bất động sản này...' />
         </Form.Item>
 
         <Form.Item>
           <Button type='primary' htmlType='submit' loading={createCommentIsPending}>
-            Gửi đánh giá
+            Gửi bình luận
           </Button>
         </Form.Item>
       </Form>
 
-      {currentReview && (
+      {currentComment && (
         <Modal
           title={
             <Flex vertical align='center'>
@@ -135,17 +135,17 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           }
           open={open}
           onOk={() => {
-            deleteComment(currentReview.id)
+            deleteComment(currentComment.id)
             setOpen(false)
-            setCurrentReview(undefined)
+            setcurrentComment(undefined)
           }}
           onCancel={() => setOpen(false)}
-          okText='Xóa đánh giá'
+          okText='Xóa bình luận'
           cancelText='Quay lại'
           okButtonProps={{ className: 'bg-red-500 hover:bg-red-400 hover:border-red-600' }}
         >
           <Typography.Paragraph className='mb-1 mt-2'>
-            Bạn có chắc chắn muốn xóa đánh giá của <span className='font-semibold'>{currentReview.userName}</span>?
+            Bạn có chắc chắn muốn xóa bình luận của <span className='font-semibold'>{currentComment.userName}</span>?
           </Typography.Paragraph>
 
           <Typography.Paragraph className='mb-0 text-gray-500'>
@@ -157,4 +157,4 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
   )
 }
 
-export default PropertyDetailReview
+export default PropertyDetailComment
