@@ -10,7 +10,7 @@ import { formatDate } from '@/utils/formatDate.ts'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Card, Col, Flex, Row, Space, Tag, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import slugify from 'slugify'
+import { generateSlug } from '@/utils/generateSlug.ts'
 
 interface RentHouseCardItemProps {
   property: Property
@@ -23,7 +23,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
-  const slug = slugify(property.title, { lower: true, locale: 'vi' }) + '-' + property.id
+  const slug = generateSlug(property.title, property.id)
   const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
   const thumbnailImage = property.thumbnailUrl
