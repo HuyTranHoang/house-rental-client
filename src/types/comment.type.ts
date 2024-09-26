@@ -11,6 +11,5 @@ export interface Comment {
 
 export interface CommentFieldType {
   propertyId: number
-  rating: number
   comment: string
 }

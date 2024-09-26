@@ -1,14 +1,12 @@
+import { useComments, useCreateComment, useDeleteComment } from '@/hooks/useComment.ts'
 import useAuthStore from '@/store/authStore.ts'
-import { useCreateReview, useDeleteReview, useReview } from '@/hooks/useReview'
 import { Comment, CommentFieldType } from '@/types/comment.type.ts'
 import { formatDate } from '@/utils/formatDate'
 import { CalendarOutlined, CommentOutlined, DeleteOutlined, WarningOutlined } from '@ant-design/icons'
-import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Rate, Space, Tooltip, Typography } from 'antd'
+import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
 
 const { TextArea } = Input
-
-const ratingDesc = ['Rất tệ 😭', 'Tệ 😢', 'Bình thường 😊', 'Tốt 😀', 'Tuyệt vời! 😆']
 
 interface PropertyDetailReviewProps {
   propertyId: string | undefined
@@ -23,9 +21,9 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
 
   const [form] = Form.useForm()
 
-  const { reviewData, reviewIsLoading } = useReview(Number(propertyId), pageNumber, pageSize)
-  const { createReview, createReviewIsPending } = useCreateReview()
-  const { deleteReview, deleteReviewIsPending } = useDeleteReview()
+  const { reviewData, reviewIsLoading } = useComments(Number(propertyId), pageNumber, pageSize)
+  const { createComment, createCommentIsPending } = useCreateComment()
+  const { deleteComment, deleteCommentIsPending } = useDeleteComment()
 
   const reviewListData = reviewData
     ? [
@@ -33,12 +31,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           avatar: review.userAvatar
             ? review.userAvatar
             : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.userId}`,
-          title: (
-            <Space size='large'>
-              <Typography.Text strong>{review.userName}</Typography.Text>
-              <Rate disabled value={review.rating} />
-            </Space>
-          ),
+          title: <Typography.Text strong>{review.userName}</Typography.Text>,
           description: (
             <Flex vertical>
               <Typography.Text>{review.comment}</Typography.Text>
@@ -68,7 +61,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
     : []
 
   const onFinish: FormProps<CommentFieldType>['onFinish'] = (values) => {
-    createReview({ ...values, propertyId: Number(propertyId) })
+    createComment({ ...values, propertyId: Number(propertyId) })
     form.resetFields()
   }
 
@@ -88,7 +81,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
             onChange: (page) => setPageNumber(page)
           }}
           dataSource={reviewListData}
-          loading={reviewIsLoading || createReviewIsPending || deleteReviewIsPending}
+          loading={reviewIsLoading || createCommentIsPending || deleteCommentIsPending}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta avatar={<Avatar src={item.avatar} />} title={item.title} description={item.description} />
@@ -105,6 +98,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
       <Form form={form} layout='vertical' name='feedbackForm' autoComplete='off' onFinish={onFinish}>
         <Form.Item<CommentFieldType>
           name='comment'
+          validateTrigger={['onBlur']}
           rules={[
             { required: true, message: 'Vui lòng nhập đánh giá của bạn' },
             {
@@ -120,16 +114,8 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           <TextArea rows={4} placeholder='Đánh giá của bạn về bất động sản này...' />
         </Form.Item>
 
-        <Form.Item<CommentFieldType>
-          name='rating'
-          label='Số sao đánh giá'
-          rules={[{ required: true, message: 'Vui lòng chọn số sao đánh giá!' }]}
-        >
-          <Rate allowClear={false} tooltips={ratingDesc} />
-        </Form.Item>
-
         <Form.Item>
-          <Button type='primary' htmlType='submit' loading={createReviewIsPending}>
+          <Button type='primary' htmlType='submit' loading={createCommentIsPending}>
             Gửi đánh giá
           </Button>
         </Form.Item>
@@ -149,7 +135,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           }
           open={open}
           onOk={() => {
-            deleteReview(currentReview.id)
+            deleteComment(currentReview.id)
             setOpen(false)
             setCurrentReview(undefined)
           }}
