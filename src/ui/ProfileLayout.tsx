@@ -164,7 +164,7 @@ export default function ProfileLayout() {
           <CustomBreadcrumbs />
         </div>
       </Col>
-      <Col xs={0} md={8} lg={6} className='mb-12 p-0 shadow-md'>
+      <Col xs={0} md={8} lg={6} className='mb-12 p-0 shadow-md bg-white'>
         <Card className='rounded-none'>
           <div className='flex flex-col items-center'>
             <div className='flex justify-center'>
