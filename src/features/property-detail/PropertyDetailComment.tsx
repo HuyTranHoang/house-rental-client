@@ -76,7 +76,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
             total: reviewData?.pageInfo.totalElements,
             pageSize: pageSize,
             current: pageNumber,
-            showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} đánh giá`,
+            showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} bình luận`,
             onShowSizeChange: (_, size) => setPageSize(size),
             onChange: (page) => setPageNumber(page)
           }}
