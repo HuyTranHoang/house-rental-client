@@ -38,6 +38,10 @@ const items: MenuProps['items'] = [
     label: <Link to={ROUTER_NAMES.FAVORITE}>Bất động sản yêu thích</Link>
   },
   {
+    key: ROUTER_NAMES.POST_MANAGEMENT,
+    label: <Link to={ROUTER_NAMES.POST_MANAGEMENT}>Quản lý tin đăng</Link>
+  },
+  {
     type: 'divider'
   },
   {

@@ -1,3 +1,5 @@
+import React from 'react'
+
 export interface Property {
   id: number
   title: string
@@ -26,6 +28,17 @@ export interface Property {
 export interface PropertyImage {
   imageUrl: string
   blurhash: string
+}
+
+export type PropertyDataSource = Property & {
+  key: React.Key
+  index?: number
+}
+
+export enum PropertyStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED'
 }
 
 export type PropertyFilters = {

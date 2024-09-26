@@ -24,6 +24,10 @@ export const fetchAllProperties = async (
 ) => {
   pageNumber = pageNumber - 1
 
+  // Client chỉ được xem những bài đăng đã được duyệt và không khóa
+  const isBlocked = 'false'
+  const status = 'APPROVED'
+
   try {
     const params = {
       search,
@@ -35,6 +39,35 @@ export const fetchAllProperties = async (
       minArea,
       maxArea,
       numOfDays,
+      isBlocked,
+      status,
+      sortBy,
+      pageNumber,
+      pageSize
+    }
+
+    const response = await axiosInstance.get<PropertyResponse>('/api/properties', { params })
+    return response.data
+  } catch (error) {
+    toast.error('Lỗi khi tải dữ liệu bài đăng')
+    throw error
+  }
+}
+
+export const getAllPropertyByUserId = async (
+  search: string,
+  status: string,
+  userId: number,
+  sortBy: string,
+  pageNumber: number,
+  pageSize: number
+) => {
+  pageNumber = pageNumber - 1
+  try {
+    const params = {
+      search,
+      status,
+      userId,
       sortBy,
       pageNumber,
       pageSize

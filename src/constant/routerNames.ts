@@ -27,8 +27,9 @@ const ROUTER_NAMES = {
   SERVER_ERROR: '/loi-server',
 
   POST_PROPERTY: '/dang-tin',
+  POST_MANAGEMENT: '/quan-ly-tin-dang',
 
-  getRentHouseDetail: (id: number | string) => `/tim-thue-phong-tro/${id}`,
-};
+  getRentHouseDetail: (id: number | string) => `/tim-thue-phong-tro/${id}`
+}
 
-export default ROUTER_NAMES;
+export default ROUTER_NAMES

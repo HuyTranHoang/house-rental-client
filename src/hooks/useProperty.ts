@@ -1,4 +1,4 @@
-import { fetchAllProperties, getPropertyById } from '@/api/property.api'
+import { fetchAllProperties, getAllPropertyByUserId, getPropertyById } from '@/api/property.api'
 import { PropertyFilters } from '@/models/property.type.ts'
 import { useQuery } from '@tanstack/react-query'
 import { useCallback } from 'react'
@@ -58,6 +58,23 @@ export const useProperties = (
         pageNumber,
         pageSize
       )
+  })
+
+  return { data, isLoading, isError }
+}
+
+export const usePropertiesByUserId = (
+  search: string,
+  status: string,
+  userId: number | undefined,
+  sortBy: string,
+  pageNumber: number,
+  pageSize: number
+) => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['properties', search, status, userId, sortBy, pageNumber, pageSize],
+    queryFn: () => getAllPropertyByUserId(search, status, userId!, sortBy, pageNumber, pageSize),
+    enabled: userId !== undefined
   })
 
   return { data, isLoading, isError }
