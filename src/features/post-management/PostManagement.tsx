@@ -1,67 +1,103 @@
+import ErrorFetching from '@/components/ErrorFetching.tsx'
+import useAuthStore from '@/features/auth/authStore.ts'
+import PostManagementTable from '@/features/post-management/PostManagementTable.tsx'
+import { usePropertiesByUserId } from '@/hooks/useProperty.ts'
+import { PropertyDataSource } from '@/models/property.type.ts'
 import Container from '@/ui/Container'
-import { Card, Table, Tabs, TabsProps } from 'antd'
-
-const onTabChange = (key: string) => {
-  console.log(key)
-}
+import { CheckCircleOutlined, CloseSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { Card, Divider, Flex, Input, TableProps, Tabs, TabsProps, Typography } from 'antd'
+import { useState } from 'react'
 
 const items: TabsProps['items'] = [
   {
     key: 'PENDING',
     label: 'Chờ duyệt',
-    children: 'Content of Tab Pane 1'
+    icon: <ExclamationCircleOutlined />
   },
   {
     key: 'APPROVED',
     label: 'Đã được duyệt',
-    children: 'Content of Tab Pane 2'
+    icon: <CheckCircleOutlined />
   },
   {
     key: 'REJECTED',
     label: 'Bị từ chối',
-    children: 'Content of Tab Pane 3'
-  }
-]
-
-const dataSource = [
-  {
-    key: '1',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street'
-  },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street'
-  }
-]
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name'
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address'
+    icon: <CloseSquareOutlined />
   }
 ]
 
 function PostManagement() {
+  const curerntUser = useAuthStore((state) => state.user)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('')
+  const [sortBy, setSortBy] = useState('')
+  const [pageNumber, setPageNumber] = useState(1)
+  const [pageSize, setPageSize] = useState(5)
+
+  const { data, isError, isLoading } = usePropertiesByUserId(
+    search,
+    status,
+    curerntUser?.id,
+    sortBy,
+    pageNumber,
+    pageSize
+  )
+
+  const dataSource: PropertyDataSource[] = data
+    ? data.data.map((item, idx) => ({
+        ...item,
+        index: (pageNumber - 1) * pageSize + idx + 1,
+        key: item.id
+      }))
+    : []
+
+  const handleTableChange: TableProps<PropertyDataSource>['onChange'] = (_, __, sorter) => {
+    if (!Array.isArray(sorter) && sorter.order) {
+      const order = sorter.order === 'ascend' ? 'Asc' : 'Desc'
+      setSortBy(`${sorter.columnKey}${order}`)
+    } else {
+      setSortBy('')
+    }
+  }
+
+  if (isError) {
+    return <ErrorFetching />
+  }
+
   return (
     <Container>
-      <Card title='Quản lý tin đăng' className='mb-10 mt-12'>
-        <Tabs defaultActiveKey='1' items={items} onChange={onTabChange} />
-        <Table dataSource={dataSource} columns={columns} />
+      <Card
+        title={
+          <Flex align='center' gap={12}>
+            <Typography.Title level={4} className='m-0'>
+              Quản lý bài đăng
+            </Typography.Title>
+            <Divider type='vertical' className='h-6' />
+            <Input.Search
+              placeholder='Tìm kiếm bài đăng, giá, địa chỉ..'
+              allowClear
+              enterButton
+              onSearch={(value) => setSearch(value)}
+              className='w-96'
+            />
+          </Flex>
+        }
+        className='mb-10 mt-12'
+      >
+        <Tabs defaultActiveKey='PENDING' items={items} onChange={(key) => setStatus(key)} />
+        <PostManagementTable
+          dataSource={dataSource}
+          isLoading={isLoading}
+          handleTableChange={handleTableChange}
+          paginationProps={{
+            total: data?.pageInfo.totalElements,
+            pageSize: pageSize,
+            current: pageNumber,
+            showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} bất động sản`,
+            onShowSizeChange: (_, size) => setPageSize(size),
+            onChange: (page) => setPageNumber(page)
+          }}
+        />
       </Card>
     </Container>
   )
