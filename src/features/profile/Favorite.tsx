@@ -1,8 +1,9 @@
 import ROUTER_NAMES from '@/constant/routerNames'
-import useAuthStore from '@/store/authStore.ts'
 import { useFavoritePropertyByUserId, useRemoveFavorite } from '@/hooks/useFavorite'
+import useAuthStore from '@/store/authStore.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { formatDate } from '@/utils/formatDate'
+import { generateSlug } from '@/utils/generateSlug.ts'
 import { Card, Empty, Flex, Grid, List, Space, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 
@@ -13,6 +14,7 @@ export default function Favorite() {
   const currentUser = useAuthStore((state) => state.user)
   const { favortieProperties, isLoadingFavoriteProperties } = useFavoritePropertyByUserId(currentUser?.id)
   const { removeFavoriteMutate, isPendingRemoveFavorite } = useRemoveFavorite()
+  // const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
   const propertiesData = favortieProperties?.properties.map((property) => ({
     id: property.id,
@@ -65,7 +67,7 @@ export default function Favorite() {
               <Flex vertical className='ml-0 w-full sm:ml-4'>
                 <Typography.Title level={5} className='mb-2 mt-0'>
                   <Link
-                    to={ROUTER_NAMES.getRentHouseDetail(item.id)}
+                    to={ROUTER_NAMES.getRentHouseDetail(generateSlug(item.title, item.id))}
                     className='text-gray-700'
                     target='_blank'
                     rel='noopener noreferrer'
@@ -84,7 +86,11 @@ export default function Favorite() {
                     Ngày đăng: {formatDate(item.createdAt)}
                   </Typography.Text>
                   <Typography.Text className='text-xs'>
-                    <Link to={ROUTER_NAMES.getRentHouseDetail(item.id)} target='_blank' rel='noopener noreferrer'>
+                    <Link
+                      to={ROUTER_NAMES.getRentHouseDetail(generateSlug(item.title, item.id))}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
                       Xem chi tiết
                     </Link>
                   </Typography.Text>
