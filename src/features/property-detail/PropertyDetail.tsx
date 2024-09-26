@@ -103,7 +103,9 @@ const StickyDiv = styled('div')`
 function PropertyDetail() {
   const navigate = useNavigate()
 
-  const { id } = useParams<{ id: string }>()
+  const { slug } = useParams<{ slug: string }>()
+  const id = slug ? slug.split('-').pop() : ''
+
   const currentUser = useAuthStore((state) => state.user)
   const { favorites } = useFavoriteByUserId(currentUser?.id)
   const isFavorite = favorites?.some((favorite) => favorite.propertyId === Number(id))

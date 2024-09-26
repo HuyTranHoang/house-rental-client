@@ -9,6 +9,7 @@ import { formatDate } from '@/utils/formatDate.ts'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Card, Col, Flex, Row, Space, Tag, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import slugify from 'slugify'
 
 interface RentHouseCardItemProps {
   property: Property
@@ -21,6 +22,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
+  const slug = slugify(property.title, { lower: true, locale: 'vi' }) + '-' + property.id
 
   const thumbnailImage = property.thumbnailUrl
     ? {
@@ -32,7 +34,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   return (
     <Card
       className='mb-2 mr-0 cursor-pointer md:mr-4'
-      onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(property.id))}
+      onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(slug))}
     >
       <Row gutter={24}>
         <Col xs={24} md={8}>
