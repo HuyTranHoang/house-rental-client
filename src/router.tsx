@@ -1,17 +1,5 @@
-import ProtectedRoute from '@/components/ProtectedRoute.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import NotFound from '@/error/NotFound.tsx'
-import ServerError from '@/error/ServerError.tsx'
-import AuthGuard from '@/features/auth/AuthGuard.tsx'
-import Login from '@/features/auth/Login.tsx'
-import Register from '@/features/auth/Register.tsx'
-import RequestResetPassword from '@/features/auth/RequestResetPassword.tsx'
-import ResetPassword from '@/features/auth/ResetPassword.tsx'
 import PostProperty from '@/features/post-property/PostProperty.tsx'
-import ChangePassword from '@/features/profile/ChangePassword.tsx'
-import Favorite from '@/features/profile/Favorite.tsx'
-import Profile from '@/features/profile/Profile.tsx'
-import TransactionHistory from '@/features/profile/TransactionHistory.tsx'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
 import RentHouse from '@/features/rent-house/RentHouse.tsx'
 import About from '@/pages/About.tsx'
@@ -19,15 +7,32 @@ import Contact from '@/pages/Contact.tsx'
 import Deposit from '@/pages/Deposit.tsx'
 import MemberFee from '@/pages/MemberFee.tsx'
 import PaymentFailure from '@/pages/PaymentFailed.tsx'
-import PaymentSuccess from '@/pages/PaymentSuccess.tsx'
-import TestPage from '@/pages/TestPage.tsx'
-import AppLayout from '@/ui/AppLayout.tsx'
-import AppLayoutFluid from '@/ui/AppLayoutFluid.tsx'
-import ProfileLayout from '@/ui/ProfileLayout.tsx'
 import { HomeOutlined } from '@ant-design/icons'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
 import PostManagement from './features/post-management/PostManagement'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
+import NotFound from './error/NotFound.tsx'
+import ServerError from './error/ServerError.tsx'
+import Login from './features/auth/Login.tsx'
+import Register from './features/auth/Register.tsx'
+import RequestResetPassword from './features/auth/RequestResetPassword.tsx'
+import ResetPassword from './features/auth/ResetPassword.tsx'
+import ChangePassword from './features/profile/ChangePassword.tsx'
+import Favorite from './features/profile/Favorite.tsx'
+import Profile from './features/profile/Profile.tsx'
+import TransactionHistory from './features/profile/TransactionHistory.tsx'
+import RentHouse from './features/rent-house/RentHouse.tsx'
+import About from './pages/About.tsx'
+import Contact from './pages/Contact.tsx'
+import Deposit from './pages/Deposit.tsx'
+import PaymentSuccess from './pages/PaymentSuccess.tsx'
+import TestPage from './pages/TestPage.tsx'
+import AppLayout from './ui/AppLayout.tsx'
+import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
+import ProfileLayout from './ui/ProfileLayout.tsx'
+import { MemberFee } from '@/features/membership/MemberFee.tsx'
+
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -39,10 +44,6 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
           {
             path: ROUTER_NAMES.TOP_UP,
             element: <Deposit />
-          },
-          {
-            path: ROUTER_NAMES.MEMBERSHIP_FEE,
-            element: <MemberFee />
           },
           {
             path: ROUTER_NAMES.PAYMENT_SUCCESS,
@@ -77,38 +78,22 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
       },
       {
         path: ROUTER_NAMES.LOGIN,
-        element: (
-          <AuthGuard>
-            <Login />
-          </AuthGuard>
-        ),
+        element: <Login />,
         breadcrumb: 'Đăng nhập'
       },
       {
         path: ROUTER_NAMES.REGISTER,
-        element: (
-          <AuthGuard>
-            <Register />
-          </AuthGuard>
-        ),
+        element: <Register />,
         breadcrumb: 'Đăng ký'
       },
       {
         path: ROUTER_NAMES.REQUEST_RESET_PASSWORD,
-        element: (
-          <AuthGuard>
-            <RequestResetPassword />
-          </AuthGuard>
-        ),
+        element: <RequestResetPassword />,
         breadcrumb: 'Quên mật khẩu'
       },
       {
         path: ROUTER_NAMES.RESET_PASSWORD,
-        element: (
-          <AuthGuard>
-            <ResetPassword />
-          </AuthGuard>
-        ),
+        element: <ResetPassword />,
         breadcrumb: 'Đặt lại mật khẩu'
       }
     ] // End of AppLayoutFluid children
@@ -142,6 +127,10 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
         path: ROUTER_NAMES.RENT_HOUSE,
         element: <RentHouse />,
         breadcrumb: 'Tìm thuê'
+      },
+      {
+        path: ROUTER_NAMES.MEMBERSHIP_FEE,
+        element: <MemberFee />
       },
       {
         element: <ProtectedRoute />,

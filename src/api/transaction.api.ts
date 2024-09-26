@@ -16,9 +16,18 @@ interface TransactionResponse {
   pageInfo: PageInfo
 }
 
-export const createTransaction = async (values: TransactionForm) => {
+export const createTransactionDeposit = async (values: TransactionForm) => {
   try {
-    return await axiosInstance.post<Payment>('/api/transaction', values)
+    return await axiosInstance.post<Payment>('/api/transaction/deposit', values)
+  } catch (error) {
+    console.error('Failed to create transaction', error)
+    toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')
+  }
+}
+
+export const createTransactionWithDrawal = async (values: TransactionForm) => {
+  try {
+    return await axiosInstance.post('/api/transaction/withdrawal', values)
   } catch (error) {
     console.error('Failed to create transaction', error)
     toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')

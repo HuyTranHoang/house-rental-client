@@ -1,5 +1,6 @@
 import { format, formatDistance, formatDistanceToNow, parseISO } from 'date-fns'
 import { vi } from 'date-fns/locale'
+import { UserMembership } from '@/models/userMembership.type.ts'
 
 export function formatDate(createdAt: string | undefined): string {
   if (!createdAt) return ''
@@ -29,4 +30,13 @@ export function formatDateWithTime(createdAt: string | undefined): string {
 
   const date = parseISO(createdAt)
   return format(date, 'dd-MM-yyyy HH:mm')
+}
+
+export const calculateMembershipRemainingDays = (membership: UserMembership | undefined) => {
+  if (!membership || !membership.endDate) return 0
+
+  const endDate = new Date(membership.endDate)
+  const today = new Date()
+  const diffTime = endDate.getTime() - today.getTime()
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 }

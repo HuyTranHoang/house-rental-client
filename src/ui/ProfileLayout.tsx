@@ -1,9 +1,14 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs'
 import ROUTER_NAMES from '@/constant/routerNames'
 import useAuthStore from '@/features/auth/authStore'
+import { useUserMembership } from '@/hooks/useUserMembership.ts'
 import axiosInstance from '@/inteceptor/axiosInstance'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
+import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
 import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber'
 import {
+  ClockCircleOutlined,
+  CrownOutlined,
   IdcardOutlined,
   LoadingOutlined,
   LockOutlined,
@@ -12,16 +17,29 @@ import {
   PhoneOutlined,
   PlusOutlined,
   ReadOutlined,
+  ReloadOutlined,
   StarOutlined,
   UserOutlined,
   WalletOutlined
 } from '@ant-design/icons'
-import { Divider, MenuProps, UploadProps } from 'antd'
-import { Avatar, Card, Col, Menu, Row, Tooltip, Typography, Upload } from 'antd'
+import {
+  Avatar,
+  Card,
+  Col,
+  Divider,
+  Menu,
+  MenuProps,
+  Progress,
+  ProgressProps,
+  Row,
+  Tooltip,
+  Typography,
+  Upload,
+  UploadProps
+} from 'antd'
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 
 const { Text, Title } = Typography
 
@@ -62,6 +80,11 @@ const items: MenuItem[] = [
   }
 ]
 
+const twoColors: ProgressProps['strokeColor'] = {
+  '0%': '#108ee9',
+  '100%': '#87d068'
+}
+
 type FileType = Parameters<NonNullable<UploadProps['beforeUpload']>>[0]
 
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
@@ -85,11 +108,14 @@ const beforeUpload = (file: FileType) => {
 export default function ProfileLayout() {
   const navigate = useNavigate()
   const currentUser = useAuthStore((state) => state.user)
+  const { data: membership } = useUserMembership(currentUser?.id)
   const logout = useAuthStore((state) => state.logout)
   const updateProfile = useAuthStore((state) => state.updateProfile)
 
   const location = useLocation()
   const currentPath = location.pathname
+
+  const remainingDays = calculateMembershipRemainingDays(membership)
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'dangXuat') {
@@ -138,7 +164,7 @@ export default function ProfileLayout() {
           <CustomBreadcrumbs />
         </div>
       </Col>
-      <Col xs={24} md={8} lg={6} className='mb-6 shadow-md p-0'>
+      <Col xs={0} md={8} lg={6} className='mb-12 p-0 shadow-md'>
         <Card className='rounded-none'>
           <div className='flex flex-col items-center'>
             <div className='flex justify-center'>
@@ -169,7 +195,7 @@ export default function ProfileLayout() {
             </div>
             {currentUser && (
               <>
-                <div className='text-center my-4'>
+                <div className='my-4 text-center'>
                   <Title level={4} className='m-0'>
                     {`${currentUser.lastName} ${currentUser.firstName}`}
                   </Title>
@@ -189,6 +215,54 @@ export default function ProfileLayout() {
                     <WalletOutlined className='mr-2 text-lg text-gray-500' />
                     <Text>Số dư: {formatCurrency(currentUser.balance)}</Text>
                   </div>
+                  <Divider className='m-0 mb-4' />
+                  {membership && (
+                    <>
+                      <div className='flex items-center'>
+                        <CrownOutlined className='mr-2 text-lg text-yellow-500' />
+                        <Text>
+                          Loại tài khoản: <strong>{membership.membershipName}</strong>
+                        </Text>
+                      </div>
+                      <div className='space-y-2'>
+                        <div className='flex items-center justify-between'>
+                          <Text>
+                            <ClockCircleOutlined className='mr-2' />
+                            Thời hạn còn lại:
+                          </Text>
+                          {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
+                          {remainingDays > 0 && <Text strong>{remainingDays} ngày</Text>}
+                        </div>
+                        {remainingDays <= 0 && <Progress strokeColor={twoColors} percent={100} showInfo={false} />}
+                        {remainingDays > 0 && (
+                          <Progress
+                            strokeColor={twoColors}
+                            percent={Math.round((remainingDays / 30) * 100)}
+                            showInfo={false}
+                          />
+                        )}
+                        <div className='flex items-center justify-between'>
+                          <Text>
+                            <ReloadOutlined className='mr-2' />
+                            Lượt làm mới:
+                          </Text>
+                          <Text strong>
+                            {membership.totalRefreshLimit - membership.refreshesPostsUsed}/
+                            {membership.totalRefreshLimit}
+                          </Text>
+                        </div>
+                        <Progress
+                          strokeColor={twoColors}
+                          percent={Math.round(
+                            ((membership.totalRefreshLimit - membership.refreshesPostsUsed) /
+                              membership.totalRefreshLimit) *
+                              100
+                          )}
+                          showInfo={false}
+                        />
+                      </div>
+                    </>
+                  )}
                 </div>
               </>
             )}

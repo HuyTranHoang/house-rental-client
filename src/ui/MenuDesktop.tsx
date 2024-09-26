@@ -72,7 +72,7 @@ function MenuDesktop({ user }: { user: User | null }) {
 
       <NavItem title='Tìm thuê' link={ROUTER_NAMES.RENT_HOUSE} />
 
-      <NavItem title='Phí thành viên' link={ROUTER_NAMES.MEMBERSHIP_FEE} />
+      <NavItem title='Gói thành viên' link={ROUTER_NAMES.MEMBERSHIP_FEE} />
 
       {user && (
         <>

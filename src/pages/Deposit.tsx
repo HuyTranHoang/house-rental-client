@@ -1,4 +1,4 @@
-import { createTransaction, getTransaction } from '@/api/transaction.api.ts'
+import { createTransactionDeposit, getTransaction } from '@/api/transaction.api.ts'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import useAuthStore from '@/features/auth/authStore.ts'
 import { TransactionStatus } from '@/models/transaction.type.ts'
@@ -44,12 +44,12 @@ const Deposit = () => {
   const [rawCustomAmount, setRawCustomAmount] = useState<number | null>(null)
 
   const currentUser = useAuthStore((state) => state.user)
-  const updateUserBalance = useAuthStore((state) => state.updateUserBalance)
+  const updateUserBalance = useAuthStore((state) => state.incrementUserBalance)
 
   const { data: transaction } = useGetTransaction(transactionId)
 
   const { mutate: createTransactionMutation } = useMutation({
-    mutationFn: createTransaction,
+    mutationFn: createTransactionDeposit,
     onSuccess: (response) => {
       if (!response) return
 
