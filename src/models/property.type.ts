@@ -22,6 +22,7 @@ export interface Property {
   thumbnailUrl: string
   thumbnailBlurhash: string
   blocked: boolean
+  hidden: boolean
   createdAt: string
 }
 

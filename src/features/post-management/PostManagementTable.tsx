@@ -1,8 +1,8 @@
 import { PropertyDataSource } from '@/models/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
-import { EyeOutlined } from '@ant-design/icons'
-import { Badge, Button, Table, TableProps, Tag } from 'antd'
+import { DeleteOutlined, EditOutlined, ExportOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
+import { Badge, Dropdown, MenuProps, Table, TableProps } from 'antd'
 
 interface PropertyTableProps {
   dataSource: PropertyDataSource[]
@@ -10,6 +10,33 @@ interface PropertyTableProps {
   paginationProps: false | TableProps<PropertyDataSource>['pagination']
   handleTableChange: TableProps<PropertyDataSource>['onChange']
 }
+
+const getDropDownItems = (record: PropertyDataSource): MenuProps['items'] => [
+  {
+    key: 'Xem chi tiết',
+    label: 'Xem chi tiết',
+    icon: <ExportOutlined />
+  },
+  {
+    key: 'Sửa bài đăng',
+    label: 'Sửa bài đăng',
+    icon: <EditOutlined />
+  },
+  {
+    key: record.hidden ? 'Hiện bài đăng' : 'Ẩn bài đăng',
+    label: record.hidden ? 'Hiện bài đăng' : 'Ẩn bài đăng',
+    icon: record.hidden ? <EyeOutlined /> : <EyeInvisibleOutlined />
+  },
+  {
+    type: 'divider'
+  },
+  {
+    key: 'Xóa bài đăng',
+    danger: true,
+    label: 'Xóa bài đăng',
+    icon: <DeleteOutlined />
+  }
+]
 
 const columns = [
   {
@@ -31,30 +58,23 @@ const columns = [
     render: (value: number) => formatCurrency(value)
   },
   {
-    title: 'Duyệt',
-    dataIndex: 'status',
-    key: 'status',
-    width: 150,
-    render: (value: string) => {
-      switch (value) {
-        case 'PENDING':
-          return <Tag color='gold'>Chờ duyệt</Tag>
-        case 'APPROVED':
-          return <Tag color='success'>Đã được duyệt</Tag>
-        case 'REJECTED':
-          return <Tag color='error'>Bị từ chối</Tag>
-        default:
-          return null
-      }
-    }
-  },
-  {
     title: 'Trạng thái',
     dataIndex: 'blocked',
     key: 'blocked',
     width: 150,
-    render: (value: boolean) =>
-      value ? <Badge status='error' text='Khóa' /> : <Badge status='success' text='Họat động' />
+    render: (value: boolean, record: PropertyDataSource) => {
+      const status = value ? 'Đã khóa' : 'Hoạt động'
+      const color = value ? 'error' : 'success'
+
+      const hidden = record.hidden
+
+      return (
+        <>
+          <Badge status={color} text={status} />
+          {hidden && <Badge status='warning' text='Đã ẩn' />}
+        </>
+      )
+    }
   },
   {
     title: 'Ngày đăng',
@@ -68,12 +88,16 @@ const columns = [
     title: 'Hành động',
     dataIndex: 'action',
     key: 'action',
-    width: 100,
-    render: () => (
-      <Button type='primary' icon={<EyeOutlined />}>
-        Chi tiết
-      </Button>
-    )
+    width: 125,
+    render: (_: string, record: PropertyDataSource) => {
+      return (
+        <Dropdown menu={{ items: getDropDownItems(record) }}>
+          <a className='text-xl' onClick={(e) => e.preventDefault()}>
+            ...
+          </a>
+        </Dropdown>
+      )
+    }
   }
 ]
 

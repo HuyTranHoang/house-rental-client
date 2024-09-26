@@ -24,9 +24,10 @@ export const fetchAllProperties = async (
 ) => {
   pageNumber = pageNumber - 1
 
-  // Client chỉ được xem những bài đăng đã được duyệt và không khóa
-  const isBlocked = 'false'
+  // Client chỉ được xem những bài đăng đã được duyệt, không khóa và không ẩn
   const status = 'APPROVED'
+  const isBlocked = 'false'
+  const isHidden = 'false'
 
   try {
     const params = {
@@ -39,6 +40,7 @@ export const fetchAllProperties = async (
       minArea,
       maxArea,
       numOfDays,
+      isHidden,
       isBlocked,
       status,
       sortBy,
