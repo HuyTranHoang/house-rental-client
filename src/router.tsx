@@ -1,4 +1,5 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import AuthGuard from '@/features/auth/AuthGuard.tsx'
 import { MemberFee } from '@/features/membership/MemberFee.tsx'
 import PostProperty from '@/features/post-property/PostProperty.tsx'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
@@ -72,22 +73,38 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
       },
       {
         path: ROUTER_NAMES.LOGIN,
-        element: <Login />,
+        element: (
+          <AuthGuard>
+            <Login />
+          </AuthGuard>
+        ),
         breadcrumb: 'Đăng nhập'
       },
       {
         path: ROUTER_NAMES.REGISTER,
-        element: <Register />,
+        element: (
+          <AuthGuard>
+            <Register />
+          </AuthGuard>
+        ),
         breadcrumb: 'Đăng ký'
       },
       {
         path: ROUTER_NAMES.REQUEST_RESET_PASSWORD,
-        element: <RequestResetPassword />,
+        element: (
+          <AuthGuard>
+            <RequestResetPassword />
+          </AuthGuard>
+        ),
         breadcrumb: 'Quên mật khẩu'
       },
       {
         path: ROUTER_NAMES.RESET_PASSWORD,
-        element: <ResetPassword />,
+        element: (
+          <AuthGuard>
+            <ResetPassword />
+          </AuthGuard>
+        ),
         breadcrumb: 'Đặt lại mật khẩu'
       }
     ] // End of AppLayoutFluid children
