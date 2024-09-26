@@ -92,3 +92,13 @@ export const getPropertyById = async (id: number) => {
     throw error
   }
 }
+
+export const hiddenProperty = async (id: number) => {
+  try {
+    const response = await axiosInstance.put<Property>(`/api/properties/hide/${id}`)
+    return response.data
+  } catch (error) {
+    toast.error('Lỗi khi ẩn bài đăng')
+    throw error
+  }
+}
