@@ -2,7 +2,7 @@ import ErrorFetching from '@/components/ErrorFetching.tsx'
 import useAuthStore from '@/features/auth/authStore.ts'
 import PostManagementTable from '@/features/post-management/PostManagementTable.tsx'
 import { usePropertiesByUserId } from '@/hooks/useProperty.ts'
-import { PropertyDataSource } from '@/models/property.type.ts'
+import { PropertyDataSource, PropertyStatus } from '@/models/property.type.ts'
 import Container from '@/ui/Container'
 import { CheckCircleOutlined, CloseSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { Card, Divider, Flex, Input, TableProps, Tabs, TabsProps, Typography } from 'antd'
@@ -29,7 +29,7 @@ const items: TabsProps['items'] = [
 function PostManagement() {
   const curerntUser = useAuthStore((state) => state.user)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('')
+  const [status, setStatus] = useState(PropertyStatus.PENDING)
   const [sortBy, setSortBy] = useState('')
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize, setPageSize] = useState(5)
@@ -84,7 +84,7 @@ function PostManagement() {
         }
         className='mb-10 mt-12'
       >
-        <Tabs defaultActiveKey='PENDING' items={items} onChange={(key) => setStatus(key)} />
+        <Tabs defaultActiveKey='PENDING' items={items} onChange={(key) => setStatus(key as PropertyStatus)} />
         <PostManagementTable
           dataSource={dataSource}
           isLoading={isLoading}
