@@ -1,7 +1,7 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import useAuthStore from '@/store/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { User } from '@/models/user.type.ts'
+import { User } from '@/types/user.type.ts'
 import {
   CreditCardOutlined,
   DollarOutlined,

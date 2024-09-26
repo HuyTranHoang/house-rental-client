@@ -1,4 +1,4 @@
-import { User } from '@/models/user.type.ts'
+import { User } from '@/types/user.type.ts'
 import { create } from 'zustand'
 
 type AuthStore = {

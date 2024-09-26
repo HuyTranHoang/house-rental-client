@@ -1,6 +1,6 @@
 import { format, formatDistance, formatDistanceToNow, parseISO } from 'date-fns'
 import { vi } from 'date-fns/locale'
-import { UserMembership } from '@/models/userMembership.type.ts'
+import { UserMembership } from '@/types/userMembership.type.ts'
 
 export function formatDate(createdAt: string | undefined): string {
   if (!createdAt) return ''

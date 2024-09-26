@@ -1,5 +1,5 @@
 import { addFavorite, getFavoritePropertiesByUserId, getFavoritesByUserId, removeFavorite } from '@/api/favorite.api.ts'
-import { Favorite } from '@/models/favorite.type.ts'
+import { Favorite } from '@/types/favorite.type.ts'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useFavoriteByUserId = (userId: number | undefined) => {

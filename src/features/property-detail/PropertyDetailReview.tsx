@@ -1,6 +1,6 @@
 import useAuthStore from '@/store/authStore.ts'
 import { useCreateReview, useDeleteReview, useReview } from '@/hooks/useReview'
-import { Review, ReviewFieldType } from '@/models/review.type'
+import { Comment, CommentFieldType } from '@/types/comment.type.ts'
 import { formatDate } from '@/utils/formatDate'
 import { CalendarOutlined, CommentOutlined, DeleteOutlined, WarningOutlined } from '@ant-design/icons'
 import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Rate, Space, Tooltip, Typography } from 'antd'
@@ -18,7 +18,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(5)
   const [open, setOpen] = useState(false)
-  const [currentReview, setCurrentReview] = useState<Review | undefined>(undefined)
+  const [currentReview, setCurrentReview] = useState<Comment | undefined>(undefined)
   const haveDeleteReviewPrivilege = useAuthStore((state) => state.haveDeleteReviewPrivilege)
 
   const [form] = Form.useForm()
@@ -67,7 +67,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
       ]
     : []
 
-  const onFinish: FormProps<ReviewFieldType>['onFinish'] = (values) => {
+  const onFinish: FormProps<CommentFieldType>['onFinish'] = (values) => {
     createReview({ ...values, propertyId: Number(propertyId) })
     form.resetFields()
   }
@@ -103,7 +103,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
         Để lại đánh giá <CommentOutlined />
       </Typography.Title>
       <Form form={form} layout='vertical' name='feedbackForm' autoComplete='off' onFinish={onFinish}>
-        <Form.Item<ReviewFieldType>
+        <Form.Item<CommentFieldType>
           name='comment'
           rules={[
             { required: true, message: 'Vui lòng nhập đánh giá của bạn' },
@@ -120,7 +120,7 @@ function PropertyDetailReview({ propertyId }: PropertyDetailReviewProps) {
           <TextArea rows={4} placeholder='Đánh giá của bạn về bất động sản này...' />
         </Form.Item>
 
-        <Form.Item<ReviewFieldType>
+        <Form.Item<CommentFieldType>
           name='rating'
           label='Số sao đánh giá'
           rules={[{ required: true, message: 'Vui lòng chọn số sao đánh giá!' }]}

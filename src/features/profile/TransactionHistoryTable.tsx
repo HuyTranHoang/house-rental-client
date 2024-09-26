@@ -1,4 +1,4 @@
-import { Transaction, TransactionDataSource, TransactionStatus, TransactionType } from '@/models/transaction.type'
+import { Transaction, TransactionDataSource, TransactionStatus, TransactionType } from '@/types/transaction.type'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { Table, TablePaginationConfig, TableProps, Tag } from 'antd'
 import { clsx } from 'clsx'

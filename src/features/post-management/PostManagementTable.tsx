@@ -1,5 +1,5 @@
 import { useHiddenProperty } from '@/hooks/useProperty.ts'
-import { PropertyDataSource } from '@/models/property.type.ts'
+import { PropertyDataSource } from '@/types/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
 import { DeleteOutlined, EditOutlined, ExportOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'

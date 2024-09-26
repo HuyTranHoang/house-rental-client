@@ -1,10 +1,10 @@
 import axiosInstance from '@/inteceptor/axiosInstance'
-import { PageInfo } from '@/models/pageInfo.type'
-import { Review, ReviewFieldType } from '@/models/review.type'
+import { PageInfo } from '@/types/pageInfo.type'
+import { Comment, CommentFieldType } from '@/types/comment.type.ts'
 import { toast } from 'sonner'
 
 interface ReviewWithPagination {
-  data: Review[]
+  data: Comment[]
   pageInfo: PageInfo
 }
 
@@ -27,9 +27,9 @@ export const getAllReviewsWithParams = async (propertyId: number, pageNumber: nu
   }
 }
 
-export const createReview = async (review: ReviewFieldType) => {
+export const createReview = async (review: CommentFieldType) => {
   try {
-    return await axiosInstance.post<Review>('/api/review', review)
+    return await axiosInstance.post<Comment>('/api/review', review)
   } catch (error) {
     console.error('Failed to create review', error)
     toast.error('Không thể gửi đánh giá!')
@@ -38,7 +38,7 @@ export const createReview = async (review: ReviewFieldType) => {
 
 export const deleteReview = async (reviewId: number) => {
   try {
-    return await axiosInstance.delete<Review>(`/api/review/${reviewId}`)
+    return await axiosInstance.delete<Comment>(`/api/review/${reviewId}`)
   } catch (error) {
     console.error('Failed to delete review', error)
     toast.error('Không thể xóa đánh giá!')

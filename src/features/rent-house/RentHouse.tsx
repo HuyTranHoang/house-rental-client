@@ -1,7 +1,7 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import RentHouseFilter from '@/features/rent-house/RentHouseFilter.tsx'
 import { useProperties, usePropertyFilters } from '@/hooks/useProperty.ts'
-import { Property } from '@/models/property.type.ts'
+import { Property } from '@/types/property.type.ts'
 import RightSideBar from '@/ui/RightSideBar.tsx'
 import { BookOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'

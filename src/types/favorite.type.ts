@@ -1,4 +1,4 @@
-import { Property } from '@/models/property.type.ts'
+import { Property } from '@/types/property.type.ts'
 
 export interface Favorite {
   userId: number

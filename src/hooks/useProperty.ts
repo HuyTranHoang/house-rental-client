@@ -1,5 +1,5 @@
 import { fetchAllProperties, getAllPropertyByUserId, getPropertyById, hiddenProperty } from '@/api/property.api'
-import { PropertyFilters } from '@/models/property.type.ts'
+import { PropertyFilters } from '@/types/property.type.ts'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'

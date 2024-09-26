@@ -1,6 +1,6 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { PageInfo } from '@/models/pageInfo.type.ts'
-import { Property } from '@/models/property.type.ts'
+import { PageInfo } from '@/types/pageInfo.type.ts'
+import { Property } from '@/types/property.type.ts'
 import { toast } from 'sonner'
 
 interface PropertyResponse {

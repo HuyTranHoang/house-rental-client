@@ -1,7 +1,7 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { PageInfo } from '@/models/pageInfo.type'
-import { Payment } from '@/models/payment.type.ts'
-import { Transaction } from '@/models/transaction.type.ts'
+import { PageInfo } from '@/types/pageInfo.type'
+import { Payment } from '@/types/payment.type.ts'
+import { Transaction } from '@/types/transaction.type.ts'
 import { HttpStatusCode } from 'axios'
 import { toast } from 'sonner'
 

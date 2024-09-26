@@ -1,4 +1,4 @@
-import { createReview, deleteReview, getAllReviewsWithParams } from '@/api/review.api'
+import { createReview, deleteReview, getAllReviewsWithParams } from '@/api/comment.api.ts'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 

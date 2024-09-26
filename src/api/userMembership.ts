@@ -1,5 +1,5 @@
 import axiosInstance from '@/inteceptor/axiosInstance'
-import { UserMembership } from '@/models/userMembership.type'
+import { UserMembership } from '@/types/userMembership.type'
 import { toast } from 'sonner'
 
 export const fetchByUserId = async (userId: number) => {

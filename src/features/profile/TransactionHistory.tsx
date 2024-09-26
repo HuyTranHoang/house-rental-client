@@ -1,6 +1,6 @@
 import useAuthStore from '@/store/authStore.ts'
 import { useUserTransactionHistory } from '@/hooks/useTransaction.ts'
-import { TransactionDataSource, TransactionStatus, TransactionType } from '@/models/transaction.type.ts'
+import { TransactionDataSource, TransactionStatus, TransactionType } from '@/types/transaction.type.ts'
 import { FilterOutlined } from '@ant-design/icons'
 import { Badge, Button, Card, Form, Input, Modal, Select, Space, TableProps, Typography } from 'antd'
 import { useState } from 'react'

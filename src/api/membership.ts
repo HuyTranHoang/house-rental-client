@@ -1,5 +1,5 @@
 
-import { Membership } from "@/models/membership.type"
+import { Membership } from "@/types/membership.type"
 import axios from "axios"
 import { toast } from "sonner"
 

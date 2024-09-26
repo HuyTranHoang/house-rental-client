@@ -1,5 +1,5 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { Amenity } from '@/models/amenity.type.ts'
+import { Amenity } from '@/types/amenity.type.ts'
 import { toast } from 'sonner'
 
 export const fetchAllAmenities = async () => {
