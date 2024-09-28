@@ -21,9 +21,13 @@ export interface Property {
   propertyImages: PropertyImage[]
   thumbnailUrl: string
   thumbnailBlurhash: string
-  blocked: boolean
-  hidden: boolean
+  thumbnailOriginalName: string
+  priorityExpiration: string
+  refreshDay: string
   createdAt: string
+  hidden: boolean
+  priority: boolean
+  blocked: boolean
 }
 
 export interface PropertyImage {
