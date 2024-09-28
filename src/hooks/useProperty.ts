@@ -1,4 +1,4 @@
-import { fetchAllProperties, getAllPropertyByUserId, getPropertyById, hiddenProperty } from '@/api/property.api'
+import { fetchAllProperties, getAllPropertyByUserId, getPropertyById, hiddenProperty, refreshProperty } from '@/api/property.api'
 import { PropertyFilters } from '@/types/property.type.ts'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
@@ -87,6 +87,15 @@ export const useHiddenProperty = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
   })
   return { hiddenProperty: mutateAsync, hiddenPropertyIsPending: isPending }
+}
+
+export const useRefreshProperty = () => {
+  const queryClient = useQueryClient()
+  const { mutateAsync } = useMutation({
+    mutationFn: (propertyId: number) => refreshProperty(propertyId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
+  })
+  return { refreshProperty: mutateAsync }
 }
 
 export const usePropertyFilters = () => {
