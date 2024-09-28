@@ -9,12 +9,24 @@ interface RefreshConfirmationModalProps {
   onConfirm: () => void
   onCancel: () => void
   property: PropertyDataSource | null
+  isLoading: boolean
 }
 
-function RefreshConfirmationModal({ isVisible, onConfirm, onCancel, property }: RefreshConfirmationModalProps) {
+function RefreshConfirmationModal({
+  isVisible,
+  onConfirm,
+  onCancel,
+  property,
+  isLoading
+}: RefreshConfirmationModalProps) {
   if (!property) return null
 
-  const lastRefreshTime = formatDistanceToNow(new Date(property.refreshDay), { addSuffix: true, locale: vi })
+  const refreshedAtDate = new Date(property.refreshedAt)
+  const isEpoch = refreshedAtDate.getTime() === new Date('1970-01-01T00:00:00Z').getTime()
+
+  const lastRefreshTime = isEpoch
+    ? 'Không xác định'
+    : formatDistanceToNow(refreshedAtDate, { addSuffix: true, locale: vi })
 
   return (
     <Modal
@@ -57,7 +69,7 @@ function RefreshConfirmationModal({ isVisible, onConfirm, onCancel, property }: 
         <div className='text-xs text-gray-500'>
           <Tooltip
             title={
-              <ul className='list-inside list-disc m-0 p-0'>
+              <ul className='m-0 list-inside list-disc p-0'>
                 <li>Bài đăng sẽ được hiển thị lên đầu trang chủ</li>
                 <li>Không thể hủy bỏ sau khi xác nhận làm mới</li>
                 <li>Làm mới bài đăng sẽ tốn một lượt làm mới, vui lòng kiểm tra trong trang 'thông tin cá nhân'</li>
@@ -69,8 +81,10 @@ function RefreshConfirmationModal({ isVisible, onConfirm, onCancel, property }: 
         </div>
 
         <div className='flex justify-end space-x-4'>
-          <Button onClick={onCancel}>Hủy</Button>
-          <Button type='primary' onClick={onConfirm} className='bg-blue-500 hover:bg-blue-600'>
+          <Button disabled={isLoading} onClick={onCancel}>
+            Hủy
+          </Button>
+          <Button loading={isLoading} type='primary' onClick={onConfirm} className='bg-blue-500 hover:bg-blue-600'>
             Xác nhận làm mới
           </Button>
         </div>

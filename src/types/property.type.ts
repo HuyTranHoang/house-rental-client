@@ -23,7 +23,7 @@ export interface Property {
   thumbnailBlurhash: string
   thumbnailOriginalName: string
   priorityExpiration: string
-  refreshDay: string
+  refreshedAt: string
   createdAt: string
   hidden: boolean
   priority: boolean

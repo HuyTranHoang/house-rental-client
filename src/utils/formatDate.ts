@@ -29,6 +29,12 @@ export function formatDateWithTime(createdAt: string | undefined): string {
   if (!createdAt) return ''
 
   const date = parseISO(createdAt)
+  const isEpoch = date.getTime() === new Date('1970-01-01T00:00:00Z').getTime()
+
+  if (isEpoch) {
+    return 'Chưa xác định'
+  }
+
   return format(date, 'dd-MM-yyyy HH:mm')
 }
 

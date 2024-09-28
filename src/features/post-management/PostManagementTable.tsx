@@ -149,7 +149,7 @@ export default function PostManagementTable({
           <div className='flex flex-col'>
             <span className='text-xs text-gray-500'>Làm mới lần cuối:</span>
             <span className='font-medium'>
-              {formatDateWithTime(record.refreshDay)}
+              {formatDateWithTime(record.refreshedAt)}
             </span>
           </div>
         </div>
@@ -207,6 +207,7 @@ export default function PostManagementTable({
         onConfirm={handleConfirm}
         onCancel={handleCancel}
         property={selectedProperty}
+        isLoading={refreshPropertyIsPending}
       />
     </>
   )

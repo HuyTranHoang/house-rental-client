@@ -89,7 +89,7 @@ export const usePropertiesByUserId = (
 export const useHiddenProperty = () => {
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (propertyId: number) => hiddenProperty(propertyId),
+    mutationFn: hiddenProperty,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
   })
   return { hiddenProperty: mutateAsync, hiddenPropertyIsPending: isPending }
@@ -98,7 +98,7 @@ export const useHiddenProperty = () => {
 export const useRefreshProperty = () => {
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (propertyId: number) => refreshProperty(propertyId),
+    mutationFn: refreshProperty,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] }),
   })
   return { refreshProperty: mutateAsync, refreshPropertyIsPending: isPending }
