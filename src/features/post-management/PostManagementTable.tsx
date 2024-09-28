@@ -37,9 +37,11 @@ export default function PostManagementTable({
       title: 'Bạn có chắc chắn muốn làm mới bài đăng này?',
       content: record.title,
       onOk: () => {
-        refreshProperty(record.id).then(() => {
-          toast.success('Refresh bài đăng thành công')
-        })
+        refreshProperty(record.id)
+          .then(() => {
+            toast.success('Refresh bài đăng thành công')
+          })
+          .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
       }
     })
   }

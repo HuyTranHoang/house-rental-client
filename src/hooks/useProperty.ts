@@ -99,7 +99,7 @@ export const useRefreshProperty = () => {
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (propertyId: number) => refreshProperty(propertyId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] }),
   })
   return { refreshProperty: mutateAsync, refreshPropertyIsPending: isPending }
 }

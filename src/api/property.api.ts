@@ -104,11 +104,5 @@ export const hiddenProperty = async (id: number) => {
 }
 
 export const refreshProperty = async (id: number) => {
-  try {
-    const response = await axiosInstance.put<Property>(`/api/properties/refresh/${id}`)
-    return response.data
-  } catch (error) {
-    toast.error('Lỗi khi refresh bài đăng')
-    throw error
-  }
+  await axiosInstance.put<Property>(`/api/properties/refresh/${id}`)
 }
