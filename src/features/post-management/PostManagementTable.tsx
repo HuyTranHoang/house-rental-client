@@ -13,8 +13,10 @@ import {
   QuestionCircleOutlined
 } from '@ant-design/icons'
 import type { MenuProps, TableProps } from 'antd'
-import { Badge, Button, Dropdown, Modal, Table, Tooltip } from 'antd'
+import { Badge, Button, Dropdown, Table, Tooltip } from 'antd'
+import { useState } from 'react'
 import { toast } from 'sonner'
+import RefreshConfirmationModal from './RefreshConfirmationModal'
 
 interface PropertyTableProps {
   dataSource: PropertyDataSource[]
@@ -31,19 +33,28 @@ export default function PostManagementTable({
 }: PropertyTableProps) {
   const { hiddenProperty, hiddenPropertyIsPending } = useHiddenProperty()
   const { refreshProperty, refreshPropertyIsPending } = useRefreshProperty()
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [selectedProperty, setSelectedProperty] = useState<PropertyDataSource | null>(null)
 
   const showConfirm = (record: PropertyDataSource) => {
-    Modal.confirm({
-      title: 'Bạn có chắc chắn muốn làm mới bài đăng này?',
-      content: record.title,
-      onOk: () => {
-        refreshProperty(record.id)
-          .then(() => {
-            toast.success('Refresh bài đăng thành công')
-          })
-          .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
-      }
-    })
+    setSelectedProperty(record)
+    setIsModalVisible(true)
+  }
+
+  const handleConfirm = () => {
+    if (selectedProperty) {
+      refreshProperty(selectedProperty.id)
+        .then(() => {
+          toast.success('Làm mới bài đăng thành công')
+          setIsModalVisible(false)
+        })
+        .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
+    }
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+    setSelectedProperty(null)
   }
 
   const getDropDownItems = (record: PropertyDataSource): MenuProps['items'] => [
@@ -116,7 +127,7 @@ export default function PostManagementTable({
                 <>
                   Đã ẩn
                   <Tooltip title='Bài đăng này không hiển thị trên trang chủ'>
-                    <QuestionCircleOutlined className='ml-2 cursor-pointer text-xs text-gray-500' />
+                    <QuestionCircleOutlined className='ml-2 cursor-help text-xs text-gray-500' />
                   </Tooltip>
                 </>
               }
@@ -139,9 +150,6 @@ export default function PostManagementTable({
             <span className='text-xs text-gray-500'>Làm mới lần cuối:</span>
             <span className='font-medium'>
               {formatDateWithTime(record.refreshDay)}
-              <Tooltip title='Bài đăng trên trang chủ được sắp xếp theo lượt làm mới'>
-                <QuestionCircleOutlined className='ml-2 cursor-pointer text-xs text-gray-500' />
-              </Tooltip>
             </span>
           </div>
         </div>
@@ -159,7 +167,7 @@ export default function PostManagementTable({
                 icon={<ArrowUpOutlined className='text-white' />}
                 size='small'
                 shape='circle'
-                className='flex h-8 w-8 items-center justify-center border-0 bg-gradient-to-r from-blue-500 to-purple-600 p-0 shadow-md transition-all duration-300 hover:from-blue-600 hover:to-purple-700 hover:shadow-lg'
+                className='border-0 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300 hover:from-purple-600 hover:to-blue-700'
                 onClick={() => showConfirm(record)}
                 loading={refreshPropertyIsPending}
               />
@@ -174,23 +182,32 @@ export default function PostManagementTable({
   ]
 
   return (
-    <Table
-      loading={isLoading || hiddenPropertyIsPending}
-      dataSource={dataSource}
-      columns={columns}
-      onChange={handleTableChange}
-      pagination={{
-        position: ['bottomCenter'],
-        pageSizeOptions: ['5', '10', '20'],
-        locale: { items_per_page: '/ trang' },
-        showSizeChanger: true,
-        ...paginationProps
-      }}
-      locale={{
-        triggerDesc: 'Sắp xếp giảm dần',
-        triggerAsc: 'Sắp xếp tăng dần',
-        cancelSort: 'Hủy sắp xếp'
-      }}
-    />
+    <>
+      <Table
+        loading={isLoading || hiddenPropertyIsPending}
+        dataSource={dataSource}
+        columns={columns}
+        onChange={handleTableChange}
+        pagination={{
+          position: ['bottomCenter'],
+          pageSizeOptions: ['5', '10', '20'],
+          locale: { items_per_page: '/ trang' },
+          showSizeChanger: true,
+          ...paginationProps
+        }}
+        locale={{
+          triggerDesc: 'Sắp xếp giảm dần',
+          triggerAsc: 'Sắp xếp tăng dần',
+          cancelSort: 'Hủy sắp xếp'
+        }}
+      />
+
+      <RefreshConfirmationModal
+        isVisible={isModalVisible}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        property={selectedProperty}
+      />
+    </>
   )
 }
