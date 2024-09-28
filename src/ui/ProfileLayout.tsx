@@ -31,7 +31,7 @@ import {
   MenuProps,
   Progress,
   ProgressProps,
-  Row,
+  Row, Skeleton,
   Tooltip,
   Typography,
   Upload,
@@ -108,7 +108,7 @@ const beforeUpload = (file: FileType) => {
 export default function ProfileLayout() {
   const navigate = useNavigate()
   const currentUser = useAuthStore((state) => state.user)
-  const { data: membership } = useUserMembership(currentUser?.id)
+  const { data: membership, isLoading: memberShipIsLoading } = useUserMembership(currentUser?.id)
   const logout = useAuthStore((state) => state.logout)
   const updateProfile = useAuthStore((state) => state.updateProfile)
 
@@ -216,6 +216,7 @@ export default function ProfileLayout() {
                     <Text>Số dư: {formatCurrency(currentUser.balance)}</Text>
                   </div>
                   <Divider className='m-0 mb-4' />
+                  {memberShipIsLoading && <Skeleton />}
                   {membership && (
                     <>
                       <div className='flex items-center'>
