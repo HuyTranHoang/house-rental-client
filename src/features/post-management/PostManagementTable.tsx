@@ -1,9 +1,9 @@
-import { useHiddenProperty } from '@/hooks/useProperty.ts'
-import { PropertyDataSource } from '@/types/property.type.ts'
+import { useHiddenProperty, useRefreshProperty } from '@/hooks/useProperty.ts'
+import { PropertyDataSource, PropertyStatus } from '@/types/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
-import { DeleteOutlined, EditOutlined, ExportOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
-import { Badge, Dropdown, MenuProps, Table, TableProps } from 'antd'
+import { ArrowUpOutlined, DeleteOutlined, EditOutlined, ExportOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
+import { Badge, Button, Dropdown, MenuProps, Modal, Table, TableProps } from 'antd'
 import { toast } from 'sonner'
 
 interface PropertyTableProps {
@@ -15,6 +15,20 @@ interface PropertyTableProps {
 
 function PostManagementTable({ dataSource, isLoading, paginationProps, handleTableChange }: PropertyTableProps) {
   const { hiddenProperty, hiddenPropertyIsPending } = useHiddenProperty()
+  const { refreshProperty } = useRefreshProperty()
+
+  const showConfirm = (record: PropertyDataSource) => {
+    Modal.confirm({
+      title: 'Bạn có chắc chắn muốn làm mới bài đăng này?',
+      content: record.title,
+      onOk: () => {
+        refreshProperty(record.id).then(() => {
+          toast.success('Refresh bài đăng thành công')
+        })
+      }
+    })
+  }
+  
 
   const getDropDownItems = (record: PropertyDataSource): MenuProps['items'] => [
     {
@@ -32,9 +46,9 @@ function PostManagementTable({ dataSource, isLoading, paginationProps, handleTab
       label: record.hidden ? 'Hiện bài đăng' : 'Ẩn bài đăng',
       icon: record.hidden ? <EyeOutlined /> : <EyeInvisibleOutlined />,
       onClick: () =>
-        hiddenProperty(record.id).then(() =>
+        hiddenProperty(record.id).then(() => {
           toast.success(record.hidden ? 'Hiện bài đăng thành công' : 'Ẩn bài đăng thành công')
-        )
+          })
     },
     {
       type: 'divider'
@@ -100,11 +114,19 @@ function PostManagementTable({ dataSource, isLoading, paginationProps, handleTab
       width: 125,
       render: (_: string, record: PropertyDataSource) => {
         return (
-          <Dropdown menu={{ items: getDropDownItems(record) }}>
+          <>
+            <Dropdown menu={{ items: getDropDownItems(record) }}>
             <a className='text-xl' onClick={(e) => e.preventDefault()}>
               ...
             </a>
-          </Dropdown>
+            </Dropdown>
+            {record.status === PropertyStatus.APPROVED && (
+              <Button type='primary' className='ml-4' 
+                      onClick={() => showConfirm(record)}>
+                <ArrowUpOutlined/>
+              </Button>
+            )}
+          </>
         )
       }
     }
