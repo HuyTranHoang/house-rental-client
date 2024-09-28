@@ -1,8 +1,10 @@
 import {
   fetchAllProperties,
+  fetchPriorityProperties,
   getAllPropertyByUserId,
   getPropertyById,
   hiddenProperty,
+  prioritizeProperty,
   refreshProperty
 } from '@/api/property.api'
 import { PropertyFilters } from '@/types/property.type.ts'
@@ -103,6 +105,25 @@ export const useRefreshProperty = () => {
   })
   return { refreshProperty: mutateAsync, refreshPropertyIsPending: isPending }
 }
+
+export const usePrioritizeProperty = () => {
+  const queryClient = useQueryClient()
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: prioritizeProperty,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] }),
+  })
+  return { prioritizeProperty: mutateAsync, prioritizePropertyIsPending: isPending }
+}
+
+export const usePriorityProperties = () => {
+  return useQuery({
+    queryKey: ['priority-properties'],
+    queryFn: fetchPriorityProperties,
+    staleTime: 1000 * 60 * 1,
+    refetchOnWindowFocus: false,
+  });
+}
+
 
 export const usePropertyFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams()
