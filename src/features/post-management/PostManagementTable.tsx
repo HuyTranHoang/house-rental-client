@@ -1,9 +1,9 @@
 import { useHiddenProperty, useRefreshProperty } from '@/hooks/useProperty.ts'
-import { PropertyDataSource } from '@/types/property.type.ts'
+import { PropertyDataSource, PropertyStatus } from '@/types/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
 import { ArrowUpOutlined, DeleteOutlined, EditOutlined, ExportOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
-import { Badge, Button, Dropdown, MenuProps, Table, TableProps } from 'antd'
+import { Badge, Button, Dropdown, MenuProps, Modal, Table, TableProps } from 'antd'
 import { toast } from 'sonner'
 
 interface PropertyTableProps {
@@ -16,6 +16,19 @@ interface PropertyTableProps {
 function PostManagementTable({ dataSource, isLoading, paginationProps, handleTableChange }: PropertyTableProps) {
   const { hiddenProperty, hiddenPropertyIsPending } = useHiddenProperty()
   const { refreshProperty } = useRefreshProperty()
+
+  const showConfirm = (record: PropertyDataSource) => {
+    Modal.confirm({
+      title: 'Bạn có chắc chắn muốn làm mới bài đăng này?',
+      content: record.title,
+      onOk: () => {
+        refreshProperty(record.id).then(() => {
+          toast.success('Refresh bài đăng thành công')
+        })
+      }
+    })
+  }
+  
 
   const getDropDownItems = (record: PropertyDataSource): MenuProps['items'] => [
     {
@@ -107,13 +120,12 @@ function PostManagementTable({ dataSource, isLoading, paginationProps, handleTab
               ...
             </a>
             </Dropdown>
-            <Button type='primary' className='ml-4' 
-                    onClick={() => 
-                      refreshProperty(record.id).then(() =>
-                      toast.success('Refresh bài đăng thành công')
-                    )}>
-              <ArrowUpOutlined/>
-            </Button>
+            {record.status === PropertyStatus.APPROVED && (
+              <Button type='primary' className='ml-4' 
+                      onClick={() => showConfirm(record)}>
+                <ArrowUpOutlined/>
+              </Button>
+            )}
           </>
         )
       }
