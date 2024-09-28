@@ -55,7 +55,15 @@ function RefreshConfirmationModal({ isVisible, onConfirm, onCancel, property }: 
         </div>
 
         <div className='text-xs text-gray-500'>
-          <Tooltip title='Bài đăng được sắp xếp theo thời gian làm mới gần nhất'>
+          <Tooltip
+            title={
+              <ul className='list-inside list-disc m-0 p-0'>
+                <li>Bài đăng sẽ được hiển thị lên đầu trang chủ</li>
+                <li>Không thể hủy bỏ sau khi xác nhận làm mới</li>
+                <li>Làm mới bài đăng sẽ tốn một lượt làm mới, vui lòng kiểm tra trong trang 'thông tin cá nhân'</li>
+              </ul>
+            }
+          >
             <span className='cursor-help underline'>Lưu ý về chính sách làm mới</span>
           </Tooltip>
         </div>
