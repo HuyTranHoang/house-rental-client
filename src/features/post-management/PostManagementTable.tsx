@@ -17,8 +17,8 @@ import type { MenuProps, TableProps } from 'antd'
 import { Badge, Button, Dropdown, Table, Tooltip } from 'antd'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import RefreshConfirmationModal from './RefreshConfirmationModal'
 import PriorityConfirmationModal from './PriorityConfirmationModal'
+import RefreshConfirmationModal from './RefreshConfirmationModal'
 
 interface PropertyTableProps {
   dataSource: PropertyDataSource[]
@@ -39,7 +39,7 @@ export default function PostManagementTable({
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isModalPriorityVisible, setIsModalPriorityVisible] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<PropertyDataSource | null>(null)
-  const [ paramModal, setParamModal ] = useState('')
+  const [paramModal, setParamModal] = useState('')
 
   const showConfirm = (record: PropertyDataSource) => {
     setSelectedProperty(record)
@@ -54,20 +54,19 @@ export default function PostManagementTable({
     if (selectedProperty) {
       if (paramModal === 'refresh') {
         refreshProperty(selectedProperty.id)
-        .then(() => {
-          toast.success('Làm mới bài đăng thành công')
-          setIsModalVisible(false)
-        })
-        .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
+          .then(() => {
+            toast.success('Làm mới bài đăng thành công')
+            setIsModalVisible(false)
+          })
+          .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
       } else {
         prioritizeProperty(selectedProperty.id)
-        .then(() => {
-          toast.success('Ưu tiên bài đăng thành công')
-          setIsModalPriorityVisible(false)
-        })
-        .catch((error) => toast.error(error.response.data.message || 'Lỗi khi ưu tiên bài đăng'))
+          .then(() => {
+            toast.success('Ưu tiên bài đăng thành công')
+            setIsModalPriorityVisible(false)
+          })
+          .catch((error) => toast.error(error.response.data.message || 'Lỗi khi ưu tiên bài đăng'))
       }
-      
     }
   }
 
@@ -189,19 +188,23 @@ export default function PostManagementTable({
                   size='small'
                   shape='circle'
                   className='border-0 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300 hover:from-purple-600 hover:to-blue-700'
-                  onClick={() => {showConfirm(record), setParamModal('refresh')}}
+                  onClick={() => {
+                    showConfirm(record), setParamModal('refresh')
+                  }}
                   loading={refreshPropertyIsPending}
                 />
               </Tooltip>
               <Tooltip title='Ưu tiên bài đăng'>
                 <Button
-                    icon={<FireOutlined className='text-white' />}
-                    size='small'
-                    shape='circle'
-                    className='border-0 bg-gradient-to-r from-yellow-500 to-red-500 transition-all duration-300 hover:from-red-600 hover:to-yellow-600'
-                    onClick={() => {showConfirm(record), setParamModal('priority')}}
-                    loading={prioritizePropertyIsPending}
-                  />
+                  icon={<FireOutlined className='text-white' />}
+                  size='small'
+                  shape='circle'
+                  className='border-0 bg-gradient-to-r from-yellow-500 to-red-500 transition-all duration-300 hover:from-red-600 hover:to-yellow-600'
+                  onClick={() => {
+                    showConfirm(record), setParamModal('priority')
+                  }}
+                  loading={prioritizePropertyIsPending}
+                />
               </Tooltip>
             </>
           )}
