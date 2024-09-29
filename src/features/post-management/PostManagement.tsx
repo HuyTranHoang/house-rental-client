@@ -1,7 +1,7 @@
 import ErrorFetching from '@/components/ErrorFetching.tsx'
-import useAuthStore from '@/store/authStore.ts'
 import PostManagementTable from '@/features/post-management/PostManagementTable.tsx'
 import { usePropertiesByUserId } from '@/hooks/useProperty.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { PropertyDataSource, PropertyStatus } from '@/types/property.type.ts'
 import Container from '@/ui/Container'
 import { CheckCircleOutlined, CloseSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
@@ -84,7 +84,15 @@ function PostManagement() {
         }
         className='mb-10 mt-12'
       >
-        <Tabs defaultActiveKey='PENDING' items={items} onChange={(key) => setStatus(key as PropertyStatus)} />
+        <Tabs
+          defaultActiveKey='PENDING'
+          items={items}
+          onChange={(key) => {
+            setStatus(key as PropertyStatus)
+            setPageNumber(1)
+          }}
+        />
+
         <PostManagementTable
           dataSource={dataSource}
           isLoading={isLoading}

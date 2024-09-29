@@ -82,6 +82,8 @@ function RentHouse() {
 
           <Divider className='mb-4 mt-3' />
 
+          <PriorityCardItem />
+
           {isError && (
             <Typography.Title level={4} className='text-center'>
               Đã xảy ra lỗi khi tải dữ liệu
@@ -104,8 +106,6 @@ function RentHouse() {
               <Button type='primary'>Tìm kiếm lại</Button>
             </Empty>
           )}
-
-          <PriorityCardItem />
 
           {data && data.data.map((property: Property) => <RentHouseCardItem key={property.id} property={property} />)}
 

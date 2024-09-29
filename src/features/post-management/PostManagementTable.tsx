@@ -199,11 +199,12 @@ export default function PostManagementTable({
                   loading={prioritizePropertyIsPending}
                 />
               </Tooltip>
-              <Dropdown menu={{ items: getDropDownItems(record) }} trigger={['click']}>
-                <Button icon={<MoreOutlined />} size='small' />
-              </Dropdown>
             </>
           )}
+
+          <Dropdown menu={{ items: getDropDownItems(record) }} trigger={['click']}>
+            <Button icon={<MoreOutlined />} size='small' />
+          </Dropdown>
         </div>
       )
     }
