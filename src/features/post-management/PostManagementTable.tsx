@@ -39,20 +39,19 @@ export default function PostManagementTable({
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isModalPriorityVisible, setIsModalPriorityVisible] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<PropertyDataSource | null>(null)
-  const [paramModal, setParamModal] = useState('')
 
-  const showConfirm = (record: PropertyDataSource) => {
+  const showConfirm = (record: PropertyDataSource, isRefreshModal: boolean) => {
     setSelectedProperty(record)
-    if (paramModal === 'refresh') {
+    if (isRefreshModal) {
       setIsModalVisible(true)
     } else {
       setIsModalPriorityVisible(true)
     }
   }
 
-  const handleConfirm = () => {
+  const handleConfirm = (isRefreshModal: boolean) => {
     if (selectedProperty) {
-      if (paramModal === 'refresh') {
+      if (isRefreshModal) {
         refreshProperty(selectedProperty.id)
           .then(() => {
             toast.success('Làm mới bài đăng thành công')
@@ -70,8 +69,9 @@ export default function PostManagementTable({
     }
   }
 
-  const handleCancel = () => {
-    setIsModalVisible(false)
+  const handleCancel = (isRefreshModal: boolean) => {
+    if (isRefreshModal) setIsModalVisible(false)
+    else setIsModalPriorityVisible(false)
     setSelectedProperty(null)
   }
 
@@ -177,9 +177,6 @@ export default function PostManagementTable({
       width: 120,
       render: (_: undefined, record: PropertyDataSource) => (
         <div className='flex items-center space-x-2'>
-          <Dropdown menu={{ items: getDropDownItems(record) }} trigger={['click']}>
-            <Button icon={<MoreOutlined />} size='small' />
-          </Dropdown>
           {record.status === PropertyStatus.APPROVED && (
             <>
               <Tooltip title='Làm mới bài đăng'>
@@ -188,9 +185,7 @@ export default function PostManagementTable({
                   size='small'
                   shape='circle'
                   className='border-0 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300 hover:from-purple-600 hover:to-blue-700'
-                  onClick={() => {
-                    showConfirm(record), setParamModal('refresh')
-                  }}
+                  onClick={() => showConfirm(record, true)}
                   loading={refreshPropertyIsPending}
                 />
               </Tooltip>
@@ -200,12 +195,13 @@ export default function PostManagementTable({
                   size='small'
                   shape='circle'
                   className='border-0 bg-gradient-to-r from-yellow-500 to-red-500 transition-all duration-300 hover:from-red-600 hover:to-yellow-600'
-                  onClick={() => {
-                    showConfirm(record), setParamModal('priority')
-                  }}
+                  onClick={() => showConfirm(record, false)}
                   loading={prioritizePropertyIsPending}
                 />
               </Tooltip>
+              <Dropdown menu={{ items: getDropDownItems(record) }} trigger={['click']}>
+                <Button icon={<MoreOutlined />} size='small' />
+              </Dropdown>
             </>
           )}
         </div>
@@ -236,16 +232,16 @@ export default function PostManagementTable({
 
       <RefreshConfirmationModal
         isVisible={isModalVisible}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
+        onConfirm={() => handleConfirm(true)}
+        onCancel={() => handleCancel(true)}
         property={selectedProperty}
         isLoading={refreshPropertyIsPending}
       />
 
       <PriorityConfirmationModal
         isVisible={isModalPriorityVisible}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
+        onConfirm={() => handleConfirm(false)}
+        onCancel={() => handleCancel(false)}
         property={selectedProperty}
         isLoading={refreshPropertyIsPending}
       />

@@ -1,6 +1,8 @@
 import { PropertyDataSource } from '@/types/property.type'
 import { ArrowUpOutlined, ClockCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { Button, Modal, Tooltip } from 'antd'
+import { formatDistanceToNow } from 'date-fns'
+import { vi } from 'date-fns/locale'
 
 interface PriorityConfirmationModalProps {
   isVisible: boolean
@@ -19,6 +21,12 @@ function PriorityConfirmationModal({
 }: PriorityConfirmationModalProps) {
   if (!property) return null
 
+  const priorityExpiration = new Date(property.priorityExpiration)
+  const isEpoch = priorityExpiration.getTime() === new Date('1970-01-01T00:00:00Z').getTime()
+
+  const lastPriorityExpiration = isEpoch
+    ? 'Không xác định'
+    : formatDistanceToNow(priorityExpiration, { addSuffix: true, locale: vi })
 
   return (
     <Modal
@@ -44,7 +52,7 @@ function PriorityConfirmationModal({
         <div className='rounded-lg bg-gray-50 p-4'>
           <div className='mb-3 flex items-center text-sm text-gray-600'>
             <ClockCircleOutlined className='mr-2' />
-            Thời hạn ưu tiên: {property.priorityExpiration}
+            Lần sử dụng ưu tiên cuối cùng: {lastPriorityExpiration}
           </div>
           <div className='space-y-2 text-sm'>
             <div className='flex items-start'>
@@ -54,6 +62,10 @@ function PriorityConfirmationModal({
             <div className='flex items-start'>
               <ArrowUpOutlined className='mr-2 mt-1 text-green-500' />
               <span>Tăng khả năng tiếp cận cao với tất cả người dùng</span>
+            </div>
+
+            <div className='flex items-start'>
+              <span className='ml-6'>Thời gian ưu tiên: 2 ngày/ lần dùng</span>
             </div>
           </div>
         </div>
