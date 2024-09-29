@@ -1,6 +1,7 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { PageInfo } from '@/types/pageInfo.type.ts'
 import { Property } from '@/types/property.type.ts'
+import axios from 'axios'
 import { toast } from 'sonner'
 
 interface PropertyResponse {
@@ -106,3 +107,12 @@ export const hiddenProperty = async (id: number) => {
 export const refreshProperty = async (id: number) => {
   await axiosInstance.put<Property>(`/api/properties/refresh/${id}`)
 }
+
+export const prioritizeProperty = async (id: number) => {
+  await axiosInstance.put<Property>(`/api/properties/priority/${id}`)
+}
+
+export const fetchPriorityProperties = async (): Promise<Property[]> => {
+  const response = await axios.get('/api/properties/priority');
+  return response.data;
+};

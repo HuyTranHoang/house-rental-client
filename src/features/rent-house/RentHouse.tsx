@@ -7,6 +7,7 @@ import { BookOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
 import { useMemo, useRef } from 'react'
 import RentHouseCardItem from './RentHouseCardItem.tsx'
+import { PriorityCartItem } from './PriorityCartItem.tsx'
 
 function RentHouse() {
   const {
@@ -103,6 +104,7 @@ function RentHouse() {
               <Button type='primary'>Tìm kiếm lại</Button>
             </Empty>
           )}
+          <PriorityCartItem/>
 
           {data && data.data.map((property: Property) => <RentHouseCardItem key={property.id} property={property} />)}
 
