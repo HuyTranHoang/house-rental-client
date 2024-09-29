@@ -68,20 +68,18 @@ function MenuDesktop({ user }: { user: User | null }) {
 
   return (
     <Flex className='hidden md:flex' gap='small' wrap>
-      <NavItem title='TEST - DEV ONLY' link={ROUTER_NAMES.TEST} />
-
       <NavItem title='Tìm thuê' link={ROUTER_NAMES.RENT_HOUSE} />
 
       <NavItem title='Gói thành viên' link={ROUTER_NAMES.MEMBERSHIP_FEE} />
 
+      <NavItem title='Nạp tiền' link={ROUTER_NAMES.TOP_UP} />
+
+      <NavItem title='Về chúng tôi' link={ROUTER_NAMES.ABOUT} />
+
+      <NavItem title='Liên hệ' link={ROUTER_NAMES.CONTACT} />
+
       {user && (
         <>
-          <NavItem title='Nạp tiền' link={ROUTER_NAMES.TOP_UP} />
-
-          <NavItem title='Mã thưởng' link={ROUTER_NAMES.PROMOTION} />
-
-          <NavItem title='Tin nhắn' link={ROUTER_NAMES.MESSAGE} />
-
           <Divider type='vertical' style={{ height: '2rem' }} />
 
           <BellOutlined className='text-slate-600' />

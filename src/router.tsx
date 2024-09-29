@@ -24,7 +24,6 @@ import About from './pages/About.tsx'
 import Contact from './pages/Contact.tsx'
 import Deposit from './pages/Deposit.tsx'
 import PaymentSuccess from './pages/PaymentSuccess.tsx'
-import TestPage from './pages/TestPage.tsx'
 import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
@@ -120,15 +119,6 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
       {
         element: <RentHouse />,
         index: true,
-        breadcrumb: () => (
-          <span>
-            <HomeOutlined /> Mogu
-          </span>
-        )
-      },
-      {
-        path: ROUTER_NAMES.TEST,
-        element: <TestPage />,
         breadcrumb: () => (
           <span>
             <HomeOutlined /> Mogu
