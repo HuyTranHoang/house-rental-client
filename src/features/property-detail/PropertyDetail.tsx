@@ -298,7 +298,7 @@ function PropertyDetail() {
         </Col>
 
         <Col span={24}>
-          <RelatedProperty id={Number(id)} />
+          <RelatedProperty id={Number(id)} currentUser={currentUser} />
         </Col>
       </Row>
     </Container>
