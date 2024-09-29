@@ -20,7 +20,8 @@ import {
   LeftCircleOutlined,
   MailOutlined,
   PhoneFilled,
-  RightCircleOutlined
+  RightCircleOutlined,
+  UserOutlined
 } from '@ant-design/icons'
 import {
   Avatar,
@@ -237,14 +238,18 @@ function PropertyDetail() {
         </Col>
 
         <Col span={8}>
-          <div className='sticky z-10 top-6'>
+          <div className='sticky top-6 z-10'>
             <Card loading={userIsLoading}>
               {userData && (
                 <>
                   <Meta
                     avatar={
                       <Flex align='center' justify='center' className='mr-2 h-full'>
-                        <Avatar size='large' src={userData.avatarUrl} />
+                        {userData.avatarUrl ? (
+                          <Avatar size='large' src={userData.avatarUrl} />
+                        ) : (
+                          <Avatar size='large' icon={<UserOutlined />} />
+                        )}
                       </Flex>
                     }
                     title={
