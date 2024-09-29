@@ -1,5 +1,6 @@
 import {
   fetchAllProperties,
+  fetchAllRelatedProperties,
   fetchPriorityProperties,
   getAllPropertyByUserId,
   getPropertyById,
@@ -101,7 +102,7 @@ export const useRefreshProperty = () => {
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation({
     mutationFn: refreshProperty,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
   })
   return { refreshProperty: mutateAsync, refreshPropertyIsPending: isPending }
 }
@@ -110,7 +111,7 @@ export const usePrioritizeProperty = () => {
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation({
     mutationFn: prioritizeProperty,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
   })
   return { prioritizeProperty: mutateAsync, prioritizePropertyIsPending: isPending }
 }
@@ -120,10 +121,19 @@ export const usePriorityProperties = () => {
     queryKey: ['priority-properties'],
     queryFn: fetchPriorityProperties,
     staleTime: 1000 * 60 * 1,
-    refetchOnWindowFocus: false,
-  });
+    refetchOnWindowFocus: false
+  })
 }
 
+export const useRelatedProperties = (propertyId: number | undefined) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['related-properties', propertyId],
+    queryFn: () => fetchAllRelatedProperties(propertyId!),
+    enabled: propertyId !== undefined
+  })
+
+  return { relatedPropertiesData: data, relatedPropertiesIsLoading: isLoading }
+}
 
 export const usePropertyFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams()

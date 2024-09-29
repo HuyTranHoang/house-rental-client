@@ -113,6 +113,11 @@ export const prioritizeProperty = async (id: number) => {
 }
 
 export const fetchPriorityProperties = async (): Promise<Property[]> => {
-  const response = await axios.get('/api/properties/priority');
-  return response.data;
-};
+  const response = await axios.get('/api/properties/priority')
+  return response.data
+}
+
+export const fetchAllRelatedProperties = async (propertyId: number): Promise<Property[]> => {
+  const response = await axios.get(`/api/properties/related/${propertyId}`)
+  return response.data
+}

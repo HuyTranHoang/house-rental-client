@@ -1,6 +1,7 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import RelatedProperty from '@/features/property-detail/RelatedProperty.tsx'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { useProperty } from '@/hooks/useProperty'
@@ -44,56 +45,12 @@ import Meta from 'antd/es/card/Meta'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import styled from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailComment from './PropertyDetailComment.tsx'
-
-const PrevButton = styled(Button)`
-  border: 0;
-  background-color: #ffffff;
-  color: #657786;
-
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    border-style: solid;
-    top: 0;
-    width: 0;
-    height: 0;
-    left: -9px;
-    border-width: 11px 11px 12px 0;
-    border-color: transparent #ffffff transparent transparent;
-  }
-`
-
-const NextButton = styled(Button)`
-  border: 0;
-  background-color: #69b1ff;
-  color: #ffffff;
-
-  &:hover {
-    color: #ffffff !important;
-    background-color: #69b1ff !important;
-  }
-
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    border-style: solid;
-    top: 0;
-    width: 0;
-    height: 0;
-    right: -9px;
-    border-width: 11px 0 12px 11px;
-    border-color: transparent transparent transparent #69b1ff;
-  }
-`
 
 function PropertyDetail() {
   const navigate = useNavigate()
@@ -162,10 +119,21 @@ function PropertyDetail() {
 
         <Col span={8}>
           <Space className='mb-3 mt-5'>
-            <PrevButton size='small' onClick={() => navigate(ROUTER_NAMES.RENT_HOUSE)}>
-              Về danh sách
-            </PrevButton>
-            <NextButton size='small'>Tin tiếp</NextButton>
+            <Button
+              size='small'
+              onClick={() => navigate(ROUTER_NAMES.RENT_HOUSE)}
+              className='group relative border-0 bg-white pl-4 pr-3 text-gray-500 transition-none hover:bg-slate-200 hover:text-gray-700'
+            >
+              <span>Về danh sách</span>
+              <span className='absolute left-0 top-0 h-0 w-0 -translate-x-full border-b-[12px] border-l-0 border-r-[11px] border-t-[11px] border-solid border-transparent border-r-white transition-none group-hover:border-r-slate-200' />
+            </Button>
+            <Button
+              size='small'
+              className='group relative border-0 bg-blue-400 pl-3 pr-4 text-white transition-none hover:bg-blue-500 hover:text-white'
+            >
+              <span>Tin tiếp</span>
+              <span className='absolute right-[2px] top-0 h-0 w-0 translate-x-full border-b-[12px] border-l-[11px] border-r-0 border-t-[11px] border-solid border-transparent border-l-blue-400 transition-none group-hover:border-l-blue-500' />
+            </Button>
           </Space>
         </Col>
 
@@ -327,6 +295,10 @@ function PropertyDetail() {
               </Button>
             </ConfigProvider>
           </div>
+        </Col>
+
+        <Col span={24}>
+          <RelatedProperty id={Number(id)} />
         </Col>
       </Row>
     </Container>
