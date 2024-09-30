@@ -8,7 +8,11 @@ export interface NotificationPagination {
   pageInfo: PageInfo
 }
 
-export const fetchNotificationByUserId = async (userId: number, pageNumber: number, pageSize: number): Promise<NotificationPagination> => {
+export const fetchNotificationByUserId = async (
+  userId: number,
+  pageNumber: number,
+  pageSize: number
+): Promise<NotificationPagination> => {
   try {
     const params = { userId, pageNumber, pageSize }
     const response = await axiosInstance.get<NotificationPagination>('/api/notification', { params })
@@ -26,5 +30,14 @@ export const updateNotificationSeen = async (notificationId: number) => {
   } catch (error) {
     console.error(error)
     toast.error('Lỗi khi cập nhật thông báo')
+  }
+}
+
+export const markAllNotificationAsRead = async (userId: number) => {
+  try {
+    await axiosInstance.put(`/api/notification/mark-all-as-read/${userId}`)
+  } catch (error) {
+    console.error(error)
+    toast.error('Lỗi khi đánh dấu tất cả thông báo đã đọc')
   }
 }

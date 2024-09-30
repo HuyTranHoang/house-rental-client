@@ -1,10 +1,14 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { useNotificationByUserId, useUpdateNotificationSeen } from '@/hooks/useNotification.ts'
+import {
+  useMarkAllNotificationAsRead,
+  useNotificationByUserId,
+  useUpdateNotificationSeen
+} from '@/hooks/useNotification.ts'
 import useAuthStore from '@/store/authStore.ts'
 import { Notification as NotificationType } from '@/types/notification.type.ts'
 import { generateSlug } from '@/utils/generateSlug.ts'
 import { BellOutlined, CheckOutlined, ClockCircleOutlined, DownOutlined } from '@ant-design/icons'
-import { Badge, Button, Dropdown, DropdownProps, MenuProps, Skeleton, Space } from 'antd'
+import { Badge, Button, Dropdown, DropdownProps, Flex, MenuProps, Skeleton, Space, Typography } from 'antd'
 import { clsx } from 'clsx/lite'
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -22,6 +26,7 @@ function Notification() {
   const { notificationData, notificationIsLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useNotificationByUserId(currentUser?.id, 5)
   const { updateNotificationSeen } = useUpdateNotificationSeen()
+  const { markAllNotificationAsRead } = useMarkAllNotificationAsRead()
 
   useEffect(() => {
     if (scrollRef.current && firstLoad && notificationData) {
@@ -31,7 +36,7 @@ function Notification() {
       setFirstLoad(false)
       return
     }
-    
+
     if (scrollRef.current && !isFetchingNextPage) {
       const scrollContainer = scrollRef.current
       scrollContainer.scrollTop = scrollContainer.scrollHeight - prevScrollHeightRef.current
@@ -104,11 +109,22 @@ function Notification() {
       {
         key: 'mark-all-as-read',
         label: (
-          <div className='w-full pt-1 text-right text-xs text-blue-500'>
-            <CheckOutlined /> <span className='hover:underline'>Đánh dấu tất cả đã đọc</span>
-          </div>
+          <Flex>
+            <Typography.Title level={5} className='m-0 grow p-0'>
+              Thông báo
+            </Typography.Title>
+            <Button
+              type='link'
+              icon={<CheckOutlined />}
+              size='small'
+              className='text-xs'
+              onClick={() => (currentUser ? markAllNotificationAsRead(currentUser.id) : undefined)}
+            >
+              Đánh dấu tất cả đã đọc
+            </Button>
+          </Flex>
         ),
-        className: 'hover:bg-white'
+        className: 'hover:bg-white cursor-default'
       },
       {
         type: 'divider'
