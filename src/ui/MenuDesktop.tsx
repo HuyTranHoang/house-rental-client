@@ -2,11 +2,12 @@ import ROUTER_NAMES from '@/constant/routerNames.ts'
 import useAuthStore from '@/store/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { User } from '@/types/user.type.ts'
-import { BellOutlined, UserOutlined } from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
 import { clsx } from 'clsx'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import Notification from '@/ui/Notification.tsx'
 
 interface NavItemProps {
   title: string
@@ -82,7 +83,7 @@ function MenuDesktop({ user }: { user: User | null }) {
         <>
           <Divider type='vertical' style={{ height: '2rem' }} />
 
-          <BellOutlined className='text-slate-600' />
+          <Notification />
 
           <Button type='link'>
             <Dropdown menu={{ items, onClick }}>
