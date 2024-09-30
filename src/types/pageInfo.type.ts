@@ -3,4 +3,5 @@ export interface PageInfo {
   totalElements: number
   totalPages: number
   size: number
+  hasNextPage: boolean
 }

@@ -1,15 +1,22 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { Notification } from '@/types/notification.type.ts'
+import { PageInfo } from '@/types/pageInfo.type.ts'
 import { toast } from 'sonner'
 
-export const fetchNotificationByUserId = async (userId: number) => {
+export interface NotificationPagination {
+  data: Notification[]
+  pageInfo: PageInfo
+}
+
+export const fetchNotificationByUserId = async (userId: number, pageNumber: number, pageSize: number): Promise<NotificationPagination> => {
   try {
-    const response = await axiosInstance.get<Notification[]>(`/api/notification/${userId}`)
+    const params = { userId, pageNumber, pageSize }
+    const response = await axiosInstance.get<NotificationPagination>('/api/notification', { params })
     return response.data
   } catch (error) {
     console.error(error)
     toast.error('Lỗi khi lấy thông báo')
-    return []
+    throw error
   }
 }
 

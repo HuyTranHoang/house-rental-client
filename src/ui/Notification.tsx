@@ -3,19 +3,40 @@ import { useNotificationByUserId, useUpdateNotificationSeen } from '@/hooks/useN
 import useAuthStore from '@/store/authStore.ts'
 import { Notification as NotificationType } from '@/types/notification.type.ts'
 import { generateSlug } from '@/utils/generateSlug.ts'
-import { BellOutlined, CheckOutlined, ClockCircleOutlined } from '@ant-design/icons'
-import { Badge, Dropdown, MenuProps, Skeleton, Space } from 'antd'
+import { BellOutlined, CheckOutlined, ClockCircleOutlined, DownOutlined } from '@ant-design/icons'
+import { Badge, Button, Dropdown, DropdownProps, MenuProps, Skeleton, Space } from 'antd'
 import { clsx } from 'clsx/lite'
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function Notification() {
   const navigate = useNavigate()
   const currentUser = useAuthStore((state) => state.user)
+  const [openNotification, setOpenNotification] = useState(false)
+  const [firstLoad, setFirstLoad] = useState(true)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const prevScrollHeightRef = useRef<number>(0)
 
-  const { notificationData, notificationIsloading } = useNotificationByUserId(currentUser?.id)
+  const { notificationData, notificationIsLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useNotificationByUserId(currentUser?.id, 5)
   const { updateNotificationSeen } = useUpdateNotificationSeen()
+
+  useEffect(() => {
+    if (scrollRef.current && firstLoad && notificationData) {
+      const scrollContainer = scrollRef.current
+      scrollContainer.scrollTop = 0
+      prevScrollHeightRef.current = scrollContainer.scrollHeight
+      setFirstLoad(false)
+      return
+    }
+    
+    if (scrollRef.current && !isFetchingNextPage) {
+      const scrollContainer = scrollRef.current
+      scrollContainer.scrollTop = scrollContainer.scrollHeight - prevScrollHeightRef.current
+    }
+  }, [notificationData, isFetchingNextPage, firstLoad])
 
   const handleClickNotification = (item: NotificationType) => {
     updateNotificationSeen(item.id)
@@ -23,15 +44,28 @@ function Notification() {
     navigate(ROUTER_NAMES.getRentHouseDetail(slug))
   }
 
+  const handleOpenChange: DropdownProps['onOpenChange'] = (nextOpen, info) => {
+    if (info.source === 'trigger' || nextOpen) {
+      setOpenNotification(nextOpen)
+    }
+  }
+
+  const handleLoadMore = () => {
+    if (scrollRef.current) {
+      prevScrollHeightRef.current = scrollRef.current.scrollHeight
+    }
+    fetchNextPage()
+  }
+
   const NotificationMenu = () => (
-    <div className='max-h-96 w-80 overflow-y-auto py-2'>
+    <div ref={scrollRef} className='max-h-96 w-80 overflow-y-auto py-2'>
       <Space direction='vertical' className='w-full' size={0}>
         {notificationData &&
           notificationData.map((item) => (
             <div
               key={item.id}
               className={clsx(
-                'space-y-2 px-4 py-2 transition-colors duration-200',
+                'rounded px-4 py-2 transition-colors duration-200',
                 item.seen && 'hover:bg-gray-200',
                 !item.seen && 'bg-blue-50 hover:bg-blue-100'
               )}
@@ -44,7 +78,7 @@ function Notification() {
                 </p>
                 {!item.seen && <Badge className='px-2' status='processing' />}
               </div>
-              <p className='my-0 text-xs text-gray-500'>
+              <p className='mt-1 text-xs text-gray-500'>
                 <ClockCircleOutlined /> {formatDistanceToNow(item.createdAt, { addSuffix: true, locale: vi })}
               </p>
             </div>
@@ -52,6 +86,14 @@ function Notification() {
 
         {notificationData && notificationData.length === 0 && (
           <div className='cursor-default text-center text-gray-500'>Không có thông báo mới</div>
+        )}
+
+        {hasNextPage && (
+          <div className='pt-2 text-center'>
+            <Button onClick={handleLoadMore} loading={isFetchingNextPage} icon={<DownOutlined />}>
+              Những tin cũ hơn
+            </Button>
+          </div>
         )}
       </Space>
     </div>
@@ -73,7 +115,7 @@ function Notification() {
       },
       {
         key: 'notifications',
-        label: notificationIsloading ? <Skeleton /> : <NotificationMenu />,
+        label: notificationIsLoading ? <Skeleton /> : <NotificationMenu />,
         className: 'hover:bg-white'
       }
     ]
@@ -88,6 +130,8 @@ function Notification() {
       arrow={{
         pointAtCenter: true
       }}
+      onOpenChange={handleOpenChange}
+      open={openNotification}
       trigger={['click']}
       className='mt-2'
     >
