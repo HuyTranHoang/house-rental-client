@@ -10,10 +10,9 @@ import { generateSlug } from '@/utils/generateSlug.ts'
 import { BellOutlined, CheckOutlined, ClockCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { Badge, Button, Dropdown, DropdownProps, Flex, MenuProps, Skeleton, Space, Typography } from 'antd'
 import { clsx } from 'clsx/lite'
-import { formatDistanceToNow } from 'date-fns'
-import { vi } from 'date-fns/locale'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { formatDistanceToNowISO } from '@/utils/formatDate.ts'
 
 function Notification() {
   const navigate = useNavigate()
@@ -84,7 +83,7 @@ function Notification() {
                 {!item.seen && <Badge className='px-2' status='processing' />}
               </div>
               <p className='mt-1 text-xs text-gray-500'>
-                <ClockCircleOutlined /> {formatDistanceToNow(item.createdAt, { addSuffix: true, locale: vi })}
+                <ClockCircleOutlined /> {formatDistanceToNowISO(item.createdAt)}
               </p>
             </div>
           ))}

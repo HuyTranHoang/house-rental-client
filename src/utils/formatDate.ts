@@ -46,3 +46,10 @@ export const calculateMembershipRemainingDays = (membership: UserMembership | un
   const diffTime = endDate.getTime() - today.getTime()
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 }
+
+export const formatDistanceToNowISO = (createdAt: string) => {
+  if (!createdAt) return ''
+  const date = parseISO(createdAt)
+
+  return formatDistanceToNow(date, { addSuffix: true, locale: vi })
+}
