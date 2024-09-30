@@ -1,6 +1,7 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { PageInfo } from '@/models/pageInfo.type.ts'
-import { Property } from '@/models/property.type.ts'
+import { PageInfo } from '@/types/pageInfo.type.ts'
+import { Property } from '@/types/property.type.ts'
+import axios from 'axios'
 import { toast } from 'sonner'
 
 interface PropertyResponse {
@@ -24,6 +25,11 @@ export const fetchAllProperties = async (
 ) => {
   pageNumber = pageNumber - 1
 
+  // Client chỉ được xem những bài đăng đã được duyệt, không khóa và không ẩn
+  const status = 'APPROVED'
+  const isBlocked = 'false'
+  const isHidden = 'false'
+
   try {
     const params = {
       search,
@@ -35,6 +41,36 @@ export const fetchAllProperties = async (
       minArea,
       maxArea,
       numOfDays,
+      isHidden,
+      isBlocked,
+      status,
+      sortBy,
+      pageNumber,
+      pageSize
+    }
+
+    const response = await axiosInstance.get<PropertyResponse>('/api/properties', { params })
+    return response.data
+  } catch (error) {
+    toast.error('Lỗi khi tải dữ liệu bài đăng')
+    throw error
+  }
+}
+
+export const getAllPropertyByUserId = async (
+  search: string,
+  status: string,
+  userId: number,
+  sortBy: string,
+  pageNumber: number,
+  pageSize: number
+) => {
+  pageNumber = pageNumber - 1
+  try {
+    const params = {
+      search,
+      status,
+      userId,
       sortBy,
       pageNumber,
       pageSize
@@ -56,4 +92,32 @@ export const getPropertyById = async (id: number) => {
     toast.error('Lỗi khi tải dữ liệu bài đăng')
     throw error
   }
+}
+
+export const hiddenProperty = async (id: number) => {
+  try {
+    const response = await axiosInstance.put<Property>(`/api/properties/hide/${id}`)
+    return response.data
+  } catch (error) {
+    toast.error('Lỗi khi ẩn bài đăng')
+    throw error
+  }
+}
+
+export const refreshProperty = async (id: number) => {
+  await axiosInstance.put<Property>(`/api/properties/refresh/${id}`)
+}
+
+export const prioritizeProperty = async (id: number) => {
+  await axiosInstance.put<Property>(`/api/properties/priority/${id}`)
+}
+
+export const fetchPriorityProperties = async (): Promise<Property[]> => {
+  const response = await axios.get('/api/properties/priority')
+  return response.data
+}
+
+export const fetchAllRelatedProperties = async (propertyId: number): Promise<Property[]> => {
+  const response = await axios.get(`/api/properties/related/${propertyId}`)
+  return response.data
 }

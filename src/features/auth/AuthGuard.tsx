@@ -1,6 +1,6 @@
 import CustomIndicator from '@/components/CustomIndicator'
 import ROUTER_NAMES from '@/constant/routerNames'
-import useAuthStore from '@/features/auth/authStore'
+import useAuthStore from '@/store/authStore.ts'
 import { useQuery } from '@tanstack/react-query'
 import { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'

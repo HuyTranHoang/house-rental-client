@@ -1,6 +1,6 @@
 import { toast } from 'sonner'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { User } from '@/models/user.type'
+import { User } from '@/types/user.type'
 
 type updateProfileType = {
   lastName: string

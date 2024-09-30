@@ -1,6 +1,6 @@
 import { CheckOutlined, CrownOutlined, RocketOutlined, StarOutlined } from '@ant-design/icons'
 import { Button, Card, Tooltip, Typography } from 'antd'
-import { Membership } from '@/models/membership.type.ts'
+import { Membership } from '@/types/membership.type.ts'
 
 const { Text, Title } = Typography
 

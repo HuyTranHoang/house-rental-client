@@ -1,6 +1,6 @@
 import { toast } from 'sonner'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { District } from '@/models/district.type.ts'
+import { District } from '@/types/district.type.ts'
 
 export const fetchAllDistricts = async () => {
   try {

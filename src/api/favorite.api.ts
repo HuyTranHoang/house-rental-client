@@ -1,5 +1,5 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { Favorite, FavoriteProperty } from '@/models/favorite.type.ts'
+import { Favorite, FavoriteProperty } from '@/types/favorite.type.ts'
 import { toast } from 'sonner'
 
 export const getFavoritesByUserId = async (userId: number) => {

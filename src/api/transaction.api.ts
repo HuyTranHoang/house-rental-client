@@ -1,7 +1,7 @@
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { PageInfo } from '@/models/pageInfo.type'
-import { Payment } from '@/models/payment.type.ts'
-import { Transaction } from '@/models/transaction.type.ts'
+import { PageInfo } from '@/types/pageInfo.type'
+import { Payment } from '@/types/payment.type.ts'
+import { Transaction } from '@/types/transaction.type.ts'
 import { HttpStatusCode } from 'axios'
 import { toast } from 'sonner'
 
@@ -16,9 +16,18 @@ interface TransactionResponse {
   pageInfo: PageInfo
 }
 
-export const createTransaction = async (values: TransactionForm) => {
+export const createTransactionDeposit = async (values: TransactionForm) => {
   try {
-    return await axiosInstance.post<Payment>('/api/transaction', values)
+    return await axiosInstance.post<Payment>('/api/transaction/deposit', values)
+  } catch (error) {
+    console.error('Failed to create transaction', error)
+    toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')
+  }
+}
+
+export const createTransactionWithDrawal = async (values: TransactionForm) => {
+  try {
+    return await axiosInstance.post('/api/transaction/withdrawal', values)
   } catch (error) {
     console.error('Failed to create transaction', error)
     toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')

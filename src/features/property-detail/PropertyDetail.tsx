@@ -1,11 +1,12 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
+import RelatedProperty from '@/features/property-detail/RelatedProperty.tsx'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { useProperty } from '@/hooks/useProperty'
 import { useUser } from '@/hooks/useUser'
+import useAuthStore from '@/store/authStore.ts'
 import Container from '@/ui/Container.tsx'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate, formatJoinedDate } from '@/utils/formatDate.ts'
@@ -20,7 +21,8 @@ import {
   LeftCircleOutlined,
   MailOutlined,
   PhoneFilled,
-  RightCircleOutlined
+  RightCircleOutlined,
+  UserOutlined
 } from '@ant-design/icons'
 import {
   Avatar,
@@ -43,67 +45,19 @@ import Meta from 'antd/es/card/Meta'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import styled from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import PropertyDetailReview from './PropertyDetailReview'
-
-const PrevButton = styled(Button)`
-  border: 0;
-  background-color: #ffffff;
-  color: #657786;
-
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    border-style: solid;
-    top: 0;
-    width: 0;
-    height: 0;
-    left: -9px;
-    border-width: 11px 11px 12px 0;
-    border-color: transparent #ffffff transparent transparent;
-  }
-`
-
-const NextButton = styled(Button)`
-  border: 0;
-  background-color: #69b1ff;
-  color: #ffffff;
-
-  &:hover {
-    color: #ffffff !important;
-    background-color: #69b1ff !important;
-  }
-
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    border-style: solid;
-    top: 0;
-    width: 0;
-    height: 0;
-    right: -9px;
-    border-width: 11px 0 12px 11px;
-    border-color: transparent transparent transparent #69b1ff;
-  }
-`
-
-const StickyDiv = styled('div')`
-  position: sticky;
-  top: 24px;
-  z-index: 1000;
-`
+import PropertyDetailComment from './PropertyDetailComment.tsx'
 
 function PropertyDetail() {
   const navigate = useNavigate()
 
-  const { id } = useParams<{ id: string }>()
+  const { slug } = useParams<{ slug: string }>()
+  const id = slug ? slug.split('-').pop() : ''
+
   const currentUser = useAuthStore((state) => state.user)
   const { favorites } = useFavoriteByUserId(currentUser?.id)
   const isFavorite = favorites?.some((favorite) => favorite.propertyId === Number(id))
@@ -165,8 +119,21 @@ function PropertyDetail() {
 
         <Col xs={24} md={8}>
           <Space className='mb-3 mt-5'>
-            <PrevButton size='small'>Về danh sách</PrevButton>
-            <NextButton size='small'>Tin tiếp</NextButton>
+            <Button
+              size='small'
+              onClick={() => navigate(ROUTER_NAMES.RENT_HOUSE)}
+              className='group relative border-0 bg-white pl-4 pr-3 text-gray-500 transition-none hover:bg-slate-200 hover:text-gray-700'
+            >
+              <span>Về danh sách</span>
+              <span className='absolute left-0 top-0 h-0 w-0 -translate-x-full border-b-[12px] border-l-0 border-r-[11px] border-t-[11px] border-solid border-transparent border-r-white transition-none group-hover:border-r-slate-200' />
+            </Button>
+            <Button
+              size='small'
+              className='group relative border-0 bg-blue-400 pl-3 pr-4 text-white transition-none hover:bg-blue-500 hover:text-white'
+            >
+              <span>Tin tiếp</span>
+              <span className='absolute right-[2px] top-0 h-0 w-0 translate-x-full border-b-[12px] border-l-[11px] border-r-0 border-t-[11px] border-solid border-transparent border-l-blue-400 transition-none group-hover:border-l-blue-500' />
+            </Button>
           </Space>
         </Col>
 
@@ -233,20 +200,25 @@ function PropertyDetail() {
 
               <Divider />
 
-              <PropertyDetailReview propertyId={id} />
+              <PropertyDetailComment propertyId={id} />
             </section>
           )}
         </Col>
 
+
         <Col xs={24} md={8}>
-          <StickyDiv>
+          <div className='sticky top-6 z-10'>
             <Card loading={userIsLoading}>
               {userData && (
                 <>
                   <Meta
                     avatar={
                       <Flex align='center' justify='center' className='mr-2 h-full'>
-                        <Avatar size='large' src={userData.avatarUrl} />
+                        {userData.avatarUrl ? (
+                          <Avatar size='large' src={userData.avatarUrl} />
+                        ) : (
+                          <Avatar size='large' icon={<UserOutlined />} />
+                        )}
                       </Flex>
                     }
                     title={
@@ -323,7 +295,11 @@ function PropertyDetail() {
                 Lưu tin
               </Button>
             </ConfigProvider>
-          </StickyDiv>
+          </div>
+        </Col>
+
+        <Col span={24}>
+          <RelatedProperty id={Number(id)} currentUser={currentUser} />
         </Col>
       </Row>
     </Container>

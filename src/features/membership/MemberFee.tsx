@@ -1,10 +1,11 @@
 import CustomIndicator from '@/components/CustomIndicator.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { MembershipCard } from '@/features/membership/MembershipCard.tsx'
 import { useMemberships } from '@/hooks/useMembership.ts'
+import { useCreateTransactionWithDrawal } from '@/hooks/useTransaction'
 import { useUpdateUserMembership, useUserMembership } from '@/hooks/useUserMembership'
-import { Membership } from '@/models/membership.type.ts'
+import { Membership } from '@/types/membership.type.ts'
 import { Col, Modal, Row, Spin, Typography } from 'antd'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -22,6 +23,8 @@ export function MemberFee() {
   const [selectedMembership, setSelectedMembership] = useState<Membership | null>(null)
 
   const { mutate: upgradeMembership, isPending: upgradeMembershipPending } = useUpdateUserMembership()
+  
+  const { mutate: createTransactionWithDrawal } = useCreateTransactionWithDrawal()
 
   const showConfirm = (membership: Membership) => {
     if (!currentUser) {
@@ -46,6 +49,13 @@ export function MemberFee() {
       upgradeMembership({ userId: currentUser.id, membershipId: selectedMembership.id }).then(() => {
         deincrementUserBalance(selectedMembership.price)
         toast.success('Nâng cấp gói thành viên thành công.')
+        navigate(ROUTER_NAMES.RENT_HOUSE)
+      })
+
+      createTransactionWithDrawal({
+        amount: selectedMembership.price,
+        type: 'withdrawal',
+        description: 'Mua gói thành viên'
       })
       setConfirmModal(false)
     }

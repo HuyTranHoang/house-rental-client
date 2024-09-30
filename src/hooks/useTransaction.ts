@@ -1,5 +1,5 @@
-import { fetchUserTransactionHistory } from '@/api/transaction.api'
-import { useQuery } from '@tanstack/react-query'
+import { createTransactionWithDrawal, fetchUserTransactionHistory } from '@/api/transaction.api'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const useUserTransactionHistory = (
   userId: number | undefined,
@@ -26,4 +26,13 @@ export const useUserTransactionHistory = (
   })
 
   return { data, isLoading, isError, error }
+}
+
+export const useCreateTransactionWithDrawal = () => {
+  return useMutation({
+    mutationFn: createTransactionWithDrawal,
+    onError: (error) => {
+      console.error('Withdrawal transaction failed', error)
+    }
+  })
 }

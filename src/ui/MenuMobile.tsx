@@ -1,6 +1,7 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import useAuthStore from '@/store/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { User } from '@/models/user.type.ts'
+import { User } from '@/types/user.type.ts'
 import {
   CreditCardOutlined,
   DollarOutlined,
@@ -17,7 +18,6 @@ import { clsx } from 'clsx/lite'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import useAuthStore from '@/features/auth/authStore.ts'
 
 const navData = [
   {
@@ -51,7 +51,13 @@ const navData = [
     icon: <HeartOutlined className='text-base' />
   },
   {
-    key: ROUTER_NAMES.FAVORITE,
+    key: ROUTER_NAMES.POST_MANAGEMENT,
+    label: 'Quản lý tin đăng',
+    navigate: ROUTER_NAMES.POST_MANAGEMENT,
+    icon: <HeartOutlined className='text-base' />
+  },
+  {
+    key: ROUTER_NAMES.POST_PROPERTY,
     label: 'Đăng tin',
     navigate: ROUTER_NAMES.POST_PROPERTY,
     icon: <FormOutlined className='text-base' />
@@ -76,7 +82,7 @@ const profileData = [
 function MenuMobile({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
-  const logout = useAuthStore(state => state.logout)
+  const logout = useAuthStore((state) => state.logout)
 
   const location = useLocation()
   const currentPath = location.pathname

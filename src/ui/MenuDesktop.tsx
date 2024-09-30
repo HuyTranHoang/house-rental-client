@@ -1,7 +1,7 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/features/auth/authStore.ts'
+import useAuthStore from '@/store/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { User } from '@/models/user.type.ts'
+import { User } from '@/types/user.type.ts'
 import { BellOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
 import { clsx } from 'clsx'
@@ -38,6 +38,10 @@ const items: MenuProps['items'] = [
     label: <Link to={ROUTER_NAMES.FAVORITE}>Bất động sản yêu thích</Link>
   },
   {
+    key: ROUTER_NAMES.POST_MANAGEMENT,
+    label: <Link to={ROUTER_NAMES.POST_MANAGEMENT}>Quản lý tin đăng</Link>
+  },
+  {
     type: 'divider'
   },
   {
@@ -64,20 +68,18 @@ function MenuDesktop({ user }: { user: User | null }) {
 
   return (
     <Flex className='hidden md:flex' gap='small' wrap>
-      <NavItem title='TEST - DEV ONLY' link={ROUTER_NAMES.TEST} />
-
       <NavItem title='Tìm thuê' link={ROUTER_NAMES.RENT_HOUSE} />
 
       <NavItem title='Gói thành viên' link={ROUTER_NAMES.MEMBERSHIP_FEE} />
 
+      <NavItem title='Nạp tiền' link={ROUTER_NAMES.TOP_UP} />
+
+      <NavItem title='Về chúng tôi' link={ROUTER_NAMES.ABOUT} />
+
+      <NavItem title='Liên hệ' link={ROUTER_NAMES.CONTACT} />
+
       {user && (
         <>
-          <NavItem title='Nạp tiền' link={ROUTER_NAMES.TOP_UP} />
-
-          <NavItem title='Mã thưởng' link={ROUTER_NAMES.PROMOTION} />
-
-          <NavItem title='Tin nhắn' link={ROUTER_NAMES.MESSAGE} />
-
           <Divider type='vertical' style={{ height: '2rem' }} />
 
           <BellOutlined className='text-slate-600' />

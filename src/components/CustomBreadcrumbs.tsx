@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom'
 import { routerList } from '@/router.tsx'
 
 const CustomBreadcrumbs = () => {
-  const breadcrumbs = useBreadcrumbs(routerList, {
-    excludePaths: ['/city/:id', '/roomType/:id', '/amenity/:id']
-  })
+  const breadcrumbs = useBreadcrumbs(routerList)
 
   const breadcrumbItems = breadcrumbs.map(({ match, breadcrumb }) => ({
     title: <Link to={match.pathname}>{breadcrumb}</Link>,

@@ -1,6 +1,6 @@
 import { toast } from 'sonner'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
-import { RoomType } from '@/models/roomType.type.ts'
+import { RoomType } from '@/types/roomType.type.ts'
 
 export const fetchAllRoomTypes = async () => {
   try {

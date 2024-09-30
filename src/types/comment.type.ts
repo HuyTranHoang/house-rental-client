@@ -1,6 +1,5 @@
-export interface Review {
+export interface Comment {
   id: number
-  rating: number
   comment: string
   propertyId: number
   propertyTitle: string
@@ -10,8 +9,7 @@ export interface Review {
   createdAt: string
 }
 
-export interface ReviewFieldType {
+export interface CommentFieldType {
   propertyId: number
-  rating: number
   comment: string
 }

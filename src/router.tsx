@@ -1,4 +1,6 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import AuthGuard from '@/features/auth/AuthGuard.tsx'
+import { MemberFee } from '@/features/membership/MemberFee.tsx'
 import PostProperty from '@/features/post-property/PostProperty.tsx'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
 import PaymentFailure from '@/pages/PaymentFailed.tsx'
@@ -12,6 +14,7 @@ import Login from './features/auth/Login.tsx'
 import Register from './features/auth/Register.tsx'
 import RequestResetPassword from './features/auth/RequestResetPassword.tsx'
 import ResetPassword from './features/auth/ResetPassword.tsx'
+import PostManagement from './features/post-management/PostManagement'
 import ChangePassword from './features/profile/ChangePassword.tsx'
 import Favorite from './features/profile/Favorite.tsx'
 import Profile from './features/profile/Profile.tsx'
@@ -21,11 +24,10 @@ import About from './pages/About.tsx'
 import Contact from './pages/Contact.tsx'
 import Deposit from './pages/Deposit.tsx'
 import PaymentSuccess from './pages/PaymentSuccess.tsx'
-import TestPage from './pages/TestPage.tsx'
 import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
-import { MemberFee } from '@/features/membership/MemberFee.tsx'
+import { PropertyDetailBreadcrumb } from '@/utils/breadcrumbFormat.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -49,6 +51,10 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
           {
             path: ROUTER_NAMES.POST_PROPERTY,
             element: <PostProperty />
+          },
+          {
+            path: ROUTER_NAMES.POST_MANAGEMENT,
+            element: <PostManagement />
           }
         ]
       },
@@ -63,26 +69,42 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
       {
         path: ROUTER_NAMES.PROPERTY_DETAIL,
         element: <PropertyDetail />,
-        breadcrumb: 'Chi tiết bài đăng'
+        breadcrumb: PropertyDetailBreadcrumb
       },
       {
         path: ROUTER_NAMES.LOGIN,
-        element: <Login />,
+        element: (
+          <AuthGuard>
+            <Login />
+          </AuthGuard>
+        ),
         breadcrumb: 'Đăng nhập'
       },
       {
         path: ROUTER_NAMES.REGISTER,
-        element: <Register />,
+        element: (
+          <AuthGuard>
+            <Register />
+          </AuthGuard>
+        ),
         breadcrumb: 'Đăng ký'
       },
       {
         path: ROUTER_NAMES.REQUEST_RESET_PASSWORD,
-        element: <RequestResetPassword />,
+        element: (
+          <AuthGuard>
+            <RequestResetPassword />
+          </AuthGuard>
+        ),
         breadcrumb: 'Quên mật khẩu'
       },
       {
         path: ROUTER_NAMES.RESET_PASSWORD,
-        element: <ResetPassword />,
+        element: (
+          <AuthGuard>
+            <ResetPassword />
+          </AuthGuard>
+        ),
         breadcrumb: 'Đặt lại mật khẩu'
       }
     ] // End of AppLayoutFluid children
@@ -97,15 +119,6 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
       {
         element: <RentHouse />,
         index: true,
-        breadcrumb: () => (
-          <span>
-            <HomeOutlined /> Mogu
-          </span>
-        )
-      },
-      {
-        path: ROUTER_NAMES.TEST,
-        element: <TestPage />,
         breadcrumb: () => (
           <span>
             <HomeOutlined /> Mogu

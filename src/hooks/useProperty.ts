@@ -1,6 +1,15 @@
-import { fetchAllProperties, getPropertyById } from '@/api/property.api'
-import { PropertyFilters } from '@/models/property.type.ts'
-import { useQuery } from '@tanstack/react-query'
+import {
+  fetchAllProperties,
+  fetchAllRelatedProperties,
+  fetchPriorityProperties,
+  getAllPropertyByUserId,
+  getPropertyById,
+  hiddenProperty,
+  prioritizeProperty,
+  refreshProperty
+} from '@/api/property.api'
+import { PropertyFilters } from '@/types/property.type.ts'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -61,6 +70,69 @@ export const useProperties = (
   })
 
   return { data, isLoading, isError }
+}
+
+export const usePropertiesByUserId = (
+  search: string,
+  status: string,
+  userId: number | undefined,
+  sortBy: string,
+  pageNumber: number,
+  pageSize: number
+) => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['properties', search, status, userId, sortBy, pageNumber, pageSize],
+    queryFn: () => getAllPropertyByUserId(search, status, userId!, sortBy, pageNumber, pageSize),
+    enabled: userId !== undefined
+  })
+
+  return { data, isLoading, isError }
+}
+
+export const useHiddenProperty = () => {
+  const queryClient = useQueryClient()
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: hiddenProperty,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
+  })
+  return { hiddenProperty: mutateAsync, hiddenPropertyIsPending: isPending }
+}
+
+export const useRefreshProperty = () => {
+  const queryClient = useQueryClient()
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: refreshProperty,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
+  })
+  return { refreshProperty: mutateAsync, refreshPropertyIsPending: isPending }
+}
+
+export const usePrioritizeProperty = () => {
+  const queryClient = useQueryClient()
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: prioritizeProperty,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
+  })
+  return { prioritizeProperty: mutateAsync, prioritizePropertyIsPending: isPending }
+}
+
+export const usePriorityProperties = () => {
+  return useQuery({
+    queryKey: ['priority-properties'],
+    queryFn: fetchPriorityProperties,
+    staleTime: 1000 * 60 * 1,
+    refetchOnWindowFocus: false
+  })
+}
+
+export const useRelatedProperties = (propertyId: number | undefined) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['related-properties', propertyId],
+    queryFn: () => fetchAllRelatedProperties(propertyId!),
+    enabled: propertyId !== undefined
+  })
+
+  return { relatedPropertiesData: data, relatedPropertiesIsLoading: isLoading }
 }
 
 export const usePropertyFilters = () => {
