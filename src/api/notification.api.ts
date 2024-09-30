@@ -12,3 +12,12 @@ export const fetchNotificationByUserId = async (userId: number) => {
     return []
   }
 }
+
+export const updateNotificationSeen = async (notificationId: number) => {
+  try {
+    await axiosInstance.put(`/api/notification/${notificationId}`)
+  } catch (error) {
+    console.error(error)
+    toast.error('Lỗi khi cập nhật thông báo')
+  }
+}

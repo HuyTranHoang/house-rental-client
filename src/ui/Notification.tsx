@@ -1,18 +1,26 @@
-import { useNotificationByUserId } from '@/hooks/useNotification.ts'
+import ROUTER_NAMES from '@/constant/routerNames.ts'
+import { useNotificationByUserId, useUpdateNotificationSeen } from '@/hooks/useNotification.ts'
 import useAuthStore from '@/store/authStore.ts'
+import { Notification as NotificationType } from '@/types/notification.type.ts'
+import { generateSlug } from '@/utils/generateSlug.ts'
 import { BellOutlined, CheckOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { Badge, Dropdown, MenuProps, Skeleton, Space } from 'antd'
 import { clsx } from 'clsx/lite'
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
+import { useNavigate } from 'react-router-dom'
 
 function Notification() {
+  const navigate = useNavigate()
   const currentUser = useAuthStore((state) => state.user)
 
   const { notificationData, notificationIsloading } = useNotificationByUserId(currentUser?.id)
+  const { updateNotificationSeen } = useUpdateNotificationSeen()
 
-  if (notificationIsloading) {
-    return <Skeleton />
+  const handleClickNotification = (item: NotificationType) => {
+    updateNotificationSeen(item.id)
+    const slug = generateSlug(item.propertyTitle, item.propertyId)
+    navigate(ROUTER_NAMES.getRentHouseDetail(slug))
   }
 
   const NotificationMenu = () => (
@@ -27,6 +35,7 @@ function Notification() {
                 item.seen && 'hover:bg-gray-200',
                 !item.seen && 'bg-blue-50 hover:bg-blue-100'
               )}
+              onClick={() => handleClickNotification(item)}
             >
               <div className='flex items-start justify-between'>
                 <p className='my-0 text-wrap text-sm'>
@@ -60,7 +69,7 @@ function Notification() {
       },
       {
         key: 'notifications',
-        label: <NotificationMenu />,
+        label: notificationIsloading ? <Skeleton /> : <NotificationMenu />,
         className: 'hover:bg-white'
       }
     ]
