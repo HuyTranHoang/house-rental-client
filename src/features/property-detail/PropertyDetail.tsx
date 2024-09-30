@@ -113,11 +113,11 @@ function PropertyDetail() {
   return (
     <Container>
       <Row gutter={24}>
-        <Col span={16} className='mb-3 mt-5'>
+        <Col xs={24} md={16} className='mb-3 mt-5'>
           <CustomBreadcrumbs />
         </Col>
 
-        <Col span={8}>
+        <Col xs={24} md={8}>
           <Space className='mb-3 mt-5'>
             <Button
               size='small'
@@ -137,7 +137,7 @@ function PropertyDetail() {
           </Space>
         </Col>
 
-        <Col span={16} className='mb-6 bg-white p-5'>
+        <Col xs={24} md={16} className='mb-6 bg-white p-5'>
           {propertyIsLoading && (
             <section>
               <Skeleton />
@@ -205,7 +205,8 @@ function PropertyDetail() {
           )}
         </Col>
 
-        <Col span={8}>
+
+        <Col xs={24} md={8}>
           <div className='sticky top-6 z-10'>
             <Card loading={userIsLoading}>
               {userData && (
@@ -289,7 +290,7 @@ function PropertyDetail() {
                   }
                 }}
                 size='large'
-                className='mt-3'
+                className='mt-3 mb-6 md:mb-0 w-full md:w-32'
               >
                 Lưu tin
               </Button>
