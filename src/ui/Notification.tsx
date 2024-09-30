@@ -49,6 +49,10 @@ function Notification() {
               </p>
             </div>
           ))}
+
+        {notificationData && notificationData.length === 0 && (
+          <div className='cursor-default text-center text-gray-500'>Không có thông báo mới</div>
+        )}
       </Space>
     </div>
   )
