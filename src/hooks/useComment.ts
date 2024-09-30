@@ -8,7 +8,7 @@ export const useComments = (propertyId: number, pageNumber: number, pageSize: nu
     queryFn: async () => getAllCommentWithParams(propertyId, pageNumber, pageSize),
     enabled: propertyId !== undefined
   })
-  return { reviewData: commentData, reviewIsLoading: commentIsLoading }
+  return { commentData, commentIsLoading }
 }
 
 export const useCreateComment = () => {
