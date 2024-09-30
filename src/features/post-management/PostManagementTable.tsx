@@ -218,7 +218,6 @@ export default function PostManagementTable({
         columns={columns}
         onChange={handleTableChange}
         pagination={{
-          position: ['bottomCenter'],
           pageSizeOptions: ['5', '10', '20'],
           locale: { items_per_page: '/ trang' },
           showSizeChanger: true,
