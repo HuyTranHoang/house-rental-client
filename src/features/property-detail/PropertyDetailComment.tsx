@@ -21,23 +21,23 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
 
   const [form] = Form.useForm()
 
-  const { reviewData, reviewIsLoading } = useComments(Number(propertyId), pageNumber, pageSize)
+  const { commentData, commentIsLoading } = useComments(Number(propertyId), pageNumber, pageSize)
   const { createComment, createCommentIsPending } = useCreateComment()
   const { deleteComment, deleteCommentIsPending } = useDeleteComment()
 
-  const reviewListData = reviewData
+  const commentListData = commentData
     ? [
-        ...reviewData.data.map((review) => ({
-          avatar: review.userAvatar
-            ? review.userAvatar
-            : `https://api.dicebear.com/7.x/miniavs/svg?seed=${review.userId}`,
-          title: <Typography.Text strong>{review.userName}</Typography.Text>,
+        ...commentData.data.map((comment) => ({
+          avatar: comment.userAvatar
+            ? comment.userAvatar
+            : `https://api.dicebear.com/7.x/miniavs/svg?seed=${comment.userId}`,
+          title: <Typography.Text strong>@{comment.userName}</Typography.Text>,
           description: (
             <Flex vertical>
-              <Typography.Text>{review.comment}</Typography.Text>
+              <Typography.Text>{comment.comment}</Typography.Text>
               <Flex justify='space-between' align='center'>
                 <Typography.Text type='secondary' className='mt-2 text-xs'>
-                  <CalendarOutlined /> {formatDate(review.createdAt)}
+                  <CalendarOutlined /> {formatDate(comment.createdAt)}
                 </Typography.Text>
 
                 {haveDeleteReviewPrivilege && (
@@ -47,7 +47,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
                       danger
                       icon={<DeleteOutlined />}
                       onClick={() => {
-                        setcurrentComment(review)
+                        setcurrentComment(comment)
                         setOpen(true)
                       }}
                     />
@@ -70,18 +70,18 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
       <Typography.Title level={4} className='mt-2'>
         Bình luận
       </Typography.Title>
-      {reviewListData.length > 0 ? (
+      {commentListData.length > 0 ? (
         <List
           pagination={{
-            total: reviewData?.pageInfo.totalElements,
+            total: commentData?.pageInfo.totalElements,
             pageSize: pageSize,
             current: pageNumber,
             showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} bình luận`,
             onShowSizeChange: (_, size) => setPageSize(size),
             onChange: (page) => setPageNumber(page)
           }}
-          dataSource={reviewListData}
-          loading={reviewIsLoading || createCommentIsPending || deleteCommentIsPending}
+          dataSource={commentListData}
+          loading={commentIsLoading || createCommentIsPending || deleteCommentIsPending}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta avatar={<Avatar src={item.avatar} />} title={item.title} description={item.description} />
