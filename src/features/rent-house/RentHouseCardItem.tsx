@@ -35,7 +35,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
 
   return (
     <Card
-      className='mb-2 mr-0 cursor-pointer md:mr-4'
+      className='mb-2 mr-0 cursor-pointer md:mr-4 transition-all hover:border-blue-300'
       onClick={() => {
         setBreadcrumbName(property.title)
         navigate(ROUTER_NAMES.getRentHouseDetail(slug))
@@ -69,11 +69,9 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
                 <span>{property.numRooms} phòng ngủ</span>
               </Space>
 
-              <div className='mt-2'>
+              <div className='mt-2 space-y-2'>
                 {property.amenities.map((amenity, index) => (
-                  <Typography.Text key={index}>
-                    <Tag color='geekblue'>{amenity}</Tag>
-                  </Typography.Text>
+                  <Tag key={index} color='geekblue'>{amenity}</Tag>
                 ))}
               </div>
             </div>

@@ -106,7 +106,11 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
           </AuthGuard>
         ),
         breadcrumb: 'Đặt lại mật khẩu'
-      }
+      },
+      {
+        path: ROUTER_NAMES.MEMBERSHIP_FEE,
+        element: <MemberFee />
+      },
     ] // End of AppLayoutFluid children
   }
 ]
@@ -129,10 +133,6 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
         path: ROUTER_NAMES.RENT_HOUSE,
         element: <RentHouse />,
         breadcrumb: 'Tìm thuê'
-      },
-      {
-        path: ROUTER_NAMES.MEMBERSHIP_FEE,
-        element: <MemberFee />
       },
       {
         element: <ProtectedRoute />,
