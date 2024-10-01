@@ -4,20 +4,18 @@ import usePropertyStore from '@/store/propertyStore'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { generateSlug } from '@/utils/generateSlug'
 import { FireOutlined } from '@ant-design/icons'
-import { Card, Typography } from 'antd'
+import { Card, Skeleton, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 const { Text } = Typography
 
 export default function PriorityCardItem() {
   const navigate = useNavigate()
-  const { data: priorityProperties, isLoading, isError } = usePriorityProperties()
+  const { data: priorityProperties, isLoading } = usePriorityProperties()
   const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
-  if (isLoading) return <Text className='text-gray-500'>Đang tải...</Text>
-  if (isError) return <Text className='text-red-500'>Có lỗi xảy ra khi tải dữ liệu.</Text>
-  if (!priorityProperties || priorityProperties.length === 0)
-    return <Text className='text-gray-500'>Không có dữ liệu để hiển thị.</Text>
+  if (isLoading) return <Skeleton className='my-2 pr-4' />
+  if (!priorityProperties || priorityProperties.length === 0) return ''
 
   return (
     <div className='mb-2 space-y-2'>
