@@ -243,7 +243,7 @@ export default function PostManagementTable({
         onConfirm={() => handleConfirm(false)}
         onCancel={() => handleCancel(false)}
         property={selectedProperty}
-        isLoading={refreshPropertyIsPending}
+        isLoading={prioritizePropertyIsPending}
       />
     </>
   )
