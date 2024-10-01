@@ -89,7 +89,8 @@ export function MemberFee() {
             {membershipIsLoading &&
               Array.from({ length: 3 }).map((_, index) => (
                 <Col key={index} xs={24} sm={12} md={8} className='my-2 md:my-0'>
-                  <Card className='flex h-full flex-col rounded-xl border-2 shadow-sm' loading={true}></Card>
+                  <Card className='flex h-full w-56 flex-col rounded-xl border-2 shadow-sm' loading>
+                  </Card>
                 </Col>
               ))}
             {membershipData?.map((membership) => (
