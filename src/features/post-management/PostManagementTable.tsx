@@ -151,6 +151,19 @@ export default function PostManagementTable({
               }
             />
           )}
+          {record.priority && (
+            <Badge
+              status='processing'
+              text={
+                <>
+                  Đã ưu tiên
+                  <Tooltip title='Bài đăng này được ưu tiên hiển thị trên trang chủ'>
+                    <QuestionCircleOutlined className='ml-2 cursor-help text-xs text-gray-500' />
+                  </Tooltip>
+                </>
+              }
+            />
+          )}
         </div>
       )
     },

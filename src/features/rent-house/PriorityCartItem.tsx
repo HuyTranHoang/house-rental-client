@@ -4,7 +4,7 @@ import usePropertyStore from '@/store/propertyStore'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { generateSlug } from '@/utils/generateSlug'
 import { FireOutlined } from '@ant-design/icons'
-import { Card, Skeleton, Typography } from 'antd'
+import { Badge, Card, Skeleton, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 const { Text } = Typography
@@ -23,33 +23,31 @@ export default function PriorityCardItem() {
         const slug = generateSlug(item.title, item.id)
 
         return (
-          <Card
-            key={item.id}
-            className='group relative mr-4 transform cursor-pointer overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg'
-            classNames={{ body: 'p-0' }}
-            onClick={() => {
-              setBreadcrumbName(item.title)
-              navigate(ROUTER_NAMES.getRentHouseDetail(slug))
-            }}
-          >
-            <div className='absolute -left-8 top-0 -rotate-45 bg-red-500 px-8 py-1 text-xs font-bold text-white shadow-md'>
-              HOT
-            </div>
-            <div className='flex items-center justify-between p-4'>
-              <div className='flex items-center space-x-2 transition-all duration-300 group-hover:translate-x-2'>
-                <Text
-                  strong
-                  className='mx-2 flex-grow cursor-pointer truncate font-bold transition-all duration-300 group-hover:text-blue-600'
-                >
-                  {item.title}
+          <Badge.Ribbon text={<FireOutlined className='animate-flame' />} color='red' placement='start'>
+            <Card
+              key={item.id}
+              className='group relative mr-4 cursor-pointer overflow-hidden hover:shadow-lg'
+              classNames={{ body: 'p-0' }}
+              onClick={() => {
+                setBreadcrumbName(item.title)
+                navigate(ROUTER_NAMES.getRentHouseDetail(slug))
+              }}
+            >
+              <div className='flex items-center justify-between p-4'>
+                <div className='flex items-center space-x-2 transition-all duration-300 group-hover:translate-x-2'>
+                  <Text
+                    strong
+                    className='mx-2 flex-grow cursor-pointer truncate font-bold transition-all duration-300 group-hover:text-blue-600'
+                  >
+                    {item.title}
+                  </Text>
+                </div>
+                <Text strong className='whitespace-nowrap'>
+                  {formatCurrency(item.price)}
                 </Text>
-                <FireOutlined className='animate-flame text-red-500' />
               </div>
-              <Text strong className='whitespace-nowrap'>
-                {formatCurrency(item.price)}
-              </Text>
-            </div>
-          </Card>
+            </Card>
+          </Badge.Ribbon>
         )
       })}
     </div>
