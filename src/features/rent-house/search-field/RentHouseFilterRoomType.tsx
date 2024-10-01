@@ -1,6 +1,6 @@
-import { HomeIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
 import { useRoomTypes } from '@/hooks/useRoomType.ts'
 import { Form, Select } from 'antd'
+import { House } from 'lucide-react'
 
 interface Option {
   value: string
@@ -29,7 +29,7 @@ function RentHouseFilterRoomType({ onRoomTypeChange }: { onRoomTypeChange: (valu
         onChange={onRoomTypeChange}
         loading={roomTypeIsLoading}
         placeholder={'Loại phòng'}
-        suffixIcon={<HomeIcon />}
+        suffixIcon={<House size={16} />}
         options={roomTypeOptions}
       />
     </Form.Item>

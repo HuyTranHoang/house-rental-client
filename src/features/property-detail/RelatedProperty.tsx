@@ -23,7 +23,7 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
 
   if (relatedPropertiesIsLoading) {
     return (
-      <Row gutter={[16, 16]} className='mb-12'>
+      <Row gutter={[16, 16]} className=' mb-12'>
         {Array(4)
           .fill(null)
           .map((_, index) => (
@@ -38,9 +38,9 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
   return (
     <>
       <Typography.Title level={4} className='mb-4 mt-8'>
-        Có thể bạn quan tâm
+        Bất động sản tương tự
       </Typography.Title>
-      <Row gutter={[16, 16]} className='mb-12'>
+      <Row gutter={16} className='mb-12'>
         {relatedPropertiesData &&
           relatedPropertiesData.map((property) => {
             const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)

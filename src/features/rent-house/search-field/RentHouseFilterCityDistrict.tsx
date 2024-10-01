@@ -1,7 +1,7 @@
-import { GeoIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
 import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
 import { Cascader, Form } from 'antd'
+import { MapPin } from 'lucide-react'
 
 interface Option {
   value: string
@@ -45,7 +45,7 @@ function RentHouseFilterCityDistrict({ onCityDistrictChange }: RentHouseFilterCi
         allowClear={false}
         loading={cityIsLoading || districtIsLoading}
         placeholder='Chọn quận huyện'
-        suffixIcon={<GeoIcon />}
+        suffixIcon={<MapPin size={16} />}
       />
     </Form.Item>
   )

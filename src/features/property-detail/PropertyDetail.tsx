@@ -207,7 +207,7 @@ function PropertyDetail() {
 
 
         <Col xs={24} md={8}>
-          <div className='sticky top-6 z-10'>
+          <div className='sticky top-6 z-10 mb-6'>
             <Card loading={userIsLoading}>
               {userData && (
                 <>
@@ -298,7 +298,7 @@ function PropertyDetail() {
           </div>
         </Col>
 
-        <Col span={24}>
+        <Col span={24} className='p-0'>
           <RelatedProperty id={Number(id)} currentUser={currentUser} />
         </Col>
       </Row>

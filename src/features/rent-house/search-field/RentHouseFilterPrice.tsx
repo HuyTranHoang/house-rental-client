@@ -1,5 +1,5 @@
 import { Form, Select } from 'antd'
-import { DollarIcon } from '@/features/rent-house/RentHouseFilterIcons.tsx'
+import { DollarSign } from 'lucide-react'
 
 function RentHouseFilterPrice({ onPriceChange }: { onPriceChange: (value: string) => void }) {
   return (
@@ -8,7 +8,7 @@ function RentHouseFilterPrice({ onPriceChange }: { onPriceChange: (value: string
         size='large'
         onChange={onPriceChange}
         placeholder={'Giá thuê'}
-        suffixIcon={<DollarIcon />}
+        suffixIcon={<DollarSign size={16} />}
         options={[
           { value: '0,0', label: 'Tất cả' },
           { value: '0,3', label: 'Dưới 3 triệu' },
