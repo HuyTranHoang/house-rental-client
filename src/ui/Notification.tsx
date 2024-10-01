@@ -5,14 +5,17 @@ import {
   useUpdateNotificationSeen
 } from '@/hooks/useNotification.ts'
 import useAuthStore from '@/store/authStore.ts'
-import { Notification as NotificationType } from '@/types/notification.type.ts'
+import {
+  Notification as NotificationType,
+  NotificationType as NotificationTypeEnum
+} from '@/types/notification.type.ts'
+import { formatDistanceToNowISO } from '@/utils/formatDate.ts'
 import { generateSlug } from '@/utils/generateSlug.ts'
 import { BellOutlined, CheckOutlined, ClockCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { Badge, Button, Dropdown, DropdownProps, Flex, MenuProps, Skeleton, Space, Typography } from 'antd'
 import { clsx } from 'clsx/lite'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { formatDistanceToNowISO } from '@/utils/formatDate.ts'
 
 function Notification() {
   const navigate = useNavigate()
@@ -44,8 +47,13 @@ function Notification() {
 
   const handleClickNotification = (item: NotificationType) => {
     updateNotificationSeen(item.id)
-    const slug = generateSlug(item.propertyTitle, item.propertyId)
-    navigate(ROUTER_NAMES.getRentHouseDetail(slug))
+
+    if (item.type === NotificationTypeEnum.COMMENT) {
+      const slug = generateSlug(item.propertyTitle, item.propertyId)
+      navigate(ROUTER_NAMES.getRentHouseDetail(slug))
+    } else {
+      navigate(ROUTER_NAMES.POST_MANAGEMENT)
+    }
   }
 
   const handleOpenChange: DropdownProps['onOpenChange'] = (nextOpen, info) => {
@@ -76,10 +84,22 @@ function Notification() {
               onClick={() => handleClickNotification(item)}
             >
               <div className='flex items-start justify-between'>
-                <p className='my-0 text-wrap text-sm'>
-                  <span className='text-blue-500'>@{item.senderUsername}</span> đã bình luận tin đăng{' '}
-                  <span className='font-semibold'>{item.propertyTitle}</span> của bạn
-                </p>
+                {item.type === NotificationTypeEnum.COMMENT && (
+                  <p className='my-0 text-wrap text-sm'>
+                    <span className='text-blue-500'>@{item.senderUsername}</span> đã bình luận tin đăng{' '}
+                    <span className='font-semibold'>{item.propertyTitle}</span> của bạn
+                  </p>
+                )}
+                {item.type === NotificationTypeEnum.APPROVED && (
+                  <p className='my-0 text-wrap text-sm'>
+                    Tin đăng <span className='font-semibold'>{item.propertyTitle}</span> của bạn đã được duyệt
+                  </p>
+                )}
+                {item.type === NotificationTypeEnum.REJECTED && (
+                  <p className='my-0 text-wrap text-sm'>
+                    Tin đăng <span className='font-semibold'>{item.propertyTitle}</span> của bạn đã bị từ chối
+                  </p>
+                )}
                 {!item.seen && <Badge className='px-2' status='processing' />}
               </div>
               <p className='mt-1 text-xs text-gray-500'>

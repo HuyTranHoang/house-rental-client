@@ -7,6 +7,13 @@ export interface Notification {
   propertyId: number
   propertyTitle: string
   commentId: number
+  type: NotificationType
   createdAt: string
   seen: boolean
+}
+
+export enum NotificationType {
+  COMMENT = 'COMMENT',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED'
 }
