@@ -5,7 +5,7 @@ import { useRelatedProperties } from '@/hooks/useProperty.ts'
 import { User } from '@/types/user.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { generateSlug } from '@/utils/generateSlug.ts'
-import { HeartOutlined, HeartFilled } from '@ant-design/icons'
+import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Row, Space, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
@@ -23,7 +23,7 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
 
   if (relatedPropertiesIsLoading) {
     return (
-      <Row gutter={[16, 16]} className=' mb-12'>
+      <Row gutter={[16, 16]} className='mb-12'>
         {Array(4)
           .fill(null)
           .map((_, index) => (
@@ -50,7 +50,17 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
                   hoverable
                   cover={
                     <div className='h-48 overflow-hidden'>
-                      <ImageComponent image={property.propertyImages[0]} className='h-full w-full object-cover' />
+                      <ImageComponent
+                        image={
+                          property.thumbnailUrl
+                            ? {
+                                imageUrl: property.thumbnailUrl,
+                                blurhash: property.thumbnailBlurhash
+                              }
+                            : property.propertyImages[0]
+                        }
+                        className='h-full w-full object-cover'
+                      />
                     </div>
                   }
                   onClick={() => {
