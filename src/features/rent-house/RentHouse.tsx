@@ -1,4 +1,5 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
+import PriorityCardItem from '@/features/rent-house/PriorityCartItem.tsx'
 import RentHouseFilter from '@/features/rent-house/RentHouseFilter.tsx'
 import { useProperties, usePropertyFilters } from '@/hooks/useProperty.ts'
 import { Property } from '@/types/property.type.ts'
@@ -7,7 +8,6 @@ import { BookOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
 import { useMemo, useRef } from 'react'
 import RentHouseCardItem from './RentHouseCardItem.tsx'
-import PriorityCardItem from '@/features/rent-house/PriorityCartItem.tsx'
 
 function RentHouse() {
   const {
@@ -41,7 +41,7 @@ function RentHouse() {
     pageSize
   )
 
-  const myRef = useRef<null | HTMLDivElement>(null);
+  const myRef = useRef<null | HTMLDivElement>(null)
 
   const startIndex = useMemo(() => (pageNumber - 1) * pageSize, [pageNumber, pageSize])
   const endIndex = useMemo(() => (data ? startIndex + data.data.length : 0), [data, startIndex])
@@ -82,7 +82,7 @@ function RentHouse() {
 
           <Divider className='mb-4 mt-3' />
 
-          <PriorityCardItem />
+          {pageNumber === 1 && <PriorityCardItem />}
 
           {isError && (
             <Typography.Title level={4} className='text-center'>
@@ -121,7 +121,7 @@ function RentHouse() {
               onChange={(page, pageSize) => {
                 setFilters({ pageNumber: page, pageSize })
                 if (myRef && myRef.current) {
-                  myRef.current.scrollIntoView({ behavior: 'smooth' });
+                  myRef.current.scrollIntoView({ behavior: 'smooth' })
                 }
               }}
               onShowSizeChange={(current, size) => setFilters({ pageNumber: current, pageSize: size })}

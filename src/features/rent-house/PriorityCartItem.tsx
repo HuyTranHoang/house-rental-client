@@ -1,51 +1,111 @@
+import FavoriteButton from '@/components/FavoriteButton'
+import ImageComponent from '@/components/ImageComponent'
 import ROUTER_NAMES from '@/constant/routerNames'
+import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite'
 import { usePriorityProperties } from '@/hooks/useProperty'
+import useAuthStore from '@/store/authStore'
 import usePropertyStore from '@/store/propertyStore'
 import { formatCurrency } from '@/utils/formatCurrentcy'
+import { formatDate } from '@/utils/formatDate'
 import { generateSlug } from '@/utils/generateSlug'
-import { FireOutlined } from '@ant-design/icons'
-import { Badge, Card, Skeleton, Typography } from 'antd'
+import { CalendarOutlined, FireOutlined } from '@ant-design/icons'
+import { Badge, Card, Col, Flex, Row, Skeleton, Space, Tag, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-const { Text } = Typography
+const { Text, Title, Paragraph } = Typography
 
 export default function PriorityCardItem() {
   const navigate = useNavigate()
   const { data: priorityProperties, isLoading } = usePriorityProperties()
   const setBreadcrumbName = usePropertyStore((state) => state.setName)
+  const currentUser = useAuthStore((state) => state.user)
+  const { favorites } = useFavoriteByUserId(currentUser?.id)
+  const { addFavoriteMutate } = useAddFavorite()
+  const { removeFavoriteMutate } = useRemoveFavorite()
 
   if (isLoading) return <Skeleton className='my-2 pr-4' />
-  if (!priorityProperties || priorityProperties.length === 0) return ''
+  if (!priorityProperties || priorityProperties.length === 0) return null
 
   return (
-    <div className='mb-2 space-y-2'>
-      {priorityProperties.map((item) => {
-        const slug = generateSlug(item.title, item.id)
+    <div className='mb-4 space-y-4'>
+      {priorityProperties.map((property) => {
+        const slug = generateSlug(property.title, property.id)
+        const isFavorite = favorites?.some((favorite) => favorite.propertyId === property.id)
+        const thumbnailImage = property.thumbnailUrl
+          ? {
+              imageUrl: property.thumbnailUrl,
+              blurhash: property.thumbnailBlurhash
+            }
+          : property.propertyImages[0]
 
         return (
-          <Badge.Ribbon text={<FireOutlined className='animate-flame' />} color='red' placement='start'>
+          <Badge.Ribbon
+            key={property.id}
+            text={<FireOutlined className='animate-flame' />}
+            color='red'
+            placement='start'
+          >
             <Card
-              key={item.id}
-              className='group relative mr-4 cursor-pointer overflow-hidden hover:shadow-lg'
-              classNames={{ body: 'p-0' }}
+              className='group relative mr-4 cursor-pointer overflow-hidden transition-all duration-300 hover:border-blue-300 hover:shadow-lg'
               onClick={() => {
-                setBreadcrumbName(item.title)
+                setBreadcrumbName(property.title)
                 navigate(ROUTER_NAMES.getRentHouseDetail(slug))
               }}
             >
-              <div className='flex items-center justify-between p-4'>
-                <div className='flex items-center space-x-2 transition-all duration-300 group-hover:translate-x-2'>
-                  <Text
-                    strong
-                    className='mx-2 flex-grow cursor-pointer truncate font-bold transition-all duration-300 group-hover:text-blue-600'
-                  >
-                    {item.title}
-                  </Text>
-                </div>
-                <Text strong className='whitespace-nowrap'>
-                  {formatCurrency(item.price)}
-                </Text>
-              </div>
+              <Row gutter={24}>
+                <Col xs={24} md={8}>
+                  <div className='h-52 w-full overflow-hidden rounded-lg'>
+                    <ImageComponent image={thumbnailImage} className='h-full w-full object-cover' />
+                  </div>
+                </Col>
+                <Col xs={24} md={16}>
+                  <Flex vertical justify='space-between' className='h-full'>
+                    <div className='mb-2'>
+                      <Title level={4} className='mt-0'>
+                        {property.title}
+                      </Title>
+                      <Paragraph className='text-gray-500'>
+                        {property.districtName}, {property.cityName}
+                      </Paragraph>
+                      <Title level={3} className='mb-2 mt-1 text-blue-500'>
+                        {formatCurrency(property.price)}
+                      </Title>
+                      <Space size='large'>
+                        <Text strong>{property.roomTypeName}</Text>
+                        <span>{property.area} m&sup2;</span>
+                        <span>{property.numRooms} phòng ngủ</span>
+                      </Space>
+                      <div className='mt-2 space-y-2'>
+                        {property.amenities.map((amenity, index) => (
+                          <Tag key={index} color='geekblue'>
+                            {amenity}
+                          </Tag>
+                        ))}
+                      </div>
+                    </div>
+                    <Flex justify='space-between' align='center'>
+                      <Paragraph className='m-0 text-gray-500'>
+                        <CalendarOutlined /> {formatDate(property.createdAt)}
+                      </Paragraph>
+                      <FavoriteButton
+                        isFavorite={isFavorite}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (!currentUser) {
+                            navigate(ROUTER_NAMES.LOGIN)
+                            return
+                          }
+                          if (isFavorite) {
+                            removeFavoriteMutate({ propertyId: property.id, userId: currentUser.id })
+                          } else {
+                            addFavoriteMutate(property.id)
+                          }
+                        }}
+                      />
+                    </Flex>
+                  </Flex>
+                </Col>
+              </Row>
             </Card>
           </Badge.Ribbon>
         )
