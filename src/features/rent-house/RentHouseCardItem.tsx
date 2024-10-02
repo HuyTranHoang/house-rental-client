@@ -8,9 +8,8 @@ import { Property } from '@/types/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
 import { generateSlug } from '@/utils/generateSlug.ts'
-import { CalendarOutlined, FireOutlined } from '@ant-design/icons'
-import { Badge, Card, Col, Flex, Row, Space, Tag, Typography } from 'antd'
-import { clsx } from 'clsx/lite'
+import { CalendarOutlined } from '@ant-design/icons'
+import { Card, Col, Flex, Row, Space, Tag, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 interface RentHouseCardItemProps {
@@ -35,14 +34,7 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
     : property.propertyImages[0]
 
   return (
-    <Badge.Ribbon
-      className={clsx(!property.priority && 'hidden')}
-      key={property.id}
-      text={<FireOutlined className='animate-flame' />}
-      color='red'
-      placement='start'
-    >
-      <Card
+    <Card
         className='mb-2 mr-0 cursor-pointer transition-all hover:border-blue-300 md:mr-4'
         onClick={() => {
           setBreadcrumbName(property.title)
@@ -112,7 +104,6 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
           </Col>
         </Row>
       </Card>
-    </Badge.Ribbon>
   )
 }
 
