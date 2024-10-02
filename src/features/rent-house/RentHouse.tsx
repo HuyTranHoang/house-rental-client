@@ -1,5 +1,4 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
-import PriorityCardItem from '@/features/rent-house/PriorityCartItem.tsx'
 import RentHouseFilter from '@/features/rent-house/RentHouseFilter.tsx'
 import { useProperties, usePropertyFilters } from '@/hooks/useProperty.ts'
 import { Property } from '@/types/property.type.ts'
@@ -47,11 +46,6 @@ function RentHouse() {
   const endIndex = useMemo(() => (data ? startIndex + data.data.length : 0), [data, startIndex])
   const range = useMemo(() => [startIndex + 1, endIndex], [startIndex, endIndex])
   const total = useMemo(() => (data ? data.pageInfo.totalElements : 0), [data])
-  const isNoFilter = useMemo(() => {
-    return (
-      !search && !cityId && !districtId && !roomTypeId && !minPrice && !maxPrice && !minArea && !maxArea && !numOfDays
-    )
-  }, [search, cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays])
 
   return (
     <>
@@ -86,8 +80,6 @@ function RentHouse() {
           </Flex>
 
           <Divider className='mb-4 mt-3' />
-
-          {isNoFilter && <PriorityCardItem />}
 
           {isError && (
             <Typography.Title level={4} className='text-center'>
