@@ -6,8 +6,8 @@ import RightSideBar from '@/ui/RightSideBar.tsx'
 import { BookOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
 import { useMemo, useRef } from 'react'
-import RentHouseCardItem from './RentHouseCardItem.tsx'
 import PriorityCardItem from './PriorityCartItem.tsx'
+import RentHouseCardItem from './RentHouseCardItem.tsx'
 
 function RentHouse() {
   const {
@@ -81,8 +81,8 @@ function RentHouse() {
           </Flex>
 
           <Divider className='mb-4 mt-3' />
-          
-          <PriorityCardItem/>
+
+          <PriorityCardItem />
 
           {isError && (
             <Typography.Title level={4} className='text-center'>

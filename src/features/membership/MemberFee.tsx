@@ -67,7 +67,7 @@ export function MemberFee() {
             className='font-inter mb-6 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 bg-clip-text text-4xl font-bold text-transparent md:text-5xl'>
             Gói Thành Viên
           </h1>
-          <p className='mb-8 text-xl text-gray-600'>Nâng cấp trải nghiệm của bạn với các đặc quyền độc đáo</p>
+          <p className='mb-8 text-xl p-2 text-gray-600'>Nâng cấp trải nghiệm của bạn với các đặc quyền độc đáo</p>
           <div className='mb-12 flex flex-wrap justify-center gap-6'>
             <div className='space-x-1'>
               <CheckOutlined className='text-green-500' />

@@ -5,6 +5,11 @@ import { RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import './App.css'
 
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/autoplay'
+
 import useRefreshToken from '@/hooks/useRefreshToken.ts'
 
 function App() {
