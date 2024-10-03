@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .animate-gradient-xy {
+        background-size: 400% 400%;
+        animation: gradient-xy 15s ease infinite;
+    }
+
+    @keyframes gradient-xy {
+        0%, 100% {
+            background-position: 0 0;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+    }
+}
+
+@keyframes movingGradient {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+.moving-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);
+    background-size: 200% 100%;
+    animation: movingGradient 3s linear infinite;
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
