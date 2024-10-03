@@ -1,4 +1,3 @@
-import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { useRelatedProperties } from '@/hooks/useProperty.ts'
@@ -50,16 +49,10 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
                   hoverable
                   cover={
                     <div className='h-48 overflow-hidden'>
-                      <ImageComponent
-                        image={
-                          property.thumbnailUrl
-                            ? {
-                                imageUrl: property.thumbnailUrl,
-                                blurhash: property.thumbnailBlurhash
-                              }
-                            : property.propertyImages[0]
-                        }
+                      <img
+                        src={property.thumbnailUrl ? property.thumbnailUrl : property.propertyImages[0]}
                         className='h-full w-full object-cover'
+                        alt={property.title}
                       />
                     </div>
                   }

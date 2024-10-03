@@ -1,5 +1,4 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
-import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import RelatedProperty from '@/features/property-detail/RelatedProperty.tsx'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
@@ -160,8 +159,7 @@ function PropertyDetail() {
               >
                 {propertyData.propertyImages.map((image, index) => (
                   <SwiperSlide key={index} className='flex justify-center'>
-                    {/*<img src={image.imageUrl} alt='image' />*/}
-                    <ImageComponent image={image} />
+                    <img src={image} alt='image' />
                   </SwiperSlide>
                 ))}
                 <div className='swiper-button-prev'>

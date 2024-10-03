@@ -1,5 +1,4 @@
 import FavoriteButton from '@/components/FavoriteButton.tsx'
-import ImageComponent from '@/components/ImageComponent.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import useAuthStore from '@/store/authStore.ts'
@@ -26,13 +25,6 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const slug = generateSlug(property.title, property.id)
   const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
-  const thumbnailImage = property.thumbnailUrl
-    ? {
-        imageUrl: property.thumbnailUrl,
-        blurhash: property.thumbnailBlurhash
-      }
-    : property.propertyImages[0]
-
   return (
     <Card
       className='mb-2 mr-0 cursor-pointer transition-all hover:border-blue-300 md:mr-4'
@@ -44,7 +36,11 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
       <Row gutter={24}>
         <Col xs={24} md={8}>
           <div className='mb-2 h-52 w-full overflow-hidden rounded-lg md:mb-0'>
-            <ImageComponent image={thumbnailImage} className='h-full w-full object-cover' />
+            <img
+              src={property.thumbnailUrl ? property.thumbnailUrl : property.propertyImages[0]}
+              alt={property.title}
+              className='h-full w-full object-cover'
+            />
           </div>
         </Col>
 

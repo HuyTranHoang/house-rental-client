@@ -18,9 +18,8 @@ export interface Property {
   roomTypeId: number
   roomTypeName: string
   amenities: string[]
-  propertyImages: PropertyImage[]
+  propertyImages: string[]
   thumbnailUrl: string
-  thumbnailBlurhash: string
   thumbnailOriginalName: string
   priorityExpiration: string
   refreshedAt: string
@@ -28,11 +27,6 @@ export interface Property {
   hidden: boolean
   priority: boolean
   blocked: boolean
-}
-
-export interface PropertyImage {
-  imageUrl: string
-  blurhash: string
 }
 
 export type PropertyDataSource = Property & {
