@@ -28,7 +28,7 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
   useEffect(() => {
     // Initialize fileList and coverImageUid from form values
     const formImages = form.getFieldValue('images') as ImageType[] | undefined
-    const formThumbnailName = form.getFieldValue('thumbnailOriginalName')
+    const formThumbnailImage = form.getFieldValue('thumbnailImage') as ImageType | undefined
 
     if (formImages) {
       const initialFileList = formImages.map(
@@ -43,11 +43,8 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
       )
       setFileList(initialFileList)
 
-      if (formThumbnailName) {
-        const coverImage = initialFileList.find((file) => file.name === formThumbnailName)
-        if (coverImage) {
-          setCoverImageUid(coverImage.uid)
-        }
+      if (formThumbnailImage) {
+        setCoverImageUid(formThumbnailImage.uid)
       }
     }
   }, [form])
@@ -120,12 +117,12 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
 
       form.setFieldsValue({ images })
 
-      // Update thumbnailOriginalName if the cover image is removed
+      // Update thumbnailImage if the cover image is removed
       if (coverImageUid) {
-        const coverImageStillExists = updatedFileList.some((file) => file.uid === coverImageUid)
-        if (!coverImageStillExists) {
+        const isCoverImageRemoved = !images.some((image) => image.uid === coverImageUid)
+        if (isCoverImageRemoved) {
           setCoverImageUid(null)
-          form.setFieldsValue({ thumbnailOriginalName: undefined })
+          form.setFieldsValue({ thumbnailImage: undefined })
         }
       }
     },
@@ -139,7 +136,20 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
       }
 
       setCoverImageUid(file.uid)
-      form.setFieldsValue({ thumbnailOriginalName: file.name })
+
+      // Chuyển đổi file thành đối tượng Image
+      const thumbnailImage: ImageType = {
+        uid: file.uid,
+        lastModified: file.lastModified ?? Date.now(),
+        name: file.name,
+        size: file.size ?? 0,
+        type: file.type ?? '',
+        percent: file.percent ?? 0,
+        originFileObj: file.originFileObj as OriginFileObj,
+        thumbUrl: file.thumbUrl ?? file.url ?? ''
+      }
+
+      form.setFieldsValue({ thumbnailImage })
       toast.success('Ảnh bìa đã được đặt thành công')
     },
     [coverImageUid, form]
@@ -218,7 +228,7 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
           </Dragger>
         </Form.Item>
 
-        <Form.Item name='thumbnailOriginalName' hidden>
+        <Form.Item name='thumbnailImage' hidden>
           <input type='hidden' />
         </Form.Item>
       </Form>

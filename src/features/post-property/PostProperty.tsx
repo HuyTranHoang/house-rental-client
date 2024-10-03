@@ -42,9 +42,9 @@ export interface PostPropertyFormData {
   title: string
   description: string
   images: Image[]
-  thumbnailOriginalName: string
+  thumbnailImage: Image
 
-  [key: string]: string | string[] | Image[]
+  [key: string]: string | string[] | Image[] | Image
 }
 
 const stepItems = [
@@ -108,7 +108,7 @@ export default function PostProperty() {
         values.area = values.area.replace(/,/g, '')
       }
 
-      if (current === 4 && !values.thumbnailOriginalName) {
+      if (current === 4 && !values.thumbnailImage) {
         toast.error('Vui lòng chọn ảnh bìa cho bài đăng')
         return
       }
@@ -144,15 +144,18 @@ export default function PostProperty() {
     formDataToSend.append('cityId', formData.city)
     formDataToSend.append('districtId', formData.district)
     formDataToSend.append('roomTypeId', formData.roomType)
-    formDataToSend.append('thumbnailOriginalName', formData.thumbnailOriginalName)
 
     formData.amenities.forEach((amenity) => {
       formDataToSend.append('amenities', amenity)
     })
 
     formData.images.forEach((image) => {
+      if (image.uid === formData.thumbnailImage.uid) return
+
       formDataToSend.append('images', image.originFileObj)
     })
+
+    formDataToSend.append('thumbnailImage', formData.thumbnailImage.originFileObj)
 
     formDataToSend.append('status', 'PENDING')
 
@@ -165,9 +168,9 @@ export default function PostProperty() {
 
   return (
     <Container>
-      {/*<Card>*/}
-      {/*  <pre>{JSON.stringify(formData, null, 2)}</pre>*/}
-      {/*</Card>*/}
+      <Card>
+        <pre>{JSON.stringify(formData, null, 2)}</pre>
+      </Card>
       <Card title={cartTitle} className='mb-10 mt-12'>
         <Row className='overflow-hidden rounded-lg bg-gray-50'>
           {current < 6 && (
