@@ -20,7 +20,7 @@ export default function Favorite() {
     id: property.id,
     title: property.title,
     price: property.price,
-    image: property.thumbnailUrl || property.propertyImages[0].imageUrl,
+    image: property.thumbnailUrl || property.propertyImages[0],
     location: property.location,
     createdAt: property.createdAt
   }))
