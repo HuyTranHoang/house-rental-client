@@ -1,4 +1,4 @@
-import { useMarkAllNotificationAsRead } from '@/hooks/useNotification.ts'
+import { useMarkAllNotificationAsRead, useNotificationByUserId } from '@/hooks/useNotification.ts'
 import useAuthStore from '@/store/authStore.ts'
 import NotificationMenu from '@/ui/NotificationMenu.tsx'
 import { BellOutlined, CheckOutlined } from '@ant-design/icons'
@@ -8,6 +8,7 @@ import { useState } from 'react'
 function Notification() {
   const currentUser = useAuthStore((state) => state.user)
   const [openNotification, setOpenNotification] = useState(false)
+  const { notificationData } = useNotificationByUserId(currentUser?.id, 5)
 
   const { markAllNotificationAsRead } = useMarkAllNotificationAsRead()
 
@@ -50,6 +51,10 @@ function Notification() {
     ]
   }
 
+  const countUnseen = notificationData.reduce((acc, notification) => {
+    return acc + (notification.seen ? 0 : 1)
+  }, 0)
+
   return (
     <Dropdown
       menu={menuProps}
@@ -62,7 +67,7 @@ function Notification() {
       trigger={['click']}
       className='mt-2'
     >
-      <Badge className='cursor-pointer' size='small'>
+      <Badge count={countUnseen} className='cursor-pointer' size='small'>
         <BellOutlined className='text-xl text-slate-600' />
       </Badge>
     </Dropdown>
