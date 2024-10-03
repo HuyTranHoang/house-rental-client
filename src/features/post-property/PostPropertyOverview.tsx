@@ -26,7 +26,7 @@ function PostPropertyOverview({ formData }: { formData: PostPropertyFormData }) 
     [roomTypeData]
   )
 
-  const renderAmenities = () => formData.amenities?.map((amenity) => <Tag color='blue'>{amenity}</Tag>)
+  const renderAmenities = () => formData.amenities?.map((amenity) => <Tag key={amenity} color='blue'>{amenity}</Tag>)
 
   const renderImages = () =>
     formData.images?.map((image, index) => (

@@ -63,14 +63,14 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
 
   const validateFile = useCallback((file: UploadFile) => {
     const isValidType = file.type?.startsWith('image/') ?? false
-    const isValidSize = (file.size ?? 0) / 1024 / 1024 < 5
+    const isValidSize = (file.size ?? 0) / 1024 / 1024 < 2
 
     if (!isValidType) {
       toast.error('Chỉ được tải lên các tệp hình ảnh.')
     }
 
     if (!isValidSize) {
-      toast.error('Hình ảnh phải nhỏ hơn 5MB.')
+      toast.error('Hình ảnh phải nhỏ hơn 2MB.')
     }
 
     return isValidType && isValidSize
@@ -225,7 +225,7 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
 
       <div className='flex flex-col pt-4'>
         <Typography.Text type='secondary'>
-          <WarningOutlined /> Bạn có thể tải lên tối đa 10 hình ảnh. Mỗi hình ảnh không được vượt quá 5MB.
+          <WarningOutlined /> Bạn có thể tải lên tối đa 10 hình ảnh. Mỗi hình ảnh không được vượt quá 2MB.
         </Typography.Text>
         <Typography.Text type='secondary'>
           *Ảnh bìa là hình ảnh sẽ được hiển thị ở danh sách bất động sản.

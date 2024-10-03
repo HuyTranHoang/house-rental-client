@@ -1,4 +1,3 @@
-import useAuthStore from '@/store/authStore.ts'
 import PostPropertyDescription from '@/features/post-property/PostPropertyDescription'
 import PostPropertyDetail from '@/features/post-property/PostPropertyDetail'
 import PostPropertyImage from '@/features/post-property/PostPropertyImage'
@@ -7,6 +6,7 @@ import PostPropertyOverview from '@/features/post-property/PostPropertyOverview'
 import PostPropertyRoomType from '@/features/post-property/PostPropertyRoomType'
 import PostPropertySuccess from '@/features/post-property/PostPropertySuccess.tsx'
 import axiosInstance from '@/inteceptor/axiosInstance'
+import useAuthStore from '@/store/authStore.ts'
 import Container from '@/ui/Container'
 import { SendOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
@@ -14,7 +14,6 @@ import { Button, Card, Col, Flex, Form, Row, Space, Steps } from 'antd'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import './post-property.css'
-
 
 export interface OriginFileObj extends Blob {
   uid: string
@@ -185,15 +184,15 @@ export default function PostProperty() {
                   {current === 4 && <PostPropertyImage form={form} />}
                   {current === 5 && <PostPropertyOverview formData={formData} />}
 
-                  <Flex className='mt-auto pt-8'>
+                  <Flex className='mt-auto items-center pt-8'>
                     {current <= stepItems.length && (
-                      <Space direction="vertical" style={{ width: '100%' }}>
+                      <Space wrap style={{ width: '100%' }}>
                         <Button
                           onClick={handlePrev}
                           icon={<StepBackwardOutlined />}
                           danger
                           disabled={current === 0}
-                          className='mt-3 mb-2 w-full md:mb-0 md:w-32'>
+                        >
                           Quay lại
                         </Button>
                         <Button
@@ -202,22 +201,22 @@ export default function PostProperty() {
                           iconPosition='end'
                           type='primary'
                           disabled={current === stepItems.length - 1}
-                          className='mt-3 mb-6 w-full md:mb-0 md:w-32'>
+                        >
                           Tiếp tục
                         </Button>
-                    </Space>
-                    )}
 
-                    {current === stepItems.length - 1 && (
-                      <Button
-                        icon={<SendOutlined />}
-                        onClick={handleFinish}
-                        type='primary'
-                        className='ml-auto bg-green-500 hover:bg-green-400'
-                        loading={postPropertyMutation.isPending}
-                      >
-                        Đăng tin
-                      </Button>
+                        {current === stepItems.length - 1 && (
+                          <Button
+                            icon={<SendOutlined />}
+                            onClick={handleFinish}
+                            type='primary'
+                            className='bg-green-500 hover:bg-green-400'
+                            loading={postPropertyMutation.isPending}
+                          >
+                            Đăng tin
+                          </Button>
+                        )}
+                      </Space>
                     )}
                   </Flex>
                 </Flex>
