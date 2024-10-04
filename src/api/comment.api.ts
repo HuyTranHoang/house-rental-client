@@ -11,8 +11,11 @@ interface CommentWithPagination {
 export const getAllCommentWithParams = async (propertyId: number, pageNumber: number, pageSize: number) => {
   pageNumber = pageNumber - 1
 
+  const isBlocked = 'false'
+
   const params = {
     propertyId,
+    isBlocked,
     pageNumber,
     pageSize
   }
