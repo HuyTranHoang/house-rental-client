@@ -3,8 +3,9 @@ import useAuthStore from '@/store/authStore.ts'
 import { Comment, CommentFieldType } from '@/types/comment.type.ts'
 import { formatDate } from '@/utils/formatDate'
 import { CalendarOutlined, CommentOutlined, DeleteOutlined, WarningOutlined } from '@ant-design/icons'
-import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Tooltip, Typography } from 'antd'
+import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Space, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
+import CommentReportButton from './CommentReportButton'
 
 const { TextArea } = Input
 
@@ -40,19 +41,23 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
                   <CalendarOutlined /> {formatDate(comment.createdAt)}
                 </Typography.Text>
 
-                {haveDeleteReviewPrivilege && (
-                  <Tooltip title='Xóa bình luận'>
-                    <Button
-                      type='text'
-                      danger
-                      icon={<DeleteOutlined />}
-                      onClick={() => {
-                        setcurrentComment(comment)
-                        setOpen(true)
-                      }}
-                    />
-                  </Tooltip>
-                )}
+                <Space>
+                  <CommentReportButton commentId={comment.id} />
+
+                  {haveDeleteReviewPrivilege && (
+                    <Tooltip title='Xóa bình luận'>
+                      <Button
+                        type='text'
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          setcurrentComment(comment)
+                          setOpen(true)
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                </Space>
               </Flex>
             </Flex>
           )

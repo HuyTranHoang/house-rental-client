@@ -1,7 +1,7 @@
-import { ReportFormData } from '@/api/report.api.ts'
-import { useSubmitReport } from '@/hooks/useReport'
+import { CommentReportFormData } from '@/api/commentReport.api'
+import { useSubmitCommentReport } from '@/hooks/useCommentReport'
 import { SendOutlined, WarningOutlined } from '@ant-design/icons'
-import { Button, Flex, Form, FormProps, Input, Modal, Select } from 'antd'
+import { Button, Flex, Form, FormProps, Input, Modal, Select, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { useState } from 'react'
 
@@ -10,18 +10,18 @@ const { Option } = Select
 type ReportCategory = 'SCAM' | 'INAPPROPRIATE_CONTENT' | 'DUPLICATE' | 'MISINFORMATION' | 'OTHER'
 
 const reasons: Record<ReportCategory, string> = {
-  SCAM: 'Bài đăng này có dấu hiệu lừa đảo!',
-  INAPPROPRIATE_CONTENT: 'Bài đăng này có nội dung không phù hợp!',
-  DUPLICATE: 'Bài đăng này bị trùng lặp!',
-  MISINFORMATION: 'Bài đăng này có thông tin sai sự thật!',
+  SCAM: 'Bình luận này có dấu hiệu lừa đảo!',
+  INAPPROPRIATE_CONTENT: 'Bình luận này có nội dung không phù hợp!',
+  DUPLICATE: 'Bình luận này bị trùng lặp!',
+  MISINFORMATION: 'Bình luận này có thông tin sai sự thật!',
   OTHER: ''
 }
 
-function ReportButton({ propertyId }: { propertyId: number }) {
+function CommentReportButton({ commentId }: { commentId: number }) {
   const [reportForm] = Form.useForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { submitReport, isPending } = useSubmitReport()
+  const { submitCommentReport, submitCommentReportIsPending } = useSubmitCommentReport()
 
   const showModal = () => {
     reportForm.resetFields()
@@ -36,32 +36,25 @@ function ReportButton({ propertyId }: { propertyId: number }) {
     reportForm.setFieldsValue({ reason: reasons[value] })
   }
 
-  const onFinish: FormProps<ReportFormData>['onFinish'] = (values) => {
-    submitReport(values).then(() => setIsModalOpen(false))
+  const onFinish: FormProps<CommentReportFormData>['onFinish'] = (values) => {
+    submitCommentReport(values).then(() => setIsModalOpen(false))
   }
 
-  reportForm.setFieldsValue({ propertyId })
+  reportForm.setFieldsValue({ commentId })
 
   return (
     <>
-      <Button
-        icon={<WarningOutlined />}
-        iconPosition='end'
-        size='small'
-        onClick={showModal}
-        className='mt-6 border-[#9fbdd4] font-semibold text-[#657786]'
-        aria-label='Report violation'
-      >
-        Báo vi phạm
-      </Button>
+      <Tooltip title='Báo cáo bình luận'>
+        <Button type='text' icon={<WarningOutlined />} onClick={showModal} aria-label='Report violation' />
+      </Tooltip>
 
       <Modal title='Báo cáo vi phạm' footer={null} onCancel={handleCancel} open={isModalOpen} destroyOnClose>
         <Form form={reportForm} name='report' layout='vertical' onFinish={onFinish} autoComplete='off'>
-          <Form.Item<ReportFormData> name='propertyId' hidden>
+          <Form.Item<CommentReportFormData> name='commentId' hidden>
             <Input />
           </Form.Item>
 
-          <Form.Item<ReportFormData>
+          <Form.Item<CommentReportFormData>
             label='Loại vi phạm'
             name='category'
             rules={[{ required: true, message: 'Vui lòng chọn loại vi phạm!' }]}
@@ -75,17 +68,23 @@ function ReportButton({ propertyId }: { propertyId: number }) {
             </Select>
           </Form.Item>
 
-          <Form.Item<ReportFormData>
+          <Form.Item<CommentReportFormData>
             label='Lý do'
             name='reason'
             rules={[{ required: true, message: 'Vui lòng nhập lý do!' }]}
           >
-            <TextArea placeholder={'Nhập nội dung vi phạm của bài đăng'} />
+            <TextArea placeholder={'Nhập nội dung vi phạm của bình luận'} />
           </Form.Item>
 
           <Form.Item>
             <Flex justify='end'>
-              <Button loading={isPending} icon={<SendOutlined />} iconPosition='end' type='primary' htmlType='submit'>
+              <Button
+                loading={submitCommentReportIsPending}
+                icon={<SendOutlined />}
+                iconPosition='end'
+                type='primary'
+                htmlType='submit'
+              >
                 Gửi
               </Button>
 
@@ -100,4 +99,4 @@ function ReportButton({ propertyId }: { propertyId: number }) {
   )
 }
 
-export default ReportButton
+export default CommentReportButton
