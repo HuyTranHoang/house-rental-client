@@ -1,7 +1,7 @@
+import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 import { useAmenities } from '@/hooks/useAmenity.ts'
 import { Form, FormInstance, Input, Select, Spin, Typography } from 'antd'
 import React, { useState } from 'react'
-import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 
 const formatNumber = (value: string) => {
   return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -93,6 +93,10 @@ export default function PostPropertyDetail({ form }: { form: FormInstance<PostPr
             {
               pattern: new RegExp(/^[0-9,]+$/),
               message: "Vui lòng nhập số cho 'diện tích'"
+            },
+            {
+              max: 7,
+              message: 'Diện tích không được vượt quá 6 chữ số'
             }
           ]}
         >
@@ -115,6 +119,10 @@ export default function PostPropertyDetail({ form }: { form: FormInstance<PostPr
             {
               pattern: new RegExp(/^[0-9,]+$/),
               message: "Vui lòng nhập số cho 'giá'"
+            },
+            {
+              max: 12,
+              message: 'Giá không được vượt quá 9 chữ số'
             }
           ]}
         >
