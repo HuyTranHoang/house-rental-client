@@ -1,4 +1,9 @@
-import { useHiddenProperty, usePrioritizeProperty, useRefreshProperty } from '@/hooks/useProperty'
+import {
+  useHiddenProperty,
+  usePrioritizeProperty,
+  useRefreshProperty,
+  useSelfDeleteProperty
+} from '@/hooks/useProperty'
 import { PropertyDataSource, PropertyStatus } from '@/types/property.type'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { formatDate, formatDateWithTime } from '@/utils/formatDate'
@@ -17,6 +22,7 @@ import type { MenuProps, TableProps } from 'antd'
 import { Badge, Button, Dropdown, Table, Tooltip } from 'antd'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import PostManagementDeleteConfirmModal from './PostManagementDeleteConfirmModal'
 import PriorityConfirmationModal from './PriorityConfirmationModal'
 import RefreshConfirmationModal from './RefreshConfirmationModal'
 
@@ -25,6 +31,12 @@ interface PropertyTableProps {
   isLoading: boolean
   paginationProps: false | TableProps<PropertyDataSource>['pagination']
   handleTableChange: TableProps<PropertyDataSource>['onChange']
+}
+
+const ModalName = {
+  REFRESH: 'refresh',
+  PRIORITY: 'priority',
+  DELETE: 'delete'
 }
 
 export default function PostManagementTable({
@@ -36,43 +48,71 @@ export default function PostManagementTable({
   const { hiddenProperty, hiddenPropertyIsPending } = useHiddenProperty()
   const { refreshProperty, refreshPropertyIsPending } = useRefreshProperty()
   const { prioritizeProperty, prioritizePropertyIsPending } = usePrioritizeProperty()
+  const { selfDeleteProperty, selfDeletePropertyIsPending } = useSelfDeleteProperty()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isModalPriorityVisible, setIsModalPriorityVisible] = useState(false)
+  const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<PropertyDataSource | null>(null)
 
-  const showConfirm = (record: PropertyDataSource, isRefreshModal: boolean) => {
+  const showConfirm = (record: PropertyDataSource, modalName: string) => {
     setSelectedProperty(record)
-    if (isRefreshModal) {
-      setIsModalVisible(true)
-    } else {
-      setIsModalPriorityVisible(true)
+    switch (modalName) {
+      case ModalName.REFRESH:
+        setIsModalVisible(true)
+        break
+      case ModalName.PRIORITY:
+        setIsModalPriorityVisible(true)
+        break
+      case ModalName.DELETE:
+        setIsModalDeleteVisible(true)
+        break
     }
   }
 
-  const handleConfirm = (isRefreshModal: boolean) => {
+  const handleConfirm = (modalName: string) => {
     if (selectedProperty) {
-      if (isRefreshModal) {
-        refreshProperty(selectedProperty.id)
-          .then(() => {
-            toast.success('Làm mới bài đăng thành công')
-            setIsModalVisible(false)
-          })
-          .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
-      } else {
-        prioritizeProperty(selectedProperty.id)
-          .then(() => {
-            toast.success('Ưu tiên bài đăng thành công')
-            setIsModalPriorityVisible(false)
-          })
-          .catch((error) => toast.error(error.response.data.message || 'Lỗi khi ưu tiên bài đăng'))
+      switch (modalName) {
+        case ModalName.REFRESH:
+          refreshProperty(selectedProperty.id)
+            .then(() => {
+              toast.success('Làm mới bài đăng thành công')
+              setIsModalVisible(false)
+            })
+            .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
+          break
+        case ModalName.PRIORITY:
+          prioritizeProperty(selectedProperty.id)
+            .then(() => {
+              toast.success('Ưu tiên bài đăng thành công')
+              setIsModalPriorityVisible(false)
+            })
+            .catch((error) => toast.error(error.response.data.message || 'Lỗi khi ưu tiên bài đăng'))
+          break
+        case ModalName.DELETE:
+          selfDeleteProperty(selectedProperty.id)
+            .then(() => {
+              toast.success('Xóa bài đăng thành công')
+              setIsModalDeleteVisible(false)
+            })
+            .catch((error) => toast.error(error.response.data.message || 'Lỗi khi xóa bài đăng'))
+          break
       }
     }
   }
 
-  const handleCancel = (isRefreshModal: boolean) => {
-    if (isRefreshModal) setIsModalVisible(false)
-    else setIsModalPriorityVisible(false)
+  const handleCancel = (modalName: string) => {
     setSelectedProperty(null)
+    switch (modalName) {
+      case ModalName.REFRESH:
+        setIsModalVisible(false)
+        break
+      case ModalName.PRIORITY:
+        setIsModalPriorityVisible(false)
+        break
+      case ModalName.DELETE:
+        setIsModalDeleteVisible(false)
+        break
+    }
   }
 
   const getDropDownItems = (record: PropertyDataSource): MenuProps['items'] => [
@@ -100,10 +140,11 @@ export default function PostManagementTable({
       type: 'divider'
     },
     {
-      key: 'delete',
+      key: ModalName.DELETE,
       danger: true,
       label: 'Xóa bài đăng',
-      icon: <DeleteOutlined />
+      icon: <DeleteOutlined />,
+      onClick: () => showConfirm(record, ModalName.DELETE)
     }
   ]
 
@@ -200,7 +241,7 @@ export default function PostManagementTable({
                   size='small'
                   shape='circle'
                   className='border-0 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300 hover:from-purple-600 hover:to-blue-700'
-                  onClick={() => showConfirm(record, true)}
+                  onClick={() => showConfirm(record, ModalName.REFRESH)}
                   loading={refreshPropertyIsPending}
                 />
               </Tooltip>
@@ -210,7 +251,7 @@ export default function PostManagementTable({
                   size='small'
                   shape='circle'
                   className='border-0 bg-gradient-to-r from-yellow-500 to-red-500 transition-all duration-300 hover:from-red-600 hover:to-yellow-600'
-                  onClick={() => showConfirm(record, false)}
+                  onClick={() => showConfirm(record, ModalName.PRIORITY)}
                   loading={prioritizePropertyIsPending}
                 />
               </Tooltip>
@@ -244,21 +285,28 @@ export default function PostManagementTable({
           cancelSort: 'Hủy sắp xếp'
         }}
       />
-
       <RefreshConfirmationModal
         isVisible={isModalVisible}
-        onConfirm={() => handleConfirm(true)}
-        onCancel={() => handleCancel(true)}
+        onConfirm={() => handleConfirm(ModalName.REFRESH)}
+        onCancel={() => handleCancel(ModalName.REFRESH)}
         property={selectedProperty}
         isLoading={refreshPropertyIsPending}
       />
 
       <PriorityConfirmationModal
         isVisible={isModalPriorityVisible}
-        onConfirm={() => handleConfirm(false)}
-        onCancel={() => handleCancel(false)}
+        onConfirm={() => handleConfirm(ModalName.PRIORITY)}
+        onCancel={() => handleCancel(ModalName.PRIORITY)}
         property={selectedProperty}
         isLoading={prioritizePropertyIsPending}
+      />
+
+      <PostManagementDeleteConfirmModal
+        isVisible={isModalDeleteVisible}
+        onConfirm={() => handleConfirm(ModalName.DELETE)}
+        onCancel={() => handleCancel(ModalName.DELETE)}
+        property={selectedProperty}
+        isLoading={selfDeletePropertyIsPending}
       />
     </>
   )

@@ -6,7 +6,8 @@ import {
   getPropertyById,
   hiddenProperty,
   prioritizeProperty,
-  refreshProperty
+  refreshProperty,
+  selfDeleteProperty
 } from '@/api/property.api'
 import { PropertyFilters } from '@/types/property.type.ts'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -133,6 +134,15 @@ export const useRelatedProperties = (propertyId: number | undefined) => {
   })
 
   return { relatedPropertiesData: data, relatedPropertiesIsLoading: isLoading }
+}
+
+export const useSelfDeleteProperty = () => {
+  const queryClient = useQueryClient()
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: selfDeleteProperty,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['properties'] })
+  })
+  return { selfDeleteProperty: mutateAsync, selfDeletePropertyIsPending: isPending }
 }
 
 export const usePropertyFilters = () => {

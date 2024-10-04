@@ -121,3 +121,7 @@ export const fetchAllRelatedProperties = async (propertyId: number): Promise<Pro
   const response = await axios.get(`/api/properties/related/${propertyId}`)
   return response.data
 }
+
+export const selfDeleteProperty = async (id: number) => {
+  await axiosInstance.delete(`/api/properties/self/${id}`)
+}
