@@ -1,14 +1,15 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs'
 import ROUTER_NAMES from '@/constant/routerNames'
-import useAuthStore from '@/store/authStore.ts'
 import { useUserMembership } from '@/hooks/useUserMembership.ts'
 import axiosInstance from '@/inteceptor/axiosInstance'
+import useAuthStore from '@/store/authStore.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
 import { formatPhoneNumberWithDashes } from '@/utils/formatPhoneNumber'
 import {
   ClockCircleOutlined,
   CrownOutlined,
+  FireOutlined,
   IdcardOutlined,
   LoadingOutlined,
   LockOutlined,
@@ -26,17 +27,21 @@ import {
   Avatar,
   Card,
   Col,
+  Collapse,
+  ConfigProvider,
   Divider,
   Menu,
   MenuProps,
   Progress,
   ProgressProps,
-  Row, Skeleton,
+  Row,
+  Skeleton,
   Tooltip,
   Typography,
   Upload,
   UploadProps
 } from 'antd'
+import { CollapseProps } from 'antd/lib'
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -157,6 +162,68 @@ export default function ProfileLayout() {
     </button>
   )
 
+  const collapseItems: CollapseProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <>
+          <CrownOutlined className='mr-2 text-lg text-yellow-500' />
+          <Text>
+            Loại tài khoản: <strong>{membership?.membershipName}</strong>
+          </Text>
+        </>
+      ),
+      children: membership && (
+        <div className='space-y-2'>
+          <div className='flex items-center justify-between'>
+            <Text>
+              <ClockCircleOutlined className='mr-2' />
+              Thời hạn còn lại:
+            </Text>
+            {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
+            {remainingDays > 0 && <Text strong>{remainingDays} ngày</Text>}
+          </div>
+          {remainingDays <= 0 && <Progress strokeColor={twoColors} percent={100} showInfo={false} />}
+          {remainingDays > 0 && (
+            <Progress strokeColor={twoColors} percent={Math.round((remainingDays / 30) * 100)} showInfo={false} />
+          )}
+          <div className='flex items-center justify-between'>
+            <Text>
+              <ReloadOutlined className='mr-2' />
+              Lượt làm mới:
+            </Text>
+            <Text strong>
+              {membership.totalRefreshLimit - membership.refreshesPostsUsed}/{membership.totalRefreshLimit}
+            </Text>
+          </div>
+          <Progress
+            strokeColor={twoColors}
+            percent={Math.round(
+              ((membership.totalRefreshLimit - membership.refreshesPostsUsed) / membership.totalRefreshLimit) * 100
+            )}
+            showInfo={false}
+          />
+          <div className='flex items-center justify-between'>
+            <Text>
+              <FireOutlined className='mr-2' />
+              Lượt đẩy bài ưu tiên:
+            </Text>
+            <Text strong>
+              {membership.totalPriorityLimit - membership.priorityPostsUsed}/{membership.totalPriorityLimit}
+            </Text>
+          </div>
+          <Progress
+            strokeColor={twoColors}
+            percent={Math.round(
+              ((membership.totalPriorityLimit - membership.priorityPostsUsed) / membership.totalPriorityLimit) * 100
+            )}
+            showInfo={false}
+          />
+        </div>
+      )
+    }
+  ]
+
   return (
     <Row gutter={24}>
       <Col span={24}>
@@ -164,7 +231,7 @@ export default function ProfileLayout() {
           <CustomBreadcrumbs />
         </div>
       </Col>
-      <Col xs={0} md={8} lg={6} className='mb-12 p-0 shadow-md bg-white'>
+      <Col xs={0} md={8} lg={6} className='mb-12 bg-white p-0 shadow-md'>
         <Card className='rounded-none'>
           <div className='flex flex-col items-center'>
             <div className='flex justify-center'>
@@ -219,49 +286,18 @@ export default function ProfileLayout() {
                   {memberShipIsLoading && <Skeleton />}
                   {membership && (
                     <>
-                      <div className='flex items-center'>
-                        <CrownOutlined className='mr-2 text-lg text-yellow-500' />
-                        <Text>
-                          Loại tài khoản: <strong>{membership.membershipName}</strong>
-                        </Text>
-                      </div>
-                      <div className='space-y-2'>
-                        <div className='flex items-center justify-between'>
-                          <Text>
-                            <ClockCircleOutlined className='mr-2' />
-                            Thời hạn còn lại:
-                          </Text>
-                          {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
-                          {remainingDays > 0 && <Text strong>{remainingDays} ngày</Text>}
-                        </div>
-                        {remainingDays <= 0 && <Progress strokeColor={twoColors} percent={100} showInfo={false} />}
-                        {remainingDays > 0 && (
-                          <Progress
-                            strokeColor={twoColors}
-                            percent={Math.round((remainingDays / 30) * 100)}
-                            showInfo={false}
-                          />
-                        )}
-                        <div className='flex items-center justify-between'>
-                          <Text>
-                            <ReloadOutlined className='mr-2' />
-                            Lượt làm mới:
-                          </Text>
-                          <Text strong>
-                            {membership.totalRefreshLimit - membership.refreshesPostsUsed}/
-                            {membership.totalRefreshLimit}
-                          </Text>
-                        </div>
-                        <Progress
-                          strokeColor={twoColors}
-                          percent={Math.round(
-                            ((membership.totalRefreshLimit - membership.refreshesPostsUsed) /
-                              membership.totalRefreshLimit) *
-                              100
-                          )}
-                          showInfo={false}
-                        />
-                      </div>
+                      <ConfigProvider
+                        theme={{
+                          components: {
+                            Collapse: {
+                              headerPadding: '0',
+                              contentPadding: '0'
+                            }
+                          }
+                        }}
+                      >
+                        <Collapse items={collapseItems} ghost expandIconPosition='end' />
+                      </ConfigProvider>
                     </>
                   )}
                 </div>

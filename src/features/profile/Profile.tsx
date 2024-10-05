@@ -3,7 +3,7 @@ import GradientButton from '@/components/GradientButton.tsx'
 import useAuthStore from '@/store/authStore.ts'
 import { useUserMembership } from '@/hooks/useUserMembership.ts'
 import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
-import { AntDesignOutlined, ClockCircleOutlined, CrownOutlined, ReloadOutlined } from '@ant-design/icons'
+import { AntDesignOutlined, ClockCircleOutlined, CrownOutlined, FireOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Alert, Card, Form, Input, Progress, ProgressProps, Typography } from 'antd'
 import { useState } from 'react'
@@ -77,6 +77,22 @@ function Profile() {
               strokeColor={twoColors}
               percent={Math.round(
                 ((membership.totalRefreshLimit - membership.refreshesPostsUsed) / membership.totalRefreshLimit) * 100
+              )}
+              showInfo={false}
+            />
+            <div className='flex items-center justify-between'>
+              <Typography.Text>
+                <FireOutlined className='mr-2' />
+                Lượt đẩy bài ưu tiên:
+              </Typography.Text>
+              <Typography.Text strong>
+                {membership.totalPriorityLimit - membership.priorityPostsUsed}/{membership.totalPriorityLimit}
+              </Typography.Text>
+            </div>
+            <Progress
+              strokeColor={twoColors}
+              percent={Math.round(
+                ((membership.totalPriorityLimit - membership.priorityPostsUsed) / membership.totalPriorityLimit) * 100
               )}
               showInfo={false}
             />
