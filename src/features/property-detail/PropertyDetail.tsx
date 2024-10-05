@@ -1,46 +1,16 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import PropertyDetailFavoriteButton from '@/features/property-detail/PropertyDetailFavoriteButton.tsx'
+import PropertyDetailOwnerDetail from '@/features/property-detail/PropertyDetailOwnerDetail.tsx'
 import RelatedProperty from '@/features/property-detail/RelatedProperty.tsx'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
-import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { useProperty } from '@/hooks/useProperty'
-import { useUser } from '@/hooks/useUser'
 import useAuthStore from '@/store/authStore.ts'
 import Container from '@/ui/Container.tsx'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
-import { formatDate, formatJoinedDate } from '@/utils/formatDate.ts'
-import { formatPhoneNumberWithSpaces, maskPhoneNumber } from '@/utils/formatPhoneNumber'
-import { red } from '@ant-design/colors'
-import {
-  CheckCircleFilled,
-  CheckOutlined,
-  CopyOutlined,
-  HeartFilled,
-  HeartOutlined,
-  LeftCircleOutlined,
-  MailOutlined,
-  PhoneFilled,
-  RightCircleOutlined,
-  UserOutlined
-} from '@ant-design/icons'
-import {
-  Avatar,
-  Button,
-  Card,
-  Col,
-  ConfigProvider,
-  Descriptions,
-  DescriptionsProps,
-  Divider,
-  Flex,
-  Row,
-  Skeleton,
-  Space,
-  Tag,
-  Tooltip,
-  Typography
-} from 'antd'
-import Meta from 'antd/es/card/Meta'
+import { formatDate } from '@/utils/formatDate.ts'
+import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
+import { Button, Col, Descriptions, DescriptionsProps, Divider, Row, Skeleton, Space, Tag, Typography } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -55,18 +25,10 @@ function PropertyDetail() {
   const id = slug ? slug.split('-').pop() : ''
 
   const currentUser = useAuthStore((state) => state.user)
-  const { favorites } = useFavoriteByUserId(currentUser?.id)
-  const isFavorite = favorites?.some((favorite) => favorite.propertyId === Number(id))
 
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false)
-  const [isCopied, setIsCopied] = useState(false)
 
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
-  const { userData, userIsLoading } = useUser(propertyData?.userId)
-
-  const { addFavoriteMutate } = useAddFavorite()
-  const { removeFavoriteMutate } = useRemoveFavorite()
 
   const descriptionCleanHTML = propertyData ? DOMPurify.sanitize(propertyData.description) : ''
 
@@ -93,18 +55,6 @@ function PropertyDetail() {
       span: 3
     }
   ]
-
-  const handleShowPhoneNumber = () => {
-    if (!isPhoneNumberVisible) {
-      setIsPhoneNumberVisible(true)
-    } else {
-      navigator.clipboard.writeText(userData!.phoneNumber)
-      setIsCopied(true)
-      setTimeout(() => {
-        setIsCopied(false)
-      }, 2000)
-    }
-  }
 
   return (
     <Container>
@@ -200,96 +150,11 @@ function PropertyDetail() {
           )}
         </Col>
 
-
         <Col xs={24} md={8}>
           <div className='sticky top-6 z-10 mb-6'>
-            <Card loading={userIsLoading}>
-              {userData && (
-                <>
-                  <Meta
-                    avatar={
-                      <Flex align='center' justify='center' className='mr-2 h-full'>
-                        {userData.avatarUrl ? (
-                          <Avatar size='large' src={userData.avatarUrl} />
-                        ) : (
-                          <Avatar size='large' icon={<UserOutlined />} />
-                        )}
-                      </Flex>
-                    }
-                    title={
-                      <Space>
-                        <span>
-                          {userData.firstName} {userData.lastName}
-                        </span>
-                        <CheckCircleFilled className='text-blue-400' />
-                      </Space>
-                    }
-                    description={<span>Đã tham gia: {formatJoinedDate(userData.createdAt)}</span>}
-                  />
-                  <Divider className='m-3' />
+            <PropertyDetailOwnerDetail userId={propertyData?.userId} />
 
-                  <Button block size='large' onClick={handleShowPhoneNumber} className='mb-2 border-blue-400'>
-                    <Flex justify='space-between' className='w-full'>
-                      <span>
-                        <PhoneFilled />{' '}
-                        {isPhoneNumberVisible
-                          ? formatPhoneNumberWithSpaces(userData.phoneNumber)
-                          : maskPhoneNumber(userData.phoneNumber)}
-                      </span>
-                      <b className='text-blue-500'>
-                        {isPhoneNumberVisible ? (
-                          isCopied ? (
-                            <CheckOutlined />
-                          ) : (
-                            <Tooltip title='Sao chép số điện thoại'>
-                              <CopyOutlined />
-                            </Tooltip>
-                          )
-                        ) : (
-                          'Bấm để hiện số'
-                        )}
-                      </b>
-                    </Flex>
-                  </Button>
-
-                  <Button block icon={<MailOutlined />} size='large' type='primary'>
-                    Gửi tin nhắn
-                  </Button>
-                </>
-              )}
-            </Card>
-
-            <ConfigProvider
-              theme={{
-                components: {
-                  Button: {
-                    defaultHoverBorderColor: red.primary,
-                    defaultHoverColor: red[3]
-                  }
-                }
-              }}
-            >
-              <Button
-                icon={
-                  isFavorite ? <HeartFilled className='text-red-500' /> : <HeartOutlined className='text-red-500' />
-                }
-                onClick={() => {
-                  if (!currentUser) {
-                    navigate(ROUTER_NAMES.LOGIN)
-                    return
-                  }
-                  if (isFavorite) {
-                    removeFavoriteMutate({ propertyId: Number(id), userId: currentUser.id })
-                  } else {
-                    addFavoriteMutate(Number(id))
-                  }
-                }}
-                size='large'
-                className='mt-3 mb-6 md:mb-0 w-full md:w-32'
-              >
-                Lưu tin
-              </Button>
-            </ConfigProvider>
+            <PropertyDetailFavoriteButton id={Number(id)} currentUser={currentUser} />
           </div>
         </Col>
 
