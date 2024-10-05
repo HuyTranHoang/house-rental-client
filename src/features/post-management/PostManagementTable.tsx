@@ -1,3 +1,4 @@
+import PostManagementDetailModal from '@/features/post-management/PostManagementPropertyDetail.tsx'
 import {
   useHiddenProperty,
   usePrioritizeProperty,
@@ -36,7 +37,8 @@ interface PropertyTableProps {
 const ModalName = {
   REFRESH: 'refresh',
   PRIORITY: 'priority',
-  DELETE: 'delete'
+  DELETE: 'delete',
+  DETAIL: 'detail'
 }
 
 export default function PostManagementTable({
@@ -52,6 +54,7 @@ export default function PostManagementTable({
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isModalPriorityVisible, setIsModalPriorityVisible] = useState(false)
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false)
+  const [isModalDetailVisible, setIsModalDetailVisible] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<PropertyDataSource | null>(null)
 
   const showConfirm = (record: PropertyDataSource, modalName: string) => {
@@ -65,6 +68,9 @@ export default function PostManagementTable({
         break
       case ModalName.DELETE:
         setIsModalDeleteVisible(true)
+        break
+      case ModalName.DETAIL:
+        setIsModalDetailVisible(true)
         break
     }
   }
@@ -112,6 +118,9 @@ export default function PostManagementTable({
       case ModalName.DELETE:
         setIsModalDeleteVisible(false)
         break
+      case ModalName.DETAIL:
+        setIsModalDetailVisible(false)
+        break
     }
   }
 
@@ -119,7 +128,8 @@ export default function PostManagementTable({
     {
       key: 'view',
       label: 'Xem chi tiết',
-      icon: <ExportOutlined />
+      icon: <ExportOutlined />,
+      onClick: () => showConfirm(record, ModalName.DETAIL)
     },
     {
       key: 'edit',
@@ -307,6 +317,12 @@ export default function PostManagementTable({
         onCancel={() => handleCancel(ModalName.DELETE)}
         property={selectedProperty}
         isLoading={selfDeletePropertyIsPending}
+      />
+
+      <PostManagementDetailModal
+        property={selectedProperty}
+        isVisible={isModalDetailVisible}
+        onCancel={() => handleCancel(ModalName.DETAIL)}
       />
     </>
   )
