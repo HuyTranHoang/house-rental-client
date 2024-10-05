@@ -3,10 +3,13 @@ import { useAmenities } from '@/hooks/useAmenity.ts'
 import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
 import { useRoomTypes } from '@/hooks/useRoomType.ts'
+import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { PropertyDataSource } from '@/types/property.type.ts'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button, Col, Drawer, Form, Image, Input, Row, Select, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
+import { toast } from 'sonner'
 
 interface PostManagementEditPropertyModalProps {
   property: PropertyDataSource | null
@@ -28,6 +31,7 @@ const quillFormats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet',
 
 function PostManagementEditPropertyModal({ property, isVisible, onCancel }: PostManagementEditPropertyModalProps) {
   const [form] = Form.useForm<PostPropertyFormData>()
+  const queryClient = useQueryClient()
 
   const [selectedCity, setselectedCity] = useState<string | null>(null)
   const [districtOptions, setDistrictOptions] = useState<{ label: string; value: number }[]>([])
@@ -51,6 +55,50 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
     label: amenity.name,
     value: amenity.name
   }))
+
+  const putPropertyMutation = useMutation({
+    mutationFn: (data: FormData) => {
+      return axiosInstance.putForm(`/api/properties/self/${property!.id}`, data)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['properties'] })
+      toast.success('Cập nhật bài đăng thành công')
+      form.resetFields()
+      onCancel()
+    },
+    onError: (error) => {
+      console.error('Error posting property:', error)
+      toast.error('Có lỗi xảy ra khi đăng tin, vui lòng thử lại sau.')
+    }
+  })
+
+  const handleFinish = async (values: PostPropertyFormData) => {
+    const formDataToSend = new FormData()
+    formDataToSend.append('title', values.title)
+    formDataToSend.append('description', values.description)
+    formDataToSend.append('price', values.price)
+    formDataToSend.append('location', values.location)
+    formDataToSend.append('area', values.area)
+    formDataToSend.append('numRooms', values.numRooms)
+    formDataToSend.append('cityId', values.city)
+    formDataToSend.append('districtId', values.district)
+    formDataToSend.append('roomTypeId', values.roomType)
+
+    values.amenities.forEach((amenity) => {
+      formDataToSend.append('amenities', amenity)
+    })
+
+    // formData.images.forEach((image) => {
+    //   if (image.uid === formData.thumbnailImage.uid) return
+    //
+    //   formDataToSend.append('images', image.originFileObj)
+    // })
+    // formDataToSend.append('thumbnailImage', formData.thumbnailImage.originFileObj)
+
+    formDataToSend.append('status', 'PENDING')
+
+    await putPropertyMutation.mutateAsync(formDataToSend)
+  }
 
   useEffect(() => {
     if (property) {
@@ -79,14 +127,15 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           city: property?.cityId,
           district: property?.districtId,
           location: property?.location,
-          price: property?.price,
-          area: property?.area,
+          price: property?.price.toString(),
+          area: property?.area.toString(),
           numRooms: property?.numRooms,
           amenities: property?.amenities.map((amenity) => amenity),
           description: property?.description
         }}
         form={form}
         layout='vertical'
+        onFinish={handleFinish}
       >
         <Form.Item<PostPropertyFormData>
           label='Tiêu đề'
@@ -103,9 +152,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
         <Form.Item label='* Hình ảnh'>
           <Image.PreviewGroup>
-            <Space wrap>
-              {property?.propertyImages.map((image) => <Image key={image} src={image} width={100} />)}
-            </Space>
+            <Space wrap>{property?.propertyImages.map((image) => <Image key={image} src={image} width={100} />)}</Space>
           </Image.PreviewGroup>
         </Form.Item>
 
@@ -285,7 +332,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           <Space>
             <Button onClick={onCancel}>Quay lại</Button>
 
-            <Button type='primary' htmlType='submit'>
+            <Button type='primary' htmlType='submit' loading={putPropertyMutation.isPending}>
               Cập nhật
             </Button>
           </Space>
