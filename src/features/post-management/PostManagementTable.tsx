@@ -1,3 +1,4 @@
+import PostManagementEditPropertyModal from '@/features/post-management/PostManagementEditPropertyModal.tsx'
 import PostManagementDetailModal from '@/features/post-management/PostManagementPropertyDetail.tsx'
 import {
   useHiddenProperty,
@@ -38,7 +39,8 @@ const ModalName = {
   REFRESH: 'refresh',
   PRIORITY: 'priority',
   DELETE: 'delete',
-  DETAIL: 'detail'
+  DETAIL: 'detail',
+  EDIT: 'edit'
 }
 
 export default function PostManagementTable({
@@ -55,6 +57,7 @@ export default function PostManagementTable({
   const [isModalPriorityVisible, setIsModalPriorityVisible] = useState(false)
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false)
   const [isModalDetailVisible, setIsModalDetailVisible] = useState(false)
+  const [isModalEditVisible, setIsModalEditVisible] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<PropertyDataSource | null>(null)
 
   const showConfirm = (record: PropertyDataSource, modalName: string) => {
@@ -71,6 +74,9 @@ export default function PostManagementTable({
         break
       case ModalName.DETAIL:
         setIsModalDetailVisible(true)
+        break
+      case ModalName.EDIT:
+        setIsModalEditVisible(true)
         break
     }
   }
@@ -121,6 +127,9 @@ export default function PostManagementTable({
       case ModalName.DETAIL:
         setIsModalDetailVisible(false)
         break
+      case ModalName.EDIT:
+        setIsModalEditVisible(false)
+        break
     }
   }
 
@@ -134,7 +143,8 @@ export default function PostManagementTable({
     {
       key: 'edit',
       label: 'Sửa bài đăng',
-      icon: <EditOutlined />
+      icon: <EditOutlined />,
+      onClick: () => showConfirm(record, ModalName.EDIT)
     },
     {
       key: 'toggle-visibility',
@@ -323,6 +333,12 @@ export default function PostManagementTable({
         property={selectedProperty}
         isVisible={isModalDetailVisible}
         onCancel={() => handleCancel(ModalName.DETAIL)}
+      />
+
+      <PostManagementEditPropertyModal
+        property={selectedProperty}
+        isVisible={isModalEditVisible}
+        onCancel={() => handleCancel(ModalName.EDIT)}
       />
     </>
   )
