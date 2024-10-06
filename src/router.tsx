@@ -1,9 +1,11 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import AuthGuard from '@/features/auth/AuthGuard.tsx'
+import ChatComponent from '@/features/chat/ChatComponent.tsx'
 import { MemberFee } from '@/features/membership/MemberFee.tsx'
 import PostProperty from '@/features/post-property/PostProperty.tsx'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
 import PaymentFailure from '@/pages/PaymentFailed.tsx'
+import { PropertyDetailBreadcrumb } from '@/utils/breadcrumbFormat.tsx'
 import { HomeOutlined } from '@ant-design/icons'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
@@ -27,7 +29,6 @@ import PaymentSuccess from './pages/PaymentSuccess.tsx'
 import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
-import { PropertyDetailBreadcrumb } from '@/utils/breadcrumbFormat.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -110,7 +111,7 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
       {
         path: ROUTER_NAMES.MEMBERSHIP_FEE,
         element: <MemberFee />
-      },
+      }
     ] // End of AppLayoutFluid children
   }
 ]
@@ -165,6 +166,14 @@ export const routerList: RouteObject[] & BreadcrumbsRoute[] = [
             ]
           }
         ] // End of ProfileLayout children
+      },
+      {
+        path: '/test-chat',
+        element: <ChatComponent userId='1' receiverId='4' />
+      },
+      {
+        path: '/test-chat-user',
+        element: <ChatComponent userId='4' receiverId='1' />
       },
       {
         path: ROUTER_NAMES.SERVER_ERROR,
