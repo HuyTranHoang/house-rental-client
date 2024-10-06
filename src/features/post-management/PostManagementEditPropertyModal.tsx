@@ -146,7 +146,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
     formDataToSend.append('status', 'PENDING')
 
-    formDataToSend.append('deleteImages', deleteImages.join(','))
+    formDataToSend.append('deleteImages', deleteImages.join('|'))
     formDataToSend.append('thumbnailUrl', thumbnailUrl)
 
     await putPropertyMutation.mutateAsync(formDataToSend)
@@ -156,8 +156,21 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
     if (property) {
       setselectedCity(property.cityId.toString())
       setThumbnailUrl(property.thumbnailUrl)
+
+      form.setFieldsValue({
+        title: property.title,
+        roomType: property.roomTypeId,
+        city: property.cityId,
+        district: property.districtId,
+        location: property.location,
+        price: property.price.toString(),
+        area: property.area.toString(),
+        numRooms: property.numRooms,
+        amenities: property.amenities.map((amenity) => amenity),
+        description: property.description
+      })
     }
-  }, [property])
+  }, [form, property])
 
   useEffect(() => {
     if (selectedCity) {
@@ -173,23 +186,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
   return (
     <Drawer title='Sửa bài đăng' size='large' onClose={onCancel} open={isVisible}>
-      <Form
-        initialValues={{
-          title: property?.title,
-          roomType: property?.roomTypeId,
-          city: property?.cityId,
-          district: property?.districtId,
-          location: property?.location,
-          price: property?.price.toString(),
-          area: property?.area.toString(),
-          numRooms: property?.numRooms,
-          amenities: property?.amenities.map((amenity) => amenity),
-          description: property?.description
-        }}
-        form={form}
-        layout='vertical'
-        onFinish={handleFinish}
-      >
+      <Form form={form} layout='vertical' onFinish={handleFinish}>
         <Form.Item<PutPropertyFormData>
           label='Tiêu đề'
           name='title'
