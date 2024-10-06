@@ -43,6 +43,7 @@ interface PutPropertyFormData {
   images: ImageType[]
   thumbnailImage: ImageType
   deleteImages: string
+  thumbnailUrl: string
 
   // [key: string]: string | string[] | ImageType[] | ImageType
 }
@@ -55,6 +56,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
   const [districtOptions, setDistrictOptions] = useState<{ label: string; value: number }[]>([])
 
   const [deleteImages, setDeleteImages] = useState<string[]>([])
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>('')
 
   const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
   const { cityData, cityIsLoading } = useCities()
@@ -93,6 +95,11 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
   })
 
   const handleDeleteImage = (imageUrl: string) => {
+    if (imageUrl === thumbnailUrl) {
+      toast.error('Vui lòng chọn ảnh khác làm ảnh bìa trước khi xóa ảnh này')
+      return
+    }
+
     setDeleteImages((prev) => [...prev, imageUrl])
     property!.propertyImages = property!.propertyImages.filter((image) => image !== imageUrl)
   }
@@ -123,6 +130,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
     formDataToSend.append('status', 'PENDING')
 
     formDataToSend.append('deleteImages', deleteImages.join(','))
+    formDataToSend.append('thumbnailUrl', thumbnailUrl)
 
     await putPropertyMutation.mutateAsync(formDataToSend)
   }
@@ -130,6 +138,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
   useEffect(() => {
     if (property) {
       setselectedCity(property.cityId.toString())
+      setThumbnailUrl(property.thumbnailUrl)
     }
   }, [property])
 
@@ -187,12 +196,12 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
                     <Button type='link' size='small' danger onClick={() => handleDeleteImage(image)}>
                       Xóa
                     </Button>
-                    {property?.thumbnailUrl === image ? (
+                    {thumbnailUrl === image ? (
                       <Button type='link' size='small' disabled>
                         Ảnh bìa
                       </Button>
                     ) : (
-                      <Button type='link' size='small'>
+                      <Button type='link' size='small' onClick={() => setThumbnailUrl(image)}>
                         Đặt ảnh bìa
                       </Button>
                     )}
