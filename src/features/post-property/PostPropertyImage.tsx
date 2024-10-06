@@ -1,23 +1,14 @@
 import { Image as ImageType, OriginFileObj, PostPropertyFormData } from '@/features/post-property/PostProperty'
 import { PictureOutlined, PlusOutlined, WarningOutlined } from '@ant-design/icons'
-import { Form, FormInstance, GetProp, Image, Tooltip, Typography, Upload, UploadProps } from 'antd'
+import { Form, FormInstance, Image, Tooltip, Typography, Upload } from 'antd'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { UploadChangeParam } from 'antd/lib/upload'
 import { clsx } from 'clsx/lite'
 import React, { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { FileType, getBase64, validateFile } from '@/utils/uploadFile.ts'
 
 const { Dragger } = Upload
-
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
-
-const getBase64 = (file: FileType): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = (error) => reject(error)
-  })
 
 export default function PostPropertyImage({ form }: { form: FormInstance<PostPropertyFormData> }) {
   const [previewOpen, setPreviewOpen] = useState(false)
@@ -58,20 +49,7 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
     setPreviewOpen(true)
   }, [])
 
-  const validateFile = useCallback((file: UploadFile) => {
-    const isValidType = file.type?.startsWith('image/') ?? false
-    const isValidSize = (file.size ?? 0) / 1024 / 1024 < 2
 
-    if (!isValidType) {
-      toast.error('Chỉ được tải lên các tệp hình ảnh.')
-    }
-
-    if (!isValidSize) {
-      toast.error('Hình ảnh phải nhỏ hơn 2MB.')
-    }
-
-    return isValidType && isValidSize
-  }, [])
 
   const createThumbUrl = useCallback((file: UploadFile) => {
     return new Promise<string | undefined>((resolve) => {

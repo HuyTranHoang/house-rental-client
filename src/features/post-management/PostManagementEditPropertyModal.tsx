@@ -1,12 +1,15 @@
-import { Image as ImageType } from '@/features/post-property/PostProperty.tsx'
+import { Image as ImageType, OriginFileObj } from '@/features/post-property/PostProperty.tsx'
 import { useAmenities } from '@/hooks/useAmenity.ts'
 import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
 import { useRoomTypes } from '@/hooks/useRoomType.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { PropertyDataSource } from '@/types/property.type.ts'
+import { validateFile } from '@/utils/uploadFile.ts'
+import { UploadOutlined } from '@ant-design/icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Button, Col, Drawer, Flex, Form, Image, Input, Row, Select, Space } from 'antd'
+import type { UploadFile, UploadProps } from 'antd'
+import { Button, Col, Drawer, Flex, Form, Image, Input, Row, Select, Space, Upload } from 'antd'
 import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import { toast } from 'sonner'
@@ -57,6 +60,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
   const [deleteImages, setDeleteImages] = useState<string[]>([])
   const [thumbnailUrl, setThumbnailUrl] = useState<string>('')
+  const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
   const { cityData, cityIsLoading } = useCities()
@@ -104,6 +108,8 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
     property!.propertyImages = property!.propertyImages.filter((image) => image !== imageUrl)
   }
 
+  const handleUploadChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList)
+
   const handleFinish = async (values: PutPropertyFormData) => {
     const formDataToSend = new FormData()
     formDataToSend.append('title', values.title)
@@ -120,11 +126,22 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
       formDataToSend.append('amenities', amenity)
     })
 
-    // formData.images.forEach((image) => {
-    //   if (image.uid === formData.thumbnailImage.uid) return
-    //
-    //   formDataToSend.append('images', image.originFileObj)
-    // })
+    const images: ImageType[] = fileList.map((file) => ({
+      uid: file.uid,
+      lastModified: file.lastModified ?? 0,
+      name: file.name,
+      size: file.size ?? 0,
+      type: file.type ?? '',
+      percent: file.percent ?? 0,
+      originFileObj: file.originFileObj as OriginFileObj,
+      thumbUrl: file.thumbUrl ?? ''
+    }))
+
+    images.forEach((image) => {
+      // if (image.uid === values.thumbnailImage.uid) return
+
+      formDataToSend.append('images', image.originFileObj)
+    })
     // formDataToSend.append('thumbnailImage', formData.thumbnailImage.originFileObj)
 
     formDataToSend.append('status', 'PENDING')
@@ -186,7 +203,17 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           <Input />
         </Form.Item>
 
-        <Form.Item label='Hình ảnh'>
+        <Form.Item
+          label={
+            <>
+              Hình ảnh
+              <span className='ml-2 text-xs text-gray-500'>
+                ({Number(property?.propertyImages.length) + fileList.length}/10)
+              </span>
+            </>
+          }
+          required
+        >
           <Image.PreviewGroup>
             <Space wrap>
               {property?.propertyImages.map((image) => (
@@ -210,6 +237,23 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
               ))}
             </Space>
           </Image.PreviewGroup>
+        </Form.Item>
+
+        <Form.Item>
+          <Upload
+            multiple
+            accept='image/*'
+            fileList={fileList}
+            onChange={handleUploadChange}
+            beforeUpload={(file) => {
+              const isValid = validateFile(file)
+              return isValid ? false : Upload.LIST_IGNORE
+            }}
+          >
+            {Number(property?.propertyImages.length) + fileList.length >= 10 ? null : (
+              <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
+            )}
+          </Upload>
         </Form.Item>
 
         <Form.Item<PutPropertyFormData>

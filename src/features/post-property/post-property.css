@@ -11,10 +11,10 @@
     margin-bottom: 16px !important;
 }
 
-.ant-upload-list-item-container {
-    width: 140px;
-    height: 130px;
-}
+/*.ant-upload-list-item-container {*/
+/*    width: 140px;*/
+/*    height: 130px;*/
+/*}*/
 
 .ant-upload-list {
     gap: 26px 8px !important;
