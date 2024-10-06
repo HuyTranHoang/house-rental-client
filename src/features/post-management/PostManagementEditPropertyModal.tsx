@@ -177,15 +177,26 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           <Input />
         </Form.Item>
 
-        <Form.Item label='* Hình ảnh'>
+        <Form.Item label='Hình ảnh'>
           <Image.PreviewGroup>
             <Space wrap>
               {property?.propertyImages.map((image) => (
-                <Flex vertical>
-                  <Image key={image} src={image} width={100} />
-                  <Button type='link' danger onClick={() => handleDeleteImage(image)}>
-                    Xóa
-                  </Button>
+                <Flex vertical className='w-32'>
+                  <Image key={image} src={image} />
+                  <Flex justify='space-between'>
+                    <Button type='link' size='small' danger onClick={() => handleDeleteImage(image)}>
+                      Xóa
+                    </Button>
+                    {property?.thumbnailUrl === image ? (
+                      <Button type='link' size='small' disabled>
+                        Ảnh bìa
+                      </Button>
+                    ) : (
+                      <Button type='link' size='small'>
+                        Đặt ảnh bìa
+                      </Button>
+                    )}
+                  </Flex>
                 </Flex>
               ))}
             </Space>
