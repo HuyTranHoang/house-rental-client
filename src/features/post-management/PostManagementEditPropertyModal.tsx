@@ -1,4 +1,4 @@
-import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
+import { Image as ImageType } from '@/features/post-property/PostProperty.tsx'
 import { useAmenities } from '@/hooks/useAmenity.ts'
 import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
@@ -6,7 +6,7 @@ import { useRoomTypes } from '@/hooks/useRoomType.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { PropertyDataSource } from '@/types/property.type.ts'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Button, Col, Drawer, Form, Image, Input, Row, Select, Space } from 'antd'
+import { Button, Col, Drawer, Flex, Form, Image, Input, Row, Select, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import { toast } from 'sonner'
@@ -29,12 +29,32 @@ const quillModules = {
 
 const quillFormats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet', 'link']
 
+interface PutPropertyFormData {
+  roomType: string
+  city: string
+  district: string
+  location: string
+  numRooms: string
+  area: string
+  price: string
+  amenities: string[]
+  title: string
+  description: string
+  images: ImageType[]
+  thumbnailImage: ImageType
+  deleteImages: string
+
+  // [key: string]: string | string[] | ImageType[] | ImageType
+}
+
 function PostManagementEditPropertyModal({ property, isVisible, onCancel }: PostManagementEditPropertyModalProps) {
-  const [form] = Form.useForm<PostPropertyFormData>()
+  const [form] = Form.useForm()
   const queryClient = useQueryClient()
 
   const [selectedCity, setselectedCity] = useState<string | null>(null)
   const [districtOptions, setDistrictOptions] = useState<{ label: string; value: number }[]>([])
+
+  const [deleteImages, setDeleteImages] = useState<string[]>([])
 
   const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
   const { cityData, cityIsLoading } = useCities()
@@ -72,7 +92,12 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
     }
   })
 
-  const handleFinish = async (values: PostPropertyFormData) => {
+  const handleDeleteImage = (imageUrl: string) => {
+    setDeleteImages((prev) => [...prev, imageUrl])
+    property!.propertyImages = property!.propertyImages.filter((image) => image !== imageUrl)
+  }
+
+  const handleFinish = async (values: PutPropertyFormData) => {
     const formDataToSend = new FormData()
     formDataToSend.append('title', values.title)
     formDataToSend.append('description', values.description)
@@ -97,6 +122,8 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
     formDataToSend.append('status', 'PENDING')
 
+    formDataToSend.append('deleteImages', deleteImages.join(','))
+
     await putPropertyMutation.mutateAsync(formDataToSend)
   }
 
@@ -120,7 +147,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
   return (
     <Drawer title='Sửa bài đăng' size='large' onClose={onCancel} open={isVisible}>
-      <Form<PostPropertyFormData>
+      <Form
         initialValues={{
           title: property?.title,
           roomType: property?.roomTypeId,
@@ -137,7 +164,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
         layout='vertical'
         onFinish={handleFinish}
       >
-        <Form.Item<PostPropertyFormData>
+        <Form.Item<PutPropertyFormData>
           label='Tiêu đề'
           name='title'
           rules={[
@@ -152,11 +179,20 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
         <Form.Item label='* Hình ảnh'>
           <Image.PreviewGroup>
-            <Space wrap>{property?.propertyImages.map((image) => <Image key={image} src={image} width={100} />)}</Space>
+            <Space wrap>
+              {property?.propertyImages.map((image) => (
+                <Flex vertical>
+                  <Image key={image} src={image} width={100} />
+                  <Button type='link' danger onClick={() => handleDeleteImage(image)}>
+                    Xóa
+                  </Button>
+                </Flex>
+              ))}
+            </Space>
           </Image.PreviewGroup>
         </Form.Item>
 
-        <Form.Item<PostPropertyFormData>
+        <Form.Item<PutPropertyFormData>
           label='Loại bất động sản'
           name='roomType'
           rules={[
@@ -171,7 +207,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item<PostPropertyFormData>
+            <Form.Item<PutPropertyFormData>
               label='Thành phố'
               name='city'
               rules={[
@@ -193,7 +229,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           </Col>
 
           <Col span={12}>
-            <Form.Item<PostPropertyFormData>
+            <Form.Item<PutPropertyFormData>
               label='Quận/Huyện'
               name='district'
               rules={[
@@ -213,7 +249,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           </Col>
         </Row>
 
-        <Form.Item<PostPropertyFormData>
+        <Form.Item<PutPropertyFormData>
           label='Địa chỉ cụ thể'
           name='location'
           rules={[
@@ -228,7 +264,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item<PostPropertyFormData>
+            <Form.Item<PutPropertyFormData>
               label='Giá'
               name='price'
               rules={[
@@ -250,7 +286,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item<PostPropertyFormData>
+            <Form.Item<PutPropertyFormData>
               label='Diện tích'
               name='area'
               rules={[
@@ -272,7 +308,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item<PostPropertyFormData>
+            <Form.Item<PutPropertyFormData>
               label='Số phòng ngủ'
               name='numRooms'
               rules={[
@@ -291,7 +327,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           </Col>
         </Row>
 
-        <Form.Item<PostPropertyFormData>
+        <Form.Item<PutPropertyFormData>
           name='amenities'
           label='Tiện nghi'
           rules={[
@@ -311,7 +347,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
           />
         </Form.Item>
 
-        <Form.Item<PostPropertyFormData>
+        <Form.Item<PutPropertyFormData>
           name='description'
           label='Mô tả'
           rules={[
