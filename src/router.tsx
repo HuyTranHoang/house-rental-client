@@ -28,6 +28,7 @@ import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
 import { PropertyDetailBreadcrumb } from '@/utils/breadcrumbFormat.tsx'
+import { SuccessUpgrade } from './features/membership/SuccessUpgrade.tsx'
 
 const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
   {
@@ -43,6 +44,10 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
           {
             path: ROUTER_NAMES.PAYMENT_SUCCESS,
             element: <PaymentSuccess />
+          },
+          {
+            path: ROUTER_NAMES.SUCCESS_UPGRADE,
+            element: <SuccessUpgrade />
           },
           {
             path: ROUTER_NAMES.PAYMENT_FAILED,

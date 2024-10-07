@@ -21,6 +21,7 @@ const ROUTER_NAMES = {
   PAYMENT_SUCCESS: '/thanh-toan-thanh-cong',
   PAYMENT_FAILED: '/thanh-toan-that-bai',
   PROMOTION: '/khuyen-mai',
+  SUCCESS_UPGRADE: '/nang-hang-thanh-cong',
 
   MESSAGE: '/tin-nhan',
 
