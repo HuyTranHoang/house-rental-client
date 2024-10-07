@@ -91,7 +91,7 @@ function Contact() {
                   title='Email và mạng xã hội'
                 />
                 <Typography.Paragraph className='min-h-20 pt-8 text-center text-gray-600'>
-                  Liên hệ qua email: <strong>hotro@mogu.vn</strong> hoặc page hỗ trợ
+                  Liên hệ qua email: <strong>hotro@mogu.vn</strong> hoặc page
                 </Typography.Paragraph>
               </Card>
             </Col>
