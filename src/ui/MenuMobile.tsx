@@ -1,6 +1,6 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import useAuthStore from '@/store/authStore.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { User } from '@/types/user.type.ts'
 import {
   CreditCardOutlined,
@@ -16,13 +16,16 @@ import {
 import { Avatar, Button, Col, Drawer, Flex, List, Row, Typography } from 'antd'
 import { clsx } from 'clsx/lite'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+
+const { t } = useTranslation()
 
 const navData = [
   {
     key: ROUTER_NAMES.RENT_HOUSE,
-    label: 'Tìm thuê',
+    label: t('navbar'),
     navigate: ROUTER_NAMES.RENT_HOUSE,
     icon: <HomeOutlined className='text-base' />
   },

@@ -1,3 +1,19 @@
 {
-  "test": "TEST VIETNAMESE"
+  "test": "TEST VIETNAMESE",
+  "navbar": {
+    "menu": "Danh mục",
+    "forRent": "Cho thuê",
+    "membershipPackage": "Gói thành viên",
+    "recharge": "Nạp tiền",
+    "aboutUs": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "transactionHistory": "Lịch sử giao dịch",
+    "favoriteProperty": "Bất động sản yêu thích",
+    "managementProperty": "Quản lý tin đăng",
+    "post": "Đăng tin",
+    "personalInformation": "Thông tin cá nhân",
+    "accountInformation": "Thông tin tài khoản",
+    "password": "Mật khẩu",
+    "logout": "Đăng xuất"
+  }
 }
