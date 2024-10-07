@@ -1,17 +1,15 @@
-'use client'
-
 import ROUTER_NAMES from '@/constant/routerNames'
 import { usePriorityProperties } from '@/hooks/useProperty'
-import animationData from '@/lottie/hot.json'
 import usePropertyStore from '@/store/propertyStore'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { generateSlug } from '@/utils/generateSlug'
 import { FireOutlined } from '@ant-design/icons'
 import { Badge, Card, Typography } from 'antd'
-import Lottie from 'react-lottie'
+import Lottie from 'react-lottie-player'
 import { useNavigate } from 'react-router-dom'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import lottieJson from '@/lottie/hot.json'
 
 const { Text } = Typography
 
@@ -68,18 +66,7 @@ export default function PriorityCardItem() {
 
                       <div className='flex items-center whitespace-nowrap font-semibold'>
                         {formatCurrency(item.price)}
-                        <Lottie
-                          options={{
-                            loop: true,
-                            autoplay: true,
-                            animationData: animationData,
-                            rendererSettings: {
-                              preserveAspectRatio: 'xMidYMid slice'
-                            }
-                          }}
-                          width={50}
-                          height={50}
-                        />
+                        <Lottie loop play animationData={lottieJson} style={{ width: 50, height: 50 }} />
                       </div>
                     </div>
                   </Card>
