@@ -47,7 +47,14 @@ export function MemberFee() {
       upgradeMembership({ userId: currentUser.id, membershipId: selectedMembership.id }).then(() => {
         deincrementUserBalance(selectedMembership.price)
         toast.success('Nâng cấp gói thành viên thành công.')
-        navigate(ROUTER_NAMES.RENT_HOUSE)
+        navigate(ROUTER_NAMES.SUCCESS_UPGRADE, {
+          state: {
+            membership: selectedMembership,
+            user: {
+              balance: currentUser.balance - selectedMembership.price,
+            }
+          }
+        })
       })
 
       createTransactionWithDrawal({
