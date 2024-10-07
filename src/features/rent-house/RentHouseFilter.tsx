@@ -12,8 +12,6 @@ interface Option {
   children?: Option[]
 }
 
-const milion = 1000000
-
 function RentHouseFilter() {
   const [form] = Form.useForm()
   const { search, cityId, districtId, roomTypeId, minPrice, maxPrice, setFilters } = usePropertyFilters()
@@ -41,8 +39,8 @@ function RentHouseFilter() {
     (value: string) => {
       const [min, max] = value.split(',')
       setFilters({
-        minPrice: Number(min || '0') * milion,
-        maxPrice: Number(max || '0') * milion
+        minPrice: Number(min || '0'),
+        maxPrice: Number(max || '0')
       })
     },
     [setFilters]
@@ -55,18 +53,13 @@ function RentHouseFilter() {
       roomType: roomTypeId ? roomTypeId.toString() : undefined,
       cityDistrict:
         cityId && districtId ? [cityId.toString(), districtId.toString()] : cityId ? [cityId.toString(), '0'] : [],
-      price: minPrice || maxPrice ? `${minPrice / milion},${maxPrice / milion}` : undefined
+      price: minPrice || maxPrice ? `${minPrice},${maxPrice}` : undefined
     })
   }, [form, search, cityId, districtId, roomTypeId, minPrice, maxPrice])
 
   return (
     <>
-      <Form
-        form={form}
-        name='search'
-        autoComplete='off'
-        className='mt-4'
-      >
+      <Form form={form} name='search' autoComplete='off' className='mt-4'>
         <Row gutter={8}>
           <Col xs={16} md={8}>
             <Form.Item name='search'>
