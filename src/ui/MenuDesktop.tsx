@@ -45,7 +45,7 @@ function MenuDesktop({ user }: { user: User | null }) {
   const items: MenuProps['items'] = [
     {
       key: ROUTER_NAMES.PROFILE,
-      label: <Link to={ROUTER_NAMES.PROFILE}>{t('navbar.personalInformation')}</Link>
+      label: <Link to={ROUTER_NAMES.PROFILE}>{t('navbar.personalInfo')}</Link>
     },
     {
       key: ROUTER_NAMES.TRANSACTION_HISTORY,
@@ -53,7 +53,7 @@ function MenuDesktop({ user }: { user: User | null }) {
     },
     {
       key: ROUTER_NAMES.FAVORITE,
-      label: <Link to={ROUTER_NAMES.FAVORITE}>{t('navbar.favoriteProperty')}</Link>
+      label: <Link to={ROUTER_NAMES.FAVORITE}>{t('navbar.favoriteProperties')}</Link>
     },
     {
       key: ROUTER_NAMES.POST_MANAGEMENT,
@@ -108,7 +108,7 @@ function MenuDesktop({ user }: { user: User | null }) {
 
       <Button className='group border-blue-500 font-semibold'>
         <Link to={ROUTER_NAMES.POST_PROPERTY} className='group-hover:text-blue-500'>
-          {t('navbar.post')}
+          {t('navbar.postProperty')}
         </Link>
       </Button>
     </Flex>

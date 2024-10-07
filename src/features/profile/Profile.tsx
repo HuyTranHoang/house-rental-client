@@ -1,13 +1,16 @@
 import { updateUserProfileApi } from '@/api/user.api.ts'
 import GradientButton from '@/components/GradientButton.tsx'
-import useAuthStore from '@/store/authStore.ts'
 import { useUserMembership } from '@/hooks/useUserMembership.ts'
+import useAuthStore from '@/store/authStore.ts'
 import { calculateMembershipRemainingDays } from '@/utils/formatDate.ts'
-import { AntDesignOutlined, ClockCircleOutlined, CrownOutlined, FireOutlined, ReloadOutlined } from '@ant-design/icons'
+import { AntDesignOutlined, ClockCircleOutlined, FireOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Alert, Card, Form, Input, Progress, ProgressProps, Typography } from 'antd'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
+
+const { Text } = Typography
 
 type ChangeProfileForm = {
   lastName: string
@@ -28,6 +31,8 @@ function Profile() {
   const { data: membership } = useUserMembership(currentUser?.id)
   const remainingDays = calculateMembershipRemainingDays(membership)
 
+  const { t } = useTranslation()
+
   const { mutate: updateUserProfileMutate, isPending } = useMutation({
     mutationFn: updateUserProfileApi,
     onSuccess: (response) => {
@@ -46,32 +51,30 @@ function Profile() {
       <Card className='mb-6 rounded-none border-l-0 md:hidden'>
         {membership && (
           <div className='space-y-2'>
-            <div className='flex items-center'>
-              <CrownOutlined className='mr-2 text-lg text-yellow-500' />
-              <Typography.Text>
-                Loại tài khoản: <strong>{membership.membershipName}</strong>
-              </Typography.Text>
-            </div>
             <div className='flex items-center justify-between'>
-              <Typography.Text>
+              <Text>
                 <ClockCircleOutlined className='mr-2' />
-                Thời hạn còn lại:
-              </Typography.Text>
-              {remainingDays <= 0 && <Typography.Text className='text-xl font-semibold'>∞</Typography.Text>}
-              {remainingDays > 0 && <Typography.Text strong>{remainingDays} ngày</Typography.Text>}
+                {t('personalInfo.accountType.remainingTerm')}:
+              </Text>
+              {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
+              {remainingDays > 0 && (
+                <Text strong>
+                  {remainingDays} {t('personalInfo.accountType.days')}
+                </Text>
+              )}
             </div>
             {remainingDays <= 0 && <Progress strokeColor={twoColors} percent={100} showInfo={false} />}
             {remainingDays > 0 && (
               <Progress strokeColor={twoColors} percent={Math.round((remainingDays / 30) * 100)} showInfo={false} />
             )}
             <div className='flex items-center justify-between'>
-              <Typography.Text>
+              <Text>
                 <ReloadOutlined className='mr-2' />
-                Lượt làm mới:
-              </Typography.Text>
-              <Typography.Text strong>
+                {t('personalInfo.accountType.refeshCount')}:
+              </Text>
+              <Text strong>
                 {membership.totalRefreshLimit - membership.refreshesPostsUsed}/{membership.totalRefreshLimit}
-              </Typography.Text>
+              </Text>
             </div>
             <Progress
               strokeColor={twoColors}
@@ -81,13 +84,13 @@ function Profile() {
               showInfo={false}
             />
             <div className='flex items-center justify-between'>
-              <Typography.Text>
+              <Text>
                 <FireOutlined className='mr-2' />
-                Lượt đẩy bài ưu tiên:
-              </Typography.Text>
-              <Typography.Text strong>
+                {t('personalInfo.accountType.priorityCount')}:
+              </Text>
+              <Text strong>
                 {membership.totalPriorityLimit - membership.priorityPostsUsed}/{membership.totalPriorityLimit}
-              </Typography.Text>
+              </Text>
             </div>
             <Progress
               strokeColor={twoColors}

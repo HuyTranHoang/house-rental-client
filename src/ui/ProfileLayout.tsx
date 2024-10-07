@@ -92,7 +92,7 @@ export default function ProfileLayout() {
   const items: MenuItem[] = [
     {
       key: ROUTER_NAMES.FAVORITE,
-      label: t('navbar.favoriteProperty'),
+      label: t('navbar.favoriteProperties'),
       icon: <StarOutlined />
     },
     {
@@ -105,12 +105,12 @@ export default function ProfileLayout() {
     },
     {
       key: ROUTER_NAMES.PROFILE,
-      label: t('navbar.personalInformation'),
+      label: t('navbar.personalInfo'),
       icon: <IdcardOutlined />
     },
     {
       key: ROUTER_NAMES.CHANGE_PASSWORD,
-      label: t('personalInformation.changePassword'),
+      label: t('personalInfo.changePassword'),
       icon: <LockOutlined />
     },
     {
@@ -153,7 +153,7 @@ export default function ProfileLayout() {
     }
     if (info.file.status === 'error') {
       setLoading(false)
-      toast.error(t('toast.updateAvatarFiled'))
+      toast.error(t('toast.updateAvatarFailed'))
     }
   }
 
@@ -171,7 +171,7 @@ export default function ProfileLayout() {
         <>
           <CrownOutlined className='mr-2 text-lg text-yellow-500' />
           <Text>
-            {t('personalInformation.accountType.accountType')}: <strong>{membership?.membershipName}</strong>
+            {t('personalInfo.accountType.type')}: <strong>{membership?.membershipName}</strong>
           </Text>
         </>
       ),
@@ -180,10 +180,14 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <ClockCircleOutlined className='mr-2' />
-              Thời hạn còn lại:
+              {t('personalInfo.accountType.remainingTerm')}:
             </Text>
             {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
-            {remainingDays > 0 && <Text strong>{remainingDays} ngày</Text>}
+            {remainingDays > 0 && (
+              <Text strong>
+                {remainingDays} {t('personalInfo.accountType.days')}
+              </Text>
+            )}
           </div>
           {remainingDays <= 0 && <Progress strokeColor={twoColors} percent={100} showInfo={false} />}
           {remainingDays > 0 && (
@@ -192,7 +196,7 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <ReloadOutlined className='mr-2' />
-              Lượt làm mới:
+              {t('personalInfo.accountType.refeshCount')}:
             </Text>
             <Text strong>
               {membership.totalRefreshLimit - membership.refreshesPostsUsed}/{membership.totalRefreshLimit}
@@ -208,7 +212,7 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <FireOutlined className='mr-2' />
-              Lượt đẩy bài ưu tiên:
+              {t('personalInfo.accountType.priorityCount')}:
             </Text>
             <Text strong>
               {membership.totalPriorityLimit - membership.priorityPostsUsed}/{membership.totalPriorityLimit}
@@ -237,7 +241,7 @@ export default function ProfileLayout() {
         <Card className='rounded-none'>
           <div className='flex flex-col items-center'>
             <div className='flex justify-center'>
-              <Tooltip title={loading ? t('personalInformation.updating') : t('personalInformation.changeAvatar')}>
+              <Tooltip title={loading ? t('personalInfo.updating') : t('personalInfo.changeAvatar')}>
                 <Upload
                   name='avatar'
                   action='/api/user/update-avatar'
@@ -283,7 +287,7 @@ export default function ProfileLayout() {
                   <div className='flex items-center'>
                     <WalletOutlined className='mr-2 text-lg text-gray-500' />
                     <Text>
-                      {t('personalInformation.accountBalance')}: {formatCurrency(currentUser.balance)}
+                      {t('personalInfo.accountBalance')}: {formatCurrency(currentUser.balance)}
                     </Text>
                   </div>
                   <Divider className='m-0 mb-4' />

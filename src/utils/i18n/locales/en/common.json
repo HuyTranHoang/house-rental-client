@@ -1,44 +1,45 @@
 {
-  "test": " TEST ENGLISH",
   "navbar": {
     "menu": "Menu",
-    "forRent": "For rent",
+    "forRent": "For Rent",
     "membershipPackage": "Membership Package",
     "recharge": "Recharge",
     "aboutUs": "About Us",
     "contactUs": "Contact Us",
     "transactionHistory": "Transaction History",
-    "favoriteProperty": "Favorite Property",
+    "favoriteProperties": "Favorite Properties",
     "propertyManagement": "Property Management",
-    "post": "New property",
-    "personalInformation": "Personal Information",
-    "accountInformation": "Account Information",
+    "postProperty": "Post Property",
+    "personalInfo": "Personal Information",
+    "accountInfo": "Account Information",
     "password": "Password",
     "login": "Login",
     "logout": "Logout",
     "register": "Register"
   },
   "toast": {
-    "loginSuccess": "Login success!",
-    "logoutSuccess": "Logout success!",
-    "updateAvatarSuccess": "Update avatar success!",
-    "updateAvatarFiled": "Update avatar failed!"
-
+    "loginSuccess": "Login successful!",
+    "logoutSuccess": "Logout successful!",
+    "updateAvatarSuccess": "Avatar updated successfully!",
+    "updateAvatarFailed": "Failed to update avatar!"
   },
-  "personalInformation": {
-    "changePersonalInformation": "Change personal information",
+  "personalInfo": {
+    "editPersonalInfo": "Edit Personal Information",
     "firstName": "First name",
-    "LastName": "Last name",
+    "lastName": "Last name",
     "phoneNumber": "Phone number",
-    "accountBalance": "AccountBalance",
+    "accountBalance": "Account balance",
     "accountType": {
-      "accountType": "Account type",
+      "type": "Account type",
       "free": "Free",
       "standard": "Standard",
-      "premium": "Premium"
+      "premium": "Premium",
+      "remainingTerm": "Remaining term",
+      "refeshCount": "Refresh count",
+      "priorityCount": "Priority count",
+      "days": "days"
     },
-    "remainingTerm": "Remaining term",
-    "refesh": "Refesh",
+    "refresh": "Refresh",
     "priorityPush": "Priority push",
     "changePassword": "Change password",
     "updating": "Updating...",
