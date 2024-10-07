@@ -103,6 +103,7 @@ function RentHouseExtraFilterModal() {
     setTime('0')
 
     setFilters({
+      search: '',
       cityId: 0,
       districtId: 0,
       roomTypeId: 0,
@@ -145,7 +146,6 @@ function RentHouseExtraFilterModal() {
           <Typography.Paragraph className='mb-1 mt-4'>Giá</Typography.Paragraph>
           <RentHouseFilterPrice onPriceChange={onPriceChange} />
         </div>
-
 
         <Typography.Paragraph className='mb-1 mt-4'>Diện tích</Typography.Paragraph>
         <Select
