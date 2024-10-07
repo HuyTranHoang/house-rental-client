@@ -57,7 +57,7 @@ function MenuMobile({ user }: { user: User | null }) {
     },
     {
       key: ROUTER_NAMES.FAVORITE,
-      label: t('navbar.favoriteProperty'),
+      label: t('navbar.favoriteProperties'),
       navigate: ROUTER_NAMES.FAVORITE,
       icon: <HeartOutlined className='text-base' />
     },
@@ -69,7 +69,7 @@ function MenuMobile({ user }: { user: User | null }) {
     },
     {
       key: ROUTER_NAMES.POST_PROPERTY,
-      label: t('navbar.post'),
+      label: t('navbar.postProperty'),
       navigate: ROUTER_NAMES.POST_PROPERTY,
       icon: <FormOutlined className='text-base' />
     }
@@ -78,7 +78,7 @@ function MenuMobile({ user }: { user: User | null }) {
   const profileData = [
     {
       key: ROUTER_NAMES.PROFILE,
-      label: t('navbar.accountInformation'),
+      label: t('navbar.accountInfo'),
       navigate: ROUTER_NAMES.PROFILE,
       icon: <UserOutlined className='text-base' />
     },
@@ -96,7 +96,7 @@ function MenuMobile({ user }: { user: User | null }) {
         .filter((_item, index) => index < 2)
         .concat({
           key: ROUTER_NAMES.FAVORITE,
-          label: t('navbar.post'),
+          label: t('navbar.postProperty'),
           navigate: ROUTER_NAMES.POST_PROPERTY,
           icon: <FormOutlined className='text-base' />
         })
@@ -204,7 +204,7 @@ function MenuMobile({ user }: { user: User | null }) {
           {user && (
             <Col span={24} className='mt-4'>
               <Typography.Text className='px-3 text-base font-semibold text-gray-500'>
-                {t('navbar.personalInformation')}
+                {t('navbar.personalInfo')}
               </Typography.Text>
               <List
                 className='mt-2'
