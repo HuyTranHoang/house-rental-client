@@ -1,3 +1,47 @@
 {
-  "test": " TEST ENGLISH"
+  "test": " TEST ENGLISH",
+  "navbar": {
+    "menu": "Menu",
+    "forRent": "For rent",
+    "membershipPackage": "Membership Package",
+    "recharge": "Recharge",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "transactionHistory": "Transaction History",
+    "favoriteProperty": "Favorite Property",
+    "propertyManagement": "Property Management",
+    "post": "New property",
+    "personalInformation": "Personal Information",
+    "accountInformation": "Account Information",
+    "password": "Password",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register"
+  },
+  "toast": {
+    "loginSuccess": "Login success!",
+    "logoutSuccess": "Logout success!",
+    "updateAvatarSuccess": "Update avatar success!",
+    "updateAvatarFiled": "Update avatar failed!"
+
+  },
+  "personalInformation": {
+    "changePersonalInformation": "Change personal information",
+    "firstName": "First name",
+    "LastName": "Last name",
+    "phoneNumber": "Phone number",
+    "accountBalance": "AccountBalance",
+    "accountType": {
+      "accountType": "Account type",
+      "free": "Free",
+      "standard": "Standard",
+      "premium": "Premium"
+    },
+    "remainingTerm": "Remaining term",
+    "refesh": "Refesh",
+    "priorityPush": "Priority push",
+    "changePassword": "Change password",
+    "updating": "Updating...",
+    "changeAvatar": "Change avatar"
+  }
 }

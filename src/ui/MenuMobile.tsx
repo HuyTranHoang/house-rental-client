@@ -20,68 +20,6 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
-const { t } = useTranslation()
-
-const navData = [
-  {
-    key: ROUTER_NAMES.RENT_HOUSE,
-    label: t('navbar'),
-    navigate: ROUTER_NAMES.RENT_HOUSE,
-    icon: <HomeOutlined className='text-base' />
-  },
-  {
-    key: ROUTER_NAMES.MEMBERSHIP_FEE,
-    label: 'Gói thành viên',
-    navigate: ROUTER_NAMES.MEMBERSHIP_FEE,
-    icon: <CreditCardOutlined className='text-base' />
-  },
-  {
-    key: ROUTER_NAMES.TOP_UP,
-    label: 'Nạp tiền',
-    navigate: ROUTER_NAMES.TOP_UP,
-    icon: <DollarOutlined className='text-base' />
-  },
-  {
-    key: ROUTER_NAMES.TRANSACTION_HISTORY,
-    label: 'Lịch sử giao dịch',
-    navigate: ROUTER_NAMES.TRANSACTION_HISTORY,
-    icon: <HistoryOutlined className='text-base' />
-  },
-  {
-    key: ROUTER_NAMES.FAVORITE,
-    label: 'Bất động sản yêu thích',
-    navigate: ROUTER_NAMES.FAVORITE,
-    icon: <HeartOutlined className='text-base' />
-  },
-  {
-    key: ROUTER_NAMES.POST_MANAGEMENT,
-    label: 'Quản lý tin đăng',
-    navigate: ROUTER_NAMES.POST_MANAGEMENT,
-    icon: <HeartOutlined className='text-base' />
-  },
-  {
-    key: ROUTER_NAMES.POST_PROPERTY,
-    label: 'Đăng tin',
-    navigate: ROUTER_NAMES.POST_PROPERTY,
-    icon: <FormOutlined className='text-base' />
-  }
-]
-
-const profileData = [
-  {
-    key: ROUTER_NAMES.PROFILE,
-    label: 'Thông tin tài khoản',
-    navigate: ROUTER_NAMES.PROFILE,
-    icon: <UserOutlined className='text-base' />
-  },
-  {
-    key: ROUTER_NAMES.CHANGE_PASSWORD,
-    label: 'Mật khẩu',
-    navigate: ROUTER_NAMES.CHANGE_PASSWORD,
-    icon: <LockOutlined className='text-base' />
-  }
-]
-
 function MenuMobile({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
@@ -90,13 +28,75 @@ function MenuMobile({ user }: { user: User | null }) {
   const location = useLocation()
   const currentPath = location.pathname
 
+  const { t } = useTranslation()
+
+  const navData = [
+    {
+      key: ROUTER_NAMES.RENT_HOUSE,
+      label: t('navbar.forRent'),
+      navigate: ROUTER_NAMES.RENT_HOUSE,
+      icon: <HomeOutlined className='text-base' />
+    },
+    {
+      key: ROUTER_NAMES.MEMBERSHIP_FEE,
+      label: t('navbar.membershipPackage'),
+      navigate: ROUTER_NAMES.MEMBERSHIP_FEE,
+      icon: <CreditCardOutlined className='text-base' />
+    },
+    {
+      key: ROUTER_NAMES.TOP_UP,
+      label: t('navbar.recharge'),
+      navigate: ROUTER_NAMES.TOP_UP,
+      icon: <DollarOutlined className='text-base' />
+    },
+    {
+      key: ROUTER_NAMES.TRANSACTION_HISTORY,
+      label: t('navbar.transactionHistory'),
+      navigate: ROUTER_NAMES.TRANSACTION_HISTORY,
+      icon: <HistoryOutlined className='text-base' />
+    },
+    {
+      key: ROUTER_NAMES.FAVORITE,
+      label: t('navbar.favoriteProperty'),
+      navigate: ROUTER_NAMES.FAVORITE,
+      icon: <HeartOutlined className='text-base' />
+    },
+    {
+      key: ROUTER_NAMES.POST_MANAGEMENT,
+      label: t('navbar.propertyManagement'),
+      navigate: ROUTER_NAMES.POST_MANAGEMENT,
+      icon: <HeartOutlined className='text-base' />
+    },
+    {
+      key: ROUTER_NAMES.POST_PROPERTY,
+      label: t('navbar.post'),
+      navigate: ROUTER_NAMES.POST_PROPERTY,
+      icon: <FormOutlined className='text-base' />
+    }
+  ]
+
+  const profileData = [
+    {
+      key: ROUTER_NAMES.PROFILE,
+      label: t('navbar.accountInformation'),
+      navigate: ROUTER_NAMES.PROFILE,
+      icon: <UserOutlined className='text-base' />
+    },
+    {
+      key: ROUTER_NAMES.CHANGE_PASSWORD,
+      label: t('navbar.password'),
+      navigate: ROUTER_NAMES.CHANGE_PASSWORD,
+      icon: <LockOutlined className='text-base' />
+    }
+  ]
+
   const filteredNavData = user
     ? navData
     : navData
         .filter((_item, index) => index < 2)
         .concat({
           key: ROUTER_NAMES.FAVORITE,
-          label: 'Đăng tin',
+          label: t('navbar.post'),
           navigate: ROUTER_NAMES.POST_PROPERTY,
           icon: <FormOutlined className='text-base' />
         })
@@ -112,7 +112,7 @@ function MenuMobile({ user }: { user: User | null }) {
           }}
           block
         >
-          Đăng nhập
+          {t('navbar.login')}
         </Button>
       </Col>
       <Col span={12} className='pr-6'>
@@ -124,7 +124,7 @@ function MenuMobile({ user }: { user: User | null }) {
             setOpen(false)
           }}
         >
-          Đăng ký
+          {t('navbar.register')}
         </Button>
       </Col>
     </>
@@ -135,7 +135,7 @@ function MenuMobile({ user }: { user: User | null }) {
     navigate(ROUTER_NAMES.RENT_HOUSE)
     localStorage.removeItem('jwtToken')
     axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
-      toast.success('Đăng xuất thành công')
+      toast.success(t('toast.logoutSuccess'))
       setOpen(false)
     })
   }
@@ -143,7 +143,7 @@ function MenuMobile({ user }: { user: User | null }) {
   const logoutComponent = (
     <Col span={24} className='mt-4 px-6'>
       <Button danger block onClick={logoutHandler}>
-        Đăng xuất
+        {t('navbar.logout')}
       </Button>
     </Col>
   )
@@ -177,7 +177,7 @@ function MenuMobile({ user }: { user: User | null }) {
           )}
 
           <Col span={24} className='mt-4'>
-            <Typography.Text className='px-3 text-base font-semibold text-gray-500'>Danh mục</Typography.Text>
+            <Typography.Text className='px-3 text-base font-semibold text-gray-500'>{t('navbar.menu')}</Typography.Text>
             <List
               className='mt-2'
               itemLayout='horizontal'
@@ -204,7 +204,7 @@ function MenuMobile({ user }: { user: User | null }) {
           {user && (
             <Col span={24} className='mt-4'>
               <Typography.Text className='px-3 text-base font-semibold text-gray-500'>
-                Thông tin cá nhân
+                {t('navbar.personalInformation')}
               </Typography.Text>
               <List
                 className='mt-2'
