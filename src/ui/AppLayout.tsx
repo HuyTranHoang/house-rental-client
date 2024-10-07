@@ -32,14 +32,14 @@ function AppLayout() {
       </Header>
       <Layout>
         <Row>
-          <Col xs={1} sm={2} md={5}></Col>
-          <Col xs={22} sm={20} md={14}>
+          <Col xs={1} sm={2} md={4}></Col>
+          <Col xs={22} sm={20} md={16}>
             <Content>
               <Outlet />
               {showScrollButton && <FloatButton icon={<VerticalAlignTopOutlined />} onClick={scrollToTop} />}
             </Content>
           </Col>
-          <Col xs={1} sm={2} md={5}></Col>
+          <Col xs={1} sm={2} md={4}></Col>
         </Row>
       </Layout>
       <Footer className='bg-[#E9E9E9] px-2 md:px-4'>

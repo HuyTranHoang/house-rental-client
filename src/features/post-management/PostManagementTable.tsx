@@ -187,7 +187,7 @@ export default function PostManagementTable({
             </div>
             <div className='flex flex-col'>
               <span className='text-xs text-gray-500'>Địa chỉ:</span>
-              <span>{record.location}</span>
+              <span>{record.districtName}, {record.cityName}</span>
             </div>
           </div>
         </div>
