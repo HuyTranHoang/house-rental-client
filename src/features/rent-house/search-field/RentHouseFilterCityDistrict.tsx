@@ -2,6 +2,7 @@ import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
 import { Cascader, Form } from 'antd'
 import { MapPin } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface Option {
   value: string
@@ -14,6 +15,7 @@ interface RentHouseFilterCityDistrictProps {
 }
 
 function RentHouseFilterCityDistrict({ onCityDistrictChange }: RentHouseFilterCityDistrictProps) {
+  const { t } = useTranslation()
   const cityDistrictOptions: Option[] = [{ value: '0', label: 'Toàn Quốc' }]
 
   const { cityData, cityIsLoading } = useCities()
@@ -44,7 +46,7 @@ function RentHouseFilterCityDistrict({ onCityDistrictChange }: RentHouseFilterCi
         size='large'
         allowClear={false}
         loading={cityIsLoading || districtIsLoading}
-        placeholder='Chọn quận huyện'
+        placeholder={t('filter.cityDistrictPlaceholder')}
         suffixIcon={<MapPin size={16} />}
       />
     </Form.Item>

@@ -1,13 +1,15 @@
 import { Form, Select } from 'antd'
 import { DollarSign } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 function RentHouseFilterPrice({ onPriceChange }: { onPriceChange: (value: string) => void }) {
+  const { t } = useTranslation()
   return (
     <Form.Item name='price'>
       <Select
         size='large'
         onChange={onPriceChange}
-        placeholder={'Giá thuê'}
+        placeholder={t('filter.priceRangePlaceholder')}
         suffixIcon={<DollarSign size={16} />}
         options={[
           { value: '0,0', label: 'Tất cả' },

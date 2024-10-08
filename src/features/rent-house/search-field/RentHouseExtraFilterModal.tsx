@@ -6,6 +6,7 @@ import { CalendarOutlined, ProductOutlined, SelectOutlined } from '@ant-design/i
 import { Badge, Button, Cascader, CascaderProps, Modal, Select, Typography } from 'antd'
 import { DollarSign, House, MapPin } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Option {
   value: string
@@ -14,6 +15,7 @@ interface Option {
 }
 
 function RentHouseExtraFilterModal() {
+  const { t } = useTranslation()
   const { cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays, setFilters } =
     usePropertyFilters()
 
@@ -131,28 +133,28 @@ function RentHouseExtraFilterModal() {
   }
 
   useEffect(() => {
-    const conditions = [cityId || districtId, roomTypeId, minPrice || maxPrice, minArea || maxArea, numOfDays];
-    const count = conditions.filter(Boolean).length;
-    setCount(count);
-  }, [cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays]);
+    const conditions = [cityId || districtId, roomTypeId, minPrice || maxPrice, minArea || maxArea, numOfDays]
+    const count = conditions.filter(Boolean).length
+    setCount(count)
+  }, [cityId, districtId, roomTypeId, minPrice, maxPrice, minArea, maxArea, numOfDays])
 
   return (
     <>
       <Badge count={count}>
         <Button onClick={() => setIsModalOpen(true)} size='large' icon={<ProductOutlined className='text-blue-400' />}>
-          Lọc thêm
+          {t('filter.extraFilter')}
         </Button>
       </Badge>
       <Modal
-        title='Bộ lọc'
+        title={t('filter.title')}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={[
           <Button key='back' onClick={handleResetExtraFilter}>
-            Xóa lọc
+            {t('filter.clearFilter')}
           </Button>,
           <Button key='submit' type='primary' onClick={handleOk}>
-            Tìm kiếm
+            {t('filter.applyFilter')}
           </Button>
         ]}
       >
@@ -171,7 +173,7 @@ function RentHouseExtraFilterModal() {
             size='large'
             allowClear={false}
             loading={cityIsLoading || districtIsLoading}
-            placeholder='Chọn quận huyện'
+            placeholder={t('filter.cityDistrictPlaceholder')}
             suffixIcon={<MapPin size={16} />}
             className='w-full'
           />
@@ -182,7 +184,7 @@ function RentHouseExtraFilterModal() {
             size='large'
             onChange={onRoomTypeChange}
             loading={roomTypeIsLoading}
-            placeholder={'Loại phòng'}
+            placeholder={t('filter.roomTypePlaceholder')}
             suffixIcon={<House size={16} />}
             options={roomTypeOptions}
             className='w-full'
@@ -197,7 +199,7 @@ function RentHouseExtraFilterModal() {
             }
             size='large'
             onChange={onPriceChange}
-            placeholder={'Giá thuê'}
+            placeholder={t('filter.priceRangePlaceholder')}
             suffixIcon={<DollarSign size={16} />}
             options={[
               { value: '0,0', label: 'Tất cả' },
@@ -210,7 +212,7 @@ function RentHouseExtraFilterModal() {
           />
         </div>
 
-        <Typography.Paragraph className='mb-1 mt-4'>Diện tích</Typography.Paragraph>
+        <Typography.Paragraph className='mb-1 mt-4'>{t('filter.area')}</Typography.Paragraph>
         <Select
           size='large'
           onChange={(value) => {
@@ -221,7 +223,7 @@ function RentHouseExtraFilterModal() {
               maxArea: Number(max || '0')
             }))
           }}
-          placeholder={'Diện tích'}
+          placeholder={t('filter.area')}
           value={`${localFilters.minArea},${localFilters.maxArea}`}
           suffixIcon={<SelectOutlined className='text-base' />}
           options={[
@@ -234,7 +236,7 @@ function RentHouseExtraFilterModal() {
           ]}
           className='w-full'
         />
-        <Typography.Paragraph className='mb-1 mt-4'>Thời gian đăng</Typography.Paragraph>
+        <Typography.Paragraph className='mb-1 mt-4'>{t('filter.date')}</Typography.Paragraph>
         <Select
           size='large'
           onChange={(value) => {
@@ -243,7 +245,7 @@ function RentHouseExtraFilterModal() {
               numOfDays: Number(value)
             }))
           }}
-          placeholder={'Thời gian đăng'}
+          placeholder={t('filter.date')}
           value={localFilters.numOfDays.toString()}
           suffixIcon={<CalendarOutlined className='text-base' />}
           options={[

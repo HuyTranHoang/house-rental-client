@@ -44,5 +44,17 @@
     "changePassword": "Đổi mật khẩu",
     "updating": "Đang cập nhật...",
     "changeAvatar": "Đổi ảnh đại diện"
+  },
+  "filter": {
+    "title": "Bộ lọc",
+    "searchPlaceholder": "Tìm kiếm theo tên, địa chỉ, quận, phường...",
+    "cityDistrictPlaceholder": "Thành phố, quận",
+    "roomTypePlaceholder": "Loại phòng",
+    "priceRangePlaceholder": "Khoảng giá",
+    "extraFilter": "Lọc thêm",
+    "clearFilter": "Xóa lọc",
+    "applyFilter": "Tìm kiếm",
+    "area": "Diện tích",
+    "date": "Ngày đăng"
   }
 }

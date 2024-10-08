@@ -44,5 +44,17 @@
     "changePassword": "Change password",
     "updating": "Updating...",
     "changeAvatar": "Change avatar"
+  },
+  "filter": {
+    "title": "Filter",
+    "searchPlaceholder": "Search by name, address, district, ward...",
+    "cityDistrictPlaceholder": "City, district",
+    "roomTypePlaceholder": "Room type",
+    "priceRangePlaceholder": "Price range",
+    "extraFilter": "Extra filter",
+    "clearFilter": "Clear filter",
+    "applyFilter": "Apply filter",
+    "area": "Area",
+    "date": "Date"
   }
 }
