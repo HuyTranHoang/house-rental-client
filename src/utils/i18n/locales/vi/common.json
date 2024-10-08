@@ -68,5 +68,37 @@
       "cityDistrict": "Nhà đất cho thuê tại các khu vực",
       "cityDistrictIn": "Nhà đất cho thuê tại"
     }
+  },
+  "button": {
+    "favorite": "Thêm vào danh sách yêu thích",
+    "unfavorite": "Bỏ khỏi danh sách yêu thích"
+  },
+  "recharge": {
+    "title": "Nạp tiền",
+    "amount": "Số tiền",
+    "amountPlaceholder": "Nhập số tiền",
+    "amountRequired": "Vui lòng nhập số tiền bạn muốn nạp",
+    "amountSelectRequired": "Vui lòng chọn số tiền bạn muốn nạp",
+    "custom": "Tùy chọn",
+    "customAmount": "Số tiền tùy chọn (VND)",
+    "recharge": "Thanh toán",
+    "redirecting": "Đang chuyển hướng đến cổng thanh toán...",
+    "rechargeSuccess": "Nạp tiền thành công!",
+    "rechargeFailed": "Nạp tiền thất bại!",
+    "transactionFailed": "Thanh toán của bạn không thành công.",
+    "rechargeAmount": "Số tiền đã nạp",
+    "rechargeTransaction": "Mã giao dịch",
+    "rechargeDate": "Ngày nạp",
+    "transactionHistory": "Lịch sử giao dịch",
+    "retry": "Thử lại",
+    "continue": "Nạp tiếp",
+    "selectedAmount": "Số tiền đã chọn",
+    "afterRecharge": "Sau khi nạp",
+    "accountInfo": {
+      "accountBalance": "Số dư tài khoản",
+      "present": "Hiện tại",
+      "note": "Lưu ý",
+      "min": "Số tiền nạp tối thiểu là 50,000 VND"
+    }
   }
 }

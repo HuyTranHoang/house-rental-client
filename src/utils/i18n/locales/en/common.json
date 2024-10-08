@@ -68,5 +68,37 @@
       "cityDistrict": "Properties for rent in areas",
       "cityDistrictIn": "Properties for rent in"
     }
+  },
+  "button": {
+    "favorite": "Add to favorite",
+    "unfavorite": "Remove from favorite"
+  },
+  "recharge": {
+    "title": "Recharge",
+    "amount": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "amountRequired": "Amount is required",
+    "amountSelectRequired": "Please select the amount you want to recharge",
+    "custom": "Custom",
+    "customAmount": "Custom amount (VND)",
+    "recharge": "Recharge",
+    "redirecting": "Redirecting to payment gateway...",
+    "rechargeSuccess": "Recharge successful!",
+    "rechargeFailed": "Recharge failed!",
+    "transactionFailed": "Your payment was not successful.",
+    "rechargeAmount": "Recharge amount",
+    "rechargeTransaction": "Transaction ID",
+    "rechargeDate": "Recharge date",
+    "transactionHistory": "Transaction history",
+    "retry": "Retry",
+    "continue": "Continue recharge",
+    "selectedAmount": "Selected amount",
+    "afterRecharge": "After recharge",
+    "accountInfo": {
+      "accountBalance": "Account balance",
+      "present": "Present",
+      "note": "Note",
+      "min": "Minimum recharge amount is 50,000 VND"
+    }
   }
 }

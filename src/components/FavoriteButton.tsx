@@ -2,6 +2,7 @@ import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { Tooltip } from 'antd'
 import { clsx } from 'clsx/lite'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface FavoriteButtonProps {
   isFavorite: boolean | undefined
@@ -9,6 +10,8 @@ interface FavoriteButtonProps {
 }
 
 const FavoriteButton = ({ isFavorite, onClick }: FavoriteButtonProps) => {
+  const { t } = useTranslation()
+
   return (
     <div
       onClick={onClick}
@@ -17,7 +20,7 @@ const FavoriteButton = ({ isFavorite, onClick }: FavoriteButtonProps) => {
         isFavorite && 'text-red-500'
       )}
     >
-      <Tooltip title={isFavorite ? 'Bỏ khỏi danh sách yêu thích' : 'Thêm vào danh sách yêu thích'}>
+      <Tooltip title={isFavorite ? t('button.unfavorite') : t('button.favorite')}>
         {isFavorite ? <HeartFilled /> : <HeartOutlined />}
       </Tooltip>
     </div>
