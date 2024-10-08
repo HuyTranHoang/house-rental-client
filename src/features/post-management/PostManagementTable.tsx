@@ -169,7 +169,7 @@ export default function PostManagementTable({
   ]
 
   const columns = [
-    { title: '#', dataIndex: 'index', key: 'index', width: 50 },
+    { title: '#', dataIndex: 'index', key: 'index', width: 60 },
     {
       title: 'Thông tin bất động sản',
       dataIndex: 'propertyInfo',
@@ -177,17 +177,17 @@ export default function PostManagementTable({
       render: (_: undefined, record: PropertyDataSource) => (
         <div className='space-y-2'>
           <div className='flex flex-col'>
-            <span className='text-xs text-gray-500'>Tựa đề:</span>
-            <span>{record.title}</span>
+          <span className='text-xs text-gray-500'>Tiêu đề:</span>
+          <span className='font-semibold text-gray-800'>{record.title}</span>
           </div>
-          <div className='flex space-x-6'>
+          <div className='flex flex-col md:flex-row md:space-x-6'>
             <div className='flex flex-col'>
-              <span className='text-xs text-gray-500'>Giá:</span>
-              <span>{formatCurrency(record.price)}</span>
+            <span className='text-xs text-gray-500'>Giá:</span>
+            <span className='font-semibold text-gray-800'>{formatCurrency(record.price)}</span>
             </div>
             <div className='flex flex-col'>
               <span className='text-xs text-gray-500'>Địa chỉ:</span>
-              <span>{record.districtName}, {record.cityName}</span>
+              <span className='font-semibold text-gray-800'>{record.districtName}, {record.cityName}</span>
             </div>
           </div>
         </div>
@@ -238,11 +238,11 @@ export default function PostManagementTable({
         <div className='space-y-2'>
           <div className='flex flex-col'>
             <span className='text-xs text-gray-500'>Ngày đăng:</span>
-            <span>{formatDate(record.createdAt)}</span>
+            <span className='font-semibold text-gray-800'>{formatDate(record.createdAt)}</span>
           </div>
           <div className='flex flex-col'>
             <span className='text-xs text-gray-500'>Làm mới lần cuối:</span>
-            <span>{formatDateWithTime(record.refreshedAt)}</span>
+            <span className='font-semibold text-gray-800'>{formatDateWithTime(record.refreshedAt)}</span>
           </div>
         </div>
       )
@@ -252,7 +252,7 @@ export default function PostManagementTable({
       key: 'action',
       width: 120,
       render: (_: undefined, record: PropertyDataSource) => (
-        <div className='flex items-center space-x-2'>
+        <div className='space-y-2 md:flex-row md:space-x-2'>
           {record.status === PropertyStatus.APPROVED && (
             <>
               <Tooltip title='Làm mới bài đăng'>
