@@ -6,9 +6,9 @@ import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Button, List, Typography } from 'antd'
-import { Loader } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Autoplay, EffectFade } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 function RightSideBar() {
   const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
@@ -26,42 +26,31 @@ function RightSideBar() {
 
   const { t } = useTranslation()
   const { cityId, setFilters } = usePropertyFilters()
-  const { advData, advIsLoading } = useAdvertisements()
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imageClass, setImageClass] = useState('');
-
-  useEffect(() => {
-    if (!advIsLoading && advData && advData.length > 0) {
-      const interval = setInterval(() => {
-        setImageClass('fade-out');
-        setTimeout(() => {
-          setCurrentImageIndex((prevIndex) => (prevIndex + 1) % advData.length);
-          setImageClass('fade-in');
-        }, 3000); 
-      }, 3000);
-
-      return () => clearInterval(interval);
-    }
-  }, [advIsLoading, advData]);
-
-  if (advIsLoading) {
-    return <Loader/>
-  }
-
-  if (!advData || advData.length === 0) {
-    return <Loader/>
-  }
+  const { advData } = useAdvertisements()
 
   return (
     <>
-      {advData.length > 0 && (
-        <img
-          src={advData[currentImageIndex].imageUrl}
-          className={`mt-4 w-full fixed-image ${imageClass}`}
-          alt='banner'
-          onLoad={() => setImageClass('')}
-        />
+      {advData && (
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1}
+          modules={[Autoplay, EffectFade]}
+          effect="fade"
+          loop={true}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          }}
+        >
+          {advData.map((ad, index) => (
+            <SwiperSlide key={index}>
+              <img src={ad.imageUrl} className='fixed-image mt-4 w-full' alt='banner' />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       )}
+
       <List
         size='small'
         header={

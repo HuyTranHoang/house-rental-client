@@ -1,5 +1,6 @@
 import ROUTER_NAMES from '@/constant/routerNames'
 import { usePriorityProperties } from '@/hooks/useProperty'
+import lottieJson from '@/lottie/hot.json'
 import usePropertyStore from '@/store/propertyStore'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { generateSlug } from '@/utils/generateSlug'
@@ -9,7 +10,6 @@ import Lottie from 'react-lottie-player'
 import { useNavigate } from 'react-router-dom'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import lottieJson from '@/lottie/hot.json'
 
 const { Text } = Typography
 
@@ -25,7 +25,7 @@ export default function PriorityCardItem() {
       slidesPerView={1}
       loop={true}
       autoplay={{
-        delay: 5000,
+        delay: 15000,
         disableOnInteraction: false,
         pauseOnMouseEnter: true
       }}

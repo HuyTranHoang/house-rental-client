@@ -19,35 +19,3 @@
     height: 500px !important;
     object-fit: cover;
 }
-
-.fade-in {
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.5);
-    }
-    to {
-      opacity: 0.5;
-      transform: scale(1);
-    }
-  }
-  
-  .fade-out {
-    opacity: 0;
-    animation: fadeOut 1s forwards;
-  }
-  
-  @keyframes fadeOut {
-    from {
-      opacity: 0.5;
-      transform: scale(1);
-    }
-    to {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-  }
