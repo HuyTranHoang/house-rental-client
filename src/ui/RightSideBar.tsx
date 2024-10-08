@@ -1,10 +1,13 @@
 import { fetchAllCities } from '@/api/city.api.ts'
 import { fetchAllDistricts } from '@/api/district.api.ts'
 import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
+import { useAdvertisements } from '@/hooks/useAdvertisement'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Button, List, Typography } from 'antd'
+import { Loader } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 function RightSideBar() {
@@ -23,10 +26,42 @@ function RightSideBar() {
 
   const { t } = useTranslation()
   const { cityId, setFilters } = usePropertyFilters()
+  const { advData, advIsLoading } = useAdvertisements()
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageClass, setImageClass] = useState('');
+
+  useEffect(() => {
+    if (!advIsLoading && advData && advData.length > 0) {
+      const interval = setInterval(() => {
+        setImageClass('fade-out');
+        setTimeout(() => {
+          setCurrentImageIndex((prevIndex) => (prevIndex + 1) % advData.length);
+          setImageClass('fade-in');
+        }, 3000); 
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [advIsLoading, advData]);
+
+  if (advIsLoading) {
+    return <Loader/>
+  }
+
+  if (!advData || advData.length === 0) {
+    return <Loader/>
+  }
 
   return (
     <>
-      <img src='/aptechonehome.webp' className='mt-4 w-full' alt='banner' />
+      {advData.length > 0 && (
+        <img
+          src={advData[currentImageIndex].imageUrl}
+          className={`mt-4 w-full fixed-image ${imageClass}`}
+          alt='banner'
+          onLoad={() => setImageClass('')}
+        />
+      )}
       <List
         size='small'
         header={
