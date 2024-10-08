@@ -56,5 +56,17 @@
     "applyFilter": "Apply filter",
     "area": "Area",
     "date": "Date"
+  },
+  "home": {
+    "resultPagination": "Showing <strong>{{from}} to {{to}}</strong> of <strong>{{total}}</strong> properties",
+    "saveSearch": "Save search",
+    "noResult": "No result found",
+    "reSearch": "Search again",
+    "itemsPerPage": "/ page",
+    "rightSidebar": {
+      "roomType": "Property type",
+      "cityDistrict": "Properties for rent in areas",
+      "cityDistrictIn": "Properties for rent in"
+    }
   }
 }

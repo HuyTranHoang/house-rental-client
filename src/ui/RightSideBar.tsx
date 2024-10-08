@@ -5,6 +5,7 @@ import { usePropertyFilters } from '@/hooks/useProperty.ts'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Button, List, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 function RightSideBar() {
   const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
@@ -20,6 +21,7 @@ function RightSideBar() {
     queryFn: fetchAllDistricts
   })
 
+  const { t } = useTranslation()
   const { cityId, setFilters } = usePropertyFilters()
 
   return (
@@ -29,7 +31,7 @@ function RightSideBar() {
         size='small'
         header={
           <Typography.Title level={5} className='m-0'>
-            Loại bất động sản
+            {t('home.rightSidebar.roomType')}
           </Typography.Title>
         }
         bordered
@@ -56,7 +58,7 @@ function RightSideBar() {
           size='small'
           header={
             <Typography.Title level={5} className='m-0'>
-              Nhà đất cho thuê tại các khu vực
+              {t('home.rightSidebar.cityDistrict')}
             </Typography.Title>
           }
           bordered
@@ -83,7 +85,7 @@ function RightSideBar() {
           size='small'
           header={
             <Typography.Title level={5} className='m-0'>
-              Nhà đất cho thuê tại {cityData.find((city) => city.id === cityId)?.name}
+              {t('home.rightSidebar.cityDistrictIn')} {cityData.find((city) => city.id === cityId)?.name}
             </Typography.Title>
           }
           bordered

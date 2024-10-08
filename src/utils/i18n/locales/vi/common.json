@@ -56,5 +56,17 @@
     "applyFilter": "Tìm kiếm",
     "area": "Diện tích",
     "date": "Ngày đăng"
+  },
+  "home": {
+    "resultPagination": "Hiển thị <strong>{{from}} đến {{to}}</strong> trong <strong>{{total}}</strong> tin đăng",
+    "saveSearch": "Lưu tìm kiếm",
+    "noResult": "Không tìm thấy kết quả nào",
+    "reSearch": "Tìm kiếm lại",
+    "itemsPerPage": "/ trang",
+    "rightSidebar": {
+      "roomType": "Loại bất động sản",
+      "cityDistrict": "Nhà đất cho thuê tại các khu vực",
+      "cityDistrictIn": "Nhà đất cho thuê tại"
+    }
   }
 }
