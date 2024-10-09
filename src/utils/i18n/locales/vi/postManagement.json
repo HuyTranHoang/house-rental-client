@@ -1,0 +1,45 @@
+{
+  "title": "Quản lý bài đăng",
+  "searchPlaceholder": "Tìm kiếm tiêu đề, thành phố, địa chỉ...",
+  "pending": "Chờ duyệt",
+  "approved": "Đã được duyệt",
+  "rejected": "Bị từ chối",
+  "of": "trong",
+  "properties": "bất động sản",
+  "deleteModal": {
+    "deleteConfirmTitle": "Xác nhận xóa bài đăng",
+    "deletePost": "Xóa bài đăng",
+    "goBack": "Quay lại",
+    "deleteConfirmMessage": "Bạn có chắc chắn muốn xóa bài đăng '<strong>{{title}}</strong>'?",
+    "deleteWarning": "Lưu ý, hành động này không thể hoàn tác."
+  },
+  "priorityModal": {
+    "confirmTitle": "Xác nhận ưu tiên bài đăng",
+    "confirmMessage": "Bạn muốn ưu tiên bài đăng",
+    "lastPriorityExpiration": "Lần sử dụng ưu tiên cuối cùng",
+    "highlightOnHomepage": "Bài đăng sẽ được hiển thị nổi bật lên đầu trang chủ",
+    "increaseVisibility": "Tăng khả năng tiếp cận cao với tất cả người dùng",
+    "priorityDuration": "Thời gian ưu tiên: 2 ngày/ lần dùng",
+    "policyHighlight1": "Bài đăng sẽ được hiển thị nổi bật lên đầu trang chủ",
+    "policyHighlight2": "Không thể hủy bỏ sau khi xác nhận ưu tiên",
+    "policyHighlight3": "Ưu tiên bài đăng sẽ tốn một lượt ưu tiên, vui lòng kiểm tra trong trang 'thông tin cá nhân'",
+    "policyNote": "Lưu ý về chính sách ưu tiên",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận ưu tiên",
+    "unknown": "Không xác định"
+  },
+  "refreshModal": {
+    "confirmTitle": "Xác nhận làm mới bài đăng",
+    "confirmMessage": "Bạn muốn làm mới bài đăng",
+    "lastRefreshTime": "Lần làm mới cuối cùng",
+    "highlightOnHomepage": "Bài đăng sẽ được hiển thị lên đầu trang chủ",
+    "increaseVisibility": "Tăng khả năng tiếp cận với người dùng mới",
+    "policyHighlight1": "Bài đăng sẽ được hiển thị lên đầu trang chủ",
+    "policyHighlight2": "Không thể hủy bỏ sau khi xác nhận làm mới",
+    "policyHighlight3": "Làm mới bài đăng sẽ tốn một lượt làm mới, vui lòng kiểm tra trong trang 'thông tin cá nhân'",
+    "policyNote": "Lưu ý về chính sách làm mới",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận làm mới",
+    "unknown": "Không xác định"
+  }
+}

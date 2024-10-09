@@ -1,0 +1,45 @@
+{
+  "title": "Post Management",
+  "searchPlaceholder": "Search by title, city, address...",
+  "pending": "Pending",
+  "approved": "Approved",
+  "rejected": "Rejected",
+  "of": "of",
+  "properties": "properties",
+  "deleteModal": {
+    "deleteConfirmTitle": "Confirm Delete Post",
+    "deletePost": "Delete Post",
+    "goBack": "Go Back",
+    "deleteConfirmMessage": "Are you sure you want to delete the post '<strong>{{title}}</strong>'?",
+    "deleteWarning": "Note, this action cannot be undone."
+  },
+  "priorityModal": {
+    "confirmTitle": "Confirm Priority Post",
+    "confirmMessage": "Do you want to prioritize the post",
+    "lastPriorityExpiration": "Last priority usage",
+    "highlightOnHomepage": "The post will be prominently displayed at the top of the homepage",
+    "increaseVisibility": "Increase high visibility to all users",
+    "priorityDuration": "Priority duration: 2 days per use",
+    "policyHighlight1": "The post will be prominently displayed at the top of the homepage",
+    "policyHighlight2": "Cannot be undone after confirming priority",
+    "policyHighlight3": "Prioritizing the post will cost one priority use, please check in the 'personal information' page",
+    "policyNote": "Note on priority policy",
+    "cancel": "Cancel",
+    "confirm": "Confirm Priority",
+    "unknown": "Unknown"
+  },
+  "refreshModal": {
+    "confirmTitle": "Confirm Refresh Post",
+    "confirmMessage": "Do you want to refresh the post",
+    "lastRefreshTime": "Last refresh time",
+    "highlightOnHomepage": "The post will be displayed at the top of the homepage",
+    "increaseVisibility": "Increase visibility to new users",
+    "policyHighlight1": "The post will be displayed at the top of the homepage",
+    "policyHighlight2": "Cannot be undone after confirming refresh",
+    "policyHighlight3": "Refreshing the post will cost one refresh use, please check in the 'personal information' page",
+    "policyNote": "Note on refresh policy",
+    "cancel": "Cancel",
+    "confirm": "Confirm Refresh",
+    "unknown": "Unknown"
+  }
+}

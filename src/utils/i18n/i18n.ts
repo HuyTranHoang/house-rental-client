@@ -7,6 +7,7 @@ import en_common from '@/utils/i18n/locales/en/common.json'
 import en_contact from '@/utils/i18n/locales/en/contact.json'
 import en_membership from '@/utils/i18n/locales/en/membership.json'
 import en_post_property from '@/utils/i18n/locales/en/post-property.json'
+import en_postManagement from '@/utils/i18n/locales/en/postManagement.json'
 import en_profile from '@/utils/i18n/locales/en/profile.json'
 import en_propertyDetail from '@/utils/i18n/locales/en/propertyDetail.json'
 import en_recharge from '@/utils/i18n/locales/en/recharge.json'
@@ -17,6 +18,7 @@ import vi_common from '@/utils/i18n/locales/vi/common.json'
 import vi_contact from '@/utils/i18n/locales/vi/contact.json'
 import vi_membership from '@/utils/i18n/locales/vi/membership.json'
 import vi_post_property from '@/utils/i18n/locales/vi/post-property.json'
+import vi_postManagement from '@/utils/i18n/locales/vi/postManagement.json'
 import vi_profile from '@/utils/i18n/locales/vi/profile.json'
 import vi_propertyDetail from '@/utils/i18n/locales/vi/propertyDetail.json'
 import vi_recharge from '@/utils/i18n/locales/vi/recharge.json'
@@ -32,7 +34,8 @@ export const resources = {
     recharge: en_recharge,
     profile: en_profile,
     about: en_about,
-    breadcrumb: en_breadcrumb
+    breadcrumb: en_breadcrumb,
+    postManagement: en_postManagement
   },
   vi: {
     common: vi_common,
@@ -43,7 +46,8 @@ export const resources = {
     recharge: vi_recharge,
     profile: vi_profile,
     about: vi_about,
-    breadcrumb: vi_breadcrumb
+    breadcrumb: vi_breadcrumb,
+    postManagement: vi_postManagement
   }
 } as const
 
@@ -61,7 +65,8 @@ i18n.use(initReactI18next).init({
     'profile',
     'propertyDetail',
     'about',
-    'breadcrumb'
+    'breadcrumb',
+    'postManagement'
   ],
   interpolation: {
     escapeValue: false

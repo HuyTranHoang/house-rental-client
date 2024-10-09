@@ -3,6 +3,7 @@ import { ArrowUpOutlined, ClockCircleOutlined, ExclamationCircleOutlined } from 
 import { Button, Modal, Tooltip } from 'antd'
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
+import { useTranslation } from 'react-i18next'
 
 interface RefreshConfirmationModalProps {
   isVisible: boolean
@@ -19,23 +20,25 @@ function RefreshConfirmationModal({
   property,
   isLoading
 }: RefreshConfirmationModalProps) {
+  const { t } = useTranslation('postManagement')
+
   if (!property) return null
 
   const refreshedAtDate = new Date(property.refreshedAt)
   const isEpoch = refreshedAtDate.getTime() === new Date('1970-01-01T00:00:00Z').getTime()
 
   const lastRefreshTime = isEpoch
-    ? 'Không xác định'
+    ? t('refreshModal.unknown')
     : formatDistanceToNow(refreshedAtDate, { addSuffix: true, locale: vi })
 
   return (
     <Modal
       title={
         <div className='flex flex-col items-center'>
-          <div className='flex size-10 items-center justify-center rounded-full bg-yellow-50'>
-            <ExclamationCircleOutlined className='text-2xl text-yellow-400' />
+          <div className='mb-2 flex size-10 items-center justify-center rounded-full bg-blue-50'>
+            <ExclamationCircleOutlined className='text-2xl text-blue-500' />
           </div>
-          <span className='font-semibold'>Xác nhận làm mới bài đăng</span>
+          <span className='font-semibold'>{t('refreshModal.confirmTitle')}</span>
         </div>
       }
       open={isVisible}
@@ -46,22 +49,22 @@ function RefreshConfirmationModal({
     >
       <div className='space-y-6'>
         <h3 className='mb-2 text-base font-medium'>
-          Bạn muốn làm mới bài đăng '<span className='font-semibold text-blue-500'>{property.title}</span>' ?
+          {t('refreshModal.confirmMessage')} '<span className='text-blue-500'>{property.title}</span>' ?
         </h3>
 
         <div className='rounded-lg bg-gray-50 p-4'>
           <div className='mb-3 flex items-center text-sm text-gray-600'>
             <ClockCircleOutlined className='mr-2' />
-            Lần làm mới cuối cùng: {lastRefreshTime}
+            {t('refreshModal.lastRefreshTime')}: {lastRefreshTime}
           </div>
           <div className='space-y-2 text-sm'>
             <div className='flex items-start'>
               <ArrowUpOutlined className='mr-2 mt-1 text-green-500' />
-              <span>Bài đăng sẽ được hiển thị lên đầu trang chủ</span>
+              <span>{t('refreshModal.highlightOnHomepage')}</span>
             </div>
             <div className='flex items-start'>
               <ArrowUpOutlined className='mr-2 mt-1 text-green-500' />
-              <span>Tăng khả năng tiếp cận với người dùng mới</span>
+              <span>{t('refreshModal.increaseVisibility')}</span>
             </div>
           </div>
         </div>
@@ -70,22 +73,22 @@ function RefreshConfirmationModal({
           <Tooltip
             title={
               <ul className='m-0 list-inside list-disc p-0'>
-                <li>Bài đăng sẽ được hiển thị lên đầu trang chủ</li>
-                <li>Không thể hủy bỏ sau khi xác nhận làm mới</li>
-                <li>Làm mới bài đăng sẽ tốn một lượt làm mới, vui lòng kiểm tra trong trang 'thông tin cá nhân'</li>
+                <li>{t('refreshModal.policyHighlight1')}</li>
+                <li>{t('refreshModal.policyHighlight2')}</li>
+                <li>{t('refreshModal.policyHighlight3')}</li>
               </ul>
             }
           >
-            <span className='cursor-help underline'>Lưu ý về chính sách làm mới</span>
+            <span className='cursor-help underline'>{t('refreshModal.policyNote')}</span>
           </Tooltip>
         </div>
 
         <div className='flex justify-end space-x-4'>
           <Button disabled={isLoading} onClick={onCancel}>
-            Hủy
+            {t('refreshModal.cancel')}
           </Button>
           <Button loading={isLoading} type='primary' onClick={onConfirm} className='bg-blue-500 hover:bg-blue-600'>
-            Xác nhận làm mới
+            {t('refreshModal.confirm')}
           </Button>
         </div>
       </div>
