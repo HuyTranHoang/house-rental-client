@@ -12,6 +12,7 @@ import { SendOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-de
 import { useMutation } from '@tanstack/react-query'
 import { Button, Card, Col, Flex, Form, Row, Space, Steps } from 'antd'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import './post-property.css'
 
@@ -47,38 +48,40 @@ export interface PostPropertyFormData {
   [key: string]: string | string[] | Image[] | Image
 }
 
-const stepItems = [
-  {
-    title: 'Loại bất động sản',
-    description: 'Chọn loại bất động sản bạn muốn đăng.'
-  },
-  {
-    title: 'Vị trí đăng',
-    description: 'Thông tin vị trí bất động sản.'
-  },
-  {
-    title: 'Thông tin chi tiết',
-    description: 'Giá, tiện ích, mô tả chi tiết.'
-  },
-  {
-    title: 'Tiêu đề & mô tả',
-    description: 'Tiêu đề, mô tả bất động sản.'
-  },
-  {
-    title: 'Hình ảnh',
-    description: 'Thêm hình ảnh bất động sản.'
-  },
-  {
-    title: 'Xác nhận',
-    description: 'Xem lại thông tin trước khi đăng.'
-  }
-]
-
 export default function PostProperty() {
   const currentUser = useAuthStore((state) => state.user)
   const [current, setCurrent] = useState(0)
   const [form] = Form.useForm<PostPropertyFormData>()
   const [formData, setFormData] = useState<PostPropertyFormData>({} as PostPropertyFormData)
+
+  const { t } = useTranslation('postProperty')
+
+  const stepItems = [
+    {
+      title: t('steps.propertyType.title'),
+      description: t('steps.propertyType.description')
+    },
+    {
+      title: t('steps.location.title'),
+      description: t('steps.location.description')
+    },
+    {
+      title: t('steps.details.title'),
+      description: t('steps.details.description')
+    },
+    {
+      title: t('steps.titleDescription.title'),
+      description: t('steps.titleDescription.description')
+    },
+    {
+      title: t('steps.images.title'),
+      description: t('steps.images.description')
+    },
+    {
+      title: t('steps.confirmation.title'),
+      description: t('steps.confirmation.description')
+    }
+  ]
 
   const cartTitle = current > stepItems.length ? null : 'Đăng tin bất động sản'
 
@@ -93,7 +96,7 @@ export default function PostProperty() {
     },
     onError: (error) => {
       console.error('Error posting property:', error)
-      toast.error('Có lỗi xảy ra khi đăng tin, vui lòng thử lại sau.')
+      toast.error(t('toast.error.message'))
     }
   })
 
@@ -109,7 +112,7 @@ export default function PostProperty() {
       }
 
       if (current === 4 && !values.thumbnailImage) {
-        toast.error('Vui lòng chọn ảnh bìa cho bài đăng')
+        toast.error(t('form.thumbmailRequired'))
         return
       }
 
@@ -190,13 +193,8 @@ export default function PostProperty() {
                   <Flex className='mt-auto items-center pt-8'>
                     {current <= stepItems.length && (
                       <Space wrap style={{ width: '100%' }}>
-                        <Button
-                          onClick={handlePrev}
-                          icon={<StepBackwardOutlined />}
-                          danger
-                          disabled={current === 0}
-                        >
-                          Quay lại
+                        <Button onClick={handlePrev} icon={<StepBackwardOutlined />} danger disabled={current === 0}>
+                          {t('button.back')}
                         </Button>
                         <Button
                           onClick={handleNext}
@@ -205,7 +203,7 @@ export default function PostProperty() {
                           type='primary'
                           disabled={current === stepItems.length - 1}
                         >
-                          Tiếp tục
+                          {t('button.next')}
                         </Button>
 
                         {current === stepItems.length - 1 && (
@@ -216,7 +214,7 @@ export default function PostProperty() {
                             className='bg-green-500 hover:bg-green-400'
                             loading={postPropertyMutation.isPending}
                           >
-                            Đăng tin
+                            {t('button.submit')}
                           </Button>
                         )}
                       </Space>

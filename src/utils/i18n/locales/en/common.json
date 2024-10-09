@@ -134,8 +134,8 @@
     "urUseThisPackage": "You are using this package",
     "descriptionPackageStandardAndPremium": "Increase performance, user accessibility",
     "descriptionPackagePremium": "Enhanced customer support",
-    "postPriority": "Post Priority: ${priority} turns",
-    "refreshPost": "Refresh Post: ${refresh} turns",
+    "postPriority": "Post Priority: {{priority}} turns",
+    "refreshPost": "Refresh Post: {{refresh}} turns",
     "basicPackage": "All features of Basic package",
     "freePackage": "Search, post and more"
   }

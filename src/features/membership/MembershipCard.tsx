@@ -74,8 +74,16 @@ export function MembershipCard({ membership, isCurrentMembership, onUpgrade, isL
         <MembershipFeature text={name === 'Free' ? t('membership.freePackage') : t('membership.basicPackage')} />
         {name !== 'Free' && <MembershipFeature text={t('membership.descriptionPackageStandardAndPremium')} />}
         {name === 'Premium' && <MembershipFeature text={t('membership.descriptionPackagePremium')} />}
-        <MembershipFeature text={`Ưu tiên bài đăng: ${priority} lượt`} />
-        <MembershipFeature text={`Làm mới bài đăng: ${refresh} lượt`} />
+        <MembershipFeature
+          text={t('membership.postPriority', {
+            priority
+          })}
+        />
+        <MembershipFeature
+          text={t('membership.refreshPost', {
+            refresh
+          })}
+        />
       </ul>
     </Card>
   )

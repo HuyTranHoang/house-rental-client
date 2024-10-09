@@ -134,7 +134,7 @@
     "urUseThisPackage": "Bạn đang sử dụng gói này",
     "descriptionPackageStandardAndPremium": "Tăng hiệu suất, khả năng truy cập của người dùng",
     "descriptionPackagePremium": "Hỗ trợ khách hàng nâng cao",
-    "postPriority": "Ưu tiên bài đăng: ${priority} lượt",
-    "refreshPost": "Làm mới bài đăng: ${refresh} lượt"
+    "postPriority": "Ưu tiên bài đăng: {{priority}} lượt",
+    "refreshPost": "Làm mới bài đăng: {{refresh}} lượt"
   }
 }

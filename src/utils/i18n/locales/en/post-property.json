@@ -1,0 +1,106 @@
+{
+  "steps": {
+    "propertyType": {
+      "title": "Property Type",
+      "description": "Select the type of property you want to post."
+    },
+    "location": {
+      "title": "Location",
+      "description": "Property location information."
+    },
+    "details": {
+      "title": "Details",
+      "description": "Price, amenities, detailed description."
+    },
+    "titleDescription": {
+      "title": "Title & Description",
+      "description": "Title, property description."
+    },
+    "images": {
+      "title": "Images",
+      "description": "Add property images."
+    },
+    "confirmation": {
+      "title": "Confirmation",
+      "description": "Review information before posting."
+    }
+  },
+  "toast": {
+    "success": {
+      "message": "Property posted successfully.",
+      "setCoverImage": "Cover image set successfully."
+    },
+    "error": {
+      "message": "Failed to post property. Please try again later."
+    }
+  },
+  "form": {
+    "thumbmailRequired": "Please select a cover image for the post.",
+    "selectRoomType": "Select property type",
+    "roomTypeRequired": "Please select a property type",
+    "location": "Location",
+    "provinceCity": "Province/City",
+    "provinceCityRequired": "Please select a province/city",
+    "provinceCityPlaceholder": "Select province/city",
+    "district": "District",
+    "districtRequired": "Please select a district",
+    "districtPlaceholder": "Select district",
+    "address": "Address",
+    "addressRequired": "Please enter the address",
+    "addressPlaceholder": "Enter address",
+    "details": "Details information",
+    "numRooms": "Number of rooms",
+    "numRoomsRequired": "Please enter the number of rooms",
+    "numRoomsPattern": "Please enter a number for 'number of rooms'",
+    "numRomsPlaceholder": "Enter number of rooms",
+    "amenities": "Amenities",
+    "amenitiesRequired": "Please select at least one amenity",
+    "amenitiesPlaceholder": "Select amenities",
+    "area": "Area",
+    "areaRequired": "Please enter the property area",
+    "areaPattern": "Please enter a number for 'area'",
+    "areaMax": "Area must not exceed 6 digits",
+    "areaPlaceholder": "Enter area",
+    "price": "Price",
+    "priceRequired": "Please enter the rental price",
+    "pricePattern": "Please enter a number for 'price'",
+    "priceMax": "Price must not exceed 9 digits",
+    "pricePlaceholder": "Enter price",
+    "priceAddon": "₫ / month",
+    "title": "Title",
+    "titleRequired": "Please enter the title",
+    "titlePlaceholder": "Enter post title",
+    "description": "Description",
+    "descriptionRequired": "Please enter a description",
+    "descriptionMin": "Description must contain at least 50 characters",
+    "cover": "Cover image",
+    "currentCover": "Current cover image",
+    "setCover": "Set cover image",
+    "propertyImage": "Property images",
+    "propertyImageRequired": "Please select at least one property image",
+    "propertyImageMax": "Cannot select more than 10 property images",
+    "uploadImage": "Upload image",
+    "note": "You can upload up to 10 images. Each image must not exceed 2MB.",
+    "noteCover": "*The cover image is the image that will be displayed in the property list."
+  },
+  "overview": {
+    "reviewPropertyInfo": "Review Property Information",
+    "title": "Title",
+    "description": "Description",
+    "address": "Address",
+    "price": "Price",
+    "area": "Area",
+    "numRooms": "Number of Rooms",
+    "city": "City",
+    "district": "District",
+    "roomType": "Room Type",
+    "amenities": "Amenities",
+    "images": "Images",
+    "propertyImage": "Property Image"
+  },
+  "button": {
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit"
+  }
+}
