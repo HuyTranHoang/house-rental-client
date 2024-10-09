@@ -1,0 +1,50 @@
+{
+  "title": "Recharge",
+  "amount": "Amount",
+  "amountPlaceholder": "Enter amount",
+  "amountRequired": "Amount is required",
+  "amountSelectRequired": "Please select the amount you want to recharge",
+  "custom": "Custom",
+  "customAmount": "Custom amount (VND)",
+  "recharge": "Recharge",
+  "redirecting": "Redirecting to payment gateway...",
+  "rechargeSuccess": "Recharge successful!",
+  "rechargeFailed": "Recharge failed!",
+  "transactionFailed": "Your payment was not successful.",
+  "rechargeAmount": "Recharge amount",
+  "rechargeTransaction": "Transaction ID",
+  "rechargeDate": "Recharge date",
+  "transactionHistory": "Transaction history",
+  "retry": "Retry",
+  "continue": "Continue recharge",
+  "selectedAmount": "Selected amount",
+  "afterRecharge": "After recharge",
+  "accountInfo": {
+    "accountBalance": "Account balance",
+    "present": "Present",
+    "note": "Note",
+    "min": "Minimum recharge amount is 50,000 VND"
+  },
+  "paymentSuccess": {
+    "paymentSuccess": "Payment Successful!",
+    "thankYou": "Thank you for your payment. Below are your transaction details.",
+    "transactionId": "Transaction ID",
+    "amount": "Amount",
+    "transactionDate": "Transaction Date",
+    "paymentMethod": "Payment Method",
+    "transactionDescription": "Transaction Description",
+    "status": "Status",
+    "contactSupport": "If you have any questions, please contact our support team."
+  },
+  "paymentFailure": {
+    "paymentFailure": "Payment Failed!",
+    "sorry": "Sorry, your payment was not successful.",
+    "transactionId": "Transaction ID",
+    "amount": "Amount",
+    "transactionDate": "Transaction Date",
+    "paymentMethod": "Payment Method",
+    "transactionDescription": "Transaction Description",
+    "status": "Status",
+    "contactSupport": "If you have any questions, please contact our support team."
+  }
+}

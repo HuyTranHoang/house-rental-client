@@ -23,9 +23,7 @@
     "updateAvatarSuccess": "Avatar updated successfully!",
     "updateAvatarFailed": "Failed to update avatar!",
     "changePasswordSuccess": "Changed password successfully!",
-    "changePasswordFailed": "Changed password failed!",
-    "insufficientBalance": "Insufficient balance to upgrade membership package!",
-    "upgradePackageSuccess": "Membership upgrade successful!"
+    "changePasswordFailed": "Changed password failed!"
   },
   "personalInfo": {
     "editPersonalInfo": "Edit Personal Information",
@@ -77,34 +75,6 @@
     "favorite": "Add to favorite",
     "unfavorite": "Remove from favorite"
   },
-  "recharge": {
-    "title": "Recharge",
-    "amount": "Amount",
-    "amountPlaceholder": "Enter amount",
-    "amountRequired": "Amount is required",
-    "amountSelectRequired": "Please select the amount you want to recharge",
-    "custom": "Custom",
-    "customAmount": "Custom amount (VND)",
-    "recharge": "Recharge",
-    "redirecting": "Redirecting to payment gateway...",
-    "rechargeSuccess": "Recharge successful!",
-    "rechargeFailed": "Recharge failed!",
-    "transactionFailed": "Your payment was not successful.",
-    "rechargeAmount": "Recharge amount",
-    "rechargeTransaction": "Transaction ID",
-    "rechargeDate": "Recharge date",
-    "transactionHistory": "Transaction history",
-    "retry": "Retry",
-    "continue": "Continue recharge",
-    "selectedAmount": "Selected amount",
-    "afterRecharge": "After recharge",
-    "accountInfo": {
-      "accountBalance": "Account balance",
-      "present": "Present",
-      "note": "Note",
-      "min": "Minimum recharge amount is 50,000 VND"
-    }
-  },
   "changePassword": {
     "changePassword": "Change password",
     "oldPassword": "Old password",
@@ -116,27 +86,5 @@
     "requiredOldPassword": "Please enter your old password!",
     "requiredNewPassword": "Please enter your new password!",
     "requiredReEnterNewPassword": "Please enter 'Re-enter new password'!"
-  },
-  "membership": {
-    "membershipPackage": "Membership Package",
-    "priorityPosting": "Priority posting",
-    "exclusiveDiscount": "Exclusive discount",
-    "24/7Support": "24/7 support",
-    "comfirmUpgrade": "Comfirm update",
-    "comfirmUpgradePackage": "Are you sure you want to upgrade to ",
-    "descriptionPackage": "Upgrade your experience with unique perks",
-    "purchasePackage": "Purchase membership package",
-    "free": "Free",
-    "standard": "Standard",
-    "premium": "Premium",
-    "extend": "Extend",
-    "upgrade": "Upgrade",
-    "urUseThisPackage": "You are using this package",
-    "descriptionPackageStandardAndPremium": "Increase performance, user accessibility",
-    "descriptionPackagePremium": "Enhanced customer support",
-    "postPriority": "Post Priority: {{priority}} turns",
-    "refreshPost": "Refresh Post: {{refresh}} turns",
-    "basicPackage": "All features of Basic package",
-    "freePackage": "Search, post and more"
   }
 }

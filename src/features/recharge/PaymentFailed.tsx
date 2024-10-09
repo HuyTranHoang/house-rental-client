@@ -3,6 +3,7 @@ import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { useQuery } from '@tanstack/react-query'
 import { Divider, Skeleton } from 'antd'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Item = ({ label, value }: { label: string; value: string }) => (
   <div className='sm:col-span-1'>
@@ -12,6 +13,7 @@ const Item = ({ label, value }: { label: string; value: string }) => (
 )
 
 const PaymentFailure = () => {
+  const { t } = useTranslation('recharge')
   const location = useLocation()
   const query = new URLSearchParams(location.search)
   const transactionId = query.get('vnp_TxnRef')
@@ -39,27 +41,27 @@ const PaymentFailure = () => {
           <div className='mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md'>
             <div className='px-4 py-5 sm:p-6'>
               <h1 className='font-inter bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-center text-3xl font-extrabold leading-9 text-transparent'>
-                Thanh toán thất bại!
+                {t('paymentFailure.paymentFailure')}
               </h1>
-              <div className='mt-5 text-center text-gray-600'>Rất tiếc, thanh toán của bạn không thành công.</div>
+              <div className='mt-5 text-center text-gray-600'>{t('paymentFailure.sorry')}</div>
               <Divider />
               <dl className='grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-2'>
-                <Item label='Mã giao dịch' value={data.transactionId || 'N/A'} />
-                <Item label='Số tiền' value={formatCurrency(data.amount)} />
-                <Item label='Ngày giao dịch' value={new Date(data!.transactionDate).toLocaleString()} />
-                <Item label='Phương thức' value='VNPAY' />
+                <Item label={t('paymentFailure.transactionId')} value={data.transactionId || 'N/A'} />
+                <Item label={t('paymentFailure.amount')} value={formatCurrency(data.amount)} />
+                <Item label={t('paymentFailure.transactionDate')} value={new Date(data!.transactionDate).toLocaleString()} />
+                <Item label={t('paymentFailure.paymentMethod')} value='VNPAY' />
                 <div className='sm:col-span-2'>
-                  <dt className='text-sm font-medium text-gray-500'>Nội dung giao dịch</dt>
+                  <dt className='text-sm font-medium text-gray-500'>{t('paymentFailure.transactionDescription')}</dt>
                   <dd className='mt-1 text-sm text-gray-900'>{data.description}</dd>
                 </div>
                 <div className='sm:col-span-2'>
-                  <dt className='text-sm font-medium text-gray-500'>Trạng thái</dt>
+                  <dt className='text-sm font-medium text-gray-500'>{t('paymentFailure.status')}</dt>
                   <dd className='mt-1 text-sm font-semibold text-red-600'>{data.status}</dd>
                 </div>
               </dl>
             </div>
             <div className='bg-gray-50 px-4 py-4 text-center text-sm text-gray-500 sm:px-6'>
-              Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với bộ phận hỗ trợ của chúng tôi.
+              {t('paymentFailure.contactSupport')}
             </div>
           </div>
         </div>

@@ -20,7 +20,7 @@ export function MemberFee() {
   const { membershipData, membershipIsLoading } = useMemberships()
   const [confirmModal, setConfirmModal] = useState(false)
   const [selectedMembership, setSelectedMembership] = useState<Membership | null>(null)
-  const { t } = useTranslation()
+  const { t } = useTranslation('membership')
 
   const { mutate: upgradeMembership, isPending: upgradeMembershipPending } = useUpdateUserMembership()
 
@@ -62,7 +62,7 @@ export function MemberFee() {
       createTransactionWithDrawal({
         amount: selectedMembership.price,
         type: 'withdrawal',
-        description: t('membership.purchasePackage')
+        description: t('purchasePackage')
       })
       setConfirmModal(false)
     }
@@ -73,21 +73,21 @@ export function MemberFee() {
       <section className='mx-auto'>
         <div className='mb-16 text-center'>
           <h1 className='font-inter mb-6 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 bg-clip-text text-4xl font-bold text-transparent md:text-5xl'>
-            {t('membership.membershipPackage')}
+            {t('membershipPackage')}
           </h1>
-          <p className='mb-8 p-2 text-xl text-gray-600'>{t('membership.descriptionPackage')}</p>
+          <p className='mb-8 p-2 text-xl text-gray-600'>{t('descriptionPackage')}</p>
           <div className='mb-12 flex flex-wrap justify-center gap-6'>
             <div className='space-x-1'>
               <CheckOutlined className='text-green-500' />
-              <span>{t('membership.priorityPosting')}</span>
+              <span>{t('priorityPosting')}</span>
             </div>
             <div className='space-x-1'>
               <CheckOutlined className='text-green-500' />
-              <span>{t('membership.exclusiveDiscount')}</span>
+              <span>{t('exclusiveDiscount')}</span>
             </div>
             <div className='space-x-1'>
               <CheckOutlined className='text-green-500' />
-              <span>{t('membership.24/7Support')}</span>
+              <span>{t('24/7Support')}</span>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@ export function MemberFee() {
       </section>
 
       <Modal
-        title={t('membership.comfirmUpgrade')}
+        title={t('comfirmUpgrade')}
         open={confirmModal}
         onOk={handleOk}
         onCancel={() => setConfirmModal(false)}
@@ -127,7 +127,7 @@ export function MemberFee() {
         }}
       >
         <p>
-          {t('membership.comfirmUpgradePackage')} {selectedMembership?.name}?
+          {t('comfirmUpgradePackage')} {selectedMembership?.name}?
         </p>
       </Modal>
     </Row>

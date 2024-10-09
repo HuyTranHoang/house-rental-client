@@ -1,0 +1,26 @@
+{
+  "toast": {
+    "insufficientBalance": "Số dư không đủ để nâng cấp gói!",
+    "upgradePackageSuccess": "Nâng cấp gói thành công!"
+  },
+  "membershipPackage": "Gói thành viên",
+  "priorityPosting": "Ưu tiên đăng tin",
+  "exclusiveDiscount": "Giảm giá độc quyền",
+  "24/7Support": "Hỗ trợ 24/7",
+  "comfirmUpgrade": "Xác nhận nâng cấp",
+  "comfirmUpgradePackage": "Bạn có chắc chắn muốn nâng cấp lên gói ",
+  "descriptionPackage": "Nâng cấp trải nghiệm của bạn với các đặc quyền độc đáo",
+  "purchasePackage": "Mua gói thành viên",
+  "free": "Miễn phí",
+  "standard": "Tiêu chuẩn",
+  "premium": "Cao cấp",
+  "extend": "Gia hạn",
+  "upgrade": "Nâng cấp",
+  "urUseThisPackage": "Bạn đang sử dụng gói này",
+  "descriptionPackageStandardAndPremium": "Tăng hiệu suất, khả năng truy cập của người dùng",
+  "descriptionPackagePremium": "Hỗ trợ khách hàng nâng cao",
+  "postPriority": "Ưu tiên bài đăng: {{priority}} lượt",
+  "refreshPost": "Làm mới bài đăng: {{refresh}} lượt",
+  "basicPackage": "Tất cả các tính năng của gói cơ bản",
+  "freePackage": "Tìm kiếm, đăng tin và nhiều hơn nữa"
+}

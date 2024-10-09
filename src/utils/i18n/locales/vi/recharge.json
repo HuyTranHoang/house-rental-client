@@ -1,0 +1,50 @@
+{
+  "title": "Nạp tiền",
+  "amount": "Số tiền",
+  "amountPlaceholder": "Nhập số tiền",
+  "amountRequired": "Vui lòng nhập số tiền bạn muốn nạp",
+  "amountSelectRequired": "Vui lòng chọn số tiền bạn muốn nạp",
+  "custom": "Tùy chọn",
+  "customAmount": "Số tiền tùy chọn (VND)",
+  "recharge": "Thanh toán",
+  "redirecting": "Đang chuyển hướng đến cổng thanh toán...",
+  "rechargeSuccess": "Nạp tiền thành công!",
+  "rechargeFailed": "Nạp tiền thất bại!",
+  "transactionFailed": "Thanh toán của bạn không thành công.",
+  "rechargeAmount": "Số tiền đã nạp",
+  "rechargeTransaction": "Mã giao dịch",
+  "rechargeDate": "Ngày nạp",
+  "transactionHistory": "Lịch sử giao dịch",
+  "retry": "Thử lại",
+  "continue": "Nạp tiếp",
+  "selectedAmount": "Số tiền đã chọn",
+  "afterRecharge": "Sau khi nạp",
+  "accountInfo": {
+    "accountBalance": "Số dư tài khoản",
+    "present": "Hiện tại",
+    "note": "Lưu ý",
+    "min": "Số tiền nạp tối thiểu là 50,000 VND"
+  },
+  "paymentSuccess": {
+    "paymentSuccess": "Thanh toán thành công!",
+    "thankYou": "Cảm ơn bạn đã thanh toán. Dưới đây là chi tiết giao dịch của bạn.",
+    "transactionId": "Mã giao dịch",
+    "amount": "Số tiền",
+    "transactionDate": "Ngày giao dịch",
+    "paymentMethod": "Phương thức",
+    "transactionDescription": "Nội dung giao dịch",
+    "status": "Trạng thái",
+    "contactSupport": "Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với bộ phận hỗ trợ của chúng tôi."
+  },
+  "paymentFailure": {
+    "paymentFailure": "Thanh toán thất bại!",
+    "sorry": "Rất tiếc, thanh toán của bạn không thành công.",
+    "transactionId": "Mã giao dịch",
+    "amount": "Số tiền",
+    "transactionDate": "Ngày giao dịch",
+    "paymentMethod": "Phương thức",
+    "transactionDescription": "Nội dung giao dịch",
+    "status": "Trạng thái",
+    "contactSupport": "Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với bộ phận hỗ trợ của chúng tôi."
+  }
+}

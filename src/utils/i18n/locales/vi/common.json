@@ -23,9 +23,7 @@
     "updateAvatarSuccess": "Cập nhật ảnh đại diện thành công!",
     "updateAvatarFailed": "Cập nhật ảnh đại diện thất bại!",
     "changePasswordSuccess": "Đổi mật khẩu thành công!",
-    "changePasswordFailed": "Đổi mật khẩu thất bại!",
-    "insufficientBalance": "Số dư không đủ để nâng cấp gói!",
-    "upgradePackageSuccess": "Nâng cấp gói thành công!"
+    "changePasswordFailed": "Đổi mật khẩu thất bại!"
   },
   "personalInfo": {
     "editPersonalInfo": "Chỉnh sửa thông tin cá nhân",
@@ -77,34 +75,6 @@
     "favorite": "Thêm vào danh sách yêu thích",
     "unfavorite": "Bỏ khỏi danh sách yêu thích"
   },
-  "recharge": {
-    "title": "Nạp tiền",
-    "amount": "Số tiền",
-    "amountPlaceholder": "Nhập số tiền",
-    "amountRequired": "Vui lòng nhập số tiền bạn muốn nạp",
-    "amountSelectRequired": "Vui lòng chọn số tiền bạn muốn nạp",
-    "custom": "Tùy chọn",
-    "customAmount": "Số tiền tùy chọn (VND)",
-    "recharge": "Thanh toán",
-    "redirecting": "Đang chuyển hướng đến cổng thanh toán...",
-    "rechargeSuccess": "Nạp tiền thành công!",
-    "rechargeFailed": "Nạp tiền thất bại!",
-    "transactionFailed": "Thanh toán của bạn không thành công.",
-    "rechargeAmount": "Số tiền đã nạp",
-    "rechargeTransaction": "Mã giao dịch",
-    "rechargeDate": "Ngày nạp",
-    "transactionHistory": "Lịch sử giao dịch",
-    "retry": "Thử lại",
-    "continue": "Nạp tiếp",
-    "selectedAmount": "Số tiền đã chọn",
-    "afterRecharge": "Sau khi nạp",
-    "accountInfo": {
-      "accountBalance": "Số dư tài khoản",
-      "present": "Hiện tại",
-      "note": "Lưu ý",
-      "min": "Số tiền nạp tối thiểu là 50,000 VND"
-    }
-  },
   "changePassword": {
     "changePassword": "Đổi mật khẩu",
     "oldPassword": "Mật khẩu hiện tại",
@@ -116,25 +86,5 @@
     "requiredOldPassword": "Vui lòng nhập mật khẩu cũ!",
     "requiredNewPassword": "Vui lòng nhập mật khẩu mới!",
     "requiredReEnterNewPassword": "Vui lòng nhập 'Nhập lại mật khẩu mới'!"
-  },
-  "membership": {
-    "membershipPackage": "Gói thành viên",
-    "priorityPosting": "Ưu tiên đăng tin",
-    "exclusiveDiscount": "Giảm giá độc quyền",
-    "24/7Support": "Hỗ trợ 24/7",
-    "comfirmUpgrade": "Xác nhận nâng cấp",
-    "comfirmUpgradePackage": "Bạn có chắc chắn muốn nâng cấp lên gói ",
-    "descriptionPackage": "Nâng cấp trải nghiệm của bạn với các đặc quyền độc đáo",
-    "purchasePackage": "Mua gói thành viên",
-    "free": "Miễn phí",
-    "standard": "Tiêu chuẩn",
-    "premium": "Cao cấp",
-    "extend": "Gia hạn",
-    "upgrade": "Nâng cấp",
-    "urUseThisPackage": "Bạn đang sử dụng gói này",
-    "descriptionPackageStandardAndPremium": "Tăng hiệu suất, khả năng truy cập của người dùng",
-    "descriptionPackagePremium": "Hỗ trợ khách hàng nâng cao",
-    "postPriority": "Ưu tiên bài đăng: {{priority}} lượt",
-    "refreshPost": "Làm mới bài đăng: {{refresh}} lượt"
   }
 }
