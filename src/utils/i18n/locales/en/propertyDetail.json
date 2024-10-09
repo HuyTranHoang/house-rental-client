@@ -1,63 +1,65 @@
 {
-    "record" : {
-        "SCAM": "Bình luận này có dấu hiệu lừa đảo!",
-        "INAPPROPRIATE_CONTENT": "Bình luận này có nội dung không phù hợp!",
-        "DUPLICATE": "Bình luận này bị trùng lặp!",
-        "MISINFORMATION": "Bình luận này có thông tin sai sự thật!",
-        "OTHER": ""
-    },
-    "form" : {
-        "REPORT" : "Báo vi phạm",
-        "COMMENT_REPORT" : "Báo cáo bình luận",
-        "REPORT_A_VIOLATION" : "Báo cáo vi phạm",
-        "TYPE_VIOLATION" : "Loại vi phạm",
-        "REQUIRED_VIOLATION" :"Vui lòng chọn loại vi phạm",
-        "SELECT_VIOLATION" : "Chọn loại vi phạm muốn báo cáo",
-        "SCAM" : "Lừa đảo",
-        "INAPPROPRIATE_CONTENT" :"Nội dung không phù hợp",
-        "DUPLICATE" : "Nội dung trùng lặp",
-        "MISINFORMATION" : "Nội dung sai sự thật",
-        "OTHER" : "Khác",
-        "REASON" : "Lý do",
-        "REASON_REQUIRED" : "Vui lòng nhập lý do",
-        "CONTENT_REASON" : "Nhập nội dung vi phạm của bình luận"
-    },
-    "property" : {
-        "AREA" : "Diện tích",
-        "NUMROOM" : "Số phòng ngủ",
-        "CREATEAT" : "Ngày đăng",
-        "AMENITY" : "Tiện ích",
-        "ABOUT_LIST" :"Về danh sách",
-        "NEXT_PROPERTY" : "Tin tiếp",
-        "MAIN_INFO" : "Thông tin chính",
-        "INTRODUCE" : "Giới thiệu"
-    },
-    "component" : {
-        "COMMENT_INFO" : "Bình luận",
-        "DELETE_COMMENT" : "Xóa bình luận",
-        "NOTIFI_COMMENT" : "Chưa có bình luận nào cho bất động sản này",
-        "COMMENT" : "Để lại bình luận",
-        "COMMENT_REQUIRED" : "Vui lòng nhạp bình luận của bạn",
-        "COMMENT_MIN" : "Bình luận phải có ít nhất 10 ký tự",
-        "COMMENT_MAX" : "Bình luận không được vượt quá 500 ký tự",
-        "COMMENT_ABOUT" : "Bình luận của bạn về bất động sản này",
-        "COMMENT_SEND" : "Gửi bình luận",
-        "CONFIRM_DELETE" : "Xác nhận xóa",
-        "BACK" : "Quay lại",
-        "CONFIRM_ACCESS_DELETE" : "Bạn có chắc chắn muốn xóa bình luận của ",
-        "WARRING_NOTIFI" : "Lưu ý hành động này không thể hoàn tác."
-    },
-    "favorite" : {
-        "SAVE" : "Lưu tin"
-    },
-    "ownerDetail" : {
-        "PARTCITIPATED" : "Đã tham gia",
-        "PHONE_COPPY" : "Sao chép số điện thoại",
-        "SHOW_NUMBER" : "Bấm để hiện số",
-        "SEND_MESSAGE" : "Gửi tin nhắn"
-    },
-    "related" : {
-        "SAME_PROPERTY" : "Bất động sản tương tự",
-        "ROOM" : "Phòng ngủ"
-    }
+  "record": {
+    "scam": "This comment is a scam!",
+    "inappropriateContent": "This comment contains inappropriate content!",
+    "duplicate": "This comment is duplicated!",
+    "misinformation": "This comment contains false information!",
+    "other": ""
+  },
+  "form": {
+    "report": "Report",
+    "commentReport": "Report comment",
+    "typeViolation": "Type of violation",
+    "requiredViolation": "Please select the type of violation",
+    "selectViolation": "Select the type of violation to report",
+    "scam": "Scam",
+    "inappropriateContent": "Inappropriate content",
+    "misinformation": "Misinformation content",
+    "duplicate": "Duplicate content",
+    "other": "Other",
+    "reason": "Reason",
+    "reasonRequired": "Reason required",
+    "contentReason": "Enter the offending content of the comment",
+    "reportAViolation": "Report a violation"
+  },
+  "property": {
+    "area": "Area",
+    "numRooms": "Number of rooms",
+    "createAt": "Created at",
+    "amenities": "Amenities",
+    "aboutList": "About list",
+    "nextProperty": "Next property",
+    "mainInfo": "Main information",
+    "introduce": "Introduce"
+  },
+  "component": {
+    "commentInfo": "Comment Information",
+    "of": "of",
+    "comments": "comments",
+    "noComments": "No comments",
+    "comment": "Comment",
+    "commentRequired": "Comment is required",
+    "commentMin": "Comment must be at least 10 characters",
+    "commentMax": "Comment must be at most 500 characters",
+    "commentPlaceholder": "Write your comment here...",
+    "commentSend": "Send",
+    "deleteComment": "Delete Comment",
+    "confirmDelete": "Confirm Delete",
+    "confirmAccessDelete": "Are you sure you want to delete the comment from",
+    "warningNotification": "This action cannot be undone",
+    "back": "Back"
+  },
+  "favorite": {
+    "save": "Save property"
+  },
+  "ownerDetail": {
+    "participated": "Participated",
+    "phoneCopy": "Copy phone number",
+    "showNumber": "Click to show number",
+    "sendMessage": "Send message"
+  },
+  "related": {
+    "title": "Similar properties",
+    "room": "Room"
+  }
 }

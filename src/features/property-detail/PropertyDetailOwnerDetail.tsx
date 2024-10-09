@@ -60,7 +60,11 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
                 <CheckCircleFilled className='text-blue-400' />
               </Space>
             }
-            description={<span>{t('propertyDetail:ownerDetail.PARTCITIPATED')} {formatJoinedDate(userData.createdAt)}</span>}
+            description={
+              <span>
+                {t('propertyDetail:ownerDetail.participated')} {formatJoinedDate(userData.createdAt)}
+              </span>
+            }
           />
           <Divider className='m-3' />
 
@@ -77,19 +81,19 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
                   isCopied ? (
                     <CheckOutlined />
                   ) : (
-                    <Tooltip title={t('propertyDetail:ownerDetail.PHONE_COPPY')}>
+                    <Tooltip title={t('propertyDetail:ownerDetail.phoneCopy')}>
                       <CopyOutlined />
                     </Tooltip>
                   )
                 ) : (
-                  t('propertyDetail:ownerDetail.SHOW_NUMBER')
+                  t('propertyDetail:ownerDetail.showNumber')
                 )}
               </b>
             </Flex>
           </Button>
 
           <Button block icon={<MailOutlined />} size='large' type='primary'>
-            {t('propertyDetail:ownerDetail.SEND_MESSAGE')}
+            {t('propertyDetail:ownerDetail.sendMessage')}
           </Button>
         </>
       )}

@@ -39,7 +39,7 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
   return (
     <>
       <Typography.Title level={4} className='mb-4 mt-8'>
-        {t('propertyDetail:related.SAME_PROPERTY')}
+        {t('propertyDetail:related.title')}
       </Typography.Title>
       <Row gutter={16} className='mb-12'>
         {relatedPropertiesData &&
@@ -75,7 +75,7 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
                         </Typography.Paragraph>
                         <Space className='mt-2'>
                           <span>{property.area} m²</span>
-                          <span>{property.numRooms} {t('propertyDetail:related.ROOM')}</span>
+                          <span>{property.numRooms} {t('propertyDetail:related.room')}</span>
                         </Space>
                       </>
                     }

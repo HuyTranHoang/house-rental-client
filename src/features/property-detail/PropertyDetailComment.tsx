@@ -5,8 +5,8 @@ import { formatDate } from '@/utils/formatDate'
 import { CalendarOutlined, CommentOutlined, DeleteOutlined, WarningOutlined } from '@ant-design/icons'
 import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Space, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
-import CommentReportButton from './CommentReportButton'
 import { useTranslation } from 'react-i18next'
+import CommentReportButton from './CommentReportButton'
 
 const { TextArea } = Input
 
@@ -48,7 +48,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
                   <CommentReportButton commentId={comment.id} />
 
                   {haveDeleteReviewPrivilege && (
-                    <Tooltip title={t('propertyDetail:component.DELETE_COMMENT')}>
+                    <Tooltip title={t('propertyDetail:component.deleteComment')}>
                       <Button
                         type='text'
                         danger
@@ -76,7 +76,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
   return (
     <>
       <Typography.Title level={4} className='mt-2'>
-        {t('propertyDetail:component.COMMENT_INFO')}
+        {t('propertyDetail:component.commentInfo')}
       </Typography.Title>
       {commentListData.length > 0 ? (
         <List
@@ -84,7 +84,8 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
             total: commentData?.pageInfo.totalElements,
             pageSize: pageSize,
             current: pageNumber,
-            showTotal: (total, range) => `${range[0]}-${range[1]} trong ${total} bình luận`,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} ${t('propertyDetail:component.of')} ${total} ${t('propertyDetail:component.comments')}`,
             onShowSizeChange: (_, size) => setPageSize(size),
             onChange: (page) => setPageNumber(page)
           }}
@@ -97,34 +98,34 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
           )}
         />
       ) : (
-        <Typography.Text type='secondary'>{t('propertyDetail:component.NOTIFI_COMMENT')}</Typography.Text>
+        <Typography.Text type='secondary'>{t('propertyDetail:component.noComments')}</Typography.Text>
       )}
 
       <Typography.Title level={5}>
-        {t('propertyDetail:component.COMMENT')} <CommentOutlined />
+        {t('propertyDetail:component.comment')} <CommentOutlined />
       </Typography.Title>
       <Form form={form} layout='vertical' name='feedbackForm' autoComplete='off' onFinish={onFinish}>
         <Form.Item<CommentFieldType>
           name='comment'
           validateTrigger={['onBlur']}
           rules={[
-            { required: true, message: t('propertyDetail:component.COMMENT_REQUIRED') },
+            { required: true, message: t('propertyDetail:component.commentRequired') },
             {
               min: 10,
-              message: t('propertyDetail:component.COMMENT_MIN')
+              message: t('propertyDetail:component.commentMin')
             },
             {
               max: 500,
-              message: t('propertyDetail:component.COMMENT_MAX')
+              message: t('propertyDetail:component.commentMax')
             }
           ]}
         >
-          <TextArea rows={4} placeholder={t('propertyDetail:component.COMMENT_ABOUT')} />
+          <TextArea rows={4} placeholder={t('propertyDetail:component.commentPlaceholder')} />
         </Form.Item>
 
         <Form.Item>
           <Button type='primary' htmlType='submit' loading={createCommentIsPending}>
-            {t('propertyDetail:component.COMMENT_SEND')}
+            {t('propertyDetail:component.commentSend')}
           </Button>
         </Form.Item>
       </Form>
@@ -137,7 +138,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
                 <WarningOutlined className='text-2xl text-red-600' />
               </div>
               <Typography.Title level={3} className='text-gray-600'>
-                {t('propertyDetail:component.CONFIRM_DELETE')}
+                {t('propertyDetail:component.confirmDelete')}
               </Typography.Title>
             </Flex>
           }
@@ -148,16 +149,17 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
             setcurrentComment(undefined)
           }}
           onCancel={() => setOpen(false)}
-          okText={t('propertyDetail:component.DELETE_COMMENT')}
-          cancelText={t('propertyDetail:component.BACK')}
+          okText={t('propertyDetail:component.deleteComment')}
+          cancelText={t('propertyDetail:component.back')}
           okButtonProps={{ className: 'bg-red-500 hover:bg-red-400 hover:border-red-600' }}
         >
           <Typography.Paragraph className='mb-1 mt-2'>
-            {t('propertyDetail:component.CONFIRM_ACCESS_DELETE')} <span className='font-semibold'>{currentComment.userName}</span>?
+            {t('propertyDetail:component.confirmAccessDelete')}{' '}
+            <span className='font-semibold'>{currentComment.userName}</span>?
           </Typography.Paragraph>
 
           <Typography.Paragraph className='mb-0 text-gray-500'>
-            {t('propertyDetail:component.WARRING_NOTIFI')}
+            {t('propertyDetail:component.warningNotification')}
           </Typography.Paragraph>
         </Modal>
       )}

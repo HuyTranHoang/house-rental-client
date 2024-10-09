@@ -46,9 +46,9 @@ function PropertyDetailFavoriteButton({ id, currentUser }: PropertyDetailFavorit
           }
         }}
         size='large'
-        className='mb-6 mt-3 w-full md:mb-0 md:w-32'
+        className='mb-6 mt-3 w-full md:mb-0 md:w-48'
       >
-        {t('propertyDetail:favorite.SAVE')}
+        {t('propertyDetail:favorite.save')}
       </Button>
     </ConfigProvider>
   )

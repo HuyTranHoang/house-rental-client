@@ -13,11 +13,11 @@ import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
 import { Button, Col, Descriptions, DescriptionsProps, Divider, Row, Skeleton, Space, Tag, Typography } from 'antd'
 import DOMPurify from 'dompurify'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailComment from './PropertyDetailComment.tsx'
-import { useTranslation } from 'react-i18next'
 
 function PropertyDetail() {
   const navigate = useNavigate()
@@ -38,22 +38,22 @@ function PropertyDetail() {
   const items: DescriptionsProps['items'] = [
     {
       key: 'area',
-      label: t('propertyDetail:property.AREA'),
+      label: t('propertyDetail:property.area'),
       children: <span>{propertyData?.area} m&sup2;</span>
     },
     {
       key: 'numRooms',
-      label: t('propertyDetail:property.NUMROOM'),
+      label: t('propertyDetail:property.numRooms'),
       children: propertyData?.numRooms
     },
     {
       key: 'createAt',
-      label: t('propertyDetail:property.CREATEAT'),
+      label: t('propertyDetail:property.createAt'),
       children: formatDate(propertyData?.createdAt)
     },
     {
       key: 'amenities',
-      label: t('propertyDetail:property.AMENITY'),
+      label: t('propertyDetail:property.amenities'),
       children: propertyData?.amenities.join(', '),
       span: 3
     }
@@ -73,14 +73,14 @@ function PropertyDetail() {
               onClick={() => navigate(ROUTER_NAMES.RENT_HOUSE)}
               className='group relative border-0 bg-white pl-4 pr-3 text-gray-500 transition-none hover:bg-slate-200 hover:text-gray-700'
             >
-              <span>{t('propertyDetail:property.ABOUT_LIST')}</span>
+              <span>{t('propertyDetail:property.aboutList')}</span>
               <span className='absolute left-0 top-0 h-0 w-0 -translate-x-full border-b-[12px] border-l-0 border-r-[11px] border-t-[11px] border-solid border-transparent border-r-white transition-none group-hover:border-r-slate-200' />
             </Button>
             <Button
               size='small'
               className='group relative border-0 bg-blue-400 pl-3 pr-4 text-white transition-none hover:bg-blue-500 hover:text-white'
             >
-              <span>{t('propertyDetail:property.NEXT_PROPERTY')}</span>
+              <span>{t('propertyDetail:property.nextProperty')}</span>
               <span className='absolute right-[2px] top-0 h-0 w-0 translate-x-full border-b-[12px] border-l-[11px] border-r-0 border-t-[11px] border-solid border-transparent border-l-blue-400 transition-none group-hover:border-l-blue-500' />
             </Button>
           </Space>
@@ -135,13 +135,13 @@ function PropertyDetail() {
                 {formatCurrency(propertyData.price)}
               </Typography.Title>
 
-              <Typography.Title level={4}>{t('propertyDetail:property.MAIN_INFO')}</Typography.Title>
+              <Typography.Title level={4}>{t('propertyDetail:property.mainInfo')}</Typography.Title>
 
               <Typography.Paragraph>
                 <Descriptions bordered items={items} />
               </Typography.Paragraph>
 
-              <Typography.Title level={4}>{t('propertyDetail:property.INTRODUCE')}</Typography.Title>
+              <Typography.Title level={4}>{t('propertyDetail:property.introduce')}</Typography.Title>
               <div dangerouslySetInnerHTML={{ __html: descriptionCleanHTML }} />
 
               <ReportButton propertyId={propertyData.id} />
