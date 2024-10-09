@@ -41,5 +41,69 @@
     "cancel": "Hủy",
     "confirm": "Xác nhận làm mới",
     "unknown": "Không xác định"
+  },
+  "propertyDetail": {
+    "roomType": "Loại phòng",
+    "city": "Thành phố",
+    "district": "Quận huyện",
+    "price": "Giá",
+    "location": "Địa chỉ",
+    "status": "Trạng thái",
+    "blocked": "Khóa",
+    "active": "Hoạt động",
+    "area": "Diện tích",
+    "numRooms": "Số phòng ngủ",
+    "createdAt": "Ngày đăng",
+    "amenities": "Tiện ích",
+    "description": "Mô tả",
+    "images": "Hình ảnh",
+    "title": "Chi tiết bài đăng",
+    "back": "Quay lại"
+  },
+  "table": {
+    "index": "#",
+    "propertyInfo": "Thông tin bất động sản",
+    "title": "Tiêu đề",
+    "price": "Giá",
+    "address": "Địa chỉ",
+    "status": "Trạng thái",
+    "blocked": "Đã khóa",
+    "active": "Hoạt động",
+    "hidden": "Đã ẩn",
+    "priority": "Đã ưu tiên",
+    "hiddenTooltip": "Bài đăng này không hiển thị trên trang chủ",
+    "priorityTooltip": "Bài đăng này được ưu tiên hiển thị trên trang chủ",
+    "timeInfo": "Thông tin thời gian",
+    "createdAt": "Ngày đăng",
+    "refreshedAt": "Làm mới lần cuối",
+    "actions": "Hành động",
+    "viewDetails": "Xem chi tiết",
+    "editPost": "Sửa bài đăng",
+    "toggleVisibility": "Chuyển đổi hiển thị",
+    "showPost": "Hiện bài đăng",
+    "hidePost": "Ẩn bài đăng",
+    "itemsPerPage": "/ trang",
+    "triggerDesc": "Sắp xếp giảm dần",
+    "triggerAsc": "Sắp xếp tăng dần",
+    "cancelSort": "Hủy sắp xếp",
+    "deletePost": "Xóa bài đăng",
+    "refreshPost": "Làm mới bài đăng",
+    "prioritizePost": "Ưu tiên bài đăng",
+    "toast": {
+      "success": {
+        "showPost": "Hiện bài đăng thành công",
+        "hidePost": "Ẩn bài đăng thành công",
+        "deletePost": "Xóa bài đăng thành công",
+        "refreshPost": "Làm mới bài đăng thành công",
+        "prioritizePost": "Ưu tiên bài đăng thành công"
+      },
+      "error": {
+        "showPost": "Hiện bài đăng thất bại",
+        "hidePost": "Ẩn bài đăng thất bại",
+        "deletePost": "Xóa bài đăng thất bại",
+        "refreshPost": "Làm mới bài đăng thất bại",
+        "prioritizePost": "Ưu tiên bài đăng thất bại"
+      }
+    }
   }
 }

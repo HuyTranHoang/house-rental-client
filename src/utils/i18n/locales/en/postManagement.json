@@ -41,5 +41,69 @@
     "cancel": "Cancel",
     "confirm": "Confirm Refresh",
     "unknown": "Unknown"
+  },
+  "propertyDetail": {
+    "roomType": "Room Type",
+    "city": "City",
+    "district": "District",
+    "price": "Price",
+    "location": "Location",
+    "status": "Status",
+    "blocked": "Blocked",
+    "active": "Active",
+    "area": "Area",
+    "numRooms": "Number of Rooms",
+    "createdAt": "Created At",
+    "amenities": "Amenities",
+    "description": "Description",
+    "images": "Images",
+    "title": "Post Details",
+    "back": "Go Back"
+  },
+  "table": {
+    "index": "#",
+    "propertyInfo": "Property Information",
+    "title": "Title",
+    "price": "Price",
+    "address": "Address",
+    "status": "Status",
+    "blocked": "Blocked",
+    "active": "Active",
+    "hidden": "Hidden",
+    "priority": "Priority",
+    "hiddenTooltip": "This post is not visible on the homepage",
+    "priorityTooltip": "This post is prioritized on the homepage",
+    "timeInfo": "Time Information",
+    "createdAt": "Created At",
+    "refreshedAt": "Last Refreshed",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "editPost": "Edit Post",
+    "toggleVisibility": "Toggle Visibility",
+    "showPost": "Show Post",
+    "hidePost": "Hide Post",
+    "itemsPerPage": "/ page",
+    "triggerDesc": "Sort descending",
+    "triggerAsc": "Sort ascending",
+    "cancelSort": "Cancel sort",
+    "deletePost": "Delete Post",
+    "refreshPost": "Refresh Post",
+    "prioritizePost": "Prioritize Post",
+    "toast": {
+      "success": {
+        "showPost": "Show Post Successfully",
+        "hidePost": "Hide Post Successfully",
+        "deletePost": "Delete Post Successfully",
+        "refreshPost": "Refresh Post Successfully",
+        "prioritizePost": "Prioritize Post Successfully"
+      },
+      "error": {
+        "showPost": "Show Post Failed",
+        "hidePost": "Hide Post Failed",
+        "deletePost": "Delete Post Failed",
+        "refreshPost": "Refresh Post Failed",
+        "prioritizePost": "Prioritize Post Failed"
+      }
+    }
   }
 }
