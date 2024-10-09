@@ -105,5 +105,53 @@
         "prioritizePost": "Prioritize Post Failed"
       }
     }
+  },
+  "editPropertyModal": {
+    "title": "Edit Post",
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter post title",
+      "titleRequired": "Please enter the post title",
+      "images": "Images",
+      "imagesCount": "({{count}}/10)",
+      "delete": "Delete",
+      "thumbnail": "Thumbnail",
+      "setThumbnail": "Set as thumbnail",
+      "uploadImages": "Upload Images",
+      "roomType": "Property Type",
+      "roomTypeRequired": "Please select a property type",
+      "city": "City",
+      "cityRequired": "Please select a city",
+      "district": "District",
+      "districtRequired": "Please select a district",
+      "location": "Specific Address",
+      "locationRequired": "Please enter a specific address",
+      "price": "Price",
+      "pricePlaceholder": "Enter rental price",
+      "priceRequired": "Please enter the price",
+      "pricePattern": "Please enter a number for 'price'",
+      "priceMax": "Price cannot exceed 9 digits",
+      "area": "Area",
+      "areaPlaceholder": "Enter property area",
+      "areaRequired": "Please enter the property area",
+      "areaPattern": "Please enter a number for 'area'",
+      "areaMax": "Area cannot exceed 6 digits",
+      "numRooms": "Number of Rooms",
+      "numRoomsPlaceholder": "Enter number of rooms",
+      "numRoomsRequired": "Please enter the number of rooms",
+      "numRoomsPattern": "Please enter a number for 'number of rooms'",
+      "amenities": "Amenities",
+      "amenitiesRequired": "Please select at least one amenity",
+      "description": "Description",
+      "descriptionRequired": "Please enter the post description",
+      "descriptionMin": "Description must contain at least 50 characters",
+      "back": "Back",
+      "update": "Update"
+    },
+    "toast": {
+      "updateSuccess": "Post updated successfully",
+      "updateError": "An error occurred while updating the post, please try again later",
+      "deleteThumbnailError": "Please select another image as the thumbnail before deleting this image"
+    }
   }
 }

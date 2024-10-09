@@ -105,5 +105,53 @@
         "prioritizePost": "Ưu tiên bài đăng thất bại"
       }
     }
+  },
+  "editPropertyModal": {
+    "title": "Sửa bài đăng",
+    "form": {
+      "title": "Tiêu đề",
+      "titlePlaceholder": "Nhập tiêu đề bài đăng",
+      "titleRequired": "Vui lòng nhập tiêu đề bài đăng",
+      "images": "Hình ảnh",
+      "imagesCount": "({{count}}/10)",
+      "delete": "Xóa",
+      "thumbnail": "Ảnh bìa",
+      "setThumbnail": "Đặt ảnh bìa",
+      "uploadImages": "Tải lên hình ảnh",
+      "roomType": "Loại bất động sản",
+      "roomTypeRequired": "Vui lòng chọn loại bất động sản",
+      "city": "Thành phố",
+      "cityRequired": "Vui lòng chọn thành phố",
+      "district": "Quận/Huyện",
+      "districtRequired": "Vui lòng chọn quận/huyện",
+      "location": "Địa chỉ cụ thể",
+      "locationRequired": "Vui lòng nhập địa chỉ cụ thể",
+      "price": "Giá",
+      "pricePlaceholder": "Nhập giá cho thuê",
+      "priceRequired": "Vui lòng nhập giá",
+      "pricePattern": "Vui lòng nhập số cho 'giá'",
+      "priceMax": "Giá không được vượt quá 9 chữ số",
+      "area": "Diện tích",
+      "areaPlaceholder": "Nhập diện tích bất động sản",
+      "areaRequired": "Vui lòng nhập diện tích bất động sản",
+      "areaPattern": "Vui lòng nhập số cho 'diện tích'",
+      "areaMax": "Diện tích không được vượt quá 6 chữ số",
+      "numRooms": "Số phòng ngủ",
+      "numRoomsPlaceholder": "Nhập số phòng ngủ",
+      "numRoomsRequired": "Vui lòng nhập số phòng ngủ",
+      "numRoomsPattern": "Vui lòng nhập số cho 'số phòng ngủ'",
+      "amenities": "Tiện nghi",
+      "amenitiesRequired": "Vui lòng chọn ít nhất một tiện nghi",
+      "description": "Mô tả",
+      "descriptionRequired": "Vui lòng nhập mô tả bài đăng",
+      "descriptionMin": "Mô tả phải chứa ít nhất 50 ký tự",
+      "back": "Quay lại",
+      "update": "Cập nhật"
+    },
+    "toast": {
+      "updateSuccess": "Cập nhật bài đăng thành công",
+      "updateError": "Có lỗi xảy ra khi đăng tin, vui lòng thử lại sau.",
+      "deleteThumbnailError": "Vui lòng chọn ảnh khác làm ảnh bìa trước khi xóa ảnh này"
+    }
   }
 }
