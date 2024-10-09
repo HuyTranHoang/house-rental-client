@@ -1,6 +1,6 @@
 const ROUTER_NAMES = {
-  RENT_HOUSE: '/tim-thue-phong-tro',
-  PROPERTY_DETAIL: '/tim-thue-phong-tro/:slug',
+  RENT_HOUSE: '/',
+  PROPERTY_DETAIL: '/:slug',
 
   LOGIN: '/dang-nhap',
   REGISTER: '/dang-ky',
@@ -29,7 +29,7 @@ const ROUTER_NAMES = {
   POST_PROPERTY: '/dang-tin',
   POST_MANAGEMENT: '/quan-ly-tin-dang',
 
-  getRentHouseDetail: (slug: string) => `/tim-thue-phong-tro/${slug}`
+  getRentHouseDetail: (slug: string) => `/${slug}`
 }
 
 export default ROUTER_NAMES

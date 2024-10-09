@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
 import en_about from '@/utils/i18n/locales/en/about.json'
+import en_breadcrumb from '@/utils/i18n/locales/en/breadcrumb.json'
 import en_common from '@/utils/i18n/locales/en/common.json'
 import en_contact from '@/utils/i18n/locales/en/contact.json'
 import en_membership from '@/utils/i18n/locales/en/membership.json'
@@ -11,6 +12,7 @@ import en_propertyDetail from '@/utils/i18n/locales/en/propertyDetail.json'
 import en_recharge from '@/utils/i18n/locales/en/recharge.json'
 
 import vi_about from '@/utils/i18n/locales/vi/about.json'
+import vi_breadcrumb from '@/utils/i18n/locales/vi/breadcrumb.json'
 import vi_common from '@/utils/i18n/locales/vi/common.json'
 import vi_contact from '@/utils/i18n/locales/vi/contact.json'
 import vi_membership from '@/utils/i18n/locales/vi/membership.json'
@@ -29,7 +31,8 @@ export const resources = {
     membership: en_membership,
     recharge: en_recharge,
     profile: en_profile,
-    about: en_about
+    about: en_about,
+    breadcrumb: en_breadcrumb
   },
   vi: {
     common: vi_common,
@@ -39,7 +42,8 @@ export const resources = {
     membership: vi_membership,
     recharge: vi_recharge,
     profile: vi_profile,
-    about: vi_about
+    about: vi_about,
+    breadcrumb: vi_breadcrumb
   }
 } as const
 
@@ -48,7 +52,17 @@ i18n.use(initReactI18next).init({
   defaultNS,
   lng: localStorage.getItem('i18n') || 'en',
   fallbackLng: ['en', 'vi'],
-  ns: ['common', 'postProperty', 'contact', 'membership', 'recharge', 'profile', 'propertyDetail', 'about'],
+  ns: [
+    'common',
+    'postProperty',
+    'contact',
+    'membership',
+    'recharge',
+    'profile',
+    'propertyDetail',
+    'about',
+    'breadcrumb'
+  ],
   interpolation: {
     escapeValue: false
   }
