@@ -1,5 +1,4 @@
 const ROUTER_NAMES = {
-  TEST: '/test',
   RENT_HOUSE: '/tim-thue-phong-tro',
   PROPERTY_DETAIL: '/tim-thue-phong-tro/:slug',
 

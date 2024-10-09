@@ -8,7 +8,7 @@ function NotFound() {
       status="404"
       title="404"
       subTitle="Xin lỗi, trang bạn đang tìm kiếm không tồn tại."
-      extra={<Link to={ROUTER_NAMES.TEST}><Button type="primary">Trở về trang chủ</Button></Link>}
+      extra={<Link to={ROUTER_NAMES.RENT_HOUSE}><Button type="primary">Trở về trang chủ</Button></Link>}
     />
   )
 }
