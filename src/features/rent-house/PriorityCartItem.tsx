@@ -18,6 +18,8 @@ export default function PriorityCardItem() {
   const { data: priorityProperties } = usePriorityProperties()
   const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
+  const filteredProperties = priorityProperties?.filter((item) => !item.hidden && !item.blocked)
+
   return (
     <Swiper
       modules={[Autoplay]}
@@ -32,8 +34,8 @@ export default function PriorityCardItem() {
       speed={1000}
       className='mb-2 -translate-x-2'
     >
-      {priorityProperties &&
-        priorityProperties.map((item) => {
+      {filteredProperties &&
+        filteredProperties.map((item) => {
           const slug = generateSlug(item.title, item.id)
 
           return (
