@@ -5,8 +5,9 @@ import { useCreateTransactionWithDrawal } from '@/hooks/useTransaction'
 import { useUpdateUserMembership, useUserMembership } from '@/hooks/useUserMembership'
 import useAuthStore from '@/store/authStore.ts'
 import { Membership } from '@/types/membership.type.ts'
+import Container from '@/ui/Container.tsx'
 import { CheckOutlined } from '@ant-design/icons'
-import { Card, Col, Modal, Row } from 'antd'
+import { Card, Col, Modal, Row, Space } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -69,50 +70,52 @@ export function MemberFee() {
   }
 
   return (
-    <Row className='relative min-h-screen md:min-h-0'>
-      <section className='mx-auto'>
-        <div className='mb-16 text-center'>
-          <h1 className='font-inter mb-6 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 bg-clip-text text-4xl font-bold text-transparent md:text-5xl'>
-            {t('membershipPackage')}
-          </h1>
-          <p className='mb-8 p-2 text-xl text-gray-600'>{t('descriptionPackage')}</p>
-          <div className='mb-12 flex flex-wrap justify-center gap-6'>
-            <div className='space-x-1'>
-              <CheckOutlined className='text-green-500' />
-              <span>{t('priorityPosting')}</span>
-            </div>
-            <div className='space-x-1'>
-              <CheckOutlined className='text-green-500' />
-              <span>{t('exclusiveDiscount')}</span>
-            </div>
-            <div className='space-x-1'>
-              <CheckOutlined className='text-green-500' />
-              <span>{t('24/7Support')}</span>
-            </div>
-          </div>
-        </div>
+    <>
+      <Container>
+        <Row justify='center' className='mb-16 text-center'>
+          <Col span={24}>
+            <h1 className='font-inter mb-6 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 bg-clip-text text-4xl font-bold text-transparent md:text-5xl'>
+              {t('membershipPackage')}
+            </h1>
+            <p className='mb-8 p-2 text-xl text-gray-600'>{t('descriptionPackage')}</p>
+            <Row justify='center'>
+              <Space size='large' className='mb-4'>
+                <div className='space-x-1'>
+                  <CheckOutlined className='text-green-500' />
+                  <span>{t('priorityPosting')}</span>
+                </div>
+                <div className='space-x-1'>
+                  <CheckOutlined className='text-green-500' />
+                  <span>{t('exclusiveDiscount')}</span>
+                </div>
+                <div className='space-x-1'>
+                  <CheckOutlined className='text-green-500' />
+                  <span>{t('24/7Support')}</span>
+                </div>
+              </Space>
+            </Row>
+          </Col>
+        </Row>
 
-        <Col xs={24} md={24} className='mb-24 flex items-center justify-center px-4 md:mb-0'>
-          <Row gutter={32} justify='center' className='mb-10'>
-            {membershipIsLoading &&
-              Array.from({ length: 3 }).map((_, index) => (
-                <Col key={index} xs={24} sm={12} md={8} className='my-2 md:my-0'>
-                  <Card className='flex h-full w-56 flex-col rounded-xl border-2 shadow-sm' loading></Card>
-                </Col>
-              ))}
-            {membershipData?.map((membership) => (
-              <Col key={membership.id} xs={24} sm={12} md={8} className='my-2 md:my-0'>
-                <MembershipCard
-                  membership={membership}
-                  isCurrentMembership={membership.id === userMembership?.membershipId}
-                  onUpgrade={showConfirm}
-                  isLoggedIn={!!currentUser}
-                />
+        <Row gutter={[32, 32]} justify='center' className='mb-24'>
+          {membershipIsLoading &&
+            Array.from({ length: 3 }).map((_, index) => (
+              <Col key={index} xs={24} sm={12} md={7} className='my-2 md:my-0'>
+                <Card className='flex h-full w-56 flex-col rounded-xl border-2 shadow-sm' loading></Card>
               </Col>
             ))}
-          </Row>
-        </Col>
-      </section>
+          {membershipData?.map((membership) => (
+            <Col key={membership.id} xs={24} sm={12} md={7} className='my-2 md:my-0'>
+              <MembershipCard
+                membership={membership}
+                isCurrentMembership={membership.id === userMembership?.membershipId}
+                onUpgrade={showConfirm}
+                isLoggedIn={!!currentUser}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Container>
 
       <Modal
         title={t('comfirmUpgrade')}
@@ -130,6 +133,6 @@ export function MemberFee() {
           {t('comfirmUpgradePackage')} {selectedMembership?.name}?
         </p>
       </Modal>
-    </Row>
+    </>
   )
 }
