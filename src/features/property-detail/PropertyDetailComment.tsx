@@ -6,6 +6,7 @@ import { CalendarOutlined, CommentOutlined, DeleteOutlined, WarningOutlined } fr
 import { Avatar, Button, Flex, Form, FormProps, Input, List, Modal, Space, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
 import CommentReportButton from './CommentReportButton'
+import { useTranslation } from 'react-i18next'
 
 const { TextArea } = Input
 
@@ -26,6 +27,8 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
   const { createComment, createCommentIsPending } = useCreateComment()
   const { deleteComment, deleteCommentIsPending } = useDeleteComment()
 
+  const { t } = useTranslation(['common', 'propertyDetail'])
+
   const commentListData = commentData
     ? [
         ...commentData.data.map((comment) => ({
@@ -45,7 +48,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
                   <CommentReportButton commentId={comment.id} />
 
                   {haveDeleteReviewPrivilege && (
-                    <Tooltip title='Xóa bình luận'>
+                    <Tooltip title={t('propertyDetail:component.DELETE_COMMENT')}>
                       <Button
                         type='text'
                         danger
@@ -73,7 +76,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
   return (
     <>
       <Typography.Title level={4} className='mt-2'>
-        Bình luận
+        {t('propertyDetail:component.COMMENT_INFO')}
       </Typography.Title>
       {commentListData.length > 0 ? (
         <List
@@ -94,34 +97,34 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
           )}
         />
       ) : (
-        <Typography.Text type='secondary'>Chưa có bình luận nào cho bất động sản này!!!</Typography.Text>
+        <Typography.Text type='secondary'>{t('propertyDetail:component.NOTIFI_COMMENT')}</Typography.Text>
       )}
 
       <Typography.Title level={5}>
-        Để lại bình luận <CommentOutlined />
+        {t('propertyDetail:component.COMMENT')} <CommentOutlined />
       </Typography.Title>
       <Form form={form} layout='vertical' name='feedbackForm' autoComplete='off' onFinish={onFinish}>
         <Form.Item<CommentFieldType>
           name='comment'
           validateTrigger={['onBlur']}
           rules={[
-            { required: true, message: 'Vui lòng nhập bình luận của bạn' },
+            { required: true, message: t('propertyDetail:component.COMMENT_REQUIRED') },
             {
               min: 10,
-              message: 'Bình luận phải có ít nhất 10 ký tự'
+              message: t('propertyDetail:component.COMMENT_MIN')
             },
             {
               max: 500,
-              message: 'Bình luận không được vượt quá 500 ký tự'
+              message: t('propertyDetail:component.COMMENT_MAX')
             }
           ]}
         >
-          <TextArea rows={4} placeholder='Bình luận của bạn về bất động sản này...' />
+          <TextArea rows={4} placeholder={t('propertyDetail:component.COMMENT_ABOUT')} />
         </Form.Item>
 
         <Form.Item>
           <Button type='primary' htmlType='submit' loading={createCommentIsPending}>
-            Gửi bình luận
+            {t('propertyDetail:component.COMMENT_SEND')}
           </Button>
         </Form.Item>
       </Form>
@@ -134,7 +137,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
                 <WarningOutlined className='text-2xl text-red-600' />
               </div>
               <Typography.Title level={3} className='text-gray-600'>
-                Xác nhận xóa
+                {t('propertyDetail:component.CONFIRM_DELETE')}
               </Typography.Title>
             </Flex>
           }
@@ -145,16 +148,16 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
             setcurrentComment(undefined)
           }}
           onCancel={() => setOpen(false)}
-          okText='Xóa bình luận'
-          cancelText='Quay lại'
+          okText={t('propertyDetail:component.DELETE_COMMENT')}
+          cancelText={t('propertyDetail:component.BACK')}
           okButtonProps={{ className: 'bg-red-500 hover:bg-red-400 hover:border-red-600' }}
         >
           <Typography.Paragraph className='mb-1 mt-2'>
-            Bạn có chắc chắn muốn xóa bình luận của <span className='font-semibold'>{currentComment.userName}</span>?
+            {t('propertyDetail:component.CONFIRM_ACCESS_DELETE')} <span className='font-semibold'>{currentComment.userName}</span>?
           </Typography.Paragraph>
 
           <Typography.Paragraph className='mb-0 text-gray-500'>
-            Lưu ý, hành động này không thể hoàn tác.
+            {t('propertyDetail:component.WARRING_NOTIFI')}
           </Typography.Paragraph>
         </Modal>
       )}

@@ -12,6 +12,7 @@ import {
 import { Avatar, Button, Card, Divider, Flex, Space, Tooltip } from 'antd'
 import Meta from 'antd/es/card/Meta'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface PropertyDetailOwnerDetailProps {
   userId: number | undefined
@@ -22,6 +23,8 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
 
   const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+
+  const { t } = useTranslation(['common', 'propertyDetail'])
 
   const handleShowPhoneNumber = () => {
     if (!isPhoneNumberVisible) {
@@ -57,7 +60,7 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
                 <CheckCircleFilled className='text-blue-400' />
               </Space>
             }
-            description={<span>Đã tham gia: {formatJoinedDate(userData.createdAt)}</span>}
+            description={<span>{t('propertyDetail:ownerDetail.PARTCITIPATED')} {formatJoinedDate(userData.createdAt)}</span>}
           />
           <Divider className='m-3' />
 
@@ -74,19 +77,19 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
                   isCopied ? (
                     <CheckOutlined />
                   ) : (
-                    <Tooltip title='Sao chép số điện thoại'>
+                    <Tooltip title={t('propertyDetail:ownerDetail.PHONE_COPPY')}>
                       <CopyOutlined />
                     </Tooltip>
                   )
                 ) : (
-                  'Bấm để hiện số'
+                  t('propertyDetail:ownerDetail.SHOW_NUMBER')
                 )}
               </b>
             </Flex>
           </Button>
 
           <Button block icon={<MailOutlined />} size='large' type='primary'>
-            Gửi tin nhắn
+            {t('propertyDetail:ownerDetail.SEND_MESSAGE')}
           </Button>
         </>
       )}

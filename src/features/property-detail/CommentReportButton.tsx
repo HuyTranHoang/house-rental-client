@@ -4,22 +4,18 @@ import { SendOutlined, WarningOutlined } from '@ant-design/icons'
 import { Button, Flex, Form, FormProps, Input, Modal, Select, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
 
 type ReportCategory = 'SCAM' | 'INAPPROPRIATE_CONTENT' | 'DUPLICATE' | 'MISINFORMATION' | 'OTHER'
 
-const reasons: Record<ReportCategory, string> = {
-  SCAM: 'Bình luận này có dấu hiệu lừa đảo!',
-  INAPPROPRIATE_CONTENT: 'Bình luận này có nội dung không phù hợp!',
-  DUPLICATE: 'Bình luận này bị trùng lặp!',
-  MISINFORMATION: 'Bình luận này có thông tin sai sự thật!',
-  OTHER: ''
-}
+
 
 function CommentReportButton({ commentId }: { commentId: number }) {
   const [reportForm] = Form.useForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { t } = useTranslation(['common', 'propertyDetail'])
 
   const { submitCommentReport, submitCommentReportIsPending } = useSubmitCommentReport()
 
@@ -30,6 +26,14 @@ function CommentReportButton({ commentId }: { commentId: number }) {
 
   const handleCancel = () => {
     setIsModalOpen(false)
+  }
+
+  const reasons: Record<ReportCategory, string> = {
+    SCAM: t('propertyDetail:record.SCAM'),
+    INAPPROPRIATE_CONTENT: t('propertyDetail:record.INAPPROPRIATE_CONTENT'),
+    DUPLICATE: t('propertyDetail:record.DUPLICATE'),
+    MISINFORMATION: t('propertyDetail:record.MISINFORMATION'),
+    OTHER: ''
   }
 
   const onCategoryChange = (value: ReportCategory) => {
@@ -44,36 +48,36 @@ function CommentReportButton({ commentId }: { commentId: number }) {
 
   return (
     <>
-      <Tooltip title='Báo cáo bình luận'>
+      <Tooltip title={t('propertyDetail:form.COMMENT_REPORT')}>
         <Button type='text' icon={<WarningOutlined />} onClick={showModal} aria-label='Report violation' />
       </Tooltip>
 
-      <Modal title='Báo cáo vi phạm' footer={null} onCancel={handleCancel} open={isModalOpen} destroyOnClose>
+      <Modal title={t('propertyDetail:form.REPORT_A_VIOLATION')} footer={null} onCancel={handleCancel} open={isModalOpen} destroyOnClose>
         <Form form={reportForm} name='report' layout='vertical' onFinish={onFinish} autoComplete='off'>
           <Form.Item<CommentReportFormData> name='commentId' hidden>
             <Input />
           </Form.Item>
 
           <Form.Item<CommentReportFormData>
-            label='Loại vi phạm'
+            label={t('propertyDetail:form.TYPE_VIOLATION')}
             name='category'
-            rules={[{ required: true, message: 'Vui lòng chọn loại vi phạm!' }]}
+            rules={[{ required: true, message: t('propertyDetail:form.REQUIRED_VIOLATION') }]}
           >
-            <Select placeholder='Chọn loại vi phạm bạn muốn báo cáo' onChange={onCategoryChange} allowClear>
-              <Option value='SCAM'>Lừa đảo</Option>
-              <Option value='INAPPROPRIATE_CONTENT'>Nội dung không phù hợp</Option>
-              <Option value='DUPLICATE'>Nội dung trùng lặp</Option>
-              <Option value='MISINFORMATION'>Nội dung sai sự thật</Option>
-              <Option value='OTHER'>Khác</Option>
+            <Select placeholder={t('propertyDetail:form.SELECT_VIOLATION')} onChange={onCategoryChange} allowClear>
+              <Option value='SCAM'>{t('propertyDetail:form.SCAM')}</Option>
+              <Option value='INAPPROPRIATE_CONTENT'>{t('propertyDetail:form.INAPPROPRIATE_CONTENT')}</Option>
+              <Option value='DUPLICATE'>{t('propertyDetail:form.DUPLICATE')}</Option>
+              <Option value='MISINFORMATION'>{t('propertyDetail:form.MISINFORMATION')}</Option>
+              <Option value='OTHER'>{t('propertyDetail:form.OTHER')}</Option>
             </Select>
           </Form.Item>
 
           <Form.Item<CommentReportFormData>
-            label='Lý do'
+            label={t('propertyDetail:form.REASON')}
             name='reason'
-            rules={[{ required: true, message: 'Vui lòng nhập lý do!' }]}
+            rules={[{ required: true, message: t('propertyDetail:form.REASON_REQUIRED') }]}
           >
-            <TextArea placeholder={'Nhập nội dung vi phạm của bình luận'} />
+            <TextArea placeholder={t('propertyDetail:form.CONTENT_REASON')} />
           </Form.Item>
 
           <Form.Item>
@@ -85,11 +89,11 @@ function CommentReportButton({ commentId }: { commentId: number }) {
                 type='primary'
                 htmlType='submit'
               >
-                Gửi
+                {t('common:button.send')}
               </Button>
 
               <Button onClick={handleCancel} className='ml-3'>
-                Hủy
+              {t('common:button.cancel')}
               </Button>
             </Flex>
           </Form.Item>

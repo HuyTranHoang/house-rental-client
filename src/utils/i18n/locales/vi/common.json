@@ -71,7 +71,9 @@
   },
   "button": {
     "favorite": "Thêm vào danh sách yêu thích",
-    "unfavorite": "Bỏ khỏi danh sách yêu thích"
+    "unfavorite": "Bỏ khỏi danh sách yêu thích",
+    "send" : "Gửi",
+    "cancel" : "Hủy"
   },
   "recharge": {
     "title": "Nạp tiền",

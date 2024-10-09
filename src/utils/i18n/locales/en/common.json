@@ -71,7 +71,9 @@
   },
   "button": {
     "favorite": "Add to favorite",
-    "unfavorite": "Remove from favorite"
+    "unfavorite": "Remove from favorite",
+    "send" : "Send",
+    "cancel" : "Cancel"
   },
   "recharge": {
     "title": "Recharge",

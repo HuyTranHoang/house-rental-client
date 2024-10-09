@@ -1,0 +1,63 @@
+{
+    "record" : {
+        "SCAM": "This comment is a scam!",
+        "INAPPROPRIATE_CONTENT": "This comment contains inappropriate content!",
+        "DUPLICATE": "This comment is duplicated!",
+        "WRONG INFORMATION": "This comment contains false information!",
+        "OTHER": ""
+     },
+     "form" : {
+        "REPORT" : "Report",
+        "COMMENT_REPORT" : "Report comment",
+        "REPORT_A_VIOLATION" : "Report violation",
+        "TYPE_VIOLATION" : "Type of violation",
+        "REQUIRED_VIOLATION" : "Please select the type of violation",
+        "SELECT_VIOLATION" : "Select the type of violation to report",
+        "SCAM" : "Scam",
+        "INAPPROPRIATE_CONTENT" : "Inappropriate content",
+        "MISINFORMATION" : "Misinformation content",
+        "DUPLICATE" : "Duplicate content",
+        "OTHER" : "Other",
+        "REASON" : "Reason" ,
+        "REASON_REQUIRED" : "Reason required",
+        "CONTENT_REASON" : "Enter the offending content of the comment"
+    },
+    "property" : {
+        "AREA" : "Area",
+        "NUMROOM" : "Num room",
+        "CREATEAT" : "Create at",
+        "AMENITY" : "Amenity",
+        "ABOUT_LIST" :"About list",
+        "NEXT_PROPERTY" : "Next properties",
+        "MAIN_INFO" : "Key infomation",
+        "INTRODUCE" : "Introduce"
+    },
+    "component" : {
+        "COMMENT_INFO" : "Comment",
+        "DELETE_COMMENT" : "Delete comment",    
+        "NOTIFI_COMMENT" : "There are no comments for this property yet",
+        "COMMENT" : "Leave a comment",
+        "COMMENT_REQUIRED" : "Please enter your comment",
+        "COMMENT_MIN" : "Comment must be at least 10 characters",
+        "COMMENT_MAX" : "Comment must not exceed 500 characters",
+        "COMMENT_ABOUT" : "Your comment about this property",
+        "COMMENT_SEND" : "Send comment",
+        "CONFIRM_DELETE" : "Confirm delete",
+        "BACK" : "BACK",
+        "CONFIRM_ACCESS_DELETE" : "Are you sure you want to delete this comment ",
+        "WARRING_NOTIFI" : "Note that this action cannot be undone."
+    },
+    "favorite" : {
+        "SAVE" : "Save news"
+    },
+    "ownerDetail" : {
+        "PARTCITIPATED" : "Participated",
+        "PHONE_COPPY" : "Copy phone number",
+        "SHOW_NUMBER" : "Click to show number",
+        "SEND_MESSAGE" : "Send message"
+    },
+    "related" : {
+         "SAME_PROPERTY" : "Same property",
+         "ROOM" : "ROOM"
+    }
+}
