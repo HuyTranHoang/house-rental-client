@@ -168,9 +168,9 @@ export default function PostProperty() {
 
   return (
     <Container>
-      <Card>
-        <pre>{JSON.stringify(formData, null, 2)}</pre>
-      </Card>
+      {/*<Card>*/}
+      {/*  <pre>{JSON.stringify(formData, null, 2)}</pre>*/}
+      {/*</Card>*/}
       <Card title={cartTitle} className='mb-10 mt-12'>
         <Row className='overflow-hidden rounded-lg bg-gray-50'>
           {current < 6 && (
