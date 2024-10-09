@@ -76,7 +76,7 @@ function PostManagement() {
                     </Typography.Title>
                     <Divider type='vertical' className='h-6' />
                     <Input.Search
-                      placeholder='Tìm kiếm bài đăng, giá, địa chỉ..'
+                      placeholder='Tìm kiếm tiêu đề, thành phố, địa chỉ..'
                       allowClear
                       enterButton
                       onSearch={(value) => setSearch(value)}
