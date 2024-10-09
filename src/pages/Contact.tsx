@@ -1,6 +1,7 @@
 import { ArrowRightOutlined } from '@ant-design/icons'
 import { Avatar, Button, Card, Col, Row, Typography } from 'antd'
 import Meta from 'antd/es/card/Meta'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import ContactForm from './ContactForm.tsx'
 import './contact.css'
@@ -19,6 +20,8 @@ const CustomAvatarStyle = styled(Avatar)`
 `
 
 function Contact() {
+  const { t } = useTranslation('contact')
+
   return (
     <>
       <Row className='relative bg-blue-50'>
@@ -32,10 +35,10 @@ function Contact() {
         </div>
         <Col xs={24} md={{ span: 14, offset: 5 }} className='px-4 sm:px-6 md:px-8'>
           <Typography.Title level={2} className='mt-8 text-center text-2xl sm:text-3xl md:mt-16 md:text-4xl'>
-            Liên hệ với Mogu
+            {t('contactWithMogu')}
           </Typography.Title>
           <Typography.Paragraph className='text-center text-base sm:text-lg'>
-            Hãy liên hệ và cho chúng tôi biết chúng tôi có thể giúp gì
+            {t('contactDescription')}
           </Typography.Paragraph>
           <Row gutter={[16, 24]} className='my-8 md:my-16'>
             <Col xs={24} md={8}>
@@ -43,17 +46,17 @@ function Contact() {
                 className='my-6 md:my-0'
                 actions={[
                   <Button type='link' icon={<ArrowRightOutlined />} className='w-full justify-center text-white'>
-                    Địa chỉ văn phòng Mogu
+                    {t('officeAddress')}
                   </Button>
                 ]}
               >
                 <CustomMetaStyle
                   className='-mt-16'
                   avatar={<CustomAvatarStyle size={84} src='/contact-icon-company.png' />}
-                  title='Văn phòng'
+                  title={t('office')}
                 />
                 <Typography.Paragraph className='min-h-20 pt-8 text-center text-gray-600'>
-                  Trực tiếp tại các văn phòng trên toàn quốc
+                  {t('officeDescription')}
                 </Typography.Paragraph>
               </Card>
             </Col>
@@ -62,17 +65,17 @@ function Contact() {
                 className='my-6 md:my-0'
                 actions={[
                   <Button type='link' icon={<ArrowRightOutlined />} className='w-full justify-center text-white'>
-                    Liên hệ qua Zalo
+                    {t('contactViaZalo')}
                   </Button>
                 ]}
               >
                 <CustomMetaStyle
                   className='-mt-16'
                   avatar={<CustomAvatarStyle size={84} src='/contact-icon-phone.png' />}
-                  title='Tổng đài'
+                  title={t('hotline')}
                 />
                 <Typography.Paragraph className='min-h-20 pt-8 text-center text-gray-600'>
-                  Chúng tôi luôn hỗ trợ 24/7, gọi ngay 1900 1000
+                  {t('hotlineDescription')}
                 </Typography.Paragraph>
               </Card>
             </Col>
@@ -81,17 +84,17 @@ function Contact() {
                 className='my-6 md:my-0'
                 actions={[
                   <Button type='link' icon={<ArrowRightOutlined />} className='w-full justify-center text-white'>
-                    Facebook Mogu VN
+                    {t('facebookMoguVN')}
                   </Button>
                 ]}
               >
                 <CustomMetaStyle
                   className='-mt-16'
                   avatar={<CustomAvatarStyle size={84} src='/contact-icon-social.png' />}
-                  title='Email và mạng xã hội'
+                  title={t('emailAndSocial')}
                 />
                 <Typography.Paragraph className='min-h-20 pt-8 text-center text-gray-600'>
-                  Liên hệ qua email: <strong>hotro@mogu.vn</strong> hoặc page
+                  {t('emailDescription')}
                 </Typography.Paragraph>
               </Card>
             </Col>
@@ -107,7 +110,7 @@ function Contact() {
         </div>
         <Col xs={24} md={{ span: 14, offset: 5 }} className='px-4 sm:px-6 md:px-8'>
           <Typography.Title level={5} className='mt-8 text-lg sm:text-xl md:mt-16 md:text-2xl'>
-            Quý khách hàng có thể liên hệ trực tiếp tại đây:
+            {t('contactDirectlyHere')}
           </Typography.Title>
           <ContactForm />
         </Col>
