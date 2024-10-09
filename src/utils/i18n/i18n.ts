@@ -6,6 +6,7 @@ import en_breadcrumb from '@/utils/i18n/locales/en/breadcrumb.json'
 import en_common from '@/utils/i18n/locales/en/common.json'
 import en_contact from '@/utils/i18n/locales/en/contact.json'
 import en_membership from '@/utils/i18n/locales/en/membership.json'
+import en_notification from '@/utils/i18n/locales/en/notification.json'
 import en_post_property from '@/utils/i18n/locales/en/post-property.json'
 import en_postManagement from '@/utils/i18n/locales/en/postManagement.json'
 import en_profile from '@/utils/i18n/locales/en/profile.json'
@@ -17,6 +18,7 @@ import vi_breadcrumb from '@/utils/i18n/locales/vi/breadcrumb.json'
 import vi_common from '@/utils/i18n/locales/vi/common.json'
 import vi_contact from '@/utils/i18n/locales/vi/contact.json'
 import vi_membership from '@/utils/i18n/locales/vi/membership.json'
+import vi_notification from '@/utils/i18n/locales/vi/notification.json'
 import vi_post_property from '@/utils/i18n/locales/vi/post-property.json'
 import vi_postManagement from '@/utils/i18n/locales/vi/postManagement.json'
 import vi_profile from '@/utils/i18n/locales/vi/profile.json'
@@ -35,7 +37,8 @@ export const resources = {
     profile: en_profile,
     about: en_about,
     breadcrumb: en_breadcrumb,
-    postManagement: en_postManagement
+    postManagement: en_postManagement,
+    notification: en_notification
   },
   vi: {
     common: vi_common,
@@ -47,7 +50,8 @@ export const resources = {
     profile: vi_profile,
     about: vi_about,
     breadcrumb: vi_breadcrumb,
-    postManagement: vi_postManagement
+    postManagement: vi_postManagement,
+    notification: vi_notification
   }
 } as const
 
@@ -66,7 +70,8 @@ i18n.use(initReactI18next).init({
     'propertyDetail',
     'about',
     'breadcrumb',
-    'postManagement'
+    'postManagement',
+    'notification'
   ],
   interpolation: {
     escapeValue: false

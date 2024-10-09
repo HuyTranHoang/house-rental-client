@@ -1,11 +1,13 @@
 import { useMarkAllNotificationAsRead, useNotificationByUserId } from '@/hooks/useNotification.ts'
 import useAuthStore from '@/store/authStore.ts'
-import NotificationMenu from '@/ui/NotificationMenu.tsx'
+import NotificationMenu from '@/features/notification/NotificationMenu.tsx'
 import { BellOutlined, CheckOutlined } from '@ant-design/icons'
 import { Badge, Button, Dropdown, DropdownProps, Flex, MenuProps, Typography } from 'antd'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 function Notification() {
+  const { t } = useTranslation('notification')
   const currentUser = useAuthStore((state) => state.user)
   const [openNotification, setOpenNotification] = useState(false)
   const { notificationData } = useNotificationByUserId(currentUser?.id, 5)
@@ -23,9 +25,9 @@ function Notification() {
       {
         key: 'mark-all-as-read',
         label: (
-          <Flex>
-            <Typography.Title level={5} className='m-0 grow p-0'>
-              Thông báo
+          <Flex className='w-full'>
+            <Typography.Title level={5} className='m-0 p-0 flex-grow'>
+              {t('title')}
             </Typography.Title>
             <Button
               type='link'
@@ -34,7 +36,7 @@ function Notification() {
               className='text-xs'
               onClick={() => (currentUser ? markAllNotificationAsRead(currentUser.id) : undefined)}
             >
-              Đánh dấu tất cả đã đọc
+              {t('markAllAsRead')}
             </Button>
           </Flex>
         ),

@@ -10,24 +10,25 @@ import { generateSlug } from '@/utils/generateSlug.ts'
 import { ClockCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { Badge, Button, Skeleton, Space } from 'antd'
 import { clsx } from 'clsx'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-const getNotificationMessage = (item: NotificationType) => {
+const getNotificationMessage = (item: NotificationType, t: any) => {
   const mapTypeToMessage = {
     [NotificationTypeEnum.COMMENT]: () => (
       <>
-        <span className='text-blue-500'>@{item.senderUsername}</span> đã bình luận tin đăng{' '}
-        <span className='font-semibold'>{item.propertyTitle}</span> của bạn
+        <span className='text-blue-500'>@{item.senderUsername}</span> {t('commentedOnYourPost')}{' '}
+        <span className='font-semibold'>{item.propertyTitle}</span>
       </>
     ),
     [NotificationTypeEnum.APPROVED]: () => (
       <>
-        Tin đăng <span className='font-semibold'>{item.propertyTitle}</span> của bạn đã được duyệt
+        {t('yourPost')} <span className='font-semibold'>{item.propertyTitle}</span> {t('hasBeenApproved')}
       </>
     ),
     [NotificationTypeEnum.REJECTED]: () => (
       <>
-        Tin đăng <span className='font-semibold'>{item.propertyTitle}</span> của bạn đã bị từ chối
+        {t('yourPost')} <span className='font-semibold'>{item.propertyTitle}</span> {t('hasBeenRejected')}
       </>
     )
   }
@@ -36,6 +37,7 @@ const getNotificationMessage = (item: NotificationType) => {
 }
 
 function NotificationMenu({ currentUser }: { currentUser: User | null }) {
+  const { t } = useTranslation('notification')
   const navigate = useNavigate()
   const { updateNotificationSeen } = useUpdateNotificationSeen()
   const { notificationData, notificationIsLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -75,7 +77,7 @@ function NotificationMenu({ currentUser }: { currentUser: User | null }) {
               onClick={() => handleClickNotification(item)}
             >
               <div className='flex items-start justify-between'>
-                <p className='my-0 text-wrap text-sm'>{getNotificationMessage(item)}</p>
+                <p className='my-0 text-wrap text-sm'>{getNotificationMessage(item, t)}</p>
                 {!item.seen && <Badge className='px-2' status='processing' />}
               </div>
               <p className='mt-1 text-xs text-gray-500'>
@@ -85,13 +87,13 @@ function NotificationMenu({ currentUser }: { currentUser: User | null }) {
           ))}
 
         {notificationData && notificationData.length === 0 && (
-          <div className='cursor-default text-center text-gray-500'>Không có thông báo mới</div>
+          <div className='cursor-default text-center text-gray-500'>{t('noNewNotifications')}</div>
         )}
 
         {hasNextPage && (
           <div className='pt-2 text-center'>
             <Button onClick={handleLoadMore} loading={isFetchingNextPage} icon={<DownOutlined />}>
-              Những tin cũ hơn
+              {t('loadMore')}
             </Button>
           </div>
         )}
