@@ -31,7 +31,7 @@ function Profile() {
   const { data: membership } = useUserMembership(currentUser?.id)
   const remainingDays = calculateMembershipRemainingDays(membership)
 
-  const { t } = useTranslation()
+  const { t } = useTranslation('profile')
 
   const { mutate: updateUserProfileMutate, isPending } = useMutation({
     mutationFn: updateUserProfileApi,
@@ -39,10 +39,10 @@ function Profile() {
       if (!response) return
 
       updateProfile(response.data)
-      toast.success('Cập nhật thông tin cá nhân thành công!')
+      toast.success(t('toast.updateAvatarSuccess'))
     },
     onError: () => {
-      toast.error('Cập nhật thông tin cá nhân thất bại!')
+      toast.error(t('toast.updateAvatarFailed'))
     }
   })
 
@@ -54,12 +54,12 @@ function Profile() {
             <div className='flex items-center justify-between'>
               <Text>
                 <ClockCircleOutlined className='mr-2' />
-                {t('personalInfo.accountType.remainingTerm')}:
+                {t('accountType.remainingTerm')}:
               </Text>
               {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
               {remainingDays > 0 && (
                 <Text strong>
-                  {remainingDays} {t('personalInfo.accountType.days')}
+                  {remainingDays} {t('accountType.days')}
                 </Text>
               )}
             </div>
@@ -70,7 +70,7 @@ function Profile() {
             <div className='flex items-center justify-between'>
               <Text>
                 <ReloadOutlined className='mr-2' />
-                {t('personalInfo.accountType.refeshCount')}:
+                {t('accountType.refeshCount')}:
               </Text>
               <Text strong>
                 {membership.totalRefreshLimit - membership.refreshesPostsUsed}/{membership.totalRefreshLimit}
@@ -86,7 +86,7 @@ function Profile() {
             <div className='flex items-center justify-between'>
               <Text>
                 <FireOutlined className='mr-2' />
-                {t('personalInfo.accountType.priorityCount')}:
+                {t('accountType.priorityCount')}:
               </Text>
               <Text strong>
                 {membership.totalPriorityLimit - membership.priorityPostsUsed}/{membership.totalPriorityLimit}
@@ -103,7 +103,7 @@ function Profile() {
         )}
       </Card>
       <Card
-        title={<Typography.Title level={4}>Thay đổi thông tin cá nhân</Typography.Title>}
+        title={<Typography.Title level={4}>{t('personalInfo.title')}</Typography.Title>}
         className='mb-12 rounded-none border-l-0'
       >
         <Form
@@ -124,50 +124,50 @@ function Profile() {
           )}
 
           <Form.Item<ChangeProfileForm>
-            label='Họ'
+            label={t('personalInfo.lastName')}
             name='lastName'
             rules={[
               {
                 required: true,
-                message: 'Vui lòng nhập họ!'
+                message: t('changePassword.requiredOldPassword')
               }
             ]}
           >
-            <Input placeholder='Họ' />
+            <Input placeholder={t('personalInfo.lastName')} />
           </Form.Item>
           <Form.Item<ChangeProfileForm>
-            label='Tên'
+            label={t('personalInfo.firstName')}
             name='firstName'
             rules={[
               {
                 required: true,
-                message: 'Vui lòng nhập tên!'
+                message: t('changePassword.requiredNewPassword')
               }
             ]}
           >
-            <Input placeholder='Tên' />
+            <Input placeholder={t('personalInfo.firstName')} />
           </Form.Item>
 
           <Form.Item<ChangeProfileForm>
-            label='Số điện thoại'
+            label={t('personalInfo.phoneNumber')}
             name='phoneNumber'
             rules={[
               {
                 required: true,
-                message: 'Vui lòng nhập số điện thoại!'
+                message: t('changePassword.requiredReEnterNewPassword')
               },
               {
                 pattern: new RegExp(/(84|0[35789])+([0-9]{8})\b/),
-                message: 'Số điện thoại không hợp lệ!'
+                message: t('changePassword.validatePassword')
               }
             ]}
           >
-            <Input placeholder='Số điện thoại' />
+            <Input placeholder={t('personalInfo.phoneNumber')} />
           </Form.Item>
 
           <Form.Item>
             <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isPending} block>
-              Cập nhật thông tin
+              {t('personalInfo.update')}
             </GradientButton>
           </Form.Item>
         </Form>

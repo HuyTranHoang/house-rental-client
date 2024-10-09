@@ -6,15 +6,16 @@ import { formatDate } from '@/utils/formatDate'
 import { generateSlug } from '@/utils/generateSlug.ts'
 import { Card, Empty, Flex, Grid, List, Space, Typography } from 'antd'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const { useBreakpoint } = Grid
 
 export default function Favorite() {
+  const { t } = useTranslation('profile')
   const screens = useBreakpoint()
   const currentUser = useAuthStore((state) => state.user)
   const { favortieProperties, isLoadingFavoriteProperties } = useFavoritePropertyByUserId(currentUser?.id)
   const { removeFavoriteMutate, isPendingRemoveFavorite } = useRemoveFavorite()
-  // const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
   const propertiesData = favortieProperties?.properties.map((property) => ({
     id: property.id,
@@ -27,7 +28,7 @@ export default function Favorite() {
 
   return (
     <Card
-      title={<Typography.Title level={4}>Danh sách bất động sản đã lưu</Typography.Title>}
+      title={<Typography.Title level={4}>{t('favoriteProperties.title')}</Typography.Title>}
       className='mb-12 rounded-none border-l-0 sm:border-l'
     >
       <List
@@ -39,9 +40,9 @@ export default function Favorite() {
             <Empty
               description={
                 <Typography.Text type='secondary'>
-                  Bạn chưa lưu bất kỳ bất động sản nào.{' '}
+                  {t('favoriteProperties.noData')}{' '}
                   <Link to={ROUTER_NAMES.RENT_HOUSE} className='text-blue-500'>
-                    Xem bất động sản
+                    {t('favoriteProperties.viewProperties')}
                   </Link>
                 </Typography.Text>
               }
@@ -52,7 +53,7 @@ export default function Favorite() {
           pageSize: 3,
           showTotal: (total, range) => (
             <span className='text-xs text-slate-500'>
-              {range[0]}-{range[1]} trong {total} bất động sản
+              {range[0]}-{range[1]} {t('favoriteProperties.of')} {total} {t('favoriteProperties.properties')}
             </span>
           ),
           hideOnSinglePage: true
@@ -83,7 +84,7 @@ export default function Favorite() {
                 </Typography.Text>
                 <Space direction={screens.sm ? 'horizontal' : 'vertical'} size='small' className='w-full'>
                   <Typography.Text type='secondary' className='text-xs'>
-                    Ngày đăng: {formatDate(item.createdAt)}
+                    {t('favoriteProperties.postedDate')}: {formatDate(item.createdAt)}
                   </Typography.Text>
                   <Typography.Text className='text-xs'>
                     <Link
@@ -91,7 +92,7 @@ export default function Favorite() {
                       target='_blank'
                       rel='noopener noreferrer'
                     >
-                      Xem chi tiết
+                      {t('favoriteProperties.viewDetails')}
                     </Link>
                   </Typography.Text>
                   <Typography.Text
@@ -99,7 +100,7 @@ export default function Favorite() {
                     className='cursor-pointer text-xs hover:underline'
                     onClick={() => removeFavoriteMutate({ propertyId: item.id, userId: currentUser!.id })}
                   >
-                    Xóa khỏi danh sách
+                    {t('favoriteProperties.removeFromList')}
                   </Typography.Text>
                 </Space>
               </Flex>

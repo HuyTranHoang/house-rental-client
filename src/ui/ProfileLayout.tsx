@@ -82,7 +82,7 @@ export default function ProfileLayout() {
   const { data: membership, isLoading: memberShipIsLoading } = useUserMembership(currentUser?.id)
   const logout = useAuthStore((state) => state.logout)
   const updateProfile = useAuthStore((state) => state.updateProfile)
-  const { t } = useTranslation()
+  const { t } = useTranslation(['profile', 'common'])
 
   const location = useLocation()
   const currentPath = location.pathname
@@ -92,12 +92,12 @@ export default function ProfileLayout() {
   const items: MenuItem[] = [
     {
       key: ROUTER_NAMES.FAVORITE,
-      label: t('navbar.favoriteProperties'),
+      label: t('favoriteProperties.title'),
       icon: <StarOutlined />
     },
     {
       key: ROUTER_NAMES.TRANSACTION_HISTORY,
-      label: t('navbar.transactionHistory'),
+      label: t('transactionHistory.title'),
       icon: <ReadOutlined />
     },
     {
@@ -105,12 +105,12 @@ export default function ProfileLayout() {
     },
     {
       key: ROUTER_NAMES.PROFILE,
-      label: t('navbar.personalInfo'),
+      label: t('personalInfo.title'),
       icon: <IdcardOutlined />
     },
     {
       key: ROUTER_NAMES.CHANGE_PASSWORD,
-      label: t('personalInfo.changePassword'),
+      label: t('changePassword.changePassword'),
       icon: <LockOutlined />
     },
     {
@@ -118,7 +118,7 @@ export default function ProfileLayout() {
     },
     {
       key: 'dangXuat',
-      label: t('navbar.logout'),
+      label: t('common:navbar.logout'),
       icon: <LogoutOutlined />,
       danger: true
     }
@@ -130,7 +130,7 @@ export default function ProfileLayout() {
       navigate(ROUTER_NAMES.RENT_HOUSE)
       localStorage.removeItem('jwtToken')
       axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
-        toast.success(t('toast.logoutSuccess'))
+        toast.success(t('common:toast.logoutSuccess'))
       })
     } else {
       navigate(key)
@@ -171,7 +171,7 @@ export default function ProfileLayout() {
         <>
           <CrownOutlined className='mr-2 text-lg text-yellow-500' />
           <Text>
-            {t('personalInfo.accountType.type')}: <strong>{membership?.membershipName}</strong>
+            {t('accountType.type')}: <strong>{membership?.membershipName}</strong>
           </Text>
         </>
       ),
@@ -180,12 +180,12 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <ClockCircleOutlined className='mr-2' />
-              {t('personalInfo.accountType.remainingTerm')}:
+              {t('accountType.remainingTerm')}:
             </Text>
             {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
             {remainingDays > 0 && (
               <Text strong>
-                {remainingDays} {t('personalInfo.accountType.days')}
+                {remainingDays} {t('accountType.days')}
               </Text>
             )}
           </div>
@@ -196,7 +196,7 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <ReloadOutlined className='mr-2' />
-              {t('personalInfo.accountType.refeshCount')}:
+              {t('accountType.refeshCount')}:
             </Text>
             <Text strong>
               {membership.totalRefreshLimit - membership.refreshesPostsUsed}/{membership.totalRefreshLimit}
@@ -212,7 +212,7 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <FireOutlined className='mr-2' />
-              {t('personalInfo.accountType.priorityCount')}:
+              {t('accountType.priorityCount')}:
             </Text>
             <Text strong>
               {membership.totalPriorityLimit - membership.priorityPostsUsed}/{membership.totalPriorityLimit}
@@ -241,7 +241,7 @@ export default function ProfileLayout() {
         <Card className='rounded-none'>
           <div className='flex flex-col items-center'>
             <div className='flex justify-center'>
-              <Tooltip title={loading ? t('personalInfo.updating') : t('personalInfo.changeAvatar')}>
+              <Tooltip title={loading ? t('updating') : t('changeAvatar')}>
                 <Upload
                   name='avatar'
                   action='/api/user/update-avatar'
@@ -287,7 +287,7 @@ export default function ProfileLayout() {
                   <div className='flex items-center'>
                     <WalletOutlined className='mr-2 text-lg text-gray-500' />
                     <Text>
-                      {t('personalInfo.accountBalance')}: {formatCurrency(currentUser.balance)}
+                      {t('accountBalance')}: {formatCurrency(currentUser.balance)}
                     </Text>
                   </div>
                   <Divider className='m-0 mb-4' />

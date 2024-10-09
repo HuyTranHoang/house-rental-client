@@ -19,31 +19,7 @@
   },
   "toast": {
     "loginSuccess": "Login successful!",
-    "logoutSuccess": "Logout successful!",
-    "updateAvatarSuccess": "Avatar updated successfully!",
-    "updateAvatarFailed": "Failed to update avatar!"
-  },
-  "personalInfo": {
-    "editPersonalInfo": "Edit Personal Information",
-    "firstName": "First name",
-    "lastName": "Last name",
-    "phoneNumber": "Phone number",
-    "accountBalance": "Account balance",
-    "accountType": {
-      "type": "Account type",
-      "free": "Free",
-      "standard": "Standard",
-      "premium": "Premium",
-      "remainingTerm": "Remaining term",
-      "refeshCount": "Refresh count",
-      "priorityCount": "Priority count",
-      "days": "days"
-    },
-    "refresh": "Refresh",
-    "priorityPush": "Priority push",
-    "changePassword": "Change password",
-    "updating": "Updating...",
-    "changeAvatar": "Change avatar"
+    "logoutSuccess": "Logout successful!"
   },
   "filter": {
     "title": "Filter",

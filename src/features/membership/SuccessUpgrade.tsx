@@ -1,41 +1,46 @@
-import { useLocation } from 'react-router-dom'
-import { Card, Col, Row, Typography } from 'antd'
-import { formatCurrency } from '@/utils/formatCurrentcy'
-import useAuthStore from '@/store/authStore'
 import { useUserMembership } from '@/hooks/useUserMembership'
-import { formatDate } from '@/utils/formatDate'
+import useAuthStore from '@/store/authStore'
+import { formatCurrency } from '@/utils/formatCurrentcy'
+import { formatDateWithTime } from '@/utils/formatDate'
+import { Card, Col, Row, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 
 const { Title, Text } = Typography
 
 export function SuccessUpgrade() {
+  const { t } = useTranslation('membership')
   const location = useLocation()
   const { membership, user } = location.state || {}
   const currentUser = useAuthStore((state) => state.user)
   const { data: userMembership } = useUserMembership(currentUser?.id)
 
   return (
-    <Row justify="center" className="mt-10">
+    <Row justify='center' className='mt-12 mb-24'>
       <Col xs={24} md={16} lg={12}>
-        <Card className="text-center shadow-lg" bordered={false}>
-          <Title level={2}>Mua gói thành công!</Title>
-          <Text className="text-xl">
-            Chúc mừng, bạn đã mua gói thành viên{' '}
-            <Text strong className="text-green-500 text-xl">
+        <Card className='rounded-lg p-6 text-center shadow-lg' bordered={false}>
+          <Title level={2} className='text-gradient'>
+            {t('purchaseSuccess.purchaseSuccess')}
+          </Title>
+          <Text className='text-xl'>
+            {t('purchaseSuccess.congratulations')}{' '}
+            <Text strong className='text-xl text-green-500'>
               {membership?.name}
             </Text>
             .
           </Text>
 
           <Card
-            className="mt-2 text-center"
+            className='mt-4 rounded-lg p-4 text-center'
             bordered={false}
-            style={{ maxWidth: 400, margin: '0 auto', borderRadius: 10 }}
+            style={{ maxWidth: 400, margin: '0 auto' }}
           >
             <p>
-              <Text strong>Số dư hiện tại:</Text> {formatCurrency(user?.balance)}
+              <Text strong>{t('purchaseSuccess.currentBalance')}:</Text> {formatCurrency(user?.balance)}
             </p>
             <p>
-              <Text strong>Ngày hết hạn:</Text> {formatDate(userMembership?.endDate) || 'Không xác định'}
+              <Text strong>{t('purchaseSuccess.expiryDate')}:</Text>{' '}
+              {formatDateWithTime(userMembership?.endDate) || t('purchaseSuccess.undefined')}
             </p>
           </Card>
         </Card>

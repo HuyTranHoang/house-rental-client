@@ -1,0 +1,106 @@
+{
+  "steps": {
+    "propertyType": {
+      "title": "Loại bất động sản",
+      "description": "Chọn loại bất động sản bạn muốn đăng."
+    },
+    "location": {
+      "title": "Vị trí đăng",
+      "description": "Thông tin vị trí bất động sản."
+    },
+    "details": {
+      "title": "Thông tin chi tiết",
+      "description": "Giá, tiện ích, mô tả chi tiết."
+    },
+    "titleDescription": {
+      "title": "Tiêu đề & mô tả",
+      "description": "Tiêu đề, mô tả bất động sản."
+    },
+    "images": {
+      "title": "Hình ảnh",
+      "description": "Thêm hình ảnh bất động sản."
+    },
+    "confirmation": {
+      "title": "Xác nhận",
+      "description": "Xem lại thông tin trước khi đăng."
+    }
+  },
+  "toast": {
+    "success": {
+      "message": "Đăng bài thành công.",
+      "setCoverImage": "Ảnh bìa được chọn thành công."
+    },
+    "error": {
+      "message": "Đăng bài thất bại. Vui lòng thử lại sau."
+    }
+  },
+  "form": {
+    "thumbmailRequired": "Vui lòng chọn ảnh bìa cho bài đăng.",
+    "selectRoomType": "Chọn loại bất động sản",
+    "roomTypeRequired": "Vui lòng chọn loại bất động sản",
+    "location": "Địa điểm",
+    "provinceCity": "Tỉnh/Thành phố",
+    "provinceCityRequired": "Vui lòng chọn tỉnh/thành phố",
+    "provinceCityPlaceholder": "Chọn tỉnh/thành phố",
+    "district": "Quận/Huyện",
+    "districtRequired": "Vui lòng chọn quận/huyện",
+    "districtPlaceholder": "Chọn quận/huyện",
+    "address": "Địa chỉ",
+    "addressRequired": "Vui lòng nhập địa chỉ",
+    "addressPlaceholder": "Nhập địa chỉ",
+    "details": "Thông tin chi tiết",
+    "numRooms": "Số phòng ngủ",
+    "numRoomsRequired": "Vui lòng nhập số phòng ngủ",
+    "numRoomsPattern": "Vui lòng nhập số cho 'số phòng ngủ'",
+    "numRomsPlaceholder": "Nhập số phòng ngủ",
+    "amenities": "Tiện nghi",
+    "amenitiesRequired": "Vui lòng chọn ít nhất một tiện nghi",
+    "amenitiesPlaceholder": "Chọn tiện nghi",
+    "area": "Diện tích",
+    "areaRequired": "Vui lòng nhập diện tích bất động sản",
+    "areaPattern": "Vui lòng nhập số cho 'diện tích'",
+    "areaMax": "Diện tích không được vượt quá 6 chữ số",
+    "areaPlaceholder": "Nhập diện tích",
+    "price": "Giá",
+    "priceRequired": "Vui lòng nhập giá cho thuê",
+    "pricePattern": "Vui lòng nhập số cho 'giá'",
+    "priceMax": "Giá không được vượt quá 9 chữ số",
+    "pricePlaceholder": "Nhập giá",
+    "priceAddon": "₫ / tháng",
+    "title": "Tiêu đề",
+    "titleRequired": "Vui lòng nhập tiêu đề",
+    "titlePlaceholder": "Nhập tiêu đề bài đăng",
+    "description": "Mô tả",
+    "descriptionRequired": "Vui lòng nhập mô tả",
+    "descriptionMin": "Mô tả phải chứa ít nhất 50 ký tự",
+    "cover": "Ảnh bìa",
+    "currentCover": "Ảnh bìa hiện tại",
+    "setCover": "Đặt ảnh bìa",
+    "propertyImage": "Hình ảnh bất động sản",
+    "propertyImageRequired": "Vui lòng chọn ít nhất một hình ảnh bất động sản",
+    "propertyImageMax": "Không được chọn quá 10 hình ảnh",
+    "uploadImage": "Tải ảnh lên",
+    "note": "Bạn có thể tải lên tối đa 10 hình ảnh. Mỗi hình ảnh không được vượt quá 2MB.",
+    "noteCover": "*Ảnh bìa là hình ảnh sẽ được hiển thị ở danh sách bất động sản."
+  },
+  "overview": {
+    "reviewPropertyInfo": "Xem lại thông tin bất động sản",
+    "title": "Tiêu đề",
+    "description": "Mô tả",
+    "address": "Địa chỉ",
+    "price": "Giá",
+    "area": "Diện tích",
+    "numRooms": "Số phòng",
+    "city": "Thành phố",
+    "district": "Quận/Huyện",
+    "roomType": "Loại phòng",
+    "amenities": "Tiện nghi",
+    "images": "Hình ảnh",
+    "propertyImage": "Hình ảnh bất động sản"
+  },
+  "button": {
+    "next": "Tiếp theo",
+    "back": "Quay lại",
+    "submit": "Đăng bài"
+  }
+}

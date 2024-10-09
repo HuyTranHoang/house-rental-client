@@ -35,7 +35,7 @@ const Recharge = () => {
   const [form] = Form.useForm()
   const amount = Form.useWatch('amount', form)
 
-  const { t } = useTranslation()
+  const { t } = useTranslation('recharge')
 
   const queryClient = useQueryClient()
   const [transactionId, setTransactionId] = useState<string>('')
@@ -61,7 +61,7 @@ const Recharge = () => {
     },
     onError: (error) => {
       console.error('Failed to create transaction', error)
-      toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')
+      toast.error(t('toast.error'))
     }
   })
 
@@ -91,7 +91,7 @@ const Recharge = () => {
     const amountToDeposit = values.amount === 'custom' && rawCustomAmount ? rawCustomAmount : Number(values.amount)
 
     if (isNaN(amountToDeposit) || amountToDeposit < 50000) {
-      toast.error(t('recharge.accountInfo.min'))
+      toast.error(t('accountInfo.min'))
       return
     }
 
@@ -115,10 +115,10 @@ const Recharge = () => {
     return (
       <>
         <Typography.Paragraph>
-          {t('recharge.selectedAmount')}: <strong className='text-green-500'>{formatCurrency(depositAmount)}</strong>
+          {t('selectedAmount')}: <strong className='text-green-500'>{formatCurrency(depositAmount)}</strong>
         </Typography.Paragraph>
         <Typography.Paragraph>
-          {t('recharge.afterRecharge')}: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
+          {t('afterRecharge')}: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
         </Typography.Paragraph>
       </>
     )
@@ -140,7 +140,7 @@ const Recharge = () => {
                 className='mr-4 w-8'
                 alt='deposit'
               />
-              <span>{t('recharge.title')}</span>
+              <span>{t('title')}</span>
             </div>
           }
         >
@@ -148,8 +148,8 @@ const Recharge = () => {
             <Form form={form} layout='vertical' onFinish={onFinish}>
               <Form.Item
                 name='amount'
-                label={t('recharge.amount')}
-                rules={[{ required: true, message: t('recharge.amountSelectRequired') }]}
+                label={t('amount')}
+                rules={[{ required: true, message: t('amountSelectRequired') }]}
               >
                 <Radio.Group>
                   <Space wrap>
@@ -157,7 +157,7 @@ const Recharge = () => {
                     <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
                     <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
                     <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
-                    <Radio.Button value='custom'>{t('recharge.custom')}</Radio.Button>
+                    <Radio.Button value='custom'>{t('custom')}</Radio.Button>
                   </Space>
                 </Radio.Group>
               </Form.Item>
@@ -165,12 +165,12 @@ const Recharge = () => {
               {amount === 'custom' && (
                 <Form.Item
                   name='customAmount'
-                  label={t('recharge.customAmount')}
-                  rules={[{ required: true, message: t('recharge.amountRequired') }]}
+                  label={t('customAmount')}
+                  rules={[{ required: true, message: t('amountRequired') }]}
                 >
                   <Input
                     type='text'
-                    placeholder={t('recharge.amountPlaceholder')}
+                    placeholder={t('amountPlaceholder')}
                     value={inputValue}
                     onChange={handleInputChange}
                     addonAfter='₫'
@@ -184,7 +184,7 @@ const Recharge = () => {
                   icon={<RocketOutlined />}
                   className='w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300'
                 >
-                  {t('recharge.recharge')}
+                  {t('recharge')}
                 </Button>
               </Form.Item>
             </Form>
@@ -193,28 +193,28 @@ const Recharge = () => {
           {isSubmitting && (
             <Typography.Paragraph type='secondary'>
               <LoadingOutlined className='mr-2' />
-              {t('recharge.redirecting')}
+              {t('redirecting')}
             </Typography.Paragraph>
           )}
           {isSuccess && (
             <>
-              <Alert message={t('recharge.rechargeSuccess')} type='success' showIcon className='mb-4' />
+              <Alert message={t('rechargeSuccess')} type='success' showIcon className='mb-4' />
               <Typography.Paragraph>
-                {t('recharge.rechargeAmount')}: <strong>{formatCurrency(transaction!.amount)}</strong>
+                {t('rechargeAmount')}: <strong>{formatCurrency(transaction!.amount)}</strong>
               </Typography.Paragraph>
               <Typography.Paragraph>
-                {t('recharge.rechargeTransaction')}: <strong>{transaction!.transactionId}</strong>
+                {t('rechargeTransaction')}: <strong>{transaction!.transactionId}</strong>
               </Typography.Paragraph>
               <Typography.Paragraph>
-                {t('recharge.rechargeDate')}: <strong>{new Date(transaction!.transactionDate).toLocaleString()}</strong>
+                {t('rechargeDate')}: <strong>{new Date(transaction!.transactionDate).toLocaleString()}</strong>
               </Typography.Paragraph>
               <Space>
                 <Typography.Paragraph>
-                  <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>Lịch sử giao dịch</Link>
+                  <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>{t('transactionHistory')}</Link>
                 </Typography.Paragraph>
                 <Typography.Paragraph>
                   <Button type='link' onClick={() => setIsSuccess(false)}>
-                    {t('recharge.continue')}
+                    {t('continue')}
                   </Button>
                 </Typography.Paragraph>
               </Space>
@@ -222,18 +222,18 @@ const Recharge = () => {
           )}
           {isFail && (
             <>
-              <Alert message={t('recharge.rechargeFailed')} type='error' showIcon className='mb-4' />
-              <Typography.Paragraph>{t('recharge.transactionFailed')}</Typography.Paragraph>
+              <Alert message={t('rechargeFailed')} type='error' showIcon className='mb-4' />
+              <Typography.Paragraph>{t('transactionFailed')}</Typography.Paragraph>
               <Typography.Paragraph>
-                {t('recharge.rechargeTransaction')}: <strong>{transaction!.transactionId}</strong>
+                {t('rechargeTransaction')}: <strong>{transaction!.transactionId}</strong>
               </Typography.Paragraph>
               <Space>
                 <Typography.Paragraph>
-                  <Link to={ROUTER_NAMES.PROFILE}>{t('recharge.transactionHistory')}</Link>
+                  <Link to={ROUTER_NAMES.PROFILE}>{t('transactionHistory')}</Link>
                 </Typography.Paragraph>
                 <Typography.Paragraph>
                   <Button type='link' onClick={() => setIsSuccess(false)}>
-                    {t('recharge.retry')}
+                    {t('retry')}
                   </Button>
                 </Typography.Paragraph>
               </Space>
@@ -251,16 +251,16 @@ const Recharge = () => {
         >
           <Card className='flex items-center'>
             <Typography.Title level={5} className='mt-0'>
-              {t('recharge.accountInfo.accountBalance')}
+              {t('accountInfo.accountBalance')}
             </Typography.Title>
             <Typography.Paragraph>
-              {t('recharge.accountInfo.present')}: <strong>{formatCurrency(currentUser.balance)}</strong>
+              {t('accountInfo.present')}: <strong>{formatCurrency(currentUser.balance)}</strong>
             </Typography.Paragraph>
 
             {amount && renderDepositInfo()}
 
-            <Typography.Title level={5}>{t('recharge.accountInfo.note')}</Typography.Title>
-            <Typography.Paragraph>- {t('recharge.accountInfo.min')}</Typography.Paragraph>
+            <Typography.Title level={5}>{t('accountInfo.note')}</Typography.Title>
+            <Typography.Paragraph>- {t('accountInfo.min')}</Typography.Paragraph>
           </Card>
         </Col>
       )}

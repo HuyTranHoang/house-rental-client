@@ -1,0 +1,27 @@
+{
+  "contactWithMogu": "Contact Mogu",
+  "contactDescription": "Please contact us and let us know how we can help",
+  "officeAddress": "Mogu Office Address",
+  "office": "Office",
+  "officeDescription": "Directly at offices nationwide",
+  "contactViaZalo": "Contact via Zalo",
+  "hotline": "Hotline",
+  "hotlineDescription": "We are always available 24/7, call 1900 1000",
+  "facebookMoguVN": "Facebook Mogu VN",
+  "emailAndSocial": "Email and Social Media",
+  "emailDescription": "Contact via email: hotro@mogu.vn or page",
+  "contactDirectlyHere": "Customers can contact directly here:",
+  "form": {
+    "message": "Message",
+    "messageRequired": "Please enter the message!",
+    "name": "Name",
+    "nameRequired": "Please enter your name!",
+    "email": "Email",
+    "emailRequired": "Please enter your email!",
+    "emailInvalid": "Invalid email format!",
+    "send": "Send",
+    "sendSuccess": "Sent successfully!",
+    "sendFailure": "Sending failed, please try again later!",
+    "emailImageAlt": "email image"
+  }
+}

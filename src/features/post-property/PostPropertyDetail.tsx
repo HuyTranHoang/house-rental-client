@@ -2,12 +2,15 @@ import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 import { useAmenities } from '@/hooks/useAmenity.ts'
 import { Form, FormInstance, Input, Select, Spin, Typography } from 'antd'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const formatNumber = (value: string) => {
   return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
 export default function PostPropertyDetail({ form }: { form: FormInstance<PostPropertyFormData> }) {
+  const { t } = useTranslation('postProperty')
+
   const { amenityData, amenityIsLoading } = useAmenities()
   const [areaValue, setAreaValue] = useState('')
   const [priceValue, setPriceValue] = useState('')
@@ -42,41 +45,41 @@ export default function PostPropertyDetail({ form }: { form: FormInstance<PostPr
   return (
     <>
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
-        Thông tin chi tiết
+        {t('form.details')}
       </Typography.Title>
 
       <Form form={form} layout='vertical' className='space-y-4'>
         <Form.Item<PostPropertyFormData>
           name='numRooms'
-          label='Số phòng ngủ'
+          label={t('form.numRooms')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập số phòng ngủ'
+              message: t('form.numRoomsRequired')
             },
             {
               pattern: new RegExp(/^[0-9]+$/),
-              message: "Vui lòng nhập số cho 'số phòng ngủ'"
+              message: t('form.numRoomsPattern')
             }
           ]}
         >
-          <Input placeholder='Nhập số phòng ngủ' />
+          <Input placeholder={t('form.numRomsPlaceholder')} />
         </Form.Item>
 
         <Form.Item<PostPropertyFormData>
           name='amenities'
-          label='Tiện nghi'
+          label={t('form.amenities')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng chọn ít nhất một tiện nghi'
+              message: t('form.amenitiesRequired')
             }
           ]}
         >
           <Select
             options={amenityOptions}
             mode='multiple'
-            placeholder='Chọn tiện nghi'
+            placeholder={t('form.amenitiesPlaceholder')}
             style={{ width: '100%' }}
             optionFilterProp='children'
           />
@@ -84,24 +87,24 @@ export default function PostPropertyDetail({ form }: { form: FormInstance<PostPr
 
         <Form.Item<PostPropertyFormData>
           name='area'
-          label='Diện tích'
+          label={t('form.area')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập diện tích bất động sản'
+              message: t('form.areaRequired')
             },
             {
               pattern: new RegExp(/^[0-9,]+$/),
-              message: "Vui lòng nhập số cho 'diện tích'"
+              message: t('form.areaPattern')
             },
             {
               max: 7,
-              message: 'Diện tích không được vượt quá 6 chữ số'
+              message: t('form.areaMax')
             }
           ]}
         >
           <Input
-            placeholder='Nhập diện tích bất động sản'
+            placeholder={t('form.areaPlaceholder')}
             addonAfter='m²'
             value={areaValue}
             onChange={handleAreaChange}
@@ -110,25 +113,25 @@ export default function PostPropertyDetail({ form }: { form: FormInstance<PostPr
 
         <Form.Item<PostPropertyFormData>
           name='price'
-          label='Giá'
+          label={t('form.price')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập giá cho thuê'
+              message: t('form.priceRequired')
             },
             {
               pattern: new RegExp(/^[0-9,]+$/),
-              message: "Vui lòng nhập số cho 'giá'"
+              message: t('form.pricePattern')
             },
             {
               max: 12,
-              message: 'Giá không được vượt quá 9 chữ số'
+              message: t('form.priceMax')
             }
           ]}
         >
           <Input
-            placeholder='Nhập giá cho thuê'
-            addonAfter='₫ / tháng'
+            placeholder={t('form.pricePlaceholder')}
+            addonAfter={t('form.priceAddon')}
             value={priceValue}
             onChange={handlePriceChange}
           />

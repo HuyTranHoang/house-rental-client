@@ -19,31 +19,7 @@
   },
   "toast": {
     "loginSuccess": "Đăng nhập thành công!",
-    "logoutSuccess": "Đăng xuất thành công!",
-    "updateAvatarSuccess": "Cập nhật ảnh đại diện thành công!",
-    "updateAvatarFailed": "Cập nhật ảnh đại diện thất bại!"
-  },
-  "personalInfo": {
-    "editPersonalInfo": "Chỉnh sửa thông tin cá nhân",
-    "firstName": "Tên",
-    "lastName": "Họ",
-    "phoneNumber": "Số điện thoại",
-    "accountBalance": "Số dư tài khoản",
-    "accountType": {
-      "type": "Loại tài khoản",
-      "free": "Miễn phí",
-      "standard": "Tiêu chuẩn",
-      "premium": "Cao cấp",
-      "remainingTerm": "Thời gian còn lại",
-      "refeshCount": "Lượt làm mới",
-      "priorityCount": "Lượt đẩy bài ưu tiên",
-      "days": "ngày"
-    },
-    "refresh": "Làm mới",
-    "priorityPush": "Đẩy tin ưu tiên",
-    "changePassword": "Đổi mật khẩu",
-    "updating": "Đang cập nhật...",
-    "changeAvatar": "Đổi ảnh đại diện"
+    "logoutSuccess": "Đăng xuất thành công!"
   },
   "filter": {
     "title": "Bộ lọc",
