@@ -215,7 +215,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
             <Space wrap>
               {property?.propertyImages.map((image) => (
                 <Flex vertical className='w-32'>
-                  <Image key={image} src={image} />
+                  <Image key={image} src={image} className='object-cover h-24' />
                   <Flex justify='space-between'>
                     <Button type='link' size='small' danger onClick={() => handleDeleteImage(image)}>
                       Xóa
