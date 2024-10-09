@@ -12,7 +12,7 @@ import { formatDate } from '@/utils/formatDate.ts'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
 import { Button, Col, Descriptions, DescriptionsProps, Divider, Row, Skeleton, Space, Tag, Typography } from 'antd'
 import DOMPurify from 'dompurify'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Navigation, Pagination } from 'swiper/modules'
@@ -58,6 +58,13 @@ function PropertyDetail() {
       span: 3
     }
   ]
+
+  useEffect(() => {
+    if (propertyData && (propertyData.blocked || propertyData.hidden)) {
+      navigate(ROUTER_NAMES.RENT_HOUSE)
+    }
+
+  }, [navigate, propertyData])
 
   return (
     <Container>

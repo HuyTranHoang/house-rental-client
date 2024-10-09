@@ -204,7 +204,10 @@ export default function PostManagementTable({
       width: 150,
       render: (value: boolean, record: PropertyDataSource) => (
         <div className='space-y-1'>
-          <Badge status={value ? 'error' : 'success'} text={value ? t('table.blocked') : t('table.active')} />
+          {!record.hidden && !value && <Badge status={'success'} text={t('table.active')} />}
+
+          {value && <Badge status={'error'} text={t('table.blocked')} />}
+
           {record.hidden && (
             <Badge
               status='warning'
