@@ -127,7 +127,7 @@ export default function ProfileLayout() {
   const onClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'dangXuat') {
       logout()
-      navigate(ROUTER_NAMES.TEST)
+      navigate(ROUTER_NAMES.RENT_HOUSE)
       localStorage.removeItem('jwtToken')
       axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
         toast.success(t('toast.logoutSuccess'))
