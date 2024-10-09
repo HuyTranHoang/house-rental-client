@@ -13,35 +13,35 @@ import { clsx } from 'clsx'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-const getNotificationMessage = (item: NotificationType, t: any) => {
-  const mapTypeToMessage = {
-    [NotificationTypeEnum.COMMENT]: () => (
-      <>
-        <span className='text-blue-500'>@{item.senderUsername}</span> {t('commentedOnYourPost')}{' '}
-        <span className='font-semibold'>{item.propertyTitle}</span>
-      </>
-    ),
-    [NotificationTypeEnum.APPROVED]: () => (
-      <>
-        {t('yourPost')} <span className='font-semibold'>{item.propertyTitle}</span> {t('hasBeenApproved')}
-      </>
-    ),
-    [NotificationTypeEnum.REJECTED]: () => (
-      <>
-        {t('yourPost')} <span className='font-semibold'>{item.propertyTitle}</span> {t('hasBeenRejected')}
-      </>
-    )
-  }
-
-  return mapTypeToMessage[item.type]()
-}
-
 function NotificationMenu({ currentUser }: { currentUser: User | null }) {
   const { t } = useTranslation('notification')
   const navigate = useNavigate()
   const { updateNotificationSeen } = useUpdateNotificationSeen()
   const { notificationData, notificationIsLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useNotificationByUserId(currentUser?.id, 5)
+
+  const getNotificationMessage = (item: NotificationType) => {
+    const mapTypeToMessage = {
+      [NotificationTypeEnum.COMMENT]: () => (
+        <>
+          <span className='text-blue-500'>@{item.senderUsername}</span> {t('commentedOnYourPost')}{' '}
+          <span className='font-semibold'>{item.propertyTitle}</span>
+        </>
+      ),
+      [NotificationTypeEnum.APPROVED]: () => (
+        <>
+          {t('yourPost')} <span className='font-semibold'>{item.propertyTitle}</span> {t('hasBeenApproved')}
+        </>
+      ),
+      [NotificationTypeEnum.REJECTED]: () => (
+        <>
+          {t('yourPost')} <span className='font-semibold'>{item.propertyTitle}</span> {t('hasBeenRejected')}
+        </>
+      )
+    }
+
+    return mapTypeToMessage[item.type]()
+  }
 
   const handleClickNotification = (item: NotificationType) => {
     if (!item.seen) updateNotificationSeen(item.id)
@@ -77,7 +77,7 @@ function NotificationMenu({ currentUser }: { currentUser: User | null }) {
               onClick={() => handleClickNotification(item)}
             >
               <div className='flex items-start justify-between'>
-                <p className='my-0 text-wrap text-sm'>{getNotificationMessage(item, t)}</p>
+                <p className='my-0 text-wrap text-sm'>{getNotificationMessage(item)}</p>
                 {!item.seen && <Badge className='px-2' status='processing' />}
               </div>
               <p className='mt-1 text-xs text-gray-500'>
