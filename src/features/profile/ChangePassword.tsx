@@ -15,7 +15,7 @@ type ChangePasswordField = {
 function ChangePassword() {
   const [error] = useState<undefined | string>(undefined)
   const [form] = Form.useForm()
-  const { t } = useTranslation()
+  const { t } = useTranslation('profile')
 
   const { mutate: updatePasswordMutate, isPending } = useMutation({
     mutationFn: changePasswordApi,

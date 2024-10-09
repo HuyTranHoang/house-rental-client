@@ -3,6 +3,7 @@ import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { Table, TablePaginationConfig, TableProps, Tag } from 'antd'
 import { clsx } from 'clsx'
 import { formatDateWithTime } from '@/utils/formatDate.ts'
+import { useTranslation } from 'react-i18next'
 
 interface TransactionHistoryTableProps {
   dataSource: TransactionDataSource[]
@@ -11,26 +12,28 @@ interface TransactionHistoryTableProps {
   handleTableChange: TableProps<TransactionDataSource>['onChange']
 }
 
-const statusMap = {
-  [TransactionStatus.SUCCESS]: ['green', 'Thành công'],
-  [TransactionStatus.PENDING]: ['blue', 'Đang xử lý'],
-  [TransactionStatus.FAILED]: ['red', 'Thất bại']
-}
-
 function TransactionHistoryTable({
-  dataSource,
-  loading,
-  paginationProps,
-  handleTableChange
-}: TransactionHistoryTableProps) {
+                                   dataSource,
+                                   loading,
+                                   paginationProps,
+                                   handleTableChange
+                                 }: TransactionHistoryTableProps) {
+  const { t } = useTranslation('profile')
+
+  const statusMap = {
+    [TransactionStatus.SUCCESS]: ['green', t('transactionHistory.success')],
+    [TransactionStatus.PENDING]: ['blue', t('transactionHistory.pending')],
+    [TransactionStatus.FAILED]: ['red', t('transactionHistory.failed')]
+  }
+
   const columns = [
     {
-      title: 'Mã giao dịch',
+      title: t('transactionHistory.transactionId'),
       dataIndex: 'transactionId',
       key: 'transactionId'
     },
     {
-      title: 'Số tiền',
+      title: t('transactionHistory.amount'),
       dataIndex: 'amount',
       key: 'amount',
       render: (value: Transaction['amount'], record: Transaction) => {
@@ -48,14 +51,14 @@ function TransactionHistoryTable({
       }
     },
     {
-      title: 'Thời gian',
+      title: t('transactionHistory.transactionDate'),
       dataIndex: 'transactionDate',
       key: 'transactionDate',
       sorter: true,
       render: (value: Transaction['transactionDate']) => formatDateWithTime(value)
     },
     {
-      title: 'Trạng thái',
+      title: t('transactionHistory.status'),
       dataIndex: 'status',
       key: 'status',
       width: 120,
@@ -77,16 +80,16 @@ function TransactionHistoryTable({
       onChange={handleTableChange}
       expandable={{
         expandedRowRender: (record) => <>
-          <p><strong>Loại giao dịch:</strong> {record.transactionType === TransactionType.DEPOSIT ? 'Nạp tiền' : 'Rút tiền'}</p>
-          <p><strong>Phương thức:</strong> VNPAY</p>
-          <p><strong>Nội dung:</strong> {record.description}</p>
+          <p><strong>{t('transactionHistory.transactionType')}:</strong> {record.transactionType === TransactionType.DEPOSIT ? t('transactionHistory.deposit') : t('transactionHistory.withdrawal')}</p>
+          <p><strong>{t('transactionHistory.method')}:</strong> VNPAY</p>
+          <p><strong>{t('transactionHistory.description')}:</strong> {record.description}</p>
         </>
       }}
       locale={{
-        emptyText: 'Không có dữ liệu',
-        triggerDesc: 'Sắp xếp giảm dần',
-        triggerAsc: 'Sắp xếp tăng dần',
-        cancelSort: 'Hủy sắp xếp'
+        emptyText: t('transactionHistory.noData'),
+        triggerDesc: t('transactionHistory.triggerDesc'),
+        triggerAsc: t('transactionHistory.triggerAsc'),
+        cancelSort: t('transactionHistory.cancelSort')
       }}
     />
   )

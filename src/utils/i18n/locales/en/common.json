@@ -19,33 +19,7 @@
   },
   "toast": {
     "loginSuccess": "Login successful!",
-    "logoutSuccess": "Logout successful!",
-    "updateAvatarSuccess": "Avatar updated successfully!",
-    "updateAvatarFailed": "Failed to update avatar!",
-    "changePasswordSuccess": "Changed password successfully!",
-    "changePasswordFailed": "Changed password failed!"
-  },
-  "personalInfo": {
-    "editPersonalInfo": "Edit Personal Information",
-    "firstName": "First name",
-    "lastName": "Last name",
-    "phoneNumber": "Phone number",
-    "accountBalance": "Account balance",
-    "accountType": {
-      "type": "Account type",
-      "free": "Free",
-      "standard": "Standard",
-      "premium": "Premium",
-      "remainingTerm": "Remaining term",
-      "refeshCount": "Refresh count",
-      "priorityCount": "Priority count",
-      "days": "days"
-    },
-    "refresh": "Refresh",
-    "priorityPush": "Priority push",
-    "changePassword": "Change password",
-    "updating": "Updating...",
-    "changeAvatar": "Change avatar"
+    "logoutSuccess": "Logout successful!"
   },
   "filter": {
     "title": "Filter",
@@ -74,17 +48,5 @@
   "button": {
     "favorite": "Add to favorite",
     "unfavorite": "Remove from favorite"
-  },
-  "changePassword": {
-    "changePassword": "Change password",
-    "oldPassword": "Old password",
-    "newPassword": "New password",
-    "reEnterNewPassword": "Re-enter new password",
-    "updatePassword": "Update password",
-    "passwordNotMatch": "Password does not match!",
-    "validatePassword": "Password must have at least 8 characters, including letters and numbers!",
-    "requiredOldPassword": "Please enter your old password!",
-    "requiredNewPassword": "Please enter your new password!",
-    "requiredReEnterNewPassword": "Please enter 'Re-enter new password'!"
   }
 }

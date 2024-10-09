@@ -19,33 +19,7 @@
   },
   "toast": {
     "loginSuccess": "Đăng nhập thành công!",
-    "logoutSuccess": "Đăng xuất thành công!",
-    "updateAvatarSuccess": "Cập nhật ảnh đại diện thành công!",
-    "updateAvatarFailed": "Cập nhật ảnh đại diện thất bại!",
-    "changePasswordSuccess": "Đổi mật khẩu thành công!",
-    "changePasswordFailed": "Đổi mật khẩu thất bại!"
-  },
-  "personalInfo": {
-    "editPersonalInfo": "Chỉnh sửa thông tin cá nhân",
-    "firstName": "Tên",
-    "lastName": "Họ",
-    "phoneNumber": "Số điện thoại",
-    "accountBalance": "Số dư tài khoản",
-    "accountType": {
-      "type": "Loại tài khoản",
-      "free": "Miễn phí",
-      "standard": "Tiêu chuẩn",
-      "premium": "Cao cấp",
-      "remainingTerm": "Thời gian còn lại",
-      "refeshCount": "Lượt làm mới",
-      "priorityCount": "Lượt đẩy bài ưu tiên",
-      "days": "ngày"
-    },
-    "refresh": "Làm mới",
-    "priorityPush": "Đẩy tin ưu tiên",
-    "changePassword": "Đổi mật khẩu",
-    "updating": "Đang cập nhật...",
-    "changeAvatar": "Đổi ảnh đại diện"
+    "logoutSuccess": "Đăng xuất thành công!"
   },
   "filter": {
     "title": "Bộ lọc",
@@ -74,17 +48,5 @@
   "button": {
     "favorite": "Thêm vào danh sách yêu thích",
     "unfavorite": "Bỏ khỏi danh sách yêu thích"
-  },
-  "changePassword": {
-    "changePassword": "Đổi mật khẩu",
-    "oldPassword": "Mật khẩu hiện tại",
-    "newPassword": "Mật khẩu mơi",
-    "reEnterNewPassword": "Nhập lại mật khẩu mới",
-    "updatePassword": "Cập nhật mật khẩu",
-    "passwordNotMatch": "Mật khẩu không khớp!",
-    "validatePassword": "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và số!",
-    "requiredOldPassword": "Vui lòng nhập mật khẩu cũ!",
-    "requiredNewPassword": "Vui lòng nhập mật khẩu mới!",
-    "requiredReEnterNewPassword": "Vui lòng nhập 'Nhập lại mật khẩu mới'!"
   }
 }
