@@ -1,0 +1,63 @@
+{
+    "record" : {
+        "SCAM": "Bình luận này có dấu hiệu lừa đảo!",
+        "INAPPROPRIATE_CONTENT": "Bình luận này có nội dung không phù hợp!",
+        "DUPLICATE": "Bình luận này bị trùng lặp!",
+        "MISINFORMATION": "Bình luận này có thông tin sai sự thật!",
+        "OTHER": ""
+    },
+    "form" : {
+        "REPORT" : "Báo vi phạm",
+        "COMMENT_REPORT" : "Báo cáo bình luận",
+        "REPORT_A_VIOLATION" : "Báo cáo vi phạm",
+        "TYPE_VIOLATION" : "Loại vi phạm",
+        "REQUIRED_VIOLATION" :"Vui lòng chọn loại vi phạm",
+        "SELECT_VIOLATION" : "Chọn loại vi phạm muốn báo cáo",
+        "SCAM" : "Lừa đảo",
+        "INAPPROPRIATE_CONTENT" :"Nội dung không phù hợp",
+        "DUPLICATE" : "Nội dung trùng lặp",
+        "MISINFORMATION" : "Nội dung sai sự thật",
+        "OTHER" : "Khác",
+        "REASON" : "Lý do",
+        "REASON_REQUIRED" : "Vui lòng nhập lý do",
+        "CONTENT_REASON" : "Nhập nội dung vi phạm của bình luận"
+    },
+    "property" : {
+        "AREA" : "Diện tích",
+        "NUMROOM" : "Số phòng ngủ",
+        "CREATEAT" : "Ngày đăng",
+        "AMENITY" : "Tiện ích",
+        "ABOUT_LIST" :"Về danh sách",
+        "NEXT_PROPERTY" : "Tin tiếp",
+        "MAIN_INFO" : "Thông tin chính",
+        "INTRODUCE" : "Giới thiệu"
+    },
+    "component" : {
+        "COMMENT_INFO" : "Bình luận",
+        "DELETE_COMMENT" : "Xóa bình luận",
+        "NOTIFI_COMMENT" : "Chưa có bình luận nào cho bất động sản này",
+        "COMMENT" : "Để lại bình luận",
+        "COMMENT_REQUIRED" : "Vui lòng nhạp bình luận của bạn",
+        "COMMENT_MIN" : "Bình luận phải có ít nhất 10 ký tự",
+        "COMMENT_MAX" : "Bình luận không được vượt quá 500 ký tự",
+        "COMMENT_ABOUT" : "Bình luận của bạn về bất động sản này",
+        "COMMENT_SEND" : "Gửi bình luận",
+        "CONFIRM_DELETE" : "Xác nhận xóa",
+        "BACK" : "Quay lại",
+        "CONFIRM_ACCESS_DELETE" : "Bạn có chắc chắn muốn xóa bình luận của ",
+        "WARRING_NOTIFI" : "Lưu ý hành động này không thể hoàn tác."
+    },
+    "favorite" : {
+        "SAVE" : "Lưu tin"
+    },
+    "ownerDetail" : {
+        "PARTCITIPATED" : "Đã tham gia",
+        "PHONE_COPPY" : "Sao chép số điện thoại",
+        "SHOW_NUMBER" : "Bấm để hiện số",
+        "SEND_MESSAGE" : "Gửi tin nhắn"
+    },
+    "related" : {
+        "SAME_PROPERTY" : "Bất động sản tương tự",
+        "ROOM" : "Phòng ngủ"
+    }
+}

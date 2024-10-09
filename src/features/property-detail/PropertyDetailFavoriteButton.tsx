@@ -4,6 +4,7 @@ import { User } from '@/types/user.type.ts'
 import { red } from '@ant-design/colors'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { Button, ConfigProvider } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 interface PropertyDetailFavoriteButtonProps {
@@ -17,6 +18,8 @@ function PropertyDetailFavoriteButton({ id, currentUser }: PropertyDetailFavorit
   const isFavorite = favorites?.some((favorite) => favorite.propertyId === Number(id))
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
+
+  const { t } = useTranslation(['common', 'propertyDetail'])
 
   return (
     <ConfigProvider
@@ -45,7 +48,7 @@ function PropertyDetailFavoriteButton({ id, currentUser }: PropertyDetailFavorit
         size='large'
         className='mb-6 mt-3 w-full md:mb-0 md:w-32'
       >
-        Lưu tin
+        {t('propertyDetail:favorite.SAVE')}
       </Button>
     </ConfigProvider>
   )

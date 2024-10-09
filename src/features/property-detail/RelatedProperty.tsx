@@ -6,6 +6,7 @@ import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { generateSlug } from '@/utils/generateSlug.ts'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Row, Space, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 interface RelatedPropertyProps {
@@ -19,6 +20,7 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
   const { favorites } = useFavoriteByUserId(currentUser?.id)
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
+  const { t } = useTranslation(['common', 'propertyDetail'])
 
   if (relatedPropertiesIsLoading) {
     return (
@@ -37,7 +39,7 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
   return (
     <>
       <Typography.Title level={4} className='mb-4 mt-8'>
-        Bất động sản tương tự
+        {t('propertyDetail:related.SAME_PROPERTY')}
       </Typography.Title>
       <Row gutter={16} className='mb-12'>
         {relatedPropertiesData &&
@@ -73,7 +75,7 @@ function RelatedProperty({ id, currentUser }: RelatedPropertyProps) {
                         </Typography.Paragraph>
                         <Space className='mt-2'>
                           <span>{property.area} m²</span>
-                          <span>{property.numRooms} phòng ngủ</span>
+                          <span>{property.numRooms} {t('propertyDetail:related.ROOM')}</span>
                         </Space>
                       </>
                     }

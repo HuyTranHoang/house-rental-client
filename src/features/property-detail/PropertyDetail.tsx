@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailComment from './PropertyDetailComment.tsx'
+import { useTranslation } from 'react-i18next'
 
 function PropertyDetail() {
   const navigate = useNavigate()
@@ -32,25 +33,27 @@ function PropertyDetail() {
 
   const descriptionCleanHTML = propertyData ? DOMPurify.sanitize(propertyData.description) : ''
 
+  const { t } = useTranslation(['common', 'propertyDetail'])
+
   const items: DescriptionsProps['items'] = [
     {
       key: 'area',
-      label: 'Diện tích',
+      label: t('propertyDetail:property.AREA'),
       children: <span>{propertyData?.area} m&sup2;</span>
     },
     {
       key: 'numRooms',
-      label: 'Số phòng ngủ',
+      label: t('propertyDetail:property.NUMROOM'),
       children: propertyData?.numRooms
     },
     {
       key: 'createAt',
-      label: 'Ngày đăng',
+      label: t('propertyDetail:property.CREATEAT'),
       children: formatDate(propertyData?.createdAt)
     },
     {
       key: 'amenities',
-      label: 'Tiện ích',
+      label: t('propertyDetail:property.AMENITY'),
       children: propertyData?.amenities.join(', '),
       span: 3
     }
@@ -70,14 +73,14 @@ function PropertyDetail() {
               onClick={() => navigate(ROUTER_NAMES.RENT_HOUSE)}
               className='group relative border-0 bg-white pl-4 pr-3 text-gray-500 transition-none hover:bg-slate-200 hover:text-gray-700'
             >
-              <span>Về danh sách</span>
+              <span>{t('propertyDetail:property.ABOUT_LIST')}</span>
               <span className='absolute left-0 top-0 h-0 w-0 -translate-x-full border-b-[12px] border-l-0 border-r-[11px] border-t-[11px] border-solid border-transparent border-r-white transition-none group-hover:border-r-slate-200' />
             </Button>
             <Button
               size='small'
               className='group relative border-0 bg-blue-400 pl-3 pr-4 text-white transition-none hover:bg-blue-500 hover:text-white'
             >
-              <span>Tin tiếp</span>
+              <span>{t('propertyDetail:property.NEXT_PROPERTY')}</span>
               <span className='absolute right-[2px] top-0 h-0 w-0 translate-x-full border-b-[12px] border-l-[11px] border-r-0 border-t-[11px] border-solid border-transparent border-l-blue-400 transition-none group-hover:border-l-blue-500' />
             </Button>
           </Space>
@@ -132,13 +135,13 @@ function PropertyDetail() {
                 {formatCurrency(propertyData.price)}
               </Typography.Title>
 
-              <Typography.Title level={4}>Thông tin chính</Typography.Title>
+              <Typography.Title level={4}>{t('propertyDetail:property.MAIN_INFO')}</Typography.Title>
 
               <Typography.Paragraph>
                 <Descriptions bordered items={items} />
               </Typography.Paragraph>
 
-              <Typography.Title level={4}>Giới thiệu</Typography.Title>
+              <Typography.Title level={4}>{t('propertyDetail:property.INTRODUCE')}</Typography.Title>
               <div dangerouslySetInnerHTML={{ __html: descriptionCleanHTML }} />
 
               <ReportButton propertyId={propertyData.id} />
