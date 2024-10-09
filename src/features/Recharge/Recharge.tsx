@@ -2,7 +2,7 @@ import { createTransactionDeposit, getTransaction } from '@/api/transaction.api.
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import useAuthStore from '@/store/authStore.ts'
 import { TransactionStatus } from '@/types/transaction.type.ts'
-import { formatCurrency } from '@/utils/formatCurrentcy'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { LoadingOutlined, RocketOutlined } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
@@ -31,7 +31,7 @@ const useGetTransaction = (transactionId: string) => {
   return { data, isLoading }
 }
 
-const Deposit = () => {
+const Recharge = () => {
   const [form] = Form.useForm()
   const amount = Form.useWatch('amount', form)
 
@@ -268,4 +268,4 @@ const Deposit = () => {
   )
 }
 
-export default Deposit
+export default Recharge

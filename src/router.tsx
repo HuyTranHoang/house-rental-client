@@ -3,7 +3,7 @@ import AuthGuard from '@/features/auth/AuthGuard.tsx'
 import { MemberFee } from '@/features/membership/MemberFee.tsx'
 import PostProperty from '@/features/post-property/PostProperty.tsx'
 import PropertyDetail from '@/features/property-detail/PropertyDetail.tsx'
-import PaymentFailure from '@/pages/PaymentFailed.tsx'
+import PaymentFailure from '@/features/Recharge/PaymentFailed.tsx'
 import { HomeOutlined } from '@ant-design/icons'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import { BreadcrumbsRoute } from 'use-react-router-breadcrumbs'
@@ -22,8 +22,8 @@ import TransactionHistory from './features/profile/TransactionHistory.tsx'
 import RentHouse from './features/rent-house/RentHouse.tsx'
 import About from './pages/About.tsx'
 import Contact from './pages/Contact.tsx'
-import Deposit from './pages/Deposit.tsx'
-import PaymentSuccess from './pages/PaymentSuccess.tsx'
+import Recharge from './features/Recharge/Recharge.tsx'
+import PaymentSuccess from './features/Recharge/PaymentSuccess.tsx'
 import AppLayout from './ui/AppLayout.tsx'
 import AppLayoutFluid from './ui/AppLayoutFluid.tsx'
 import ProfileLayout from './ui/ProfileLayout.tsx'
@@ -38,8 +38,8 @@ const layoutFluid: RouteObject[] & BreadcrumbsRoute[] = [
         element: <ProtectedRoute />,
         children: [
           {
-            path: ROUTER_NAMES.TOP_UP,
-            element: <Deposit />
+            path: ROUTER_NAMES.RECHARGE,
+            element: <Recharge />
           },
           {
             path: ROUTER_NAMES.PAYMENT_SUCCESS,

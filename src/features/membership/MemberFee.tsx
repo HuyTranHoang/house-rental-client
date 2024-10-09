@@ -40,7 +40,7 @@ export function MemberFee() {
       if (selectedMembership.price > currentUser.balance) {
         toast.error('Số dư không đủ để nâng cấp gói thành viên.')
         setConfirmModal(false)
-        navigate(ROUTER_NAMES.TOP_UP)
+        navigate(ROUTER_NAMES.RECHARGE)
         return
       }
 

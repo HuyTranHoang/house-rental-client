@@ -44,9 +44,9 @@ function MenuMobile({ user }: { user: User | null }) {
       icon: <CreditCardOutlined className='text-base' />
     },
     {
-      key: ROUTER_NAMES.TOP_UP,
+      key: ROUTER_NAMES.RECHARGE,
       label: t('navbar.recharge'),
-      navigate: ROUTER_NAMES.TOP_UP,
+      navigate: ROUTER_NAMES.RECHARGE,
       icon: <DollarOutlined className='text-base' />
     },
     {

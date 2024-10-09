@@ -16,7 +16,7 @@ const ROUTER_NAMES = {
   CHANGE_PASSWORD: '/thong-tin-ca-nhan/doi-mat-khau',
 
   MEMBERSHIP_FEE: '/phi-thanh-vien',
-  TOP_UP: '/nap-tien',
+  RECHARGE: '/nap-tien',
   PAYMENT_SUCCESS: '/thanh-toan-thanh-cong',
   PAYMENT_FAILED: '/thanh-toan-that-bai',
   PROMOTION: '/khuyen-mai',

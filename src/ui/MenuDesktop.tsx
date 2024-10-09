@@ -75,7 +75,7 @@ function MenuDesktop({ user }: { user: User | null }) {
 
       <NavItem title={t('navbar.membershipPackage')} link={ROUTER_NAMES.MEMBERSHIP_FEE} />
 
-      <NavItem title={t('navbar.recharge')} link={ROUTER_NAMES.TOP_UP} />
+      <NavItem title={t('navbar.recharge')} link={ROUTER_NAMES.RECHARGE} />
 
       <NavItem title={t('navbar.aboutUs')} link={ROUTER_NAMES.ABOUT} />
 
