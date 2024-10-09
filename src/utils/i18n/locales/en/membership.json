@@ -22,5 +22,12 @@
   "postPriority": "Post Priority: {{priority}} turns",
   "refreshPost": "Refresh Post: {{refresh}} turns",
   "basicPackage": "All features of Basic package",
-  "freePackage": "Search, post and more"
+  "freePackage": "Search, post and more",
+  "purchaseSuccess": {
+    "purchaseSuccess": "Purchase Successful!",
+    "congratulations": "Congratulations, you have purchased the",
+    "currentBalance": "Current Balance",
+    "expiryDate": "Expiry Date",
+    "undefined": "Undefined"
+  }
 }

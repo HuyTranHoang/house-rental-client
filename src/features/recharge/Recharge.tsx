@@ -61,7 +61,7 @@ const Recharge = () => {
     },
     onError: (error) => {
       console.error('Failed to create transaction', error)
-      toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')
+      toast.error(t('toast.error'))
     }
   })
 
@@ -210,7 +210,7 @@ const Recharge = () => {
               </Typography.Paragraph>
               <Space>
                 <Typography.Paragraph>
-                  <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>Lịch sử giao dịch</Link>
+                  <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>{t('transactionHistory')}</Link>
                 </Typography.Paragraph>
                 <Typography.Paragraph>
                   <Button type='link' onClick={() => setIsSuccess(false)}>

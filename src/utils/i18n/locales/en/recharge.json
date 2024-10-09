@@ -1,4 +1,7 @@
 {
+  "toast": {
+    "error": "Something went wrong. Please try again later."
+  },
   "title": "Recharge",
   "amount": "Amount",
   "amountPlaceholder": "Enter amount",

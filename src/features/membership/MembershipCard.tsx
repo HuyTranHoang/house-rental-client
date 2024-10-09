@@ -15,7 +15,7 @@ interface MembershipCardProps {
 
 export function MembershipCard({ membership, isCurrentMembership, onUpgrade, isLoggedIn }: MembershipCardProps) {
   const { name, price, durationDays, description, priority, refresh } = membership
-  const { t } = useTranslation()
+  const { t } = useTranslation('membership')
 
   const getIcon = () => {
     switch (name) {
@@ -31,9 +31,9 @@ export function MembershipCard({ membership, isCurrentMembership, onUpgrade, isL
   }
 
   const getButtonText = () => {
-    if (name === 'Free') return t('membership.free')
-    if (name === 'Standard') return t('membership.standard')
-    if (name === 'Premium') return t('membership.premium')
+    if (name === 'Free') return t('free')
+    if (name === 'Standard') return t('standard')
+    if (name === 'Premium') return t('premium')
     return name
   }
 
@@ -52,7 +52,7 @@ export function MembershipCard({ membership, isCurrentMembership, onUpgrade, isL
       <Text className='mt-2 block flex-grow text-sm text-gray-500'>{description}</Text>
 
       <div className='mt-auto'>
-        <Tooltip title={isCurrentMembership ? t('membership.extend') : t('membership.upgrade')}>
+        <Tooltip title={isCurrentMembership ? t('extend') : t('upgrade')}>
           <Button
             type='primary'
             disabled={name === 'Free' || (!isLoggedIn && name !== 'Free')}
@@ -66,21 +66,21 @@ export function MembershipCard({ membership, isCurrentMembership, onUpgrade, isL
           </Button>
         </Tooltip>
         {isCurrentMembership && (
-          <Text className='mt-2 block text-center text-sm text-gray-500'>({t('membership.urUseThisPackage')})</Text>
+          <Text className='mt-2 block text-center text-sm text-gray-500'>({t('urUseThisPackage')})</Text>
         )}
       </div>
 
       <ul className='mb-4 mt-8 space-y-2 p-0'>
-        <MembershipFeature text={name === 'Free' ? t('membership.freePackage') : t('membership.basicPackage')} />
-        {name !== 'Free' && <MembershipFeature text={t('membership.descriptionPackageStandardAndPremium')} />}
-        {name === 'Premium' && <MembershipFeature text={t('membership.descriptionPackagePremium')} />}
+        <MembershipFeature text={name === 'Free' ? t('freePackage') : t('basicPackage')} />
+        {name !== 'Free' && <MembershipFeature text={t('descriptionPackageStandardAndPremium')} />}
+        {name === 'Premium' && <MembershipFeature text={t('descriptionPackagePremium')} />}
         <MembershipFeature
-          text={t('membership.postPriority', {
+          text={t('postPriority', {
             priority
           })}
         />
         <MembershipFeature
-          text={t('membership.refreshPost', {
+          text={t('refreshPost', {
             refresh
           })}
         />

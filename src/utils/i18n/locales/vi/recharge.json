@@ -1,4 +1,7 @@
 {
+  "toast": {
+    "error": "Có lỗi xảy ra. Vui lòng thử lại sau."
+  },
   "title": "Nạp tiền",
   "amount": "Số tiền",
   "amountPlaceholder": "Nhập số tiền",
