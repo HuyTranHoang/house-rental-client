@@ -21,7 +21,9 @@
     "loginSuccess": "Login successful!",
     "logoutSuccess": "Logout successful!",
     "updateAvatarSuccess": "Avatar updated successfully!",
-    "updateAvatarFailed": "Failed to update avatar!"
+    "updateAvatarFailed": "Failed to update avatar!",
+    "changePasswordSuccess": "Changed password successfully!",
+    "changePasswordFailed": "Changed password failed!"
   },
   "personalInfo": {
     "editPersonalInfo": "Edit Personal Information",
@@ -100,5 +102,17 @@
       "note": "Note",
       "min": "Minimum recharge amount is 50,000 VND"
     }
+  },
+  "changePassword": {
+    "changePassword": "Change password",
+    "oldPassword": "Old password",
+    "newPassword": "New password",
+    "reEnterNewPassword": "Re-enter new password",
+    "updatePassword": "Update password",
+    "passwordNotMatch": "Password does not match!",
+    "validatePassword": "Password must have at least 8 characters, including letters and numbers!",
+    "requiredOldPassword": "Please enter your old password!",
+    "requiredNewPassword": "Please enter your new password!",
+    "requiredReEnterNewPassword": "Please enter 'Re-enter new password'!"
   }
 }

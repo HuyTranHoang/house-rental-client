@@ -4,6 +4,7 @@ import { AntDesignOutlined } from '@ant-design/icons'
 import { useMutation } from '@tanstack/react-query'
 import { Alert, Card, Form, Input, Typography } from 'antd'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 type ChangePasswordField = {
@@ -14,23 +15,24 @@ type ChangePasswordField = {
 function ChangePassword() {
   const [error] = useState<undefined | string>(undefined)
   const [form] = Form.useForm()
+  const { t } = useTranslation()
 
   const { mutate: updatePasswordMutate, isPending } = useMutation({
     mutationFn: changePasswordApi,
     onSuccess: (response) => {
       if (response && response.status === 200) {
-        toast.success('Cập nhật mật khẩu thành công!')
+        toast.success(t('toast.changePasswordSuccess'))
         form.resetFields()
       }
     },
     onError: (error: string[]) => {
-      toast.error(error || 'Cập nhật mật khẩu thất bại!')
+      toast.error(error || t('toast.changePasswordFailed'))
     }
   })
 
   return (
     <Card
-      title={<Typography.Title level={4}>Thay đổi mật khẩu</Typography.Title>}
+      title={<Typography.Title level={4}>{t('changePassword.changePassword')}</Typography.Title>}
       className='mb-12 rounded-none border-l-0'
     >
       <Form
@@ -48,64 +50,64 @@ function ChangePassword() {
         )}
 
         <Form.Item
-          label='Mật khẩu hiện tại'
+          label={t('changePassword.oldPassword')}
           name='oldPassword'
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập mật khẩu hiện tại!'
+              message: t('changePassword.requiredOldPassword')
             },
             {
               pattern: new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
-              message: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và số!'
+              message: t('changePassword.validatePassword')
             }
           ]}
         >
-          <Input.Password placeholder='Mật khẩu hiện tại' />
+          <Input.Password placeholder={t('changePassword.oldPassword')} />
         </Form.Item>
 
         <Form.Item
-          label='Mật khẩu mới'
+          label={t('changePassword.newPassword')}
           name='newPassword'
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập mật khẩu mới!'
+              message: t('changePassword.requiredNewPassword')
             },
             {
               pattern: new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
-              message: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và số!'
+              message: t('changePassword.validatePassword')
             }
           ]}
         >
-          <Input.Password placeholder='Mật khẩu mới' />
+          <Input.Password placeholder={t('changePassword.newPassword')} />
         </Form.Item>
 
         <Form.Item
-          label='Nhập lại mật khẩu mới'
+          label={t('changePassword.reEnterNewPassword')}
           name='confirmPassword'
           dependencies={['newPassword']}
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập "Nhập lại mật khẩu mới"!'
+              message: t('changePassword.requiredReEnterNewPassword')
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('newPassword') === value) {
                   return Promise.resolve()
                 }
-                return Promise.reject(new Error('Mật khẩu không khớp!'))
+                return Promise.reject(new Error(t('changePassword.passwordNotMatch')))
               }
             })
           ]}
         >
-          <Input.Password placeholder='Nhập lại mật khẩu mới' />
+          <Input.Password placeholder={t('changePassword.reEnterNewPassword')} />
         </Form.Item>
 
         <Form.Item>
           <GradientButton type='primary' htmlType='submit' icon={<AntDesignOutlined />} loading={isPending} block>
-            Cập nhật mật khẩu
+            {t('changePassword.updatePassword')}
           </GradientButton>
         </Form.Item>
       </Form>
