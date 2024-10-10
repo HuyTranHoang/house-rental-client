@@ -5,7 +5,6 @@ import {
   CheckCircleFilled,
   CheckOutlined,
   CopyOutlined,
-  MailOutlined,
   PhoneFilled,
   UserOutlined
 } from '@ant-design/icons'
@@ -13,12 +12,16 @@ import { Avatar, Button, Card, Divider, Flex, Space, Tooltip } from 'antd'
 import Meta from 'antd/es/card/Meta'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import PropertyDetailFavoriteButton from '@/features/property-detail/PropertyDetailFavoriteButton.tsx'
+import { User } from '@/types/user.type.ts'
 
 interface PropertyDetailOwnerDetailProps {
   userId: number | undefined
+  propertyId: number
+  currentUser: User | null
 }
 
-function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
+function PropertyDetailOwnerDetail({ userId,currentUser,propertyId }: PropertyDetailOwnerDetailProps) {
   const { userData, userIsLoading } = useUser(userId)
 
   const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false)
@@ -92,9 +95,13 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
             </Flex>
           </Button>
 
-          <Button block icon={<MailOutlined />} size='large' type='primary'>
-            {t('propertyDetail:ownerDetail.sendMessage')}
-          </Button>
+
+
+          <PropertyDetailFavoriteButton id={propertyId} currentUser={currentUser} />
+
+          {/*<Button block icon={<MailOutlined />} size='large' type='primary'>*/}
+          {/*  {t('propertyDetail:ownerDetail.sendMessage')}*/}
+          {/*</Button>*/}
         </>
       )}
     </Card>

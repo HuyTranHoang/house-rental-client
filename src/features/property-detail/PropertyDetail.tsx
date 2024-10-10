@@ -1,6 +1,5 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import PropertyDetailFavoriteButton from '@/features/property-detail/PropertyDetailFavoriteButton.tsx'
 import PropertyDetailOwnerDetail from '@/features/property-detail/PropertyDetailOwnerDetail.tsx'
 import RelatedProperty from '@/features/property-detail/RelatedProperty.tsx'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
@@ -54,8 +53,7 @@ function PropertyDetail() {
     {
       key: 'amenities',
       label: t('propertyDetail:property.amenities'),
-      children: propertyData?.amenities.join(', '),
-      span: 3
+      children: propertyData?.amenities.join(', ')
     }
   ]
 
@@ -63,7 +61,6 @@ function PropertyDetail() {
     if (propertyData && (propertyData.blocked || propertyData.hidden)) {
       navigate(ROUTER_NAMES.RENT_HOUSE)
     }
-
   }, [navigate, propertyData])
 
   return (
@@ -145,7 +142,7 @@ function PropertyDetail() {
               <Typography.Title level={4}>{t('propertyDetail:property.mainInfo')}</Typography.Title>
 
               <Typography.Paragraph>
-                <Descriptions bordered items={items} />
+                <Descriptions labelStyle={{width: 120}} bordered items={items} />
               </Typography.Paragraph>
 
               <Typography.Title level={4}>{t('propertyDetail:property.introduce')}</Typography.Title>
@@ -162,9 +159,7 @@ function PropertyDetail() {
 
         <Col xs={24} md={8}>
           <div className='sticky top-6 z-10 mb-6'>
-            <PropertyDetailOwnerDetail userId={propertyData?.userId} />
-
-            <PropertyDetailFavoriteButton id={Number(id)} currentUser={currentUser} />
+            <PropertyDetailOwnerDetail userId={propertyData?.userId} propertyId={Number(id)} currentUser={currentUser} />
           </div>
         </Col>
 

@@ -33,7 +33,14 @@ function PropertyDetailFavoriteButton({ id, currentUser }: PropertyDetailFavorit
       }}
     >
       <Button
-        icon={isFavorite ? <HeartFilled className='text-red-500' /> : <HeartOutlined className='text-red-500' />}
+        className={`group border border-red-500 t bg-red-500 text-white`}
+        icon={
+          isFavorite ? (
+            <HeartFilled className='text-white' />
+          ) : (
+            <HeartOutlined className='text-white' />
+          )
+        }
         onClick={() => {
           if (!currentUser) {
             navigate(ROUTER_NAMES.LOGIN)
@@ -46,9 +53,9 @@ function PropertyDetailFavoriteButton({ id, currentUser }: PropertyDetailFavorit
           }
         }}
         size='large'
-        className='mb-6 mt-3 w-full md:mb-0 md:w-48'
+        block
       >
-        {t('propertyDetail:favorite.save')}
+        {isFavorite ? t('propertyDetail:favorite.unsave') : t('propertyDetail:favorite.save')}
       </Button>
     </ConfigProvider>
   )

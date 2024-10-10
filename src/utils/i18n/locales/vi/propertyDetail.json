@@ -28,7 +28,7 @@
     "createAt": "Ngày tạo",
     "amenities": "Tiện ích",
     "aboutList": "Danh sách",
-    "nextProperty": "Bất động sản tiếp theo",
+    "nextProperty": "Tin tiếp",
     "mainInfo": "Thông tin chính",
     "introduce": "Giới thiệu"
   },
@@ -50,7 +50,8 @@
     "back": "Quay lại"
   },
   "favorite": {
-    "save": "Lưu tin"
+    "save": "Lưu tin",
+    "unsave": "Bỏ lưu"
   },
   "ownerDetail": {
     "participated": "Tham gia",

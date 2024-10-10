@@ -13,8 +13,6 @@ const CustomBreadcrumbs = () => {
   const breadcrumbItems = breadcrumbs.map(({ match, breadcrumb }) => {
     let breadcrumbText
 
-    console.log('breadcrumb', breadcrumb)
-
     if (breadcrumb) {
       if (typeof breadcrumb === 'string') {
         breadcrumbText = t(breadcrumb, breadcrumb)
