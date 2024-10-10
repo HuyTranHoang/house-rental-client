@@ -1,5 +1,6 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import PropertyDetailImageSlider from '@/features/property-detail/PropertyDetailImageSlider.tsx'
 import PropertyDetailOwnerDetail from '@/features/property-detail/PropertyDetailOwnerDetail.tsx'
 import RelatedProperty from '@/features/property-detail/RelatedProperty.tsx'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
@@ -8,14 +9,11 @@ import useAuthStore from '@/store/authStore.ts'
 import Container from '@/ui/Container.tsx'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
-import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
-import { Button, Col, Descriptions, DescriptionsProps, Divider, Row, Skeleton, Space, Tag, Typography } from 'antd'
+import { Button, Col, Descriptions, DescriptionsProps, Divider, Row, Skeleton, Space, Typography } from 'antd'
 import DOMPurify from 'dompurify'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Navigation, Pagination } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailComment from './PropertyDetailComment.tsx'
 
 function PropertyDetail() {
@@ -25,8 +23,6 @@ function PropertyDetail() {
   const id = slug ? slug.split('-').pop() : ''
 
   const currentUser = useAuthStore((state) => state.user)
-
-  const [currentSlide, setCurrentSlide] = useState(0)
 
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
 
@@ -101,35 +97,7 @@ function PropertyDetail() {
 
           {propertyData && (
             <section>
-              <Swiper
-                modules={[Navigation, Pagination]}
-                grabCursor
-                navigation={{
-                  nextEl: '.swiper-button-next',
-                  prevEl: '.swiper-button-prev'
-                }}
-                pagination={{ clickable: true }}
-                slidesPerView={1}
-                spaceBetween={30}
-                onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
-                className='h-[500px] w-full'
-              >
-                {propertyData.propertyImages.map((image, index) => (
-                  <SwiperSlide key={index} className='flex justify-center'>
-                    <img src={image} alt='image' />
-                  </SwiperSlide>
-                ))}
-                <div className='swiper-button-prev'>
-                  <LeftCircleOutlined className='text-2xl' />
-                </div>
-                <div className='swiper-button-next'>
-                  <RightCircleOutlined className='text-2xl' />
-                </div>
-
-                <Tag color='#595959' className='absolute bottom-0 right-0 z-10 m-4'>
-                  {`${currentSlide + 1}/${propertyData.propertyImages.length}`}
-                </Tag>
-              </Swiper>
+              <PropertyDetailImageSlider propertyImages={propertyData.propertyImages} />
 
               <Typography.Title level={4}>{propertyData.title}</Typography.Title>
 
@@ -142,7 +110,7 @@ function PropertyDetail() {
               <Typography.Title level={4}>{t('propertyDetail:property.mainInfo')}</Typography.Title>
 
               <Typography.Paragraph>
-                <Descriptions labelStyle={{width: 120}} bordered items={items} />
+                <Descriptions labelStyle={{ width: 120 }} bordered items={items} />
               </Typography.Paragraph>
 
               <Typography.Title level={4}>{t('propertyDetail:property.introduce')}</Typography.Title>
@@ -159,7 +127,11 @@ function PropertyDetail() {
 
         <Col xs={24} md={8}>
           <div className='sticky top-6 z-10 mb-6'>
-            <PropertyDetailOwnerDetail userId={propertyData?.userId} propertyId={Number(id)} currentUser={currentUser} />
+            <PropertyDetailOwnerDetail
+              userId={propertyData?.userId}
+              propertyId={Number(id)}
+              currentUser={currentUser}
+            />
           </div>
         </Col>
 

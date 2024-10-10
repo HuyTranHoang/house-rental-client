@@ -33,12 +33,12 @@ function PropertyDetailFavoriteButton({ id, currentUser }: PropertyDetailFavorit
       }}
     >
       <Button
-        className={`group border border-red-500 t bg-red-500 text-white`}
+        className={isFavorite ? 'border-red-500' : 'border-gray-400'}
         icon={
           isFavorite ? (
-            <HeartFilled className='text-white' />
+            <HeartFilled className='text-red-500' />
           ) : (
-            <HeartOutlined className='text-white' />
+            <HeartOutlined className='text-red-500' />
           )
         }
         onClick={() => {
