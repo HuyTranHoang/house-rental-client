@@ -1,5 +1,5 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import { ArrowLeftOutlined, HomeOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, HomeOutlined, ProductOutlined } from '@ant-design/icons'
 import { Button, Flex, Space } from 'antd'
 import { Link } from 'react-router-dom'
 
@@ -19,9 +19,11 @@ function PostPropertySuccess({ setCurrent }: { setCurrent: (current: number) => 
 
         <div>
           <Button icon={<HomeOutlined />} type='link'>
-            <Link to={ROUTER_NAMES.POST_MANAGEMENT}>Quay về trang chủ</Link>
+            <Link to={ROUTER_NAMES.RENT_HOUSE}>Quay về trang chủ</Link>
           </Button>
-          <Button type='link' onClick={() => alert('Tạm thời chưa có trang quản lý')}>Quản lý bài đăng</Button>
+          <Button icon={<ProductOutlined />} type='link'>
+            <Link to={ROUTER_NAMES.POST_MANAGEMENT}>Quản lý bài đăng</Link>
+          </Button>
         </div>
       </Flex>
     </Space>
