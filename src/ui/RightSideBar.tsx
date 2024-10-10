@@ -3,6 +3,7 @@ import { fetchAllDistricts } from '@/api/district.api.ts'
 import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
 import { useAdvertisements } from '@/hooks/useAdvertisement'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
+import { Advertisement } from '@/types/advertisement.type'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Button, List, Typography } from 'antd'
@@ -43,8 +44,8 @@ function RightSideBar() {
             pauseOnMouseEnter: true
           }}
         >
-          {advData.map((ad, index) => (
-            <SwiperSlide key={index}>
+          {advData.map((ad: Advertisement) => (
+            <SwiperSlide key={ad.id}>
               <img src={ad.imageUrl} className='fixed-image mt-4 w-full' alt='banner' />
             </SwiperSlide>
           ))}
