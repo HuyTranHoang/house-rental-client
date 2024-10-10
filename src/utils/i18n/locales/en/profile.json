@@ -1,5 +1,7 @@
 {
   "toast": {
+    "updateProfileSuccess": "Profile updated successfully!",
+    "updateProfileFailed": "Failed to update profile!",
     "updateAvatarSuccess": "Avatar updated successfully!",
     "updateAvatarFailed": "Failed to update avatar!",
     "changePasswordSuccess": "Changed password successfully!",

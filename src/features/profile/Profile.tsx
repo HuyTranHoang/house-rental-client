@@ -39,10 +39,10 @@ function Profile() {
       if (!response) return
 
       updateProfile(response.data)
-      toast.success(t('toast.updateAvatarSuccess'))
+      toast.success(t('toast.updateProfileSuccess'))
     },
     onError: () => {
-      toast.error(t('toast.updateAvatarFailed'))
+      toast.error(t('toast.updateProfileFailed'))
     }
   })
 

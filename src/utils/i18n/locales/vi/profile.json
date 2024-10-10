@@ -1,5 +1,7 @@
 {
   "toast": {
+    "updateProfileSuccess": "Cập nhật thông tin cá nhân thành công!",
+    "updateProfileFailed": "Cập nhật thông tin cá nhân thất bại!",
     "updateAvatarSuccess": "Cập nhật ảnh đại diện thành công!",
     "updateAvatarFailed": "Cập nhật ảnh đại diện thất bại!",
     "changePasswordSuccess": "Đổi mật khẩu thành công!",
