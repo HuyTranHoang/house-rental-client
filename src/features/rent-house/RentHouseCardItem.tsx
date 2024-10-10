@@ -2,7 +2,6 @@ import FavoriteButton from '@/components/FavoriteButton.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import useAuthStore from '@/store/authStore.ts'
-import usePropertyStore from '@/store/propertyStore.ts'
 import { Property } from '@/types/property.type.ts'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
@@ -23,15 +22,11 @@ function RentHouseCardItem({ property }: RentHouseCardItemProps) {
   const { addFavoriteMutate } = useAddFavorite()
   const { removeFavoriteMutate } = useRemoveFavorite()
   const slug = generateSlug(property.title, property.id)
-  const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
   return (
     <Card
       className='mb-2 mr-0 cursor-pointer transition-all hover:border-blue-300 md:mr-4'
-      onClick={() => {
-        setBreadcrumbName(property.title)
-        navigate(ROUTER_NAMES.getRentHouseDetail(slug))
-      }}
+      onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(slug))}
     >
       <Row gutter={24}>
         <Col xs={24} md={8}>
