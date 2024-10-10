@@ -1,7 +1,6 @@
 import ROUTER_NAMES from '@/constant/routerNames'
 import { usePriorityProperties } from '@/hooks/useProperty'
 import lottieJson from '@/lottie/hot.json'
-import usePropertyStore from '@/store/propertyStore'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { generateSlug } from '@/utils/generateSlug'
 import { FireOutlined } from '@ant-design/icons'
@@ -16,7 +15,6 @@ const { Text } = Typography
 export default function PriorityCardItem() {
   const navigate = useNavigate()
   const { data: priorityProperties } = usePriorityProperties()
-  const setBreadcrumbName = usePropertyStore((state) => state.setName)
 
   const filteredProperties = priorityProperties?.filter((item) => !item.hidden && !item.blocked)
 
@@ -51,10 +49,7 @@ export default function PriorityCardItem() {
                   <Card
                     className='z-10 mb-[2px] mr-[3px] mt-[1px] h-[calc(100%-3px)] w-[calc(100%-3px)] bg-white transition-all duration-300'
                     classNames={{ body: 'p-0' }}
-                    onClick={() => {
-                      setBreadcrumbName(item.title)
-                      navigate(ROUTER_NAMES.getRentHouseDetail(slug))
-                    }}
+                    onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(slug))}
                   >
                     <div className='flex items-center justify-between p-4'>
                       <div className='mx-2 flex flex-col transition-all duration-300 group-hover:translate-x-2'>

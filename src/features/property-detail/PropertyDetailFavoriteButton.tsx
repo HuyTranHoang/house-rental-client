@@ -1,9 +1,9 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import { useAddFavorite, useFavoriteByUserId, useRemoveFavorite } from '@/hooks/useFavorite.ts'
 import { User } from '@/types/user.type.ts'
-import { red } from '@ant-design/colors'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
-import { Button, ConfigProvider } from 'antd'
+import { Button } from 'antd'
+import { clsx } from 'clsx/lite'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
@@ -22,42 +22,25 @@ function PropertyDetailFavoriteButton({ id, currentUser }: PropertyDetailFavorit
   const { t } = useTranslation(['common', 'propertyDetail'])
 
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Button: {
-            defaultHoverBorderColor: red.primary,
-            defaultHoverColor: red[3]
-          }
+    <Button
+      className={clsx('hover:text-red-500', isFavorite ? 'border-red-500' : 'border-gray-400')}
+      icon={isFavorite ? <HeartFilled className='text-red-500' /> : <HeartOutlined className='text-red-500' />}
+      onClick={() => {
+        if (!currentUser) {
+          navigate(ROUTER_NAMES.LOGIN)
+          return
+        }
+        if (isFavorite) {
+          removeFavoriteMutate({ propertyId: id, userId: currentUser.id })
+        } else {
+          addFavoriteMutate(id)
         }
       }}
+      size='large'
+      block
     >
-      <Button
-        className={isFavorite ? 'border-red-500' : 'border-gray-400'}
-        icon={
-          isFavorite ? (
-            <HeartFilled className='text-red-500' />
-          ) : (
-            <HeartOutlined className='text-red-500' />
-          )
-        }
-        onClick={() => {
-          if (!currentUser) {
-            navigate(ROUTER_NAMES.LOGIN)
-            return
-          }
-          if (isFavorite) {
-            removeFavoriteMutate({ propertyId: id, userId: currentUser.id })
-          } else {
-            addFavoriteMutate(id)
-          }
-        }}
-        size='large'
-        block
-      >
-        {isFavorite ? t('propertyDetail:favorite.unsave') : t('propertyDetail:favorite.save')}
-      </Button>
-    </ConfigProvider>
+      {isFavorite ? t('propertyDetail:favorite.unsave') : t('propertyDetail:favorite.save')}
+    </Button>
   )
 }
 

@@ -1,8 +1,9 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import Notification from '@/features/notification/Notification.tsx'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import useAuthStore from '@/store/authStore.ts'
+import usePropertyStore from '@/store/propertyStore.ts'
 import { User } from '@/types/user.type.ts'
-import Notification from '@/features/notification/Notification.tsx'
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
 import { clsx } from 'clsx'
@@ -18,6 +19,7 @@ interface NavItemProps {
 function MenuDesktop({ user }: { user: User | null }) {
   const logout = useAuthStore((state) => state.logout)
   const navigate = useNavigate()
+  const resetStepAndFormPostProperty = usePropertyStore((state) => state.resetStepAndForm)
   const { t } = useTranslation()
 
   const onClick = ({ key }: { key: string }) => {
@@ -107,7 +109,11 @@ function MenuDesktop({ user }: { user: User | null }) {
       {!user && <NavItem title={t('navbar.login')} link={ROUTER_NAMES.LOGIN} />}
 
       <Button className='group border-blue-500 font-semibold'>
-        <Link to={ROUTER_NAMES.POST_PROPERTY} className='group-hover:text-blue-500'>
+        <Link
+          to={ROUTER_NAMES.POST_PROPERTY}
+          className='group-hover:text-blue-500'
+          onClick={() => resetStepAndFormPostProperty()}
+        >
           {t('navbar.postProperty')}
         </Link>
       </Button>

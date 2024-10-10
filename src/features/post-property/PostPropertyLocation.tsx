@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 export default function PostPropertyLocation({ form }: { form: FormInstance<PostPropertyFormData> }) {
   const { t } = useTranslation('postProperty')
 
-  const [selectedCity, setselectedCity] = useState<string | null>(null)
+  const [selectedCity, setselectedCity] = useState<string | null>(form.getFieldValue('city'))
 
   const { cityData, cityIsLoading } = useCities()
   const { districtData, districtIsLoading } = useDistricts()
