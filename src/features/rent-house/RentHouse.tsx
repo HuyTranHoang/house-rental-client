@@ -57,7 +57,7 @@ function RentHouse() {
       <Row>
         <Col xs={24} md={18}>
           <Typography.Title level={4} className='mt-3.5' ref={myRef}>
-            Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T9/2024
+            Cho Thuê Nhà Đất Giá Rẻ, Tiện Nghi, Uy Tín, Cập Nhật Mới Nhất T10/2024
           </Typography.Title>
 
           <Flex align='center' justify='space-between' className='rounded-lg bg-[#f0f0f0] p-2 pr-4'>
