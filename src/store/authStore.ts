@@ -9,15 +9,15 @@ type AuthStore = {
   updateProfile: (user: User) => void
   incrementUserBalance: (amount: number) => void
   deincrementUserBalance: (amount: number) => void
-  haveDeleteReviewPrivilege: boolean
+  haveDeleteCommentPrivilege: boolean
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   token: null,
   loginSuccess: (user, token) => {
-    const haveDeleteReviewPrivilege = user.roles.includes('ROLE_ADMIN') || user.authorities.includes('review:delete')
-    set({ user, token, haveDeleteReviewPrivilege })
+    const haveDeleteCommentPrivilege = user.roles.includes('Super Admin') || user.authorities.includes('review:delete')
+    set({ user, token, haveDeleteCommentPrivilege })
   },
   logout: () => set({ user: null, token: null }),
   updateProfile: (user) => set({ user }),
@@ -35,7 +35,7 @@ const useAuthStore = create<AuthStore>((set) => ({
       }
       return state
     }),
-  haveDeleteReviewPrivilege: false
+  haveDeleteCommentPrivilege: false
 }))
 
 export default useAuthStore

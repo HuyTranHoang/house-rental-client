@@ -6,11 +6,26 @@ import { useRoomTypes } from '@/hooks/useRoomType.ts'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { PropertyDataSource } from '@/types/property.type.ts'
 import { validateFile } from '@/utils/uploadFile.ts'
-import { UploadOutlined } from '@ant-design/icons'
+import { DeleteOutlined, PictureOutlined, UploadOutlined } from '@ant-design/icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { UploadFile, UploadProps } from 'antd'
-import { Button, Col, Drawer, Flex, Form, Image, Input, Row, Select, Space, Upload } from 'antd'
+import {
+  Button,
+  Col,
+  Drawer,
+  Flex,
+  Form,
+  Image,
+  Input,
+  Row,
+  Select,
+  Space,
+  Tooltip,
+  Upload,
+  UploadFile,
+  UploadProps
+} from 'antd'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import ReactQuill from 'react-quill'
 import { toast } from 'sonner'
 
@@ -47,11 +62,10 @@ interface PutPropertyFormData {
   thumbnailImage: ImageType
   deleteImages: string
   thumbnailUrl: string
-
-  // [key: string]: string | string[] | ImageType[] | ImageType
 }
 
 function PostManagementEditPropertyModal({ property, isVisible, onCancel }: PostManagementEditPropertyModalProps) {
+  const { t } = useTranslation('postManagement')
   const [form] = Form.useForm()
   const queryClient = useQueryClient()
 
@@ -88,19 +102,19 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['properties'] })
-      toast.success('Cập nhật bài đăng thành công')
+      toast.success(t('editPropertyModal.toast.updateSuccess'))
       form.resetFields()
       onCancel()
     },
     onError: (error) => {
       console.error('Error posting property:', error)
-      toast.error('Có lỗi xảy ra khi đăng tin, vui lòng thử lại sau.')
+      toast.error(t('editPropertyModal.toast.updateError'))
     }
   })
 
   const handleDeleteImage = (imageUrl: string) => {
     if (imageUrl === thumbnailUrl) {
-      toast.error('Vui lòng chọn ảnh khác làm ảnh bìa trước khi xóa ảnh này')
+      toast.error(t('editPropertyModal.toast.deleteThumbnailError'))
       return
     }
 
@@ -138,14 +152,10 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
     }))
 
     images.forEach((image) => {
-      // if (image.uid === values.thumbnailImage.uid) return
-
       formDataToSend.append('images', image.originFileObj)
     })
-    // formDataToSend.append('thumbnailImage', formData.thumbnailImage.originFileObj)
 
     formDataToSend.append('status', 'PENDING')
-
     formDataToSend.append('deleteImages', deleteImages.join('|'))
     formDataToSend.append('thumbnailUrl', thumbnailUrl)
 
@@ -185,25 +195,25 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
   }, [districtData, selectedCity])
 
   return (
-    <Drawer title='Sửa bài đăng' size='large' onClose={onCancel} open={isVisible}>
+    <Drawer title={t('editPropertyModal.title')} size='large' onClose={onCancel} open={isVisible}>
       <Form form={form} layout='vertical' onFinish={handleFinish}>
         <Form.Item<PutPropertyFormData>
-          label='Tiêu đề'
+          label={t('editPropertyModal.form.title')}
           name='title'
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập tiêu đề bài đăng'
+              message: t('editPropertyModal.form.titleRequired')
             }
           ]}
         >
-          <Input />
+          <Input placeholder={t('editPropertyModal.form.titlePlaceholder')} />
         </Form.Item>
 
         <Form.Item
           label={
             <>
-              Hình ảnh
+              {t('editPropertyModal.form.images')}
               <span className='ml-2 text-xs text-gray-500'>
                 ({Number(property?.propertyImages.length) + fileList.length}/10)
               </span>
@@ -215,19 +225,32 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
             <Space wrap>
               {property?.propertyImages.map((image) => (
                 <Flex vertical className='w-32'>
-                  <Image key={image} src={image} />
-                  <Flex justify='space-between'>
-                    <Button type='link' size='small' danger onClick={() => handleDeleteImage(image)}>
-                      Xóa
-                    </Button>
+                  <Image key={image} src={image} className='h-24 object-cover' />
+                  <Flex justify='space-evenly'>
+                    <Tooltip title={t('editPropertyModal.form.delete')}>
+                      <Button
+                        icon={<DeleteOutlined />}
+                        type='link'
+                        size='small'
+                        danger
+                        onClick={() => handleDeleteImage(image)}
+                      />
+                    </Tooltip>
                     {thumbnailUrl === image ? (
-                      <Button type='link' size='small' disabled>
-                        Ảnh bìa
-                      </Button>
+                      <Tooltip title={t('editPropertyModal.form.thumbnail')}>
+                        <Button icon={<PictureOutlined />} type='link' size='small' disabled>
+                          {t('editPropertyModal.form.thumbnail')}
+                        </Button>
+                      </Tooltip>
                     ) : (
-                      <Button type='link' size='small' onClick={() => setThumbnailUrl(image)}>
-                        Đặt ảnh bìa
-                      </Button>
+                      <Tooltip title={t('editPropertyModal.form.setThumbnail')}>
+                        <Button
+                          icon={<PictureOutlined />}
+                          type='link'
+                          size='small'
+                          onClick={() => setThumbnailUrl(image)}
+                        />
+                      </Tooltip>
                     )}
                   </Flex>
                 </Flex>
@@ -248,18 +271,18 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
             }}
           >
             {Number(property?.propertyImages.length) + fileList.length >= 10 ? null : (
-              <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
+              <Button icon={<UploadOutlined />}>{t('editPropertyModal.form.uploadImages')}</Button>
             )}
           </Upload>
         </Form.Item>
 
         <Form.Item<PutPropertyFormData>
-          label='Loại bất động sản'
+          label={t('editPropertyModal.form.roomType')}
           name='roomType'
           rules={[
             {
               required: true,
-              message: 'Vui lòng chọn loại bất động sản'
+              message: t('editPropertyModal.form.roomTypeRequired')
             }
           ]}
         >
@@ -269,12 +292,12 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item<PutPropertyFormData>
-              label='Thành phố'
+              label={t('editPropertyModal.form.city')}
               name='city'
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng chọn thành phố'
+                  message: t('editPropertyModal.form.cityRequired')
                 }
               ]}
             >
@@ -291,12 +314,12 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
           <Col span={12}>
             <Form.Item<PutPropertyFormData>
-              label='Quận/Huyện'
+              label={t('editPropertyModal.form.district')}
               name='district'
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng chọn quận/huyện'
+                  message: t('editPropertyModal.form.districtRequired')
                 }
               ]}
             >
@@ -304,19 +327,19 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
                 loading={districtIsLoading}
                 options={districtOptions}
                 disabled={!selectedCity}
-                placeholder='Chọn quận huyện'
+                placeholder={t('editPropertyModal.form.district')}
               />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item<PutPropertyFormData>
-          label='Địa chỉ cụ thể'
+          label={t('editPropertyModal.form.location')}
           name='location'
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập địa chỉ cụ thể'
+              message: t('editPropertyModal.form.locationRequired')
             }
           ]}
         >
@@ -326,75 +349,75 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item<PutPropertyFormData>
-              label='Giá'
+              label={t('editPropertyModal.form.price')}
               name='price'
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập giá'
+                  message: t('editPropertyModal.form.priceRequired')
                 },
                 {
                   pattern: new RegExp(/^[0-9,]+$/),
-                  message: "Vui lòng nhập số cho 'giá'"
+                  message: t('editPropertyModal.form.pricePattern')
                 },
                 {
                   max: 12,
-                  message: 'Giá không được vượt quá 9 chữ số'
+                  message: t('editPropertyModal.form.priceMax')
                 }
               ]}
             >
-              <Input placeholder='Nhập giá cho thuê' addonAfter='₫ / tháng' />
+              <Input placeholder={t('editPropertyModal.form.pricePlaceholder')} addonAfter='₫ / tháng' />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item<PutPropertyFormData>
-              label='Diện tích'
+              label={t('editPropertyModal.form.area')}
               name='area'
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập diện tích bất động sản'
+                  message: t('editPropertyModal.form.areaRequired')
                 },
                 {
                   pattern: new RegExp(/^[0-9,]+$/),
-                  message: "Vui lòng nhập số cho 'diện tích'"
+                  message: t('editPropertyModal.form.areaPattern')
                 },
                 {
                   max: 7,
-                  message: 'Diện tích không được vượt quá 6 chữ số'
+                  message: t('editPropertyModal.form.areaMax')
                 }
               ]}
             >
-              <Input placeholder='Nhập diện tích bất động sản' addonAfter='m²' />
+              <Input placeholder={t('editPropertyModal.form.areaPlaceholder')} addonAfter='m²' />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item<PutPropertyFormData>
-              label='Số phòng ngủ'
+              label={t('editPropertyModal.form.numRooms')}
               name='numRooms'
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập số phòng ngủ'
+                  message: t('editPropertyModal.form.numRoomsRequired')
                 },
                 {
                   pattern: new RegExp(/^[0-9]+$/),
-                  message: "Vui lòng nhập số cho 'số phòng ngủ'"
+                  message: t('editPropertyModal.form.numRoomsPattern')
                 }
               ]}
             >
-              <Input placeholder='Nhập số phòng ngủ' />
+              <Input placeholder={t('editPropertyModal.form.numRoomsPlaceholder')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item<PutPropertyFormData>
           name='amenities'
-          label='Tiện nghi'
+          label={t('editPropertyModal.form.amenities')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng chọn ít nhất một tiện nghi'
+              message: t('editPropertyModal.form.amenitiesRequired')
             }
           ]}
         >
@@ -402,7 +425,7 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
             loading={amenityIsLoading}
             options={amenityOptions}
             mode='multiple'
-            placeholder='Chọn tiện nghi'
+            placeholder={t('editPropertyModal.form.amenities')}
             style={{ width: '100%' }}
             optionFilterProp='children'
           />
@@ -410,15 +433,15 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
         <Form.Item<PutPropertyFormData>
           name='description'
-          label='Mô tả'
+          label={t('editPropertyModal.form.description')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập mô tả bài đăng'
+              message: t('editPropertyModal.form.descriptionRequired')
             },
             {
               min: 50,
-              message: 'Mô tả phải chứa ít nhất 50 ký tự'
+              message: t('editPropertyModal.form.descriptionMin')
             }
           ]}
         >
@@ -427,10 +450,10 @@ function PostManagementEditPropertyModal({ property, isVisible, onCancel }: Post
 
         <Form.Item>
           <Space>
-            <Button onClick={onCancel}>Quay lại</Button>
+            <Button onClick={onCancel}>{t('editPropertyModal.form.back')}</Button>
 
             <Button type='primary' htmlType='submit' loading={putPropertyMutation.isPending}>
-              Cập nhật
+              {t('editPropertyModal.form.update')}
             </Button>
           </Space>
         </Form.Item>

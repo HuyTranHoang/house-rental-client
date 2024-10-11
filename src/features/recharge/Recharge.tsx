@@ -2,11 +2,12 @@ import { createTransactionDeposit, getTransaction } from '@/api/transaction.api.
 import ROUTER_NAMES from '@/constant/routerNames.ts'
 import useAuthStore from '@/store/authStore.ts'
 import { TransactionStatus } from '@/types/transaction.type.ts'
-import { formatCurrency } from '@/utils/formatCurrentcy'
+import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { LoadingOutlined, RocketOutlined } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, Col, Form, Input, Radio, Row, Space, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -30,10 +31,11 @@ const useGetTransaction = (transactionId: string) => {
   return { data, isLoading }
 }
 
-const Deposit = () => {
+const Recharge = () => {
   const [form] = Form.useForm()
   const amount = Form.useWatch('amount', form)
 
+  const { t } = useTranslation('recharge')
 
   const queryClient = useQueryClient()
   const [transactionId, setTransactionId] = useState<string>('')
@@ -59,7 +61,7 @@ const Deposit = () => {
     },
     onError: (error) => {
       console.error('Failed to create transaction', error)
-      toast.error('Có lỗi xảy ra, vui lòng thử lại sau.')
+      toast.error(t('toast.error'))
     }
   })
 
@@ -89,7 +91,7 @@ const Deposit = () => {
     const amountToDeposit = values.amount === 'custom' && rawCustomAmount ? rawCustomAmount : Number(values.amount)
 
     if (isNaN(amountToDeposit) || amountToDeposit < 50000) {
-      toast.error('Số tiền nạp tối thiểu là 50.000đ.')
+      toast.error(t('accountInfo.min'))
       return
     }
 
@@ -113,10 +115,10 @@ const Deposit = () => {
     return (
       <>
         <Typography.Paragraph>
-          Số tiền đã chọn: <strong className='text-green-500'>{formatCurrency(depositAmount)}</strong>
+          {t('selectedAmount')}: <strong className='text-green-500'>{formatCurrency(depositAmount)}</strong>
         </Typography.Paragraph>
         <Typography.Paragraph>
-          Sau khi nạp: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
+          {t('afterRecharge')}: <strong className='text-green-500'>{formatCurrency(newBalance)}</strong>
         </Typography.Paragraph>
       </>
     )
@@ -138,7 +140,7 @@ const Deposit = () => {
                 className='mr-4 w-8'
                 alt='deposit'
               />
-              <span>Nạp tiền</span>
+              <span>{t('title')}</span>
             </div>
           }
         >
@@ -146,8 +148,8 @@ const Deposit = () => {
             <Form form={form} layout='vertical' onFinish={onFinish}>
               <Form.Item
                 name='amount'
-                label='Số tiền'
-                rules={[{ required: true, message: 'Vui lòng chọn số tiền muốn nạp' }]}
+                label={t('amount')}
+                rules={[{ required: true, message: t('amountSelectRequired') }]}
               >
                 <Radio.Group>
                   <Space wrap>
@@ -155,7 +157,7 @@ const Deposit = () => {
                     <Radio.Button value='100000'>{formatCurrency(100000)}</Radio.Button>
                     <Radio.Button value='200000'>{formatCurrency(200000)}</Radio.Button>
                     <Radio.Button value='500000'>{formatCurrency(500000)}</Radio.Button>
-                    <Radio.Button value='custom'>Tùy chọn</Radio.Button>
+                    <Radio.Button value='custom'>{t('custom')}</Radio.Button>
                   </Space>
                 </Radio.Group>
               </Form.Item>
@@ -163,12 +165,12 @@ const Deposit = () => {
               {amount === 'custom' && (
                 <Form.Item
                   name='customAmount'
-                  label='Số tiền tùy chọn (VND)'
-                  rules={[{ required: true, message: 'Vui lòng nhập số tiền bạn muốn nạp' }]}
+                  label={t('customAmount')}
+                  rules={[{ required: true, message: t('amountRequired') }]}
                 >
                   <Input
                     type='text'
-                    placeholder='Nhập số tiền bạn muốn nạp'
+                    placeholder={t('amountPlaceholder')}
                     value={inputValue}
                     onChange={handleInputChange}
                     addonAfter='₫'
@@ -182,7 +184,7 @@ const Deposit = () => {
                   icon={<RocketOutlined />}
                   className='w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300'
                 >
-                  Thanh toán
+                  {t('recharge')}
                 </Button>
               </Form.Item>
             </Form>
@@ -191,28 +193,28 @@ const Deposit = () => {
           {isSubmitting && (
             <Typography.Paragraph type='secondary'>
               <LoadingOutlined className='mr-2' />
-              Đang chuyển hướng đến cổng thanh toán...
+              {t('redirecting')}
             </Typography.Paragraph>
           )}
           {isSuccess && (
             <>
-              <Alert message='Thanh toán thành công!' type='success' showIcon className='mb-4' />
+              <Alert message={t('rechargeSuccess')} type='success' showIcon className='mb-4' />
               <Typography.Paragraph>
-                Số tiền đã nạp: <strong>{formatCurrency(transaction!.amount)}</strong>
+                {t('rechargeAmount')}: <strong>{formatCurrency(transaction!.amount)}</strong>
               </Typography.Paragraph>
               <Typography.Paragraph>
-                Mã giao dịch: <strong>{transaction!.transactionId}</strong>
+                {t('rechargeTransaction')}: <strong>{transaction!.transactionId}</strong>
               </Typography.Paragraph>
               <Typography.Paragraph>
-                Thời gian: <strong>{new Date(transaction!.transactionDate).toLocaleString()}</strong>
+                {t('rechargeDate')}: <strong>{new Date(transaction!.transactionDate).toLocaleString()}</strong>
               </Typography.Paragraph>
               <Space>
                 <Typography.Paragraph>
-                  <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>Lịch sử giao dịch</Link>
+                  <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>{t('transactionHistory')}</Link>
                 </Typography.Paragraph>
                 <Typography.Paragraph>
                   <Button type='link' onClick={() => setIsSuccess(false)}>
-                    Nạp tiếp
+                    {t('continue')}
                   </Button>
                 </Typography.Paragraph>
               </Space>
@@ -220,18 +222,18 @@ const Deposit = () => {
           )}
           {isFail && (
             <>
-              <Alert message='Thanh toán thất bại' type='error' showIcon className='mb-4' />
-              <Typography.Paragraph>Thanh toán của bạn không thành công.</Typography.Paragraph>
+              <Alert message={t('rechargeFailed')} type='error' showIcon className='mb-4' />
+              <Typography.Paragraph>{t('transactionFailed')}</Typography.Paragraph>
               <Typography.Paragraph>
-                Mã giao dịch: <strong>{transaction!.transactionId}</strong>
+                {t('rechargeTransaction')}: <strong>{transaction!.transactionId}</strong>
               </Typography.Paragraph>
               <Space>
                 <Typography.Paragraph>
-                  <Link to={ROUTER_NAMES.PROFILE}>Lịch sử giao dịch</Link>
+                  <Link to={ROUTER_NAMES.PROFILE}>{t('transactionHistory')}</Link>
                 </Typography.Paragraph>
                 <Typography.Paragraph>
                   <Button type='link' onClick={() => setIsSuccess(false)}>
-                    Thử lại
+                    {t('retry')}
                   </Button>
                 </Typography.Paragraph>
               </Space>
@@ -249,16 +251,16 @@ const Deposit = () => {
         >
           <Card className='flex items-center'>
             <Typography.Title level={5} className='mt-0'>
-              Số dư
+              {t('accountInfo.accountBalance')}
             </Typography.Title>
             <Typography.Paragraph>
-              Hiện tại: <strong>{formatCurrency(currentUser.balance)}</strong>
+              {t('accountInfo.present')}: <strong>{formatCurrency(currentUser.balance)}</strong>
             </Typography.Paragraph>
 
             {amount && renderDepositInfo()}
 
-            <Typography.Title level={5}>Lưu ý</Typography.Title>
-            <Typography.Paragraph>- Số tiền nạp tối thiểu là 50.000đ.</Typography.Paragraph>
+            <Typography.Title level={5}>{t('accountInfo.note')}</Typography.Title>
+            <Typography.Paragraph>- {t('accountInfo.min')}</Typography.Paragraph>
           </Card>
         </Col>
       )}
@@ -266,4 +268,4 @@ const Deposit = () => {
   )
 }
 
-export default Deposit
+export default Recharge

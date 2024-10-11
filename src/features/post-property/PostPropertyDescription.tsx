@@ -2,6 +2,7 @@ import { Form, FormInstance, Input, Typography } from 'antd'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
+import { useTranslation } from 'react-i18next'
 
 const quillModules = {
   toolbar: [
@@ -15,10 +16,12 @@ const quillModules = {
 const quillFormats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet']
 
 export default function PostPropertyDescription({ form }: { form: FormInstance<PostPropertyFormData> }) {
+  const { t } = useTranslation('postProperty')
+
   return (
     <>
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
-        <span className='text-red-500'>*</span> Tiêu đề
+        <span className='text-red-500'>*</span> {t('form.title')}
       </Typography.Title>
       <Form form={form} layout='vertical'>
         <Form.Item<PostPropertyFormData>
@@ -26,16 +29,16 @@ export default function PostPropertyDescription({ form }: { form: FormInstance<P
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập tiêu đề bài đăng'
+              message: t('form.titleRequired')
             }
           ]}
         >
-          <Input placeholder='Nhập tiêu đề bài đăng' />
+          <Input placeholder={t('form.titlePlaceholder')} />
         </Form.Item>
       </Form>
 
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
-        <span className='text-red-500'>*</span> Mô tả
+        <span className='text-red-500'>*</span> {t('form.description')}
       </Typography.Title>
       <Form form={form} layout='vertical'>
         <Form.Item<PostPropertyFormData>
@@ -43,11 +46,11 @@ export default function PostPropertyDescription({ form }: { form: FormInstance<P
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập mô tả bài đăng'
+              message: t('form.descriptionRequired')
             },
             {
               min: 50,
-              message: 'Mô tả phải chứa ít nhất 50 ký tự'
+              message: t('form.descriptionMin')
             }
           ]}
         >

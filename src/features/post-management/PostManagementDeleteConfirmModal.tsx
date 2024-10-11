@@ -1,6 +1,7 @@
 import { PropertyDataSource } from '@/types/property.type'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { WarningOutlined } from '@ant-design/icons'
 import { Modal, Typography } from 'antd'
+import { Trans, useTranslation } from 'react-i18next'
 
 interface PostManagementDeleteConfirmModalProps {
   isVisible: boolean
@@ -17,6 +18,8 @@ function PostManagementDeleteConfirmModal({
   property,
   isLoading
 }: PostManagementDeleteConfirmModalProps) {
+  const { t } = useTranslation('postManagement')
+
   return (
     <>
       {property && (
@@ -25,29 +28,32 @@ function PostManagementDeleteConfirmModal({
           title={
             <div className='flex flex-col items-center'>
               <div className='flex size-10 items-center justify-center rounded-full bg-red-50'>
-                <ExclamationCircleOutlined className='text-2xl text-red-400' />
+                <WarningOutlined className='text-2xl text-red-400' />
               </div>
-              <span className='font-semibold'>Xác nhận xóa bài đăng</span>
+              <span className='font-semibold'>{t('deleteModal.deleteConfirmTitle')}</span>
             </div>
           }
           open={isVisible}
           onOk={onConfirm}
           onCancel={onCancel}
-          okText='Xóa bài đăng'
-          cancelText='Quay lại'
+          okText={t('deleteModal.deletePost')}
+          cancelText={t('deleteModal.goBack')}
           okButtonProps={{
             className: 'bg-red-500 hover:bg-red-400 hover:border-red-600',
             loading: isLoading
           }}
           cancelButtonProps={{ disabled: isLoading }}
         >
-          <Typography.Paragraph className='mb-1 mt-2'>
-            Bạn có chắc chắn muốn xóa bài đăng '<span className='font-semibold text-blue-500'>{property.title}</span>'?
+          <Typography.Paragraph className='mb-1 mt-10'>
+            <Trans
+              ns={'postManagement'}
+              i18nKey='deleteModal.deleteConfirmMessage'
+              values={{ title: property.title }}
+              components={[<strong />]}
+            />
           </Typography.Paragraph>
 
-          <Typography.Paragraph className='mb-0 text-gray-500'>
-            Lưu ý, hành động này không thể hoàn tác.
-          </Typography.Paragraph>
+          <Typography.Paragraph className='mb-4 text-gray-500'>{t('deleteModal.deleteWarning')}</Typography.Paragraph>
         </Modal>
       )}
     </>

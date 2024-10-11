@@ -4,6 +4,7 @@ import { formatDateWithTime } from '@/utils/formatDate.ts'
 import { EyeOutlined } from '@ant-design/icons'
 import { Badge, Col, Descriptions, DescriptionsProps, Image, Modal, Row, Tag, Typography } from 'antd'
 import DOMPurify from 'dompurify'
+import { useTranslation } from 'react-i18next'
 
 interface PostManagementPropertyDetailProps {
   property: PropertyDataSource | null
@@ -12,59 +13,64 @@ interface PostManagementPropertyDetailProps {
 }
 
 function PostManagementPropertyDetail({ property, isVisible, onCancel }: PostManagementPropertyDetailProps) {
+  const { t } = useTranslation('postManagement')
+
   const modalItems: DescriptionsProps['items'] = [
     {
       key: 'roomType',
-      label: 'Loại phòng',
+      label: t('propertyDetail.roomType'),
       children: property?.roomTypeName
     },
     {
       key: 'city',
-      label: 'Thành phố',
+      label: t('propertyDetail.city'),
       children: property?.cityName
     },
     {
       key: 'district',
-      label: 'Quận huyện',
+      label: t('propertyDetail.district'),
       children: property?.districtName
     },
     {
       key: 'price',
-      label: 'Giá',
+      label: t('propertyDetail.price'),
       children: property ? formatCurrency(property.price) : ''
     },
     {
       key: 'location',
-      label: 'Địa chỉ',
+      label: t('propertyDetail.location'),
       children: property?.location,
       span: 2
     },
     {
       key: 'blocked',
-      label: 'Trạng thái',
+      label: t('propertyDetail.status'),
       children: (
-        <Badge status={property?.blocked ? 'error' : 'success'} text={property?.blocked ? 'Khóa' : 'Hoạt động'} />
+        <Badge
+          status={property?.blocked ? 'error' : 'success'}
+          text={property?.blocked ? t('propertyDetail.blocked') : t('propertyDetail.active')}
+        />
       ),
       span: 3
     },
     {
       key: 'area',
-      label: 'Diện tích',
+      label: t('propertyDetail.area'),
       children: `${property?.area} m²`
     },
     {
       key: 'numRooms',
-      label: 'Số phòng ngủ',
+      label: t('propertyDetail.numRooms'),
       children: property?.numRooms
     },
     {
       key: 'createdAt',
-      label: 'Ngày đăng',
+      label: t('propertyDetail.createdAt'),
       children: formatDateWithTime(property?.createdAt)
     },
     {
       key: 'amenities',
-      label: 'Tiện ích',
+      label: t('propertyDetail.amenities'),
       span: 3,
       children: (
         <>
@@ -78,7 +84,7 @@ function PostManagementPropertyDetail({ property, isVisible, onCancel }: PostMan
     },
     {
       key: 'description',
-      label: 'Mô tả',
+      label: t('propertyDetail.description'),
       span: 3,
       children: (
         <>
@@ -91,7 +97,7 @@ function PostManagementPropertyDetail({ property, isVisible, onCancel }: PostMan
     },
     {
       key: 'images',
-      label: `Hình ảnh (${property?.propertyImages.length})`,
+      label: `${t('propertyDetail.images')} (${property?.propertyImages.length})`,
       children: (
         <Row gutter={[8, 8]}>
           <Image.PreviewGroup>
@@ -101,7 +107,7 @@ function PostManagementPropertyDetail({ property, isVisible, onCancel }: PostMan
                   preview={{
                     mask: (
                       <>
-                        <EyeOutlined style={{ marginRight: 6 }} /> Chi tiết
+                        <EyeOutlined style={{ marginRight: 6 }} /> {t('propertyDetail.title')}
                       </>
                     )
                   }}
@@ -119,12 +125,12 @@ function PostManagementPropertyDetail({ property, isVisible, onCancel }: PostMan
 
   return (
     <Modal
-      title='Chi tiết bài đăng'
+      title={t('propertyDetail.title')}
       open={isVisible}
       onCancel={onCancel}
       width={1000}
       okButtonProps={{ className: 'hidden' }}
-      cancelText='Quay lại'
+      cancelText={t('propertyDetail.back')}
     >
       <Descriptions bordered items={modalItems} />
     </Modal>

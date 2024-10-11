@@ -5,23 +5,29 @@ import {
   CheckCircleFilled,
   CheckOutlined,
   CopyOutlined,
-  MailOutlined,
   PhoneFilled,
   UserOutlined
 } from '@ant-design/icons'
 import { Avatar, Button, Card, Divider, Flex, Space, Tooltip } from 'antd'
 import Meta from 'antd/es/card/Meta'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import PropertyDetailFavoriteButton from '@/features/property-detail/PropertyDetailFavoriteButton.tsx'
+import { User } from '@/types/user.type.ts'
 
 interface PropertyDetailOwnerDetailProps {
   userId: number | undefined
+  propertyId: number
+  currentUser: User | null
 }
 
-function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
+function PropertyDetailOwnerDetail({ userId,currentUser,propertyId }: PropertyDetailOwnerDetailProps) {
   const { userData, userIsLoading } = useUser(userId)
 
   const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+
+  const { t } = useTranslation(['common', 'propertyDetail'])
 
   const handleShowPhoneNumber = () => {
     if (!isPhoneNumberVisible) {
@@ -57,7 +63,11 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
                 <CheckCircleFilled className='text-blue-400' />
               </Space>
             }
-            description={<span>Đã tham gia: {formatJoinedDate(userData.createdAt)}</span>}
+            description={
+              <span>
+                {t('propertyDetail:ownerDetail.participated')} {formatJoinedDate(userData.createdAt)}
+              </span>
+            }
           />
           <Divider className='m-3' />
 
@@ -74,20 +84,24 @@ function PropertyDetailOwnerDetail({ userId }: PropertyDetailOwnerDetailProps) {
                   isCopied ? (
                     <CheckOutlined />
                   ) : (
-                    <Tooltip title='Sao chép số điện thoại'>
+                    <Tooltip title={t('propertyDetail:ownerDetail.phoneCopy')}>
                       <CopyOutlined />
                     </Tooltip>
                   )
                 ) : (
-                  'Bấm để hiện số'
+                  t('propertyDetail:ownerDetail.showNumber')
                 )}
               </b>
             </Flex>
           </Button>
 
-          <Button block icon={<MailOutlined />} size='large' type='primary'>
-            Gửi tin nhắn
-          </Button>
+
+
+          <PropertyDetailFavoriteButton id={propertyId} currentUser={currentUser} />
+
+          {/*<Button block icon={<MailOutlined />} size='large' type='primary'>*/}
+          {/*  {t('propertyDetail:ownerDetail.sendMessage')}*/}
+          {/*</Button>*/}
         </>
       )}
     </Card>

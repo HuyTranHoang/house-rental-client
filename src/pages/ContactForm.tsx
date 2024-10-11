@@ -2,6 +2,7 @@ import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import { Button, Col, Form, FormProps, Input, Row } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 type FieldType = {
@@ -11,6 +12,7 @@ type FieldType = {
 }
 
 function ContactForm() {
+  const { t } = useTranslation('contact')
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
 
@@ -19,11 +21,10 @@ function ContactForm() {
     try {
       setLoading(true)
       await axiosInstance.post('/api/contact', values)
-      toast.success('Gửi thành công!')
+      toast.success(t('form.sendSuccess'))
       form.resetFields()
     } catch (error) {
-      toast.error('Gửi thất bại, vui lòng thử lại sau!')
-      console.error('CONTACTFORM.TSX >>>:', error)
+      toast.error(t('form.sendFailure'))
     } finally {
       setLoading(false)
     }
@@ -43,27 +44,27 @@ function ContactForm() {
           size='large'
         >
           <Form.Item<FieldType>
-            label='Nội dung'
+            label={t('form.message')}
             name='message'
-            rules={[{ required: true, message: 'Vui lòng nhập nội dung!' }]}
+            rules={[{ required: true, message: t('form.messageRequired') }]}
           >
             <TextArea rows={4} />
           </Form.Item>
 
           <Form.Item<FieldType>
-            label='Họ tên'
+            label={t('form.name')}
             name='name'
-            rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
+            rules={[{ required: true, message: t('form.nameRequired') }]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item<FieldType>
-            label='Email'
+            label={t('form.email')}
             name='email'
             rules={[
-              { required: true, message: 'Vui lòng nhập email!' },
-              { type: 'email', message: 'Email không đúng định dạng!' }
+              { required: true, message: t('form.emailRequired') },
+              { type: 'email', message: t('form.emailInvalid') }
             ]}
           >
             <Input />
@@ -71,13 +72,17 @@ function ContactForm() {
 
           <Form.Item>
             <Button type='primary' htmlType='submit' className='w-full sm:w-24' loading={loading}>
-              Gửi
+              {t('form.send')}
             </Button>
           </Form.Item>
         </Form>
       </Col>
       <Col xs={24} md={12} className='flex items-center justify-center md:justify-start'>
-        <img src='/contact-icon-mail.png' alt='email image' className='hidden w-48 opacity-50 md:block md:w-64' />
+        <img
+          src='/contact-icon-mail.png'
+          alt={t('form.emailImageAlt')}
+          className='hidden w-48 opacity-50 md:block md:w-64'
+        />
       </Col>
     </Row>
   )

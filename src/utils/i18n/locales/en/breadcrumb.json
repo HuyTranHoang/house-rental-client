@@ -1,0 +1,16 @@
+{
+  "home": "Home",
+  "about": "About",
+  "contact": "Contact",
+  "propertyDetail": "Property Detail",
+  "login": "Login",
+  "register": "Register",
+  "requestResetPassword": "Request Reset Password",
+  "resetPassword": "Reset Password",
+  "profile": "Profile",
+  "changePassword": "Change Password",
+  "transactionHistory": "Transaction History",
+  "favorite": "Favorite",
+  "notFound": "Not Found",
+  "dashboard": "Dashboard"
+}

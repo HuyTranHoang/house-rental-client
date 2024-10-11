@@ -14,3 +14,8 @@
     content: "" !important;
 }
 
+.fixed-image {
+    width: 200px;
+    height: 500px !important;
+    object-fit: cover;
+}

@@ -6,6 +6,7 @@ import RightSideBar from '@/ui/RightSideBar.tsx'
 import { BookOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Divider, Empty, Flex, Pagination, Row, Skeleton, Typography } from 'antd'
 import { useMemo, useRef } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import PriorityCardItem from './PriorityCartItem.tsx'
 import RentHouseCardItem from './RentHouseCardItem.tsx'
 
@@ -43,6 +44,8 @@ function RentHouse() {
 
   const myRef = useRef<null | HTMLDivElement>(null)
 
+  const { t } = useTranslation()
+
   const startIndex = useMemo(() => (pageNumber - 1) * pageSize, [pageNumber, pageSize])
   const endIndex = useMemo(() => (data ? startIndex + data.data.length : 0), [data, startIndex])
   const range = useMemo(() => [startIndex + 1, endIndex], [startIndex, endIndex])
@@ -67,16 +70,23 @@ function RentHouse() {
               <>
                 {total > 0 && (
                   <div>
-                    Hiển thị <strong>{`${range[0]}-${range[1]}`}</strong> trong <strong>{`${total}`}</strong> tin đăng
+                    <Trans
+                      i18nKey='home.resultPagination'
+                      values={{
+                        from: range[0],
+                        to: range[1],
+                        total: total
+                      }}
+                    />
                   </div>
                 )}
 
-                {total === 0 && <div>Không có tin đăng nào phù hợp</div>}
+                {total === 0 && <div>{t('home.noResult')}</div>}
               </>
             )}
 
             <Button type='default' className='bg-[#f0f0f0]' icon={<BookOutlined />}>
-              Lưu tìm kiếm
+              {t('home.saveSearch')}
             </Button>
           </Flex>
 
@@ -99,11 +109,26 @@ function RentHouse() {
           )}
 
           {data && data.data.length === 0 && (
-            <Empty
-              className='mb-6 mt-12'
-              description={<Typography.Text>Không tìm thấy bài đăng nào phù hợp</Typography.Text>}
-            >
-              <Button type='primary'>Tìm kiếm lại</Button>
+            <Empty className='mb-6 mt-12' description={<Typography.Text>{t('home.noResult')}</Typography.Text>}>
+              <Button
+                type='primary'
+                onClick={() => {
+                  const resetFilters = {
+                    cityId: 0,
+                    districtId: 0,
+                    roomTypeId: 0,
+                    minPrice: 0,
+                    maxPrice: 0,
+                    minArea: 0,
+                    maxArea: 0,
+                    numOfDays: 0
+                  }
+                  setFilters({ ...resetFilters, search: '' })
+                  setFilters({ pageNumber: 1 })
+                }}
+              >
+                {t('home.reSearch')}
+              </Button>
             </Empty>
           )}
 
@@ -117,7 +142,7 @@ function RentHouse() {
               align='center'
               showSizeChanger
               pageSizeOptions={['5', '10', '20']}
-              locale={{ items_per_page: '/ trang' }}
+              locale={{ items_per_page: t('home.itemsPerPage') }}
               onChange={(page, pageSize) => {
                 setFilters({ pageNumber: page, pageSize })
                 if (myRef && myRef.current) {

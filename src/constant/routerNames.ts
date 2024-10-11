@@ -1,7 +1,6 @@
 const ROUTER_NAMES = {
-  TEST: '/test',
-  RENT_HOUSE: '/tim-thue-phong-tro',
-  PROPERTY_DETAIL: '/tim-thue-phong-tro/:slug',
+  RENT_HOUSE: '/',
+  PROPERTY_DETAIL: '/:slug',
 
   LOGIN: '/dang-nhap',
   REGISTER: '/dang-ky',
@@ -17,7 +16,7 @@ const ROUTER_NAMES = {
   CHANGE_PASSWORD: '/thong-tin-ca-nhan/doi-mat-khau',
 
   MEMBERSHIP_FEE: '/phi-thanh-vien',
-  TOP_UP: '/nap-tien',
+  RECHARGE: '/nap-tien',
   PAYMENT_SUCCESS: '/thanh-toan-thanh-cong',
   PAYMENT_FAILED: '/thanh-toan-that-bai',
   PROMOTION: '/khuyen-mai',
@@ -30,7 +29,7 @@ const ROUTER_NAMES = {
   POST_PROPERTY: '/dang-tin',
   POST_MANAGEMENT: '/quan-ly-tin-dang',
 
-  getRentHouseDetail: (slug: string) => `/tim-thue-phong-tro/${slug}`
+  getRentHouseDetail: (slug: string) => `/${slug}`
 }
 
 export default ROUTER_NAMES

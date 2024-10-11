@@ -1,0 +1,16 @@
+{
+  "home": "Trang chủ",
+  "about": "Giới thiệu",
+  "contact": "Liên hệ",
+  "propertyDetail": "Chi tiết bất động sản",
+  "login": "Đăng nhập",
+  "register": "Đăng ký",
+  "requestResetPassword": "Yêu cầu đặt lại mật khẩu",
+  "resetPassword": "Đặt lại mật khẩu",
+  "profile": "Hồ sơ",
+  "changePassword": "Đổi mật khẩu",
+  "transactionHistory": "Lịch sử giao dịch",
+  "favorite": "Yêu thích",
+  "notFound": "Không tìm thấy",
+  "dashboard": "Bảng điều khiển"
+}

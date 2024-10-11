@@ -1,16 +1,19 @@
 import { Image as ImageType, OriginFileObj, PostPropertyFormData } from '@/features/post-property/PostProperty'
+import { FileType, getBase64, validateFile } from '@/utils/uploadFile.ts'
 import { PictureOutlined, PlusOutlined, WarningOutlined } from '@ant-design/icons'
 import { Form, FormInstance, Image, Tooltip, Typography, Upload } from 'antd'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { UploadChangeParam } from 'antd/lib/upload'
 import { clsx } from 'clsx/lite'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { FileType, getBase64, validateFile } from '@/utils/uploadFile.ts'
 
 const { Dragger } = Upload
 
 export default function PostPropertyImage({ form }: { form: FormInstance<PostPropertyFormData> }) {
+  const { t } = useTranslation('postProperty')
+
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<UploadFile[]>([])
@@ -48,8 +51,6 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
     setPreviewImage(file.url || (file.preview as string))
     setPreviewOpen(true)
   }, [])
-
-
 
   const createThumbUrl = useCallback((file: UploadFile) => {
     return new Promise<string | undefined>((resolve) => {
@@ -128,7 +129,7 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
       }
 
       form.setFieldsValue({ thumbnailImage })
-      toast.success('Ảnh bìa đã được đặt thành công')
+      toast.success(t('toast.success.setCoverImage'))
     },
     [coverImageUid, form]
   )
@@ -139,17 +140,17 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
         <>
           {originNode}
           <div className='flex items-center justify-center'>
-            <Tooltip title={file.uid === coverImageUid ? 'Ảnh bìa hiện tại' : 'Đặt làm ảnh bìa'}>
+            <Tooltip title={file.uid === coverImageUid ? t('form.currentCover') : t('form.setCover')}>
               <Typography.Text
                 onClick={() => setCoverImage(file)}
                 className={clsx('cursor-pointer', file.uid === coverImageUid ? 'text-blue-500' : 'text-gray-500')}
               >
                 {file.uid === coverImageUid ? (
                   <>
-                    <PictureOutlined /> Ảnh bìa
+                    <PictureOutlined /> {t('form.cover')}
                   </>
                 ) : (
-                  <span className='hover:underline'>Đặt ảnh bìa</span>
+                  <span className='hover:underline'>{t('form.setCover')}</span>
                 )}
               </Typography.Text>
             </Tooltip>
@@ -163,7 +164,7 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
   return (
     <div className='space-y-4'>
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
-        Hình ảnh bất động sản
+        {t('form.propertyImage')}
       </Typography.Title>
       <Form form={form}>
         <Form.Item<PostPropertyFormData>
@@ -176,11 +177,11 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
             return e && e.fileList
           }}
           rules={[
-            { required: true, message: 'Vui lòng tải lên ít nhất một hình ảnh' },
+            { required: true, message: t('form.propertyImageRequired') },
             {
               validator: (_, value) => {
                 if (value.length > 10) {
-                  return Promise.reject(new Error('Chỉ được tải lên tối đa 10 hình ảnh.'))
+                  return Promise.reject(new Error(t('form.propertyImageMax')))
                 }
                 return Promise.resolve()
               }
@@ -202,7 +203,7 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
             itemRender={itemRender}
           >
             <PlusOutlined />
-            <div>Tải lên hình ảnh</div>
+            <div>{t('form.uploadImage')}</div>
           </Dragger>
         </Form.Item>
 
@@ -213,10 +214,10 @@ export default function PostPropertyImage({ form }: { form: FormInstance<PostPro
 
       <div className='flex flex-col pt-4'>
         <Typography.Text type='secondary'>
-          <WarningOutlined /> Bạn có thể tải lên tối đa 10 hình ảnh. Mỗi hình ảnh không được vượt quá 2MB.
+          <WarningOutlined /> {t('form.note')}
         </Typography.Text>
         <Typography.Text type='secondary'>
-          *Ảnh bìa là hình ảnh sẽ được hiển thị ở danh sách bất động sản.
+          {t('form.noteCover')}
         </Typography.Text>
       </div>
 

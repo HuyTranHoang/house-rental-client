@@ -4,24 +4,26 @@ import { SendOutlined, WarningOutlined } from '@ant-design/icons'
 import { Button, Flex, Form, FormProps, Input, Modal, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
 
 type ReportCategory = 'SCAM' | 'INAPPROPRIATE_CONTENT' | 'DUPLICATE' | 'MISINFORMATION' | 'OTHER'
-
-const reasons: Record<ReportCategory, string> = {
-  SCAM: 'Bài đăng này có dấu hiệu lừa đảo!',
-  INAPPROPRIATE_CONTENT: 'Bài đăng này có nội dung không phù hợp!',
-  DUPLICATE: 'Bài đăng này bị trùng lặp!',
-  MISINFORMATION: 'Bài đăng này có thông tin sai sự thật!',
-  OTHER: ''
-}
 
 function ReportButton({ propertyId }: { propertyId: number }) {
   const [reportForm] = Form.useForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { submitReport, isPending } = useSubmitReport()
+  const { t } = useTranslation(['common', 'propertyDetail'])
+
+  const reasons: Record<ReportCategory, string> = {
+    SCAM: t('propertyDetail:form.scam'),
+    INAPPROPRIATE_CONTENT: t('propertyDetail:form.inappropriateContent'),
+    DUPLICATE: t('propertyDetail:form.duplicate'),
+    MISINFORMATION: t('propertyDetail:form.misinformation'),
+    OTHER: ''
+  }
 
   const showModal = () => {
     reportForm.resetFields()
@@ -52,45 +54,45 @@ function ReportButton({ propertyId }: { propertyId: number }) {
         className='mt-6 border-[#9fbdd4] font-semibold text-[#657786]'
         aria-label='Report violation'
       >
-        Báo vi phạm
+        {t('propertyDetail:form.report')}
       </Button>
 
-      <Modal title='Báo cáo vi phạm' footer={null} onCancel={handleCancel} open={isModalOpen} destroyOnClose>
+      <Modal title={t('propertyDetail:form.commentReport')} footer={null} onCancel={handleCancel} open={isModalOpen} destroyOnClose>
         <Form form={reportForm} name='report' layout='vertical' onFinish={onFinish} autoComplete='off'>
           <Form.Item<ReportFormData> name='propertyId' hidden>
             <Input />
           </Form.Item>
 
           <Form.Item<ReportFormData>
-            label='Loại vi phạm'
+            label={t('propertyDetail:form.typeViolation')}
             name='category'
-            rules={[{ required: true, message: 'Vui lòng chọn loại vi phạm!' }]}
+            rules={[{ required: true, message: t('propertyDetail:form.requiredViolation') }]}
           >
-            <Select placeholder='Chọn loại vi phạm bạn muốn báo cáo' onChange={onCategoryChange} allowClear>
-              <Option value='SCAM'>Lừa đảo</Option>
-              <Option value='INAPPROPRIATE_CONTENT'>Nội dung không phù hợp</Option>
-              <Option value='DUPLICATE'>Nội dung trùng lặp</Option>
-              <Option value='MISINFORMATION'>Nội dung sai sự thật</Option>
-              <Option value='OTHER'>Khác</Option>
+            <Select placeholder={t('propertyDetail:form.selectViolation')} onChange={onCategoryChange} allowClear>
+              <Option value='SCAM'>{t('propertyDetail:form.scam')}</Option>
+              <Option value='INAPPROPRIATE_CONTENT'>{t('propertyDetail:form.inappropriateContent')}</Option>
+              <Option value='DUPLICATE'>{t('propertyDetail:form.duplicate')}</Option>
+              <Option value='MISINFORMATION'>{t('propertyDetail:form.misinformation')}</Option>
+              <Option value='OTHER'>{t('propertyDetail:form.other')}</Option>
             </Select>
           </Form.Item>
 
           <Form.Item<ReportFormData>
-            label='Lý do'
+            label={t('propertyDetail:form.reason')}
             name='reason'
-            rules={[{ required: true, message: 'Vui lòng nhập lý do!' }]}
+            rules={[{ required: true, message: t('propertyDetail:form.reasonRequired') }]}
           >
-            <TextArea placeholder={'Nhập nội dung vi phạm của bài đăng'} />
+            <TextArea placeholder={t('propertyDetail:form.contentReason')} />
           </Form.Item>
 
           <Form.Item>
             <Flex justify='end'>
-              <Button loading={isPending} icon={<SendOutlined />} iconPosition='end' type='primary' htmlType='submit'>
-                Gửi
+              <Button loading={isPending} icon={<SendOutlined />} type='primary' htmlType='submit'>
+                {t('button.send')}
               </Button>
 
               <Button onClick={handleCancel} className='ml-3'>
-                Hủy
+                {t('button.cancel')}
               </Button>
             </Flex>
           </Form.Item>

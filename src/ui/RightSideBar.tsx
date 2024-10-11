@@ -1,10 +1,15 @@
 import { fetchAllCities } from '@/api/city.api.ts'
 import { fetchAllDistricts } from '@/api/district.api.ts'
 import { fetchAllRoomTypes } from '@/api/roomType.api.ts'
+import { useAdvertisements } from '@/hooks/useAdvertisement'
 import { usePropertyFilters } from '@/hooks/useProperty.ts'
+import { Advertisement } from '@/types/advertisement.type'
 import { RightCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { Button, List, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { Autoplay, EffectFade } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 function RightSideBar() {
   const { data: roomTypeData, isLoading: roomTypeIsLoading } = useQuery({
@@ -20,16 +25,38 @@ function RightSideBar() {
     queryFn: fetchAllDistricts
   })
 
+  const { t } = useTranslation()
   const { cityId, setFilters } = usePropertyFilters()
+  const { advData } = useAdvertisements()
 
   return (
     <>
-      <img src='/aptechonehome.webp' className='mt-4 w-full' alt='banner' />
+      {advData && (
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1}
+          modules={[Autoplay, EffectFade]}
+          effect="fade"
+          loop={true}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          }}
+        >
+          {advData.map((ad: Advertisement) => (
+            <SwiperSlide key={ad.id}>
+              <img src={ad.imageUrl} className='fixed-image mt-4 w-full' alt='banner' />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+
       <List
         size='small'
         header={
           <Typography.Title level={5} className='m-0'>
-            Loại bất động sản
+            {t('home.rightSidebar.roomType')}
           </Typography.Title>
         }
         bordered
@@ -56,7 +83,7 @@ function RightSideBar() {
           size='small'
           header={
             <Typography.Title level={5} className='m-0'>
-              Nhà đất cho thuê tại các khu vực
+              {t('home.rightSidebar.cityDistrict')}
             </Typography.Title>
           }
           bordered
@@ -83,7 +110,7 @@ function RightSideBar() {
           size='small'
           header={
             <Typography.Title level={5} className='m-0'>
-              Nhà đất cho thuê tại {cityData.find((city) => city.id === cityId)?.name}
+              {t('home.rightSidebar.cityDistrictIn')} {cityData.find((city) => city.id === cityId)?.name}
             </Typography.Title>
           }
           bordered

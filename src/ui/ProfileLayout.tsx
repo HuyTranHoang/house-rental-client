@@ -43,47 +43,13 @@ import {
 } from 'antd'
 import { CollapseProps } from 'antd/lib'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const { Text, Title } = Typography
 
 type MenuItem = Required<MenuProps>['items'][number]
-
-const items: MenuItem[] = [
-  {
-    key: ROUTER_NAMES.FAVORITE,
-    label: 'Bất động sản yêu thích',
-    icon: <StarOutlined />
-  },
-  {
-    key: ROUTER_NAMES.TRANSACTION_HISTORY,
-    label: 'Lịch sử giao dịch',
-    icon: <ReadOutlined />
-  },
-  {
-    type: 'divider'
-  },
-  {
-    key: ROUTER_NAMES.PROFILE,
-    label: 'Thông tin cá nhân',
-    icon: <IdcardOutlined />
-  },
-  {
-    key: ROUTER_NAMES.CHANGE_PASSWORD,
-    label: 'Thay đổi mật khẩu',
-    icon: <LockOutlined />
-  },
-  {
-    type: 'divider'
-  },
-  {
-    key: 'dangXuat',
-    label: 'Đăng xuất',
-    icon: <LogoutOutlined />,
-    danger: true
-  }
-]
 
 const twoColors: ProgressProps['strokeColor'] = {
   '0%': '#108ee9',
@@ -116,19 +82,55 @@ export default function ProfileLayout() {
   const { data: membership, isLoading: memberShipIsLoading } = useUserMembership(currentUser?.id)
   const logout = useAuthStore((state) => state.logout)
   const updateProfile = useAuthStore((state) => state.updateProfile)
+  const { t } = useTranslation(['profile', 'common'])
 
   const location = useLocation()
   const currentPath = location.pathname
 
   const remainingDays = calculateMembershipRemainingDays(membership)
 
+  const items: MenuItem[] = [
+    {
+      key: ROUTER_NAMES.FAVORITE,
+      label: t('favoriteProperties.title'),
+      icon: <StarOutlined />
+    },
+    {
+      key: ROUTER_NAMES.TRANSACTION_HISTORY,
+      label: t('transactionHistory.title'),
+      icon: <ReadOutlined />
+    },
+    {
+      type: 'divider'
+    },
+    {
+      key: ROUTER_NAMES.PROFILE,
+      label: t('personalInfo.title'),
+      icon: <IdcardOutlined />
+    },
+    {
+      key: ROUTER_NAMES.CHANGE_PASSWORD,
+      label: t('changePassword.changePassword'),
+      icon: <LockOutlined />
+    },
+    {
+      type: 'divider'
+    },
+    {
+      key: 'dangXuat',
+      label: t('common:navbar.logout'),
+      icon: <LogoutOutlined />,
+      danger: true
+    }
+  ]
+
   const onClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'dangXuat') {
       logout()
-      navigate(ROUTER_NAMES.TEST)
+      navigate(ROUTER_NAMES.RENT_HOUSE)
       localStorage.removeItem('jwtToken')
       axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
-        toast.success('Đăng xuất thành công')
+        toast.success(t('common:toast.logoutSuccess'))
       })
     } else {
       navigate(key)
@@ -146,12 +148,12 @@ export default function ProfileLayout() {
       getBase64(info.file.originFileObj as FileType, () => {
         updateProfile(info.file.response)
         setLoading(false)
-        toast.success('Cập nhật ảnh đại diện thành công!')
+        toast.success(t('toast.updateAvatarSuccess'))
       })
     }
     if (info.file.status === 'error') {
       setLoading(false)
-      toast.error('Cập nhật ảnh đại diện thất bại!')
+      toast.error(t('toast.updateAvatarFailed'))
     }
   }
 
@@ -169,7 +171,7 @@ export default function ProfileLayout() {
         <>
           <CrownOutlined className='mr-2 text-lg text-yellow-500' />
           <Text>
-            Loại tài khoản: <strong>{membership?.membershipName}</strong>
+            {t('accountType.type')}: <strong>{membership?.membershipName}</strong>
           </Text>
         </>
       ),
@@ -178,10 +180,14 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <ClockCircleOutlined className='mr-2' />
-              Thời hạn còn lại:
+              {t('accountType.remainingTerm')}:
             </Text>
             {remainingDays <= 0 && <Text className='text-xl font-semibold'>∞</Text>}
-            {remainingDays > 0 && <Text strong>{remainingDays} ngày</Text>}
+            {remainingDays > 0 && (
+              <Text strong>
+                {remainingDays} {t('accountType.days')}
+              </Text>
+            )}
           </div>
           {remainingDays <= 0 && <Progress strokeColor={twoColors} percent={100} showInfo={false} />}
           {remainingDays > 0 && (
@@ -190,7 +196,7 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <ReloadOutlined className='mr-2' />
-              Lượt làm mới:
+              {t('accountType.refeshCount')}:
             </Text>
             <Text strong>
               {membership.totalRefreshLimit - membership.refreshesPostsUsed}/{membership.totalRefreshLimit}
@@ -206,7 +212,7 @@ export default function ProfileLayout() {
           <div className='flex items-center justify-between'>
             <Text>
               <FireOutlined className='mr-2' />
-              Lượt đẩy bài ưu tiên:
+              {t('accountType.priorityCount')}:
             </Text>
             <Text strong>
               {membership.totalPriorityLimit - membership.priorityPostsUsed}/{membership.totalPriorityLimit}
@@ -235,7 +241,7 @@ export default function ProfileLayout() {
         <Card className='rounded-none'>
           <div className='flex flex-col items-center'>
             <div className='flex justify-center'>
-              <Tooltip title={loading ? 'Đang tải lên...' : 'Thay đổi ảnh đại diện'}>
+              <Tooltip title={loading ? t('updating') : t('changeAvatar')}>
                 <Upload
                   name='avatar'
                   action='/api/user/update-avatar'
@@ -280,7 +286,9 @@ export default function ProfileLayout() {
                   </div>
                   <div className='flex items-center'>
                     <WalletOutlined className='mr-2 text-lg text-gray-500' />
-                    <Text>Số dư: {formatCurrency(currentUser.balance)}</Text>
+                    <Text>
+                      {t('accountBalance')}: {formatCurrency(currentUser.balance)}
+                    </Text>
                   </div>
                   <Divider className='m-0 mb-4' />
                   {memberShipIsLoading && <Skeleton />}

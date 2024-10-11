@@ -1,0 +1,10 @@
+{
+  "title": "Notifications",
+  "markAllAsRead": "Mark all as read",
+  "commentedOnYourPost": "commented on your post",
+  "yourPost": "Your post",
+  "hasBeenApproved": "has been approved",
+  "hasBeenRejected": "has been rejected",
+  "noNewNotifications": "No new notifications",
+  "loadMore": "Load more"
+}

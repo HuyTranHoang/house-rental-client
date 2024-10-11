@@ -1,11 +1,13 @@
 import ROUTER_NAMES from '@/constant/routerNames.ts'
+import Notification from '@/features/notification/Notification.tsx'
 import axiosInstance from '@/inteceptor/axiosInstance.ts'
 import useAuthStore from '@/store/authStore.ts'
+import usePropertyStore from '@/store/propertyStore.ts'
 import { User } from '@/types/user.type.ts'
-import Notification from '@/ui/Notification.tsx'
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Divider, Dropdown, Flex, MenuProps, Space, Typography } from 'antd'
 import { clsx } from 'clsx'
+import { useTranslation } from 'react-i18next'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -14,47 +16,11 @@ interface NavItemProps {
   link: string
 }
 
-const NavItem = ({ title, link }: NavItemProps) => (
-  <Button type='link'>
-    <NavLink
-      to={link}
-      className={({ isActive }) => clsx('text-base text-gray-700 hover:text-blue-500', isActive && 'font-bold')}
-    >
-      {title}
-    </NavLink>
-  </Button>
-)
-
-const items: MenuProps['items'] = [
-  {
-    key: ROUTER_NAMES.PROFILE,
-    label: <Link to={ROUTER_NAMES.PROFILE}>Thông tin cá nhân</Link>
-  },
-  {
-    key: ROUTER_NAMES.TRANSACTION_HISTORY,
-    label: <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>Lịch sử giao dịch</Link>
-  },
-  {
-    key: ROUTER_NAMES.FAVORITE,
-    label: <Link to={ROUTER_NAMES.FAVORITE}>Bất động sản yêu thích</Link>
-  },
-  {
-    key: ROUTER_NAMES.POST_MANAGEMENT,
-    label: <Link to={ROUTER_NAMES.POST_MANAGEMENT}>Quản lý tin đăng</Link>
-  },
-  {
-    type: 'divider'
-  },
-  {
-    key: 'logout',
-    danger: true,
-    label: 'Đăng xuất'
-  }
-]
-
 function MenuDesktop({ user }: { user: User | null }) {
   const logout = useAuthStore((state) => state.logout)
   const navigate = useNavigate()
+  const resetStepAndFormPostProperty = usePropertyStore((state) => state.resetStepAndForm)
+  const { t } = useTranslation()
 
   const onClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
@@ -62,22 +28,60 @@ function MenuDesktop({ user }: { user: User | null }) {
       navigate(ROUTER_NAMES.RENT_HOUSE)
       localStorage.removeItem('jwtToken')
       axiosInstance.post('/api/auth/logout', {}, { withCredentials: true }).then(() => {
-        toast.success('Đăng xuất thành công')
+        toast.success(t('toast.logoutSuccess'))
       })
     }
   }
 
+  const NavItem = ({ title, link }: NavItemProps) => (
+    <Button type='link'>
+      <NavLink
+        to={link}
+        className={({ isActive }) => clsx('text-base text-gray-700 hover:text-blue-500', isActive && 'font-bold')}
+      >
+        {title}
+      </NavLink>
+    </Button>
+  )
+
+  const items: MenuProps['items'] = [
+    {
+      key: ROUTER_NAMES.PROFILE,
+      label: <Link to={ROUTER_NAMES.PROFILE}>{t('navbar.personalInfo')}</Link>
+    },
+    {
+      key: ROUTER_NAMES.TRANSACTION_HISTORY,
+      label: <Link to={ROUTER_NAMES.TRANSACTION_HISTORY}>{t('navbar.transactionHistory')}</Link>
+    },
+    {
+      key: ROUTER_NAMES.FAVORITE,
+      label: <Link to={ROUTER_NAMES.FAVORITE}>{t('navbar.favoriteProperties')}</Link>
+    },
+    {
+      key: ROUTER_NAMES.POST_MANAGEMENT,
+      label: <Link to={ROUTER_NAMES.POST_MANAGEMENT}>{t('navbar.propertyManagement')}</Link>
+    },
+    {
+      type: 'divider'
+    },
+    {
+      key: 'logout',
+      danger: true,
+      label: t('navbar.logout')
+    }
+  ]
+
   return (
     <Flex className='hidden md:flex' gap='small' wrap>
-      <NavItem title='Tìm thuê' link={ROUTER_NAMES.RENT_HOUSE} />
+      <NavItem title={t('navbar.forRent')} link={ROUTER_NAMES.RENT_HOUSE} />
 
-      <NavItem title='Gói thành viên' link={ROUTER_NAMES.MEMBERSHIP_FEE} />
+      <NavItem title={t('navbar.membershipPackage')} link={ROUTER_NAMES.MEMBERSHIP_FEE} />
 
-      <NavItem title='Nạp tiền' link={ROUTER_NAMES.TOP_UP} />
+      <NavItem title={t('navbar.recharge')} link={ROUTER_NAMES.RECHARGE} />
 
-      <NavItem title='Về chúng tôi' link={ROUTER_NAMES.ABOUT} />
+      <NavItem title={t('navbar.aboutUs')} link={ROUTER_NAMES.ABOUT} />
 
-      <NavItem title='Liên hệ' link={ROUTER_NAMES.CONTACT} />
+      <NavItem title={t('navbar.contactUs')} link={ROUTER_NAMES.CONTACT} />
 
       {user && (
         <>
@@ -102,11 +106,15 @@ function MenuDesktop({ user }: { user: User | null }) {
         </>
       )}
 
-      {!user && <NavItem title='Đăng nhập' link={ROUTER_NAMES.LOGIN} />}
+      {!user && <NavItem title={t('navbar.login')} link={ROUTER_NAMES.LOGIN} />}
 
       <Button className='group border-blue-500 font-semibold'>
-        <Link to={ROUTER_NAMES.POST_PROPERTY} className='group-hover:text-blue-500'>
-          Đăng tin
+        <Link
+          to={ROUTER_NAMES.POST_PROPERTY}
+          className='group-hover:text-blue-500'
+          onClick={() => resetStepAndFormPostProperty()}
+        >
+          {t('navbar.postProperty')}
         </Link>
       </Button>
     </Flex>

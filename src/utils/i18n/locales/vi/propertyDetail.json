@@ -1,0 +1,66 @@
+{
+  "record": {
+    "scam": "Bình luận này là lừa đảo!",
+    "inappropriateContent": "Bình luận này chứa nội dung không phù hợp!",
+    "duplicate": "Bình luận này bị trùng lặp!",
+    "misinformation": "Bình luận này chứa thông tin sai lệch!",
+    "other": ""
+  },
+  "form": {
+    "report": "Báo cáo",
+    "commentReport": "Báo cáo bình luận",
+    "typeViolation": "Loại vi phạm",
+    "requiredViolation": "Vui lòng chọn loại vi phạm",
+    "selectViolation": "Chọn loại vi phạm để báo cáo",
+    "scam": "Lừa đảo",
+    "inappropriateContent": "Nội dung không phù hợp",
+    "misinformation": "Nội dung sai lệch",
+    "duplicate": "Nội dung trùng lặp",
+    "other": "Khác",
+    "reason": "Lý do",
+    "reasonRequired": "Lý do là bắt buộc",
+    "contentReason": "Nhập nội dung vi phạm của bình luận",
+    "reportAViolation": "Báo cáo vi phạm"
+  },
+  "property": {
+    "area": "Diện tích",
+    "numRooms": "Số phòng",
+    "createAt": "Ngày tạo",
+    "amenities": "Tiện ích",
+    "aboutList": "Danh sách",
+    "nextProperty": "Tin tiếp",
+    "mainInfo": "Thông tin chính",
+    "introduce": "Giới thiệu"
+  },
+  "component": {
+    "commentInfo": "Thông tin bình luận",
+    "of": "trong",
+    "comments": "bình luận",
+    "noComments": "Không có bình luận",
+    "comment": "Bình luận",
+    "commentRequired": "Bình luận là bắt buộc",
+    "commentMin": "Bình luận phải có ít nhất 10 ký tự",
+    "commentMax": "Bình luận phải có nhiều nhất 500 ký tự",
+    "commentPlaceholder": "Viết bình luận của bạn ở đây...",
+    "commentSend": "Gửi",
+    "deleteComment": "Xóa bình luận",
+    "confirmDelete": "Xác nhận xóa",
+    "confirmAccessDelete": "Bạn có chắc chắn muốn xóa bình luận từ",
+    "warningNotification": "Hành động này không thể hoàn tác",
+    "back": "Quay lại"
+  },
+  "favorite": {
+    "save": "Lưu tin",
+    "unsave": "Bỏ lưu"
+  },
+  "ownerDetail": {
+    "participated": "Tham gia",
+    "phoneCopy": "Sao chép số điện thoại",
+    "showNumber": "Nhấn để hiển thị số",
+    "sendMessage": "Gửi tin nhắn"
+  },
+  "related": {
+    "title": "Bất động sản tương tự",
+    "room": "Phòng"
+  }
+}

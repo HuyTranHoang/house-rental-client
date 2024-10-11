@@ -1,0 +1,66 @@
+{
+  "record": {
+    "scam": "This comment is a scam!",
+    "inappropriateContent": "This comment contains inappropriate content!",
+    "duplicate": "This comment is duplicated!",
+    "misinformation": "This comment contains false information!",
+    "other": ""
+  },
+  "form": {
+    "report": "Report",
+    "commentReport": "Report comment",
+    "typeViolation": "Type of violation",
+    "requiredViolation": "Please select the type of violation",
+    "selectViolation": "Select the type of violation to report",
+    "scam": "Scam",
+    "inappropriateContent": "Inappropriate content",
+    "misinformation": "Misinformation content",
+    "duplicate": "Duplicate content",
+    "other": "Other",
+    "reason": "Reason",
+    "reasonRequired": "Reason required",
+    "contentReason": "Enter the offending content of the comment",
+    "reportAViolation": "Report a violation"
+  },
+  "property": {
+    "area": "Area",
+    "numRooms": "Number of rooms",
+    "createAt": "Created at",
+    "amenities": "Amenities",
+    "aboutList": "About list",
+    "nextProperty": "Next property",
+    "mainInfo": "Main information",
+    "introduce": "Introduce"
+  },
+  "component": {
+    "commentInfo": "Comment Information",
+    "of": "of",
+    "comments": "comments",
+    "noComments": "No comments",
+    "comment": "Comment",
+    "commentRequired": "Comment is required",
+    "commentMin": "Comment must be at least 10 characters",
+    "commentMax": "Comment must be at most 500 characters",
+    "commentPlaceholder": "Write your comment here...",
+    "commentSend": "Send",
+    "deleteComment": "Delete Comment",
+    "confirmDelete": "Confirm Delete",
+    "confirmAccessDelete": "Are you sure you want to delete the comment from",
+    "warningNotification": "This action cannot be undone",
+    "back": "Back"
+  },
+  "favorite": {
+    "save": "Save property",
+    "unsave": "Unsave property"
+  },
+  "ownerDetail": {
+    "participated": "Participated",
+    "phoneCopy": "Copy phone number",
+    "showNumber": "Click to show number",
+    "sendMessage": "Send message"
+  },
+  "related": {
+    "title": "Similar properties",
+    "room": "Room"
+  }
+}

@@ -1,11 +1,14 @@
+import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 import { useCities } from '@/hooks/useCity.ts'
 import { useDistricts } from '@/hooks/useDistrict.ts'
 import { Form, FormInstance, Input, Select, Spin, Typography } from 'antd'
 import { useState } from 'react'
-import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
+import { useTranslation } from 'react-i18next'
 
 export default function PostPropertyLocation({ form }: { form: FormInstance<PostPropertyFormData> }) {
-  const [selectedCity, setselectedCity] = useState<string | null>(null)
+  const { t } = useTranslation('postProperty')
+
+  const [selectedCity, setselectedCity] = useState<string | null>(form.getFieldValue('city'))
 
   const { cityData, cityIsLoading } = useCities()
   const { districtData, districtIsLoading } = useDistricts()
@@ -33,23 +36,23 @@ export default function PostPropertyLocation({ form }: { form: FormInstance<Post
   return (
     <>
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
-        Địa điểm
+        {t('form.location')}
       </Typography.Title>
 
       <Form form={form} layout='vertical' className='space-y-4'>
         <Form.Item<PostPropertyFormData>
           name='city'
-          label='Tỉnh/Thành phố'
+          label={t('form.provinceCity')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng chọn Tỉnh/Thành phố.'
+              message: t('form.provinceCityRequired')
             }
           ]}
         >
           <Select
             options={cityOptions}
-            placeholder='Chọn Tỉnh/Thành phố'
+            placeholder={t('form.provinceCityPlaceholder')}
             onChange={(value) => {
               setselectedCity(value)
               form.setFieldValue('district', undefined)
@@ -60,28 +63,33 @@ export default function PostPropertyLocation({ form }: { form: FormInstance<Post
 
         <Form.Item<PostPropertyFormData>
           name='district'
-          label='Quận/Huyện'
+          label={t('form.district')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng chọn Quận/Huyện.'
+              message: t('form.districtRequired')
             }
           ]}
         >
-          <Select options={districtOptions} placeholder='Chọn Quận/Huyện' disabled={!selectedCity} className='w-full' />
+          <Select
+            options={districtOptions}
+            placeholder={t('form.districtPlaceholder')}
+            disabled={!selectedCity}
+            className='w-full'
+          />
         </Form.Item>
 
         <Form.Item
           name='location'
-          label='Địa chỉ cụ thể'
+          label={t('form.address')}
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập địa chỉ cụ thể.'
+              message: t('form.addressRequired')
             }
           ]}
         >
-          <Input placeholder='Nhập địa chỉ cụ thể' />
+          <Input placeholder={t('form.addressPlaceholder')} />
         </Form.Item>
       </Form>
     </>

@@ -1,8 +1,11 @@
+import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
 import { useRoomTypes } from '@/hooks/useRoomType'
 import { Form, FormInstance, Radio, Spin, Typography } from 'antd'
-import { PostPropertyFormData } from '@/features/post-property/PostProperty.tsx'
+import { useTranslation } from 'react-i18next'
 
 export default function PostPropertyRoomType({ form }: { form: FormInstance<PostPropertyFormData> }) {
+  const { t } = useTranslation('postProperty')
+
   const { roomTypeData, roomTypeIsLoading } = useRoomTypes()
 
   if (roomTypeIsLoading) {
@@ -16,11 +19,15 @@ export default function PostPropertyRoomType({ form }: { form: FormInstance<Post
   return (
     <>
       <Typography.Title level={4} className='mt-0 text-lg font-semibold'>
-        <span className='text-red-500'>*</span> Chọn loại bất động sản
+        <span className='text-red-500'>*</span> {t('form.selectRoomType')}
       </Typography.Title>
 
       <Form form={form}>
-        <Form.Item<PostPropertyFormData> name='roomType' rules={[{ required: true, message: 'Vui lòng chọn loại bất động sản.' }]} preserve>
+        <Form.Item<PostPropertyFormData>
+          name='roomType'
+          rules={[{ required: true, message: t('form.roomTypeRequired') }]}
+          preserve
+        >
           <Radio.Group optionType='button' buttonStyle='solid' className='w-full space-y-2'>
             {roomTypeData?.map((roomType) => (
               <Radio key={roomType.id} value={roomType.id} className='w-full rounded-none'>

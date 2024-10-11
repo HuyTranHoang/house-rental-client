@@ -1,0 +1,33 @@
+{
+  "toast": {
+    "insufficientBalance": "Insufficient balance to upgrade membership package!",
+    "upgradePackageSuccess": "Membership upgrade successful!"
+  },
+  "membershipPackage": "Membership Package",
+  "priorityPosting": "Priority posting",
+  "exclusiveDiscount": "Exclusive discount",
+  "24/7Support": "24/7 support",
+  "comfirmUpgrade": "Comfirm update",
+  "comfirmUpgradePackage": "Are you sure you want to upgrade to ",
+  "descriptionPackage": "Upgrade your experience with unique perks",
+  "purchasePackage": "Purchase membership package",
+  "free": "Free",
+  "standard": "Standard",
+  "premium": "Premium",
+  "extend": "Extend",
+  "upgrade": "Upgrade",
+  "urUseThisPackage": "You are using this package",
+  "descriptionPackageStandardAndPremium": "Increase performance, user accessibility",
+  "descriptionPackagePremium": "Enhanced customer support",
+  "postPriority": "Post Priority: {{priority}} turns",
+  "refreshPost": "Refresh Post: {{refresh}} turns",
+  "basicPackage": "All features of Basic package",
+  "freePackage": "Search, post and more",
+  "purchaseSuccess": {
+    "purchaseSuccess": "Purchase Successful!",
+    "congratulations": "Congratulations, you have purchased the",
+    "currentBalance": "Current Balance",
+    "expiryDate": "Expiry Date",
+    "undefined": "Undefined"
+  }
+}

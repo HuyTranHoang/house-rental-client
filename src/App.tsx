@@ -7,6 +7,7 @@ import './App.css'
 
 import 'swiper/css'
 import 'swiper/css/autoplay'
+import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
@@ -14,6 +15,7 @@ import useRefreshToken from '@/hooks/useRefreshToken.ts'
 import useUIStore from '@/store/uiStore.ts'
 import { VerticalAlignTopOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
+import ReactCountryFlag from 'react-country-flag'
 
 function App() {
   const isLoading = useRefreshToken()
@@ -49,13 +51,7 @@ function App() {
         <FloatButton
           onClick={() => setI18n(i18n === 'en' ? 'vi' : 'en')}
           className='size-10'
-          icon={
-            i18n === 'en' ? (
-              <img className='-translate-x-0.5' src='/flag/vietnam.png' alt='vietnam flag' />
-            ) : (
-              <img className='-translate-x-0.5' src='/flag/united-states.png' alt='us flag' />
-            )
-          }
+          icon={i18n === 'en' ? <ReactCountryFlag countryCode='VN' svg /> : <ReactCountryFlag countryCode='US' svg />}
         />
       </FloatButton.Group>
     </>

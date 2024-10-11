@@ -23,6 +23,7 @@ import {
 import type { MenuProps, TableProps } from 'antd'
 import { Badge, Button, Dropdown, Table, Tooltip } from 'antd'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import PostManagementDeleteConfirmModal from './PostManagementDeleteConfirmModal'
 import PriorityConfirmationModal from './PriorityConfirmationModal'
@@ -49,6 +50,7 @@ export default function PostManagementTable({
   paginationProps,
   handleTableChange
 }: PropertyTableProps) {
+  const { t } = useTranslation('postManagement')
   const { hiddenProperty, hiddenPropertyIsPending } = useHiddenProperty()
   const { refreshProperty, refreshPropertyIsPending } = useRefreshProperty()
   const { prioritizeProperty, prioritizePropertyIsPending } = usePrioritizeProperty()
@@ -87,26 +89,26 @@ export default function PostManagementTable({
         case ModalName.REFRESH:
           refreshProperty(selectedProperty.id)
             .then(() => {
-              toast.success('Làm mới bài đăng thành công')
+              toast.success(t('table.toast.success.refreshPost'))
               setIsModalVisible(false)
             })
-            .catch((error) => toast.error(error.response.data.message || 'Lỗi khi làm mới bài đăng'))
+            .catch((error) => toast.error(error.response.data.message || t('table.toast.error.refreshPost')))
           break
         case ModalName.PRIORITY:
           prioritizeProperty(selectedProperty.id)
             .then(() => {
-              toast.success('Ưu tiên bài đăng thành công')
+              toast.success(t('table.toast.success.prioritizePost'))
               setIsModalPriorityVisible(false)
             })
-            .catch((error) => toast.error(error.response.data.message || 'Lỗi khi ưu tiên bài đăng'))
+            .catch((error) => toast.error(error.response.data.message || t('table.toast.error.prioritizePost')))
           break
         case ModalName.DELETE:
           selfDeleteProperty(selectedProperty.id)
             .then(() => {
-              toast.success('Xóa bài đăng thành công')
+              toast.success(t('table.toast.success.deletePost'))
               setIsModalDeleteVisible(false)
             })
-            .catch((error) => toast.error(error.response.data.message || 'Lỗi khi xóa bài đăng'))
+            .catch((error) => toast.error(error.response.data.message || t('table.toast.error.deletePost')))
           break
       }
     }
@@ -136,23 +138,23 @@ export default function PostManagementTable({
   const getDropDownItems = (record: PropertyDataSource): MenuProps['items'] => [
     {
       key: 'view',
-      label: 'Xem chi tiết',
+      label: t('table.viewDetails'),
       icon: <ExportOutlined />,
       onClick: () => showConfirm(record, ModalName.DETAIL)
     },
     {
       key: 'edit',
-      label: 'Sửa bài đăng',
+      label: t('table.editPost'),
       icon: <EditOutlined />,
       onClick: () => showConfirm(record, ModalName.EDIT)
     },
     {
       key: 'toggle-visibility',
-      label: record.hidden ? 'Hiện bài đăng' : 'Ẩn bài đăng',
+      label: record.hidden ? t('table.showPost') : t('table.hidePost'),
       icon: record.hidden ? <EyeOutlined /> : <EyeInvisibleOutlined />,
       onClick: () => {
         hiddenProperty(record.id).then(() => {
-          toast.success(record.hidden ? 'Hiện bài đăng thành công' : 'Ẩn bài đăng thành công')
+          toast.success(record.hidden ? t('table.toast.success.showPost') : t('table.toast.success.hidePost'))
         })
       }
     },
@@ -162,52 +164,57 @@ export default function PostManagementTable({
     {
       key: ModalName.DELETE,
       danger: true,
-      label: 'Xóa bài đăng',
+      label: t('table.deletePost'),
       icon: <DeleteOutlined />,
       onClick: () => showConfirm(record, ModalName.DELETE)
     }
   ]
 
   const columns = [
-    { title: '#', dataIndex: 'index', key: 'index', width: 50 },
+    { title: t('table.index'), dataIndex: 'index', key: 'index', width: 60 },
     {
-      title: 'Thông tin bất động sản',
+      title: t('table.propertyInfo'),
       dataIndex: 'propertyInfo',
       key: 'propertyInfo',
       render: (_: undefined, record: PropertyDataSource) => (
         <div className='space-y-2'>
           <div className='flex flex-col'>
-            <span className='text-xs text-gray-500'>Tựa đề:</span>
-            <span>{record.title}</span>
+            <span className='text-xs text-gray-500'>{t('table.title')}:</span>
+            <span className='font-semibold text-gray-800'>{record.title}</span>
           </div>
-          <div className='flex space-x-6'>
+          <div className='flex flex-col md:flex-row md:space-x-6'>
             <div className='flex flex-col'>
-              <span className='text-xs text-gray-500'>Giá:</span>
-              <span>{formatCurrency(record.price)}</span>
+              <span className='text-xs text-gray-500'>{t('table.price')}:</span>
+              <span className='font-semibold text-gray-800'>{formatCurrency(record.price)}</span>
             </div>
             <div className='flex flex-col'>
-              <span className='text-xs text-gray-500'>Địa chỉ:</span>
-              <span>{record.districtName}, {record.cityName}</span>
+              <span className='text-xs text-gray-500'>{t('table.address')}:</span>
+              <span className='font-semibold text-gray-800'>
+                {record.districtName}, {record.cityName}
+              </span>
             </div>
           </div>
         </div>
       )
     },
     {
-      title: 'Trạng thái',
+      title: t('table.status'),
       dataIndex: 'blocked',
       key: 'blocked',
       width: 150,
       render: (value: boolean, record: PropertyDataSource) => (
         <div className='space-y-1'>
-          <Badge status={value ? 'error' : 'success'} text={value ? 'Đã khóa' : 'Hoạt động'} />
+          {!record.hidden && !value && <Badge status={'success'} text={t('table.active')} />}
+
+          {value && <Badge status={'error'} text={t('table.blocked')} />}
+
           {record.hidden && (
             <Badge
               status='warning'
               text={
                 <>
-                  Đã ẩn
-                  <Tooltip title='Bài đăng này không hiển thị trên trang chủ'>
+                  {t('table.hidden')}
+                  <Tooltip title={t('table.hiddenTooltip')}>
                     <QuestionCircleOutlined className='ml-2 cursor-help text-xs text-gray-500' />
                   </Tooltip>
                 </>
@@ -219,8 +226,8 @@ export default function PostManagementTable({
               status='processing'
               text={
                 <>
-                  Đã ưu tiên
-                  <Tooltip title='Bài đăng này được ưu tiên hiển thị trên trang chủ'>
+                  {t('table.priority')}
+                  <Tooltip title={t('table.priorityTooltip')}>
                     <QuestionCircleOutlined className='ml-2 cursor-help text-xs text-gray-500' />
                   </Tooltip>
                 </>
@@ -231,31 +238,31 @@ export default function PostManagementTable({
       )
     },
     {
-      title: 'Thông tin thời gian',
+      title: t('table.timeInfo'),
       key: 'timeInfo',
       width: 200,
       render: (_: undefined, record: PropertyDataSource) => (
         <div className='space-y-2'>
           <div className='flex flex-col'>
-            <span className='text-xs text-gray-500'>Ngày đăng:</span>
-            <span>{formatDate(record.createdAt)}</span>
+            <span className='text-xs text-gray-500'>{t('table.createdAt')}:</span>
+            <span className='font-semibold text-gray-800'>{formatDate(record.createdAt)}</span>
           </div>
           <div className='flex flex-col'>
-            <span className='text-xs text-gray-500'>Làm mới lần cuối:</span>
-            <span>{formatDateWithTime(record.refreshedAt)}</span>
+            <span className='text-xs text-gray-500'>{t('table.refreshedAt')}:</span>
+            <span className='font-semibold text-gray-800'>{formatDateWithTime(record.refreshedAt)}</span>
           </div>
         </div>
       )
     },
     {
-      title: 'Hành động',
+      title: t('table.actions'),
       key: 'action',
       width: 120,
       render: (_: undefined, record: PropertyDataSource) => (
-        <div className='flex items-center space-x-2'>
+        <div className='space-y-2 md:flex-row md:space-x-2'>
           {record.status === PropertyStatus.APPROVED && (
             <>
-              <Tooltip title='Làm mới bài đăng'>
+              <Tooltip title={t('table.refreshPost')}>
                 <Button
                   icon={<ArrowUpOutlined className='text-white' />}
                   size='small'
@@ -265,7 +272,7 @@ export default function PostManagementTable({
                   loading={refreshPropertyIsPending}
                 />
               </Tooltip>
-              <Tooltip title='Ưu tiên bài đăng'>
+              <Tooltip title={t('table.prioritizePost')}>
                 <Button
                   icon={<FireOutlined className='text-white' />}
                   size='small'
@@ -295,14 +302,14 @@ export default function PostManagementTable({
         onChange={handleTableChange}
         pagination={{
           pageSizeOptions: ['5', '10', '20'],
-          locale: { items_per_page: '/ trang' },
+          locale: { items_per_page: t('table.itemsPerPage') },
           showSizeChanger: true,
           ...paginationProps
         }}
         locale={{
-          triggerDesc: 'Sắp xếp giảm dần',
-          triggerAsc: 'Sắp xếp tăng dần',
-          cancelSort: 'Hủy sắp xếp'
+          triggerDesc: t('table.triggerDesc'),
+          triggerAsc: t('table.triggerAsc'),
+          cancelSort: t('table.cancelSort')
         }}
       />
       <RefreshConfirmationModal

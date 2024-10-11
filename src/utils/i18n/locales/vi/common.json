@@ -1,19 +1,82 @@
 {
-  "test": "TEST VIETNAMESE",
   "navbar": {
-    "menu": "Danh mục",
-    "forRent": "Cho thuê",
-    "membershipPackage": "Gói thành viên",
-    "recharge": "Nạp tiền",
-    "aboutUs": "Về chúng tôi",
-    "contact": "Liên hệ",
+    "menu": "Danh Mục",
+    "forRent": "Cho Thuê",
+    "membershipPackage": "Gói Thành Viên",
+    "recharge": "Nạp Tiền",
+    "aboutUs": "Về Chúng Tôi",
+    "contactUs": "Liên Hệ",
+    "transactionHistory": "Lịch Sử Giao Dịch",
+    "favoriteProperties": "Bất Động Sản Yêu Thích",
+    "propertyManagement": "Quản Lý Tin Đăng",
+    "postProperty": "Đăng Tin",
+    "personalInfo": "Thông Tin Cá Nhân",
+    "accountInfo": "Thông Tin Tài Khoản",
+    "password": "Mật Khẩu",
+    "login": "Đăng Nhập",
+    "logout": "Đăng Xuất",
+    "register": "Đăng Ký"
+  },
+  "toast": {
+    "loginSuccess": "Đăng nhập thành công!",
+    "logoutSuccess": "Đăng xuất thành công!"
+  },
+  "filter": {
+    "title": "Bộ lọc",
+    "searchPlaceholder": "Tìm kiếm theo tên, địa chỉ, quận, phường...",
+    "cityDistrictPlaceholder": "Thành phố, quận",
+    "roomTypePlaceholder": "Loại phòng",
+    "priceRangePlaceholder": "Khoảng giá",
+    "extraFilter": "Lọc thêm",
+    "clearFilter": "Xóa lọc",
+    "applyFilter": "Tìm kiếm",
+    "area": "Diện tích",
+    "date": "Ngày đăng"
+  },
+  "home": {
+    "resultPagination": "Hiển thị <strong>{{from}} đến {{to}}</strong> trong <strong>{{total}}</strong> tin đăng",
+    "saveSearch": "Lưu tìm kiếm",
+    "noResult": "Không tìm thấy kết quả nào",
+    "reSearch": "Tìm kiếm lại",
+    "itemsPerPage": "/ trang",
+    "rightSidebar": {
+      "roomType": "Loại bất động sản",
+      "cityDistrict": "Nhà đất cho thuê tại các khu vực",
+      "cityDistrictIn": "Nhà đất cho thuê tại"
+    }
+  },
+  "button": {
+    "favorite": "Thêm vào danh sách yêu thích",
+    "unfavorite": "Bỏ khỏi danh sách yêu thích",
+    "send" : "Gửi",
+    "cancel" : "Hủy"
+  },
+  "recharge": {
+    "title": "Nạp tiền",
+    "amount": "Số tiền",
+    "amountPlaceholder": "Nhập số tiền",
+    "amountRequired": "Vui lòng nhập số tiền bạn muốn nạp",
+    "amountSelectRequired": "Vui lòng chọn số tiền bạn muốn nạp",
+    "custom": "Tùy chọn",
+    "customAmount": "Số tiền tùy chọn (VND)",
+    "recharge": "Thanh toán",
+    "redirecting": "Đang chuyển hướng đến cổng thanh toán...",
+    "rechargeSuccess": "Nạp tiền thành công!",
+    "rechargeFailed": "Nạp tiền thất bại!",
+    "transactionFailed": "Thanh toán của bạn không thành công.",
+    "rechargeAmount": "Số tiền đã nạp",
+    "rechargeTransaction": "Mã giao dịch",
+    "rechargeDate": "Ngày nạp",
     "transactionHistory": "Lịch sử giao dịch",
-    "favoriteProperty": "Bất động sản yêu thích",
-    "managementProperty": "Quản lý tin đăng",
-    "post": "Đăng tin",
-    "personalInformation": "Thông tin cá nhân",
-    "accountInformation": "Thông tin tài khoản",
-    "password": "Mật khẩu",
-    "logout": "Đăng xuất"
+    "retry": "Thử lại",
+    "continue": "Nạp tiếp",
+    "selectedAmount": "Số tiền đã chọn",
+    "afterRecharge": "Sau khi nạp",
+    "accountInfo": {
+      "accountBalance": "Số dư tài khoản",
+      "present": "Hiện tại",
+      "note": "Lưu ý",
+      "min": "Số tiền nạp tối thiểu là 50,000 VND"
+    }
   }
 }

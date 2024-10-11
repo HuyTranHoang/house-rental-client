@@ -1,0 +1,27 @@
+{
+  "contactWithMogu": "Liên hệ với Mogu",
+  "contactDescription": "Hãy liên hệ và cho chúng tôi biết chúng tôi có thể giúp gì",
+  "officeAddress": "Địa chỉ văn phòng Mogu",
+  "office": "Văn phòng",
+  "officeDescription": "Trực tiếp tại các văn phòng trên toàn quốc",
+  "contactViaZalo": "Liên hệ qua Zalo",
+  "hotline": "Tổng đài",
+  "hotlineDescription": "Chúng tôi luôn hỗ trợ 24/7, gọi ngay 1900 1000",
+  "facebookMoguVN": "Facebook Mogu VN",
+  "emailAndSocial": "Email và mạng xã hội",
+  "emailDescription": "Liên hệ qua email: hotro@mogu.vn hoặc page",
+  "contactDirectlyHere": "Quý khách hàng có thể liên hệ trực tiếp tại đây:",
+  "form": {
+    "message": "Nội dung",
+    "messageRequired": "Vui lòng nhập nội dung!",
+    "name": "Họ tên",
+    "nameRequired": "Vui lòng nhập họ tên!",
+    "email": "Email",
+    "emailRequired": "Vui lòng nhập email!",
+    "emailInvalid": "Email không đúng định dạng!",
+    "send": "Gửi",
+    "sendSuccess": "Gửi thành công!",
+    "sendFailure": "Gửi thất bại, vui lòng thử lại sau!",
+    "emailImageAlt": "hình ảnh email"
+  }
+}

@@ -1,6 +1,6 @@
 import CustomBreadcrumbs from '@/components/CustomBreadcrumbs.tsx'
 import ROUTER_NAMES from '@/constant/routerNames.ts'
-import PropertyDetailFavoriteButton from '@/features/property-detail/PropertyDetailFavoriteButton.tsx'
+import PropertyDetailImageSlider from '@/features/property-detail/PropertyDetailImageSlider.tsx'
 import PropertyDetailOwnerDetail from '@/features/property-detail/PropertyDetailOwnerDetail.tsx'
 import RelatedProperty from '@/features/property-detail/RelatedProperty.tsx'
 import ReportButton from '@/features/property-detail/ReportButton.tsx'
@@ -9,13 +9,11 @@ import useAuthStore from '@/store/authStore.ts'
 import Container from '@/ui/Container.tsx'
 import { formatCurrency } from '@/utils/formatCurrentcy.ts'
 import { formatDate } from '@/utils/formatDate.ts'
-import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
-import { Button, Col, Descriptions, DescriptionsProps, Divider, Row, Skeleton, Space, Tag, Typography } from 'antd'
+import { Button, Col, Descriptions, DescriptionsProps, Divider, Row, Skeleton, Space, Typography } from 'antd'
 import DOMPurify from 'dompurify'
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Navigation, Pagination } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import PropertyDetailComment from './PropertyDetailComment.tsx'
 
 function PropertyDetail() {
@@ -26,35 +24,40 @@ function PropertyDetail() {
 
   const currentUser = useAuthStore((state) => state.user)
 
-  const [currentSlide, setCurrentSlide] = useState(0)
-
   const { propertyData, propertyIsLoading } = useProperty(Number(id))
 
   const descriptionCleanHTML = propertyData ? DOMPurify.sanitize(propertyData.description) : ''
 
+  const { t } = useTranslation(['common', 'propertyDetail'])
+
   const items: DescriptionsProps['items'] = [
     {
       key: 'area',
-      label: 'Diện tích',
+      label: t('propertyDetail:property.area'),
       children: <span>{propertyData?.area} m&sup2;</span>
     },
     {
       key: 'numRooms',
-      label: 'Số phòng ngủ',
+      label: t('propertyDetail:property.numRooms'),
       children: propertyData?.numRooms
     },
     {
       key: 'createAt',
-      label: 'Ngày đăng',
+      label: t('propertyDetail:property.createAt'),
       children: formatDate(propertyData?.createdAt)
     },
     {
       key: 'amenities',
-      label: 'Tiện ích',
-      children: propertyData?.amenities.join(', '),
-      span: 3
+      label: t('propertyDetail:property.amenities'),
+      children: propertyData?.amenities.join(', ')
     }
   ]
+
+  useEffect(() => {
+    if (propertyData && (propertyData.blocked || propertyData.hidden)) {
+      navigate(ROUTER_NAMES.RENT_HOUSE)
+    }
+  }, [navigate, propertyData])
 
   return (
     <Container>
@@ -70,14 +73,14 @@ function PropertyDetail() {
               onClick={() => navigate(ROUTER_NAMES.RENT_HOUSE)}
               className='group relative border-0 bg-white pl-4 pr-3 text-gray-500 transition-none hover:bg-slate-200 hover:text-gray-700'
             >
-              <span>Về danh sách</span>
+              <span>{t('propertyDetail:property.aboutList')}</span>
               <span className='absolute left-0 top-0 h-0 w-0 -translate-x-full border-b-[12px] border-l-0 border-r-[11px] border-t-[11px] border-solid border-transparent border-r-white transition-none group-hover:border-r-slate-200' />
             </Button>
             <Button
               size='small'
               className='group relative border-0 bg-blue-400 pl-3 pr-4 text-white transition-none hover:bg-blue-500 hover:text-white'
             >
-              <span>Tin tiếp</span>
+              <span>{t('propertyDetail:property.nextProperty')}</span>
               <span className='absolute right-[2px] top-0 h-0 w-0 translate-x-full border-b-[12px] border-l-[11px] border-r-0 border-t-[11px] border-solid border-transparent border-l-blue-400 transition-none group-hover:border-l-blue-500' />
             </Button>
           </Space>
@@ -94,35 +97,7 @@ function PropertyDetail() {
 
           {propertyData && (
             <section>
-              <Swiper
-                modules={[Navigation, Pagination]}
-                grabCursor
-                navigation={{
-                  nextEl: '.swiper-button-next',
-                  prevEl: '.swiper-button-prev'
-                }}
-                pagination={{ clickable: true }}
-                slidesPerView={1}
-                spaceBetween={30}
-                onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
-                className='h-[500px] w-full'
-              >
-                {propertyData.propertyImages.map((image, index) => (
-                  <SwiperSlide key={index} className='flex justify-center'>
-                    <img src={image} alt='image' />
-                  </SwiperSlide>
-                ))}
-                <div className='swiper-button-prev'>
-                  <LeftCircleOutlined className='text-2xl' />
-                </div>
-                <div className='swiper-button-next'>
-                  <RightCircleOutlined className='text-2xl' />
-                </div>
-
-                <Tag color='#595959' className='absolute bottom-0 right-0 z-10 m-4'>
-                  {`${currentSlide + 1}/${propertyData.propertyImages.length}`}
-                </Tag>
-              </Swiper>
+              <PropertyDetailImageSlider propertyImages={propertyData.propertyImages} />
 
               <Typography.Title level={4}>{propertyData.title}</Typography.Title>
 
@@ -132,13 +107,13 @@ function PropertyDetail() {
                 {formatCurrency(propertyData.price)}
               </Typography.Title>
 
-              <Typography.Title level={4}>Thông tin chính</Typography.Title>
+              <Typography.Title level={4}>{t('propertyDetail:property.mainInfo')}</Typography.Title>
 
               <Typography.Paragraph>
-                <Descriptions bordered items={items} />
+                <Descriptions labelStyle={{ width: 120 }} bordered items={items} />
               </Typography.Paragraph>
 
-              <Typography.Title level={4}>Giới thiệu</Typography.Title>
+              <Typography.Title level={4}>{t('propertyDetail:property.introduce')}</Typography.Title>
               <div dangerouslySetInnerHTML={{ __html: descriptionCleanHTML }} />
 
               <ReportButton propertyId={propertyData.id} />
@@ -152,9 +127,11 @@ function PropertyDetail() {
 
         <Col xs={24} md={8}>
           <div className='sticky top-6 z-10 mb-6'>
-            <PropertyDetailOwnerDetail userId={propertyData?.userId} />
-
-            <PropertyDetailFavoriteButton id={Number(id)} currentUser={currentUser} />
+            <PropertyDetailOwnerDetail
+              userId={propertyData?.userId}
+              propertyId={Number(id)}
+              currentUser={currentUser}
+            />
           </div>
         </Col>
 

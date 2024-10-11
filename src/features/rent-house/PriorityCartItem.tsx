@@ -1,14 +1,11 @@
-'use client'
-
 import ROUTER_NAMES from '@/constant/routerNames'
 import { usePriorityProperties } from '@/hooks/useProperty'
-import animationData from '@/lottie/hot.json'
-import usePropertyStore from '@/store/propertyStore'
+import lottieJson from '@/lottie/hot.json'
 import { formatCurrency } from '@/utils/formatCurrentcy'
 import { generateSlug } from '@/utils/generateSlug'
 import { FireOutlined } from '@ant-design/icons'
 import { Badge, Card, Typography } from 'antd'
-import Lottie from 'react-lottie'
+import Lottie from 'react-lottie-player'
 import { useNavigate } from 'react-router-dom'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -18,7 +15,8 @@ const { Text } = Typography
 export default function PriorityCardItem() {
   const navigate = useNavigate()
   const { data: priorityProperties } = usePriorityProperties()
-  const setBreadcrumbName = usePropertyStore((state) => state.setName)
+
+  const filteredProperties = priorityProperties?.filter((item) => !item.hidden && !item.blocked)
 
   return (
     <Swiper
@@ -27,15 +25,15 @@ export default function PriorityCardItem() {
       slidesPerView={1}
       loop={true}
       autoplay={{
-        delay: 5000,
+        delay: 15000,
         disableOnInteraction: false,
         pauseOnMouseEnter: true
       }}
       speed={1000}
       className='mb-2 -translate-x-2'
     >
-      {priorityProperties &&
-        priorityProperties.map((item) => {
+      {filteredProperties &&
+        filteredProperties.map((item) => {
           const slug = generateSlug(item.title, item.id)
 
           return (
@@ -51,10 +49,7 @@ export default function PriorityCardItem() {
                   <Card
                     className='z-10 mb-[2px] mr-[3px] mt-[1px] h-[calc(100%-3px)] w-[calc(100%-3px)] bg-white transition-all duration-300'
                     classNames={{ body: 'p-0' }}
-                    onClick={() => {
-                      setBreadcrumbName(item.title)
-                      navigate(ROUTER_NAMES.getRentHouseDetail(slug))
-                    }}
+                    onClick={() => navigate(ROUTER_NAMES.getRentHouseDetail(slug))}
                   >
                     <div className='flex items-center justify-between p-4'>
                       <div className='mx-2 flex flex-col transition-all duration-300 group-hover:translate-x-2'>
@@ -68,18 +63,7 @@ export default function PriorityCardItem() {
 
                       <div className='flex items-center whitespace-nowrap font-semibold'>
                         {formatCurrency(item.price)}
-                        <Lottie
-                          options={{
-                            loop: true,
-                            autoplay: true,
-                            animationData: animationData,
-                            rendererSettings: {
-                              preserveAspectRatio: 'xMidYMid slice'
-                            }
-                          }}
-                          width={50}
-                          height={50}
-                        />
+                        <Lottie loop play animationData={lottieJson} style={{ width: 50, height: 50 }} />
                       </div>
                     </div>
                   </Card>
