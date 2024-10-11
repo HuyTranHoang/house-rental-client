@@ -19,7 +19,7 @@ function PropertyDetailComment({ propertyId }: PropertyDetailReviewProps) {
   const [pageSize, setPageSize] = useState(5)
   const [open, setOpen] = useState(false)
   const [currentComment, setcurrentComment] = useState<Comment | undefined>(undefined)
-  const haveDeleteReviewPrivilege = useAuthStore((state) => state.haveDeleteReviewPrivilege)
+  const haveDeleteReviewPrivilege = useAuthStore((state) => state.haveDeleteCommentPrivilege)
 
   const [form] = Form.useForm()
 
